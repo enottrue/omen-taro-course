@@ -1,0 +1,12 @@
+@import '/scss/breakpoints';
+
+.logo {
+  width: calcSize(72);
+  height: auto;
+  display: block;
+
+  img {
+    width: 100%;
+    height: auto;
+  }
+}
