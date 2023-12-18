@@ -1,0 +1,68 @@
+@import '/scss/breakpoints';
+
+.to-learn {
+  padding: calcSize(21) calcSize(40);
+}
+
+.to-learn__card {
+  padding: calcSize(32) calcSize(24);
+  background: var(--color-bg-darken-600);
+  border-radius: calcSize(40);
+
+  h2 {
+    font-size: calcSize(28);
+    font-style: normal;
+    font-weight: 700;
+    line-height: 110%;
+    margin-bottom: calcSize(16);
+  }
+
+  p {
+    font-size: calcSize(18);
+    font-style: normal;
+    font-weight: 400;
+    line-height: 118.5%;
+  }
+}
+
+.to-learn__illustration {
+  aspect-ratio: 430 / 271;
+  margin-left: calcSize(-40);
+  margin-right: calcSize(-40);
+  position: relative;
+
+  img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 100%;
+  }
+}
+
+.to-learn__illustration-text {
+  position: absolute;
+  right: calcSize(40);
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.to-learn__illustration-text-desc {
+  text-align: right;
+  font-size: calcSize(13);
+  font-style: normal;
+  font-weight: 400;
+  line-height: 120%;
+}
+
+.to-learn__illustration-text-icon {
+  display: block;
+  width: calcSize(32);
+  margin-top: calcSize(20);
+}

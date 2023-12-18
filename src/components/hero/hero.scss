@@ -1,0 +1,64 @@
+@import '/scss/breakpoints';
+
+.hero {
+  padding: calcSize(110) 0 calcSize(21);
+}
+
+.hero__desc {
+  padding: 0 calcSize(40);
+
+  font-size: calcSize(25);
+  font-style: normal;
+  font-weight: 800;
+  line-height: 1.185;
+
+  text-transform: uppercase;
+}
+
+.hero__desc-name {
+  font-weight: 600;
+  font-style: italic;
+}
+
+.hero__title {
+  padding: 0 calcSize(40);
+  text-shadow: 0px 4px 4px rgba(0, 63, 98, 0.25);
+  font-size: calcSize(37);
+  font-style: normal;
+  font-weight: 800;
+  line-height: 118.5%;
+}
+
+.hero__illustration {
+  position: relative;
+  aspect-ratio: 430 / 222;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.hero__illustration-arrow {
+  width: calcSize(135);
+  height: calcSize(178);
+  position: absolute;
+  left: calcSize(46);
+  top: calcSize(26);
+}
+
+.hero__illustration-button {
+  width: calcSize(147);
+  height: calcSize(147);
+  position: absolute;
+  left: calcSize(87 - 25);
+  top: calcSize(73 - 25);
+}
+
+.hero__img {
+  margin-left: auto;
+  display: block;
+  margin-bottom: calcSize(-78);
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  max-width: calc(100% - calcSize(121));
+}
