@@ -10,6 +10,7 @@ interface ButtonProps {
   onClick?: (e: any) => void;
   isLink?: boolean;
   children?: React.ReactNode;
+  disabled?: boolean;
   // attributes?: React.ButtonHTMLAttributes<HTMLButtonElement> &
   // React.AnchorHTMLAttributes<HTMLAnchorElement>;
 }
@@ -20,6 +21,7 @@ const Button: React.FC<ButtonProps> = ({
   isLink = false,
   children,
   onClick,
+  disabled,
   type,
   className,
   attributes,
@@ -40,9 +42,11 @@ const Button: React.FC<ButtonProps> = ({
 
   return (
     <button
-      className={`button ${attributes} ` + className}
+      className={`button ` + className}
       type={type}
       onClick={onClick}
+      disabled={disabled}
+      {...rest}
     >
       {title && <span className="button__text">{title}</span>}
       {children && <span className="button__icon">{children}</span>}

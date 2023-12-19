@@ -43,23 +43,24 @@ const ModalSignIn = () => {
 
       return true;
     };
-
-    console.log(email, validateEmail());
-
+    cc?.setSubmitting(true);
     if (!email || !validateEmail()) {
       console.error('Укажите корректный email');
       setError('Укажите корректный email');
+      cc?.setSubmitting(false);
       return;
     }
 
     if (!password || password.length < 4) {
       console.error('Укажите пароль');
       setError('Укажите пароль');
+      cc?.setSubmitting(false);
 
       return;
     }
     setError('');
     console.log('Done');
+    cc?.setSubmitting(false);
 
     // If phone and name are present in the store and meet the length requirements, activate step 2
     // window.activateStep2();
@@ -123,6 +124,9 @@ const ModalSignIn = () => {
                 onClick={(e) => {
                   handleSubmitClick(e);
                 }}
+                aria-label="Войти"
+                aria-disabled={cc?.submitting}
+                disabled={cc?.submitting}
                 // onClick={() => window.activateStep2()}
               >
                 <span className="modal__login-form-button-icon">

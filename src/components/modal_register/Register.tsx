@@ -66,7 +66,10 @@ const ModalRegister = () => {
       return;
     }
     setError('');
+    cc?.setSubmitting(true);
+
     console.log('Done');
+    cc?.setSubmitting(false);
 
     // If phone and name are present in the store and meet the length requirements, activate step 2
     // window.activateStep2();
@@ -83,6 +86,7 @@ const ModalRegister = () => {
           onClick={() => {
             cc?.setModalOpen(!cc?.modalOpen);
             cc?.setCurrentForm(null);
+            cc?.setSubmitting(false);
           }}
         />
 
@@ -122,6 +126,8 @@ const ModalRegister = () => {
                 className="button_little button_secondary"
                 // onClick={() => window.activateStep2()}
                 onClick={handleButtonClick}
+                aria-label="Далее"
+                aria-disabled={cc?.submitting}
               >
                 <span className="modal__login-form-button-icon">
                   <Arrow />

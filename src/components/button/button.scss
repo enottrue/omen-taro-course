@@ -34,6 +34,10 @@
     .button__text {
       color: var(--color-button-text_disabled);
     }
+    cursor: not-allowed;
+    &:hover {
+      background: var(--color-button-bg_disabled);
+    }
   }
 
   &_secondary {
