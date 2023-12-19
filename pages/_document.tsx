@@ -1,6 +1,9 @@
 import { Html, Head, Main, NextScript } from 'next/document';
+import { useContext } from 'react';
+import { MainContext } from '@/contexts/MainContext';
 
 export default function Document() {
+  const cc = useContext(MainContext);
   return (
     <Html lang="en">
       <Head>

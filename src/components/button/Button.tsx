@@ -27,7 +27,11 @@ const Button: React.FC<ButtonProps> = ({
 }) => {
   if (isLink) {
     return (
-      <a href={href} className={`button ` + attributes + ' ' + className}>
+      <a
+        href={href}
+        className={`button ` + attributes + ' ' + className}
+        onClick={onClick}
+      >
         {title && <span className="button__text">{title}</span>}
         {children && <span className="button__icon">{children}</span>}
       </a>
@@ -35,7 +39,11 @@ const Button: React.FC<ButtonProps> = ({
   }
 
   return (
-    <button className={`button ${attributes} ` + className} type={type}>
+    <button
+      className={`button ${attributes} ` + className}
+      type={type}
+      onClick={onClick}
+    >
       {title && <span className="button__text">{title}</span>}
       {children && <span className="button__icon">{children}</span>}
     </button>

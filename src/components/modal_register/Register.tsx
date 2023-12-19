@@ -2,14 +2,24 @@ import React from 'react';
 import Button from '../button/Button';
 import Image from 'next/image';
 import Arrow from '@/images/svg/button-arrow.svg';
-import { useState, useContext } from 'react';
-import { MainContext } from '@/contexts/MainContext'; // Import your context
+import { useState } from 'react';
+import { useContext, useEffect } from 'react';
+import { MainContext } from '@/contexts/MainContext';
 
 const ModalRegister = () => {
+  const cc = useContext(MainContext);
   const [phoneNumber, setPhoneNumber] = useState('');
-  const cc = useContext(MainContext); // Get data from MainContext
-  const [modalOpen, setModalOpen] = useState(false); // Create modalOpen state
-  console.log('cc', cc);
+
+  useEffect(() => {
+    if (cc?.modalOpen) {
+      document.body.classList.add('body-modal-open');
+      cc?.setModalOpen(true);
+    } else {
+      document.body.classList.remove('body-modal-open');
+      cc?.setModalOpen(false);
+    }
+  }, [cc?.modalOpen]);
+
   const handlePhoneInputChange = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
@@ -22,11 +32,17 @@ const ModalRegister = () => {
   };
 
   return (
-    <div className="modal" id="register">
+    <div className={cc?.modalOpen ? 'modal active' : 'modal'} id="register">
       <div className="modal__backing" />
       <div className="modal__content modal__content_small">
         <div className="modal__title">Заполните данные для авторизации</div>
-        <button className="modal__close" type="button" />
+        <button
+          className="modal__close"
+          type="button"
+          onClick={() => {
+            cc?.setModalOpen(!cc?.modalOpen);
+          }}
+        />
 
         <form className="modal__login-form" action="">
           <div className="modal__login-form-grid active" id="step-1">

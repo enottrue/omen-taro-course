@@ -13,7 +13,6 @@ export const MainContextProvider = ({
   children: React.ReactNode;
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
-
   return (
     <MainContext.Provider value={{ modalOpen, setModalOpen }}>
       {children}
