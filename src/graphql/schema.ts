@@ -21,6 +21,26 @@ export const typeDefs = gql`
     getTools: [Tool!]!
     getId: String
     getTool(id: String!): Tool
+    getUser(id: ID!): User
+    getUsers: [User!]!
+  }
+
+  type User {
+    id: ID!
+    email: String!
+    name: String!
+    password: String!
+    city: String
+    phone: String
+    updatedAt: String
+    createdAt: String
+  }
+
+  type AuthPayload {
+    token: String
+    user: User
+    message: String
+    error: String
   }
 
   type Mutation {
@@ -37,5 +57,29 @@ export const typeDefs = gql`
       link: String
       description: String
     ): Tool
+    addUser(
+      email: String!
+      name: String!
+      password: String!
+      city: String
+      phone: String
+    ): User
+    updateUser(
+      id: ID!
+      email: String
+      name: String
+      password: String
+      city: String
+      phone: String
+    ): User
+    deleteUser(id: ID!): User
+    registerUser(
+      email: String!
+      password: String!
+      name: String!
+      phone: String
+      city: String
+    ): AuthPayload
+    loginUser(email: String!, password: String!): AuthPayload
   }
 `;

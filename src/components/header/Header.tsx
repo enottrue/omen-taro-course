@@ -4,10 +4,12 @@ import Logo from '@/components/logo/Logo';
 import Button from '@/components/button/Button';
 import { useContext } from 'react';
 import { MainContext } from '@/contexts/MainContext';
+import UseSubmit, { useSubmit } from '@/hooks/useSubmit';
 
 const Header = () => {
   const cc = useContext(MainContext);
-
+  const { handleSubmit, loading, errorSubmit } = useSubmit({});
+  console.log('loading', loading);
   return (
     <header className="header">
       <div className="header__wrapper">
@@ -19,6 +21,7 @@ const Header = () => {
           className="button_little button_secondary"
           attributes="button_little button_secondary"
           href="#"
+          onClick={handleSubmit}
         >
           <span className="header__telegram-icon">
             <svg

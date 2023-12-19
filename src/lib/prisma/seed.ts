@@ -1,9 +1,12 @@
 import tools from '../dump-data/toolsData';
 import { prisma } from './prismaClient';
+import users from '../dump-data/userData';
 
 const main = async () => {
   console.log(`Start seeding...`);
   await prisma.tool.deleteMany({});
+  await prisma.user.deleteMany({});
+
   console.log(`Database was wiped out. Ready to seeding it up.`);
 
   tools.forEach(async (tool) => {
@@ -15,7 +18,17 @@ const main = async () => {
       update: tool,
     });
   });
-  console.log(`Database was seeded.`);
+
+  users.forEach(async (user) => {
+    await prisma.user.upsert({
+      where: {
+        id: user.id,
+      },
+      create: user,
+      update: user,
+    });
+  });
+  console.log(`Users Database was seeded.`);
 };
 
 main()

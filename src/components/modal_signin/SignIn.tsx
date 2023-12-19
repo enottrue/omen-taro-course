@@ -52,8 +52,8 @@ const ModalSignIn = () => {
     }
 
     if (!password || password.length < 4) {
-      console.error('Укажите пароль');
-      setError('Укажите пароль');
+      console.error('Укажите пароль не менее 4 символов');
+      setError('Укажите пароль не менее 4 символов');
       cc?.setSubmitting(false);
 
       return;

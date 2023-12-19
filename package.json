@@ -11,7 +11,7 @@
     "prisma:pull": "npx prisma db pull",
     "prisma:seed": "npx prisma db seed",
     "prisma:generate": "npx prisma generate",
-    "prisma:migrate": "npx prisma migrate"
+    "prisma:migrate": "npx prisma migrate dev"
   },
   "prisma": {
     "schema": "./src/lib/prisma/schema.prisma",
@@ -37,6 +37,7 @@
     "@types/node": "18.15.12",
     "@types/react": "18.0.37",
     "@types/react-dom": "18.0.11",
+    "bcrypt": "^5.1.1",
     "eslint": "8.38.0",
     "eslint-config-next": "13.3.0",
     "graphql": "^16.6.0",
@@ -48,9 +49,13 @@
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",
+    "@types/bcrypt": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.5",
     "autoprefixer": "^10.4.14",
+    "dotenv": "^16.3.1",
     "eslint-plugin-prettier": "^4.2.1",
     "husky": "^8.0.3",
+    "jsonwebtoken": "^9.0.2",
     "postcss": "^8.4.21",
     "prettier": "^2.8.4",
     "prisma": "^4.11.0",
