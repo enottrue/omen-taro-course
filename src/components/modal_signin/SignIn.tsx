@@ -6,20 +6,19 @@ import { useState } from 'react';
 import { useContext, useEffect } from 'react';
 import { MainContext } from '@/contexts/MainContext';
 
-const ModalRegister = () => {
+const ModalSignIn = () => {
   const cc = useContext(MainContext);
   const [phoneNumber, setPhoneNumber] = useState('');
 
-  const handlePhoneInputChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const value = event.target.value;
-    const isValidPhoneNumber = /^[\d-+]+$/.test(value);
-
-    if (isValidPhoneNumber || value === '') {
-      setPhoneNumber(value);
+  useEffect(() => {
+    if (cc?.modalOpen) {
+      document.body.classList.add('body-modal-open');
+      cc?.setModalOpen(true);
+    } else {
+      document.body.classList.remove('body-modal-open');
+      cc?.setModalOpen(false);
     }
-  };
+  }, [cc?.modalOpen]);
 
   return (
     <div className={cc?.modalOpen ? 'modal active' : 'modal'} id="register">
@@ -31,7 +30,6 @@ const ModalRegister = () => {
           type="button"
           onClick={() => {
             cc?.setModalOpen(!cc?.modalOpen);
-            cc?.setCurrentForm(null);
           }}
         />
 
@@ -40,7 +38,7 @@ const ModalRegister = () => {
             <label className="custom-input">
               <input
                 className="custom-input__element  focus-within:border-sky-500 focus-within:border-1"
-                placeholder="Фамилия Имя"
+                placeholder="Email"
                 type="text"
               />
             </label>
@@ -48,57 +46,29 @@ const ModalRegister = () => {
             <label className="custom-input">
               <input
                 className="custom-input__element focus-within:border-sky-500 focus-within:border-1"
-                placeholder="Номер телефона"
-                type="tel"
-                value={phoneNumber}
-                onChange={handlePhoneInputChange}
+                placeholder="Пароль"
+                type="password"
+                // value={phoneNumber}
+                // onChange={handlePhoneInputChange}
               />
             </label>
 
             <div className="modal__login-form-button">
               <Button
-                title="Далее"
+                title="Войти"
                 type="button"
                 className="button_little button_secondary"
                 // onClick={() => window.activateStep2()}
               >
                 <span className="modal__login-form-button-icon">
+                  {/* <Image
+                  src="/svg/button-arrow.svg"
+                  alt="Button Arrow"
+                  width={20}
+                  height={20}
+                />{' '} */}
                   <Arrow />
-                </span>
-              </Button>
-            </div>
-          </div>
-
-          <div className="modal__login-form-grid" id="step-2">
-            <label className="custom-input">
-              <input
-                className="custom-input__element"
-                placeholder="Город"
-                type="text"
-              />
-            </label>
-
-            <label className="custom-input">
-              <input
-                className="custom-input__element"
-                placeholder="E-mail"
-                type="email"
-              />
-            </label>
-
-            <div className="modal__login-form-buttons">
-              <Button
-                title="Пропустить"
-                className="button_little button_ternary"
-              />
-              <Button title="Далее" className="button_little button_secondary">
-                <span className="modal__login-form-button-icon">
-                  <Image
-                    src="/svg/button-arrow.svg"
-                    alt="Button Arrow"
-                    width={20}
-                    height={20}
-                  />{' '}
+                  {/* Adjust width and height as per your needs */}
                 </span>
               </Button>
             </div>
@@ -109,4 +79,4 @@ const ModalRegister = () => {
   );
 };
 
-export default ModalRegister;
+export default ModalSignIn;

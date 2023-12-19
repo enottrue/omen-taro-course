@@ -2,40 +2,51 @@ import React from 'react';
 import Button from '@/components/button/Button'; // Assuming Button component is in the same directory
 import Fire from '@/images/svg/about-fire.svg';
 
-const About = () => (
-  <section className="about">
-    <div className="about__card bg-white">
-      <h2>
-        Это полноценный обучающий курс
-        <br /> по колоде,
-      </h2>
-      <div className="about__fire">
-        <Fire />
-        {/* include /svg/about-fire.svg */}
+import { useContext } from 'react';
+import { MainContext } from '@/contexts/MainContext';
+
+const About = () => {
+  const cc = useContext(MainContext);
+
+  return (
+    <section className="about">
+      <div className="about__card bg-white">
+        <h2>
+          Это полноценный обучающий курс
+          <br /> по колоде,
+        </h2>
+        <div className="about__fire">
+          <Fire />
+          {/* include /svg/about-fire.svg */}
+        </div>
+        <div className="about__subdesc">
+          включающий в себя <br /> несколько максимально
+          <br /> подробных источников информации. Он позволит вам самостоятельно
+          изучить колоду и обойтись без дорогостоящего обучения в школах Таро. 
+        </div>
+        <div className="about__desc">
+          Тысячи тарологов уже
+          <br />
+          применяют знания колоды
+          <br />
+          на практике, используя обучение
+          <br />
+          только на этом курсе.
+        </div>
       </div>
-      <div className="about__subdesc">
-        включающий в себя <br /> несколько максимально
-        <br /> подробных источников информации. Он позволит вам самостоятельно
-        изучить колоду и обойтись без дорогостоящего обучения в школах Таро. 
+      <div className="about__button">
+        <Button
+          title="Начать учиться"
+          className="js-modal-open"
+          data-modal="register"
+          onClick={() => {
+            cc?.setModalOpen(!cc?.modalOpen);
+            cc?.setCurrentForm('register');
+          }}
+        />
       </div>
-      <div className="about__desc">
-        Тысячи тарологов уже
-        <br />
-        применяют знания колоды
-        <br />
-        на практике, используя обучение
-        <br />
-        только на этом курсе.
-      </div>
-    </div>
-    <div className="about__button">
-      <Button
-        title="Начать учиться"
-        className="js-modal-open"
-        data-modal="register"
-      />
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 export default About;

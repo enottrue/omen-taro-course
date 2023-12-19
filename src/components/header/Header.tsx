@@ -35,7 +35,10 @@ const Header = () => {
           title="Войти"
           className="button_little js-modal-open"
           data-modal="register"
-          onClick={() => cc?.setModalOpen(!cc?.modalOpen)}
+          onClick={() => {
+            cc?.setModalOpen(!cc?.modalOpen);
+            cc?.setCurrentForm('signin');
+          }}
         >
           <span className="header__icon">
             {/* SVG path goes here */}
