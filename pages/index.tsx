@@ -5,6 +5,11 @@ import { Inter } from 'next/font/google';
 import Header from '@/components/header/Header';
 import Hero from '@/components/hero/Hero';
 import ToLearn from '@/components/to-learn/ToLearn';
+import About from '@/components/about/About';
+import Way from '@/components/way/Way';
+import Footer from '@/components/footer/Footer';
+import Modal from '@/components/modal/Modal';
+
 const inter = Inter({ subsets: ['latin'] });
 
 export default function Home() {
@@ -20,7 +25,11 @@ export default function Home() {
         <Header />
         <Hero />
         <ToLearn />
+        <About />
+        <Way />
+        <Footer />
       </main>
+      <Modal />
     </>
   );
 }

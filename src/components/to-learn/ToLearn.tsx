@@ -38,12 +38,12 @@ export default function ToLearn() {
                 <path
                   d="M17 8.0748C14.981 5.04428 9.54032 -0.633972 3.92962 0.897241C-3.08376 2.81126 2.97325 23.8654 17 32"
                   stroke="white"
-                  stroke-linecap="round"
+                  strokeLinecap="round"
                 ></path>
                 <path
                   d="M17 8.0748C19.019 5.04428 24.4597 -0.633972 30.0704 0.897241C37.0838 2.81126 31.0268 23.8654 17 32"
                   stroke="white"
-                  stroke-linecap="round"
+                  strokeLinecap="round"
                 ></path>
               </svg>
             </div>

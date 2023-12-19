@@ -1,0 +1,45 @@
+.about {
+  padding: calcSize(21) 0;
+}
+
+.about__card {
+  border-radius: calcSize(40);
+  padding: calcSize(40) calcSize(40) calcSize(50);
+  position: relative;
+
+  h2 {
+    font-size: calcSize(28);
+    font-style: normal;
+    font-weight: 700;
+    line-height: 110%;
+    margin-bottom: calcSize(17);
+  }
+}
+
+.about__subdesc {
+  font-size: calcSize(18);
+  font-style: normal;
+  font-weight: 400;
+  line-height: 118.5%;
+  margin-bottom: calcSize(34);
+}
+
+.about__desc {
+  font-size: calcSize(18);
+  font-style: italic;
+  font-weight: 600;
+  line-height: 118.5%;
+}
+
+.about__fire {
+  position: absolute;
+  right: calcSize(52);
+  top: calcSize(62);
+  width: calcSize(74);
+}
+
+.about__button {
+  display: grid;
+  padding: 0 calcSize(40);
+  margin-top: calcSize(45);
+}

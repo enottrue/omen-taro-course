@@ -6,3 +6,7 @@
     @return clamp(12px, calc($n / (430 / 100vw)), calc($n * 1.5px));
   }
 }
+
+.body-modal-open {
+  overflow: hidden;
+}

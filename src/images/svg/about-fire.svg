@@ -4,7 +4,7 @@
 <path d="M85.537 89.7065C87.3569 114.165 66.0637 132.282 42.7685 132.282C43.6785 127.753 80.0772 100.577 85.537 89.7065Z" fill="#E9692C"/>
 <g filter="url(#filter0_di_149_70)">
 <circle cx="45.4074" cy="100.185" r="19.0419" fill="#E9692C"/>
-<circle cx="45.4074" cy="100.185" r="20.0419" stroke="white" stroke-width="2"/>
+<circle cx="45.4074" cy="100.185" r="20.0419" stroke="white" strokeWidth="2"/>
 </g>
 <g filter="url(#filter1_d_149_70)">
 <path d="M54.9283 100.185L40.6469 108.431L40.6469 91.9399L54.9283 100.185Z" fill="white"/>

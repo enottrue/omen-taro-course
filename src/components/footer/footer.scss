@@ -1,0 +1,15 @@
+.footer {
+  position: relative;
+}
+
+.footer__wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: calcSize(40);
+  background: var(--color-bg-darken);
+}
+
+.footer__logo {
+  opacity: 0.5;
+}

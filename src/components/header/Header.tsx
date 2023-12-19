@@ -41,15 +41,15 @@ const Header = () => (
           <svg fill="none" viewBox="0 0 24 24">
             <path
               stroke="#FFF"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="1.5"
               d="M2 12h14m0 0-3.5-3m3.5 3-3.5 3"
             />
             <path
               stroke="#FFF"
-              stroke-linecap="round"
-              stroke-width="1.5"
+              strokeLinecap="round"
+              strokeWidth="1.5"
               d="M9 7c.01-2.18.11-3.35.88-4.12C10.76 2 12.18 2 15 2h1c2.83 0 4.24 0 5.12.88.88.88.88 2.3.88 5.12v8c0 2.83 0 4.24-.88 5.12-.88.88-2.3.88-5.12.88h-1c-2.83 0-4.24 0-5.12-.88C9.1 20.35 9 19.17 9 17"
             />
           </svg>

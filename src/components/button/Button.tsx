@@ -1,10 +1,13 @@
+import { type } from 'os';
 import React from 'react';
 
 interface ButtonProps {
   title?: string;
   href?: string;
+  type?: 'button' | 'submit' | 'reset';
   attributes?: string;
   className?: string;
+  onClick?: () => void;
   isLink?: boolean;
   children?: React.ReactNode;
   // attributes?: React.ButtonHTMLAttributes<HTMLButtonElement> &
@@ -16,13 +19,15 @@ const Button: React.FC<ButtonProps> = ({
   href = '#',
   isLink = false,
   children,
+  onClick,
+  type,
   className,
   attributes,
   ...rest
 }) => {
   if (isLink) {
     return (
-      <a href={href} className={`button ` + attributes}>
+      <a href={href} className={`button ` + attributes + ' ' + className}>
         {title && <span className="button__text">{title}</span>}
         {children && <span className="button__icon">{children}</span>}
       </a>
@@ -30,7 +35,7 @@ const Button: React.FC<ButtonProps> = ({
   }
 
   return (
-    <button className={`button ` + attributes}>
+    <button className={`button ${attributes} ` + className} type={type}>
       {title && <span className="button__text">{title}</span>}
       {children && <span className="button__icon">{children}</span>}
     </button>

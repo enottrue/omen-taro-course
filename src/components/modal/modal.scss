@@ -1,0 +1,368 @@
+.modal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  overflow: auto;
+  text-align: center;
+  padding: 40px 0;
+  z-index: 10;
+  transition: var(--transition-base);
+
+  &::before {
+    display: inline-block;
+    vertical-align: middle;
+    content: '';
+    height: 100%;
+    width: 1px;
+  }
+
+  opacity: 0;
+  visibility: hidden;
+
+  &.active {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.modal__content {
+  background: #fff;
+  border-radius: 60px;
+  padding: 40px;
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+
+  max-width: calc(100% - 20px);
+  width: 622px;
+  color: #474356;
+
+  &_big {
+    width: 740px;
+
+    padding: 60px 20px;
+  }
+
+  .modal-pay & {
+    background: #f9f5f1;
+  }
+
+  &_small {
+    background: #fff;
+    border-radius: calcSize(40);
+    padding: calcSize(24) calcSize(30) calcSize(32);
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    max-width: calc(100% - 20px);
+    width: calcSize(360);
+    color: #474356;
+
+    box-shadow: 0px 4px 20px 0px #13242e;
+
+    .modal__title {
+      font-size: calcSize(22);
+      font-style: normal;
+      font-weight: 700;
+      line-height: 110%;
+      padding-right: calcSize(50);
+    }
+
+    .modal__close {
+      width: calcSize(42);
+      height: calcSize(42);
+      right: calcSize(32);
+      top: calcSize(24);
+
+      &::before {
+        width: 100%;
+        height: 100%;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='42' height='42' viewBox='0 0 42 42' fill='none'%3E%3Crect x='0.5' y='0.5' width='41' height='41' rx='20.5' stroke='%23999999'/%3E%3Cpath d='M27.9288 13.9288L13.7867 28.071' stroke='%2313242E' strokeWidth='2'/%3E%3Cpath d='M13.7869 13.9288L27.929 28.071' stroke='%2313242E' strokeWidth='2'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-size: 100% auto;
+        background-position: center center;
+      }
+    }
+  }
+}
+
+.modal__backing {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(19, 36, 46, 0.8);
+}
+
+.modal__form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+  text-align: left;
+
+  .textarea {
+    margin: 32px 0;
+  }
+
+  .modal-pay & {
+    gap: 0;
+  }
+}
+
+.modal__form-button {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.modal__title {
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 95%;
+  margin-bottom: 40px;
+  text-align: left;
+  padding-right: 40px;
+
+  .modal__content_big & {
+    text-align: center;
+    padding: 0 40px;
+  }
+}
+
+.modal__close {
+  position: absolute;
+  width: 35px;
+  height: 35px;
+  right: 40px;
+  top: 40px;
+  background: none;
+  border: none;
+  transition: var(--transition-base);
+  cursor: pointer;
+  outline: none;
+
+  &::before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='35' viewBox='0 0 34 35' fill='none'%3E%3Cline x1='8.51555' y1='25.9704' x2='25.4861' y2='8.99982' stroke='%23474356' strokeWidth='2'/%3E%3Cline x1='25.4843' y1='25.9704' x2='8.51374' y2='8.99985' stroke='%23474356' strokeWidth='2'/%3E%3C/svg%3E");
+  }
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+.pay-result {
+  display: grid;
+  background: var(--color-bg-nude-100);
+  padding: 15px 10px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, max-content);
+  gap: 10px;
+  border-radius: 8px;
+  align-items: center;
+
+  margin-top: 20px;
+}
+
+.pay-result__payments {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 4px;
+}
+
+.pay-result__payments-item {
+  display: grid;
+  grid-template-columns: minmax(0, 16px) minmax(0, 1fr);
+  gap: 4px;
+  align-items: center;
+
+  &_accent {
+    .pay-result__payments-item-title {
+      color: #008ad5;
+    }
+
+    .pay-result__payments-item-icon {
+      svg {
+        stroke: #008ad5;
+      }
+    }
+  }
+}
+
+.pay-result__payments-item-title {
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 120%;
+}
+
+.pay-result__payments-item-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.pay-result__price-title {
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 120%;
+  margin-bottom: 4px;
+}
+
+.pay-result__price-value {
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 80%;
+}
+
+.modal-pay__title {
+  text-align: center;
+  margin-top: 20px;
+
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 120%;
+}
+
+.modal-pay__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.modal-pay__card {
+  border-radius: 30px;
+  background: var(--color-bg-white);
+  padding: 40px;
+}
+
+.modal-pay__card-title {
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 95%;
+  margin-bottom: 8px;
+
+  span {
+    color: #018ad5;
+  }
+
+  &:not(:first-child) {
+    margin-top: 60px;
+  }
+}
+
+.modal-pay__card-desc {
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 120%;
+}
+
+.modal-pay__card-button {
+  margin-top: 24px;
+
+  .button {
+    box-shadow: none;
+  }
+}
+
+.modal-pay__services {
+  margin-top: 30px;
+}
+
+.modal-pay__services-items {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.modal-pay__services-title {
+  text-align: center;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 120%;
+}
+
+.modal__video {
+  margin-left: -40px;
+  margin-right: -40px;
+  border-radius: 20px;
+  overflow: hidden;
+
+  video {
+    width: 100%;
+    height: auto;
+  }
+}
+
+.modal__login-form-button-icon {
+  width: calcSize(32);
+  height: calcSize(8);
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+
+  svg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    width: 100%;
+    height: 100%;
+    stroke: none;
+  }
+}
+
+.modal__login-form-button {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+
+  .button__icon {
+    line-height: 30px;
+    vertical-align: middle;
+  }
+}
+
+.modal__login-form {
+  display: grid;
+  gap: calcSize(18);
+}
+
+.modal__login-form-grid {
+  grid-template-columns: minmax(0, 1fr);
+  gap: calcSize(18);
+  display: none;
+
+  &.active {
+    display: grid;
+  }
+}
+
+.modal__login-form-button {
+  display: grid;
+  gap: calcSize(18);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.modal__login-form-buttons {
+  display: grid;
+  gap: calcSize(18);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}

@@ -14,11 +14,13 @@ export default function Hero() {
         </div>
         <div className="hero__illustration">
           <div className="hero__illustration-arrow">
-            <Image src={HeroArrow} alt="Arcan" className="w-full" />
+            <HeroArrow />
+            {/* <Image src={HeroArrow} alt="Arcan" className="w-full" /> */}
           </div>
           <Image className="hero__img" src={HeroI} alt="" />
           <div className="hero__illustration-button">
-            <Image src={BigPlayBtn} alt="Arcan" className="w-full" />
+            <BigPlayBtn />
+            {/* <Image src={BigPlayBtn} alt="Arcan" className="w-full" /> */}
           </div>
         </div>
         <h1 className="hero__title">
