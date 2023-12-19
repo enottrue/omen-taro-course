@@ -7,7 +7,7 @@ interface ButtonProps {
   type?: 'button' | 'submit' | 'reset';
   attributes?: string;
   className?: string;
-  onClick?: () => void;
+  onClick?: (e: any) => void;
   isLink?: boolean;
   children?: React.ReactNode;
   // attributes?: React.ButtonHTMLAttributes<HTMLButtonElement> &

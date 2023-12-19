@@ -8,7 +8,10 @@ import { MainContext } from '@/contexts/MainContext';
 
 const ModalSignIn = () => {
   const cc = useContext(MainContext);
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const [error, setError] = useState('');
 
   useEffect(() => {
     if (cc?.modalOpen) {
@@ -20,6 +23,48 @@ const ModalSignIn = () => {
     }
   }, [cc?.modalOpen]);
 
+  const handleSubmitClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const validateEmail = () => {
+      const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      const isValid = re.test(email);
+
+      if (!isValid) {
+        return false;
+      }
+
+      // Check if the domain name after the . is valid
+      const domain = email.split('@')[1];
+      const domainName = domain.split('.')[0];
+      const domainExtension = domain.split('.')[1];
+
+      if (domainName.length === 0 || domainExtension.length < 2) {
+        return false;
+      }
+
+      return true;
+    };
+
+    console.log(email, validateEmail());
+
+    if (!email || !validateEmail()) {
+      console.error('Укажите корректный email');
+      setError('Укажите корректный email');
+      return;
+    }
+
+    if (!password || password.length < 4) {
+      console.error('Укажите пароль');
+      setError('Укажите пароль');
+
+      return;
+    }
+    setError('');
+    console.log('Done');
+
+    // If phone and name are present in the store and meet the length requirements, activate step 2
+    // window.activateStep2();
+  };
+
   return (
     <div className={cc?.modalOpen ? 'modal active' : 'modal'} id="register">
       <div className="modal__backing" />
@@ -30,6 +75,7 @@ const ModalSignIn = () => {
           type="button"
           onClick={() => {
             cc?.setModalOpen(!cc?.modalOpen);
+            cc?.setCurrentForm(null);
           }}
         />
 
@@ -39,7 +85,12 @@ const ModalSignIn = () => {
               <input
                 className="custom-input__element  focus-within:border-sky-500 focus-within:border-1"
                 placeholder="Email"
+                required
+                autoComplete="email"
                 type="text"
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
               />
             </label>
 
@@ -48,16 +99,30 @@ const ModalSignIn = () => {
                 className="custom-input__element focus-within:border-sky-500 focus-within:border-1"
                 placeholder="Пароль"
                 type="password"
+                //autocomplete "current-password"
+                autoComplete="current-password"
+                required
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
                 // value={phoneNumber}
                 // onChange={handlePhoneInputChange}
               />
             </label>
+            {error && (
+              <div className="modal__login-form-button">
+                <p>{error}</p>
+              </div>
+            )}
 
             <div className="modal__login-form-button">
               <Button
                 title="Войти"
                 type="button"
                 className="button_little button_secondary"
+                onClick={(e) => {
+                  handleSubmitClick(e);
+                }}
                 // onClick={() => window.activateStep2()}
               >
                 <span className="modal__login-form-button-icon">

@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from '@/components/button/Button'; // Assuming Button component is in the same directory
+import Button from '@/components/button/Button';
 import Fire from '@/images/svg/about-fire.svg';
 
 import { useContext } from 'react';
