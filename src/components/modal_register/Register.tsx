@@ -8,9 +8,14 @@ import { MainContext } from '@/contexts/MainContext';
 import useSubmit from '@/hooks/useSubmit';
 import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
+import useGetUserData from '@/hooks/useGetUserData';
+import { useLazyQuery } from '@apollo/client';
+import { GET_USER } from '@/graphql/queries';
 
 const ModalRegister = () => {
   const router = useRouter();
+  const [getUser, { loading: loadingLazy, data, error: errorLazy }] =
+    useLazyQuery(GET_USER);
 
   const cc = useContext(MainContext);
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -88,12 +93,16 @@ const ModalRegister = () => {
     if (!phoneNumber || phoneNumber.length < 5) {
       console.error('Phone is not present in the store or less than 5 symbols');
       setError('Не указан телефон или его длина менее 5 символов');
+      cc?.setSubmitting(false);
+
       return;
     }
 
     if (!name || name.length < 2) {
       console.error('Name is not present in the store or less than 2 symbols');
       setError('Не указано Имя или его длина менее 2 символов');
+      cc?.setSubmitting(false);
+
       return;
     }
     setError('');
@@ -122,6 +131,10 @@ const ModalRegister = () => {
     Cookies.set('userId', registerUser?.user?.id, { expires: 180 });
     cc?.setToken(registerUser?.token);
     cc?.setUserId(registerUser?.user?.id);
+    const userData = await getUser({
+      variables: { id: registerUser?.user?.id },
+    });
+    cc?.setUser(userData?.data?.getUser);
     router.push(shouldRedirect);
   };
 
