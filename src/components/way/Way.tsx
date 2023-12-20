@@ -129,7 +129,11 @@ const Way = () => {
             data-modal="register"
             onClick={() => {
               if (cc?.token) {
-                router.push('/courses');
+                const onboarding = localStorage.getItem('onboarded');
+                !onboarding && localStorage.setItem('onboarded', 'false');
+                const shouldRedirect =
+                  onboarding === 'true' ? '/courses' : '/onboarding';
+                router.push(shouldRedirect);
               } else {
                 cc?.setModalOpen(!cc?.modalOpen);
                 cc?.setCurrentForm('register');
