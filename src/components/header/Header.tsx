@@ -99,7 +99,7 @@ const Header = ({
               <svg width="800" height="800" viewBox="0 0 20 20" fill="#FFF">
                 <g
                   id="Page-1"
-                  fill-rule="evenodd"
+                  fillRule="evenodd"
                   stroke="none"
                   stroke-width="1"
                 >

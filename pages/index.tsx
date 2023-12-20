@@ -25,9 +25,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     ? cookie.parse(context.req.headers.cookie)
     : {};
 
-  // Now you can use the `cookies` object to access the cookies
-  console.log(cookies);
-
   try {
     //@ts-expect-error
     jwt.verify(cookies.Bearer, APP_SECRET);

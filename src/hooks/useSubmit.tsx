@@ -13,9 +13,6 @@ export const useSubmit = (formData: any) => {
   });
   const [errorSubmit, setErrorSubmit] = useState('');
 
-  console.log('loading', loading);
-  console.log('error', error);
-
   const handleSubmit = async (formData: any) => {
     // Check if the required fields are present
     if (

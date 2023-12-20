@@ -23,6 +23,7 @@ export function middleware(req: NextRequest) {
         response.cookies.delete('Bearer');
         response.cookies.delete('userId');
       }
+
       response.cookies.set('Bearer', cookies.Bearer, {
         maxAge: 180 * 24 * 60 * 60,
       });
@@ -30,10 +31,18 @@ export function middleware(req: NextRequest) {
         response.cookies.set('userId', cookies.userId, {
           maxAge: 180 * 24 * 60 * 60,
         });
+
+      //temporarily disable redirect
+      // if (req.nextUrl.pathname === '/' && isValid) {
+      //   const url = req.nextUrl.clone();
+      //   url.pathname = '/courses';
+      //   return NextResponse.redirect(url, { status: 302 });
+      // }
     } catch (err) {
       //@ts-expect-error
       console.log('TOKEN', err.message);
     }
   }
+
   return response;
 }
