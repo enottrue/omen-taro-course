@@ -7,8 +7,6 @@ import { useContext } from 'react';
 import { MainContext } from '@/contexts/MainContext';
 
 export default function App({ Component, pageProps }: AppProps) {
-  const cc = useContext(MainContext);
-
   return (
     <ApolloProvider client={apolloClient}>
       <MainContextProvider>

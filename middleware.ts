@@ -40,7 +40,7 @@ export function middleware(req: NextRequest) {
       // }
     } catch (err) {
       //@ts-expect-error
-      console.log('TOKEN', err.message);
+      console.log('TOKEN error - injection attempt', err.message);
     }
   }
 

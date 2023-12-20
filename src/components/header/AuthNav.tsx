@@ -44,15 +44,12 @@ const AuthNav: React.FC = () => {
         title="Выйти"
         className="button_little button_secondary logout"
         onClick={() => {
-          // Delete the cookies
           Cookies.remove('Bearer');
           Cookies.remove('userId');
           localStorage.removeItem('token');
           localStorage.removeItem('userId');
           cc?.setMenuOpen(!cc?.menuOpen);
-          // Redirect to /
           router.push('/');
-          // console.log('menuOpen', cc?.menuOpen);
         }}
       >
         <span className="header__icon">

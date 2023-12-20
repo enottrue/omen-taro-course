@@ -10,8 +10,10 @@ import { useContext } from 'react';
 import { MainContext } from '@/contexts/MainContext';
 
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 const Way = () => {
+  const router = useRouter();
   const cc = useContext(MainContext);
   return (
     <section className="way">
@@ -126,8 +128,12 @@ const Way = () => {
             className="js-modal-open"
             data-modal="register"
             onClick={() => {
-              cc?.setModalOpen(!cc?.modalOpen);
-              cc?.setCurrentForm('register');
+              if (cc?.token) {
+                router.push('/courses');
+              } else {
+                cc?.setModalOpen(!cc?.modalOpen);
+                cc?.setCurrentForm('register');
+              }
             }}
           />
         </div>

@@ -113,8 +113,6 @@ const ModalRegister = () => {
       return;
     }
 
-    console.log('errorSubmit', errorSubmit);
-    console.log('Done');
     cc?.setSubmitting(false);
 
     const onboarding = localStorage.getItem('onboarded');
@@ -152,7 +150,6 @@ const ModalRegister = () => {
                 autoComplete="name"
                 onChange={(e) => {
                   setName(e.target.value);
-                  console.log('a', name);
                 }}
               />
             </label>
@@ -177,7 +174,6 @@ const ModalRegister = () => {
                 value={email}
                 onChange={(e) => {
                   const a = handleEmailInputChange(e);
-                  console.log('a', a);
                 }}
               />
             </label>

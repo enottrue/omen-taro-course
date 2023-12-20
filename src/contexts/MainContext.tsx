@@ -1,5 +1,8 @@
 import React, { createContext, useEffect, useState } from 'react';
 import cookie from 'cookie';
+import { useQuery, gql } from '@apollo/client';
+
+import { GET_USER } from '@/graphql/queries';
 
 // Create the context
 export const MainContext = createContext<{
@@ -15,7 +18,14 @@ export const MainContext = createContext<{
   setMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
   userId: string | null;
   setUserId: React.Dispatch<React.SetStateAction<string | null>>;
+  user: any;
+  setUser: React.Dispatch<React.SetStateAction<null>>;
 } | null>(null);
+
+let loading;
+let error;
+let data: any;
+let d;
 
 // Create the context provider
 export const MainContextProvider = ({
@@ -23,12 +33,32 @@ export const MainContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
+  let bearer;
+  let tuserId;
+  if (typeof window !== 'undefined') {
+    const cookies = cookie.parse(document.cookie);
+    bearer = cookies.Bearer;
+    tuserId = cookies.userId;
+
+    if (tuserId) {
+      try {
+        d = useQuery(GET_USER, {
+          variables: { id: tuserId },
+        });
+        loading = d.loading;
+        error = d.error;
+        data = d.data;
+        console.log('data', data, loading, error);
+      } catch (error) {}
+    }
+  }
   const [modalOpen, setModalOpen] = useState(false);
   const [currentForm, setCurrentForm] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
-  const [token, setToken] = useState<string | null>(null);
-  const [userId, setUserId] = useState<string | null>(null);
+  const [token, setToken] = useState<string | null>(bearer || null);
+  const [userId, setUserId] = useState<string | null>(tuserId || null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [user, setUser] = useState(data?.getUser || null);
 
   return (
     <MainContext.Provider
@@ -45,6 +75,8 @@ export const MainContextProvider = ({
         setMenuOpen,
         userId,
         setUserId,
+        user,
+        setUser,
       }}
     >
       {children}

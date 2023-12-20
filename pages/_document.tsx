@@ -3,7 +3,6 @@ import { useContext } from 'react';
 import { MainContext } from '@/contexts/MainContext';
 
 export default function Document() {
-  const cc = useContext(MainContext);
   return (
     <Html lang="en">
       <Head>

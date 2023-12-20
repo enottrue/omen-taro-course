@@ -4,9 +4,11 @@ import Fire from '@/images/svg/about-fire.svg';
 
 import { useContext } from 'react';
 import { MainContext } from '@/contexts/MainContext';
+import { useRouter } from 'next/router';
 
 const About = () => {
   const cc = useContext(MainContext);
+  const router = useRouter();
 
   return (
     <section className="about">
@@ -40,8 +42,12 @@ const About = () => {
           className="js-modal-open"
           data-modal="register"
           onClick={() => {
-            cc?.setModalOpen(!cc?.modalOpen);
-            cc?.setCurrentForm('register');
+            if (cc?.token) {
+              router.push('/courses');
+            } else {
+              cc?.setModalOpen(!cc?.modalOpen);
+              cc?.setCurrentForm('register');
+            }
           }}
         />
       </div>

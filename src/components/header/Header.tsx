@@ -7,6 +7,8 @@ import { MainContext } from '@/contexts/MainContext';
 import UseSubmit, { useSubmit } from '@/hooks/useSubmit';
 import AuthNav from './AuthNav';
 
+import cookie from 'cookie';
+
 const Header = ({
   token,
   userId,
@@ -15,10 +17,8 @@ const Header = ({
   userId: string | null;
 }) => {
   const cc = useContext(MainContext);
+
   const { handleSubmit, loading, errorSubmit } = useSubmit({});
-  useEffect(() => {
-    cc?.setToken(localStorage.getItem('token'));
-  }, [cc?.token]);
 
   useEffect(() => {
     if (cc?.menuOpen) {
@@ -32,6 +32,15 @@ const Header = ({
       cc?.setMenuOpen(false);
     }
   }, [cc?.menuOpen]);
+  useEffect(() => {
+    cc?.setToken(token);
+    cc?.setUserId(userId);
+  }, []);
+
+  useEffect(() => {
+    cc?.setToken(token);
+    cc?.setUserId(userId);
+  }, [token, userId]);
 
   return (
     <header className="header">
@@ -92,7 +101,6 @@ const Header = ({
             className="button_little js-header__menu-toggle"
             onClick={() => {
               cc?.setMenuOpen(!cc?.menuOpen);
-              console.log('menuOpen', cc?.menuOpen);
             }}
           >
             <span className="header__icon">
