@@ -5,13 +5,18 @@ import Arrow from '@/images/svg/button-arrow.svg';
 import { useState } from 'react';
 import { useContext, useEffect } from 'react';
 import { MainContext } from '@/contexts/MainContext';
+import useLogin from '@/hooks/useLogin';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/router';
 
 const ModalSignIn = () => {
+  const router = useRouter();
   const cc = useContext(MainContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const [error, setError] = useState('');
+  const { login, loading, error: LoginError } = useLogin();
 
   useEffect(() => {
     if (cc?.modalOpen) {
@@ -23,7 +28,7 @@ const ModalSignIn = () => {
     }
   }, [cc?.modalOpen]);
 
-  const handleSubmitClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSubmitClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     const validateEmail = () => {
       const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       const isValid = re.test(email);
@@ -55,10 +60,31 @@ const ModalSignIn = () => {
       console.error('Укажите пароль не менее 4 символов');
       setError('Укажите пароль не менее 4 символов');
       cc?.setSubmitting(false);
-
       return;
     }
     setError('');
+
+    try {
+      const userData = await login(email, password);
+      console.log('userData', userData);
+      if (userData.error) {
+        setError(userData.message);
+        cc?.setSubmitting(false);
+        return;
+      }
+      cc?.setToken(userData.token);
+      cc?.setUserId(userData.user.id);
+      Cookies.set('Bearer', userData?.token, { expires: 180 });
+      Cookies.set('userId', userData?.user?.id, { expires: 180 });
+      cc?.setSubmitting(false);
+      const onboarding = localStorage.getItem('onboarded');
+      !onboarding && localStorage.setItem('onboarded', 'false');
+      const shouldRedirect = onboarding === 'true' ? '/courses' : '/onboarding';
+      router.push(shouldRedirect);
+    } catch (err) {
+      setError((err as Error).message);
+    }
+
     console.log('Done');
     cc?.setSubmitting(false);
 

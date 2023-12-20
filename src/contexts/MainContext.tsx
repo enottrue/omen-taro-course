@@ -40,17 +40,15 @@ export const MainContextProvider = ({
     bearer = cookies.Bearer;
     tuserId = cookies.userId;
 
-    if (tuserId) {
-      try {
-        d = useQuery(GET_USER, {
-          variables: { id: tuserId },
-        });
-        loading = d.loading;
-        error = d.error;
-        data = d.data;
-        console.log('data', data, loading, error);
-      } catch (error) {}
-    }
+    d = useQuery(GET_USER, {
+      variables: { id: tuserId },
+      skip: !tuserId,
+    });
+
+    loading = d.loading;
+    error = d.error;
+    data = d.data;
+    console.log('data', data, loading, error);
   }
   const [modalOpen, setModalOpen] = useState(false);
   const [currentForm, setCurrentForm] = useState<string | null>(null);
