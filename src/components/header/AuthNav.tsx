@@ -1,7 +1,16 @@
 import React from 'react';
 import Link from 'next/link';
+import Button from '../button/Button';
+import Logout from '@/images/svg/logout.svg';
+import { useContext } from 'react';
+import { MainContext } from '@/contexts/MainContext';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/router';
 
 const AuthNav: React.FC = () => {
+  const router = useRouter();
+
+  const cc = useContext(MainContext);
   return (
     <nav className="header__nav">
       <ul>
@@ -31,6 +40,25 @@ const AuthNav: React.FC = () => {
           </Link>
         </li>
       </ul>
+      <Button
+        title="Выйти"
+        className="button_little button_secondary logout"
+        onClick={() => {
+          // Delete the cookies
+          Cookies.remove('Bearer');
+          Cookies.remove('userId');
+          localStorage.removeItem('token');
+          localStorage.removeItem('userId');
+          cc?.setMenuOpen(!cc?.menuOpen);
+          // Redirect to /
+          router.push('/');
+          // console.log('menuOpen', cc?.menuOpen);
+        }}
+      >
+        <span className="header__icon">
+          <Logout className="" />
+        </span>
+      </Button>
     </nav>
   );
 };

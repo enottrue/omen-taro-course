@@ -80,6 +80,17 @@
       font-weight: 400;
     }
   }
+  &.logout.button_little {
+    margin: auto;
+    display: flex;
+    margin-top: calcSize(20);
+    padding: calcSize(10) calcSize(18);
+    .header__icon {
+      svg {
+        filter: invert(1);
+      }
+    }
+  }
 }
 
 .button__text {
