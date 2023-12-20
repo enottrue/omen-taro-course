@@ -97,12 +97,7 @@ const Header = ({
           >
             <span className="header__icon">
               <svg width="800" height="800" viewBox="0 0 20 20" fill="#FFF">
-                <g
-                  id="Page-1"
-                  fillRule="evenodd"
-                  stroke="none"
-                  stroke-width="1"
-                >
+                <g id="Page-1" fillRule="evenodd" stroke="none" strokeWidth="1">
                   <g
                     id="Dribbble-Light-Preview"
                     transform="translate(-140 -2159)"

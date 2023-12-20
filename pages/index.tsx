@@ -14,6 +14,7 @@ import Modal from '@/components/modal/Modal';
 import { MainContext } from '@/contexts/MainContext';
 import cookie from 'cookie';
 import jwt from 'jsonwebtoken';
+import { useEffect } from 'react';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -52,8 +53,12 @@ export default function Home({
   token: string | null;
 }) {
   const cc = useContext(MainContext);
-  userId && cc?.setUserId(userId);
-  token && cc?.setToken(token);
+
+  useEffect(() => {
+    // GOOD: This state update is now in a useEffect and won't cause a warning
+    cc?.setUserId(userId);
+    cc?.setToken(token);
+  }, [userId, token]);
 
   return (
     <>
