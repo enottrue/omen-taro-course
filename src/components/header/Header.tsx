@@ -1,15 +1,38 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
 import Logo from '@/components/logo/Logo';
 import Button from '@/components/button/Button';
 import { useContext } from 'react';
 import { MainContext } from '@/contexts/MainContext';
 import UseSubmit, { useSubmit } from '@/hooks/useSubmit';
+import AuthNav from './AuthNav';
 
-const Header = () => {
+const Header = ({
+  token,
+  userId,
+}: {
+  token: string | null;
+  userId: string | null;
+}) => {
   const cc = useContext(MainContext);
   const { handleSubmit, loading, errorSubmit } = useSubmit({});
-  console.log('loading', loading);
+  useEffect(() => {
+    cc?.setToken(localStorage.getItem('token'));
+  }, [cc?.token]);
+
+  useEffect(() => {
+    if (cc?.menuOpen) {
+      document.body.classList.add('menu-opened');
+      document.body.classList.add('body-modal-open');
+
+      cc?.setMenuOpen(true);
+    } else {
+      document.body.classList.remove('menu-opened');
+      document.body.classList.remove('body-modal-open');
+      cc?.setMenuOpen(false);
+    }
+  }, [cc?.menuOpen]);
+
   return (
     <header className="header">
       <div className="header__wrapper">
@@ -34,65 +57,70 @@ const Header = () => {
           </span>
         </Button>
 
-        <Button
-          title="Войти"
-          className="button_little js-modal-open"
-          data-modal="register"
-          onClick={() => {
-            cc?.setModalOpen(!cc?.modalOpen);
-            cc?.setCurrentForm('signin');
-          }}
-        >
-          <span className="header__icon">
-            {/* SVG path goes here */}
-            <svg fill="none" viewBox="0 0 24 24">
-              <path
-                stroke="#FFF"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="1.5"
-                d="M2 12h14m0 0-3.5-3m3.5 3-3.5 3"
-              />
-              <path
-                stroke="#FFF"
-                strokeLinecap="round"
-                strokeWidth="1.5"
-                d="M9 7c.01-2.18.11-3.35.88-4.12C10.76 2 12.18 2 15 2h1c2.83 0 4.24 0 5.12.88.88.88.88 2.3.88 5.12v8c0 2.83 0 4.24-.88 5.12-.88.88-2.3.88-5.12.88h-1c-2.83 0-4.24 0-5.12-.88C9.1 20.35 9 19.17 9 17"
-              />
-            </svg>
-          </span>
-        </Button>
-
-        <nav className="header__nav">
-          <ul>
-            <li>
-              <Link href="#" legacyBehavior>
-                <a>Личный кабинет</a>
-              </Link>
-            </li>
-            <li className="active">
-              <Link href="#" legacyBehavior>
-                <a>Главная</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="#" legacyBehavior>
-                <a>Методичка</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="#" legacyBehavior>
-                <a>Обучающий курс</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="#" legacyBehavior>
-                <a>Магазин раскладов</a>
-              </Link>
-            </li>
-          </ul>
-        </nav>
+        {!token ? (
+          <Button
+            title="Войти"
+            className="button_little js-modal-open"
+            data-modal="register"
+            onClick={() => {
+              cc?.setModalOpen(!cc?.modalOpen);
+              cc?.setCurrentForm('signin');
+            }}
+          >
+            <span className="header__icon">
+              {/* SVG path goes here */}
+              <svg fill="none" viewBox="0 0 24 24">
+                <path
+                  stroke="#FFF"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="1.5"
+                  d="M2 12h14m0 0-3.5-3m3.5 3-3.5 3"
+                />
+                <path
+                  stroke="#FFF"
+                  strokeLinecap="round"
+                  strokeWidth="1.5"
+                  d="M9 7c.01-2.18.11-3.35.88-4.12C10.76 2 12.18 2 15 2h1c2.83 0 4.24 0 5.12.88.88.88.88 2.3.88 5.12v8c0 2.83 0 4.24-.88 5.12-.88.88-2.3.88-5.12.88h-1c-2.83 0-4.24 0-5.12-.88C9.1 20.35 9 19.17 9 17"
+                />
+              </svg>
+            </span>
+          </Button>
+        ) : (
+          <Button
+            title="Меню"
+            className="button_little js-header__menu-toggle"
+            onClick={() => {
+              cc?.setMenuOpen(!cc?.menuOpen);
+              console.log('menuOpen', cc?.menuOpen);
+            }}
+          >
+            <span className="header__icon">
+              <svg width="800" height="800" viewBox="0 0 20 20" fill="#FFF">
+                <g
+                  id="Page-1"
+                  fill-rule="evenodd"
+                  stroke="none"
+                  stroke-width="1"
+                >
+                  <g
+                    id="Dribbble-Light-Preview"
+                    transform="translate(-140 -2159)"
+                  >
+                    <g id="icons" transform="translate(56 160)">
+                      <path
+                        id="profile_round-[#1342]"
+                        d="M100.56 2017H87.44c-.7 0-1.23-.7-.96-1.34 1.23-2.96 4.14-4.66 7.52-4.66s6.29 1.7 7.52 4.66c.27.64-.25 1.34-.96 1.34m-10.64-12c0-2.2 1.83-4 4.08-4s4.08 1.8 4.08 4-1.83 4-4.08 4a4.05 4.05 0 0 1-4.08-4m14.04 11.64a9.52 9.52 0 0 0-6.12-6.97 5.93 5.93 0 0 0 2.21-5.6 6.1 6.1 0 0 0-5.32-5.03 6.08 6.08 0 0 0-6.85 5.96c0 1.89.89 3.57 2.28 4.67a9.52 9.52 0 0 0-6.12 6.97c-.27 1.22.74 2.36 2.01 2.36h15.9c1.27 0 2.28-1.14 2-2.36"
+                      />
+                    </g>
+                  </g>
+                </g>
+              </svg>
+            </span>
+          </Button>
+        )}
       </div>
+      {token && <AuthNav />}
     </header>
   );
 };

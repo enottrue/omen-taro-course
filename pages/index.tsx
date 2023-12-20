@@ -12,11 +12,51 @@ import Footer from '@/components/footer/Footer';
 import Modal from '@/components/modal/Modal';
 
 import { MainContext } from '@/contexts/MainContext';
+import cookie from 'cookie';
+import jwt from 'jsonwebtoken';
 
 const inter = Inter({ subsets: ['latin'] });
 
-export default function Home() {
+import { GetServerSideProps } from 'next';
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const APP_SECRET = process.env.APP_SECRET;
+  const cookies = context.req.headers.cookie
+    ? cookie.parse(context.req.headers.cookie)
+    : {};
+
+  // Now you can use the `cookies` object to access the cookies
+  console.log(cookies);
+
+  try {
+    //@ts-expect-error
+    jwt.verify(cookies.Bearer, APP_SECRET);
+    var userId = cookies?.userId ? cookies.userId : null;
+    var token = cookies?.Bearer ? cookies.Bearer : null;
+  } catch (error) {
+    userId = null;
+    token = null;
+  }
+
+  // Pass the cookies to the page as props
+  return {
+    props: {
+      userId,
+      token,
+    },
+  };
+};
+
+export default function Home({
+  userId,
+  token,
+}: {
+  userId: string | null;
+  token: string | null;
+}) {
   const cc = useContext(MainContext);
+  userId && cc?.setUserId(userId);
+  token && cc?.setToken(token);
 
   return (
     <>
@@ -27,7 +67,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <Header />
+        <Header token={token} userId={userId} />
         <Hero />
         <ToLearn />
         <About />

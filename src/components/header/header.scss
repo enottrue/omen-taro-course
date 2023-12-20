@@ -145,20 +145,27 @@
 
     li {
       display: block;
+      &:hover {
+        background-color: var(--color-button-bg_secondary);
+      }
 
       a {
         display: block;
         padding: calcSize(19) 0 calcSize(15);
+        padding-left: calcSize(12);
         color: var(--color-white);
         text-decoration: none;
         border-bottom: 1px solid rgba(255, 255, 255, 0.14);
-      }
-
-      &:first-child {
-        a {
-          padding-top: 0;
+        &:hover {
+          color: var(--color-button-text_hover);
         }
       }
+
+      // &:first-child {
+      //   a {
+      //     padding-top: 0;
+      //   }
+      // }
 
       &.active {
         a {

@@ -10,6 +10,7 @@ import dotenv from 'dotenv';
 import { GraphQLError } from 'graphql';
 
 import { getUserId } from '@/utils/authUtils';
+import { ApolloError } from '@apollo/client';
 
 dotenv.config();
 
@@ -201,8 +202,8 @@ export const resolvers = {
       const password = await bcrypt.hash(args.password, 10);
 
       try {
-        const userPresence = await context.prisma.user.findFirst({
-          where: { name: args.name, email: args.email },
+        const userPresence = await context.prisma.user.findUnique({
+          where: { email: args.email },
         });
         if (userPresence?.id) {
           // throw new Error('Пользователь уже зарегистрирован');
@@ -223,9 +224,17 @@ export const resolvers = {
           message: null,
           error: false,
         };
-      } catch (error) {
-        throw new Error(String(error));
-        return null;
+      } catch (error: unknown) {
+        if (error instanceof ApolloError) {
+          return {
+            message: error.message,
+            error: true,
+          };
+        }
+        return {
+          message: 'Что-то пошло не так',
+          error: true,
+        };
       }
     },
     loginUser: async (

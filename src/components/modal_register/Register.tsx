@@ -7,6 +7,7 @@ import { useContext, useEffect } from 'react';
 import { MainContext } from '@/contexts/MainContext';
 import useSubmit from '@/hooks/useSubmit';
 import { useRouter } from 'next/router';
+import Cookies from 'js-cookie';
 
 const ModalRegister = () => {
   const router = useRouter();
@@ -106,17 +107,23 @@ const ModalRegister = () => {
       city,
     });
     console.log('c', registerUser);
-    registerUser?.error && setError(registerUser?.message);
+    if (registerUser?.error == 'true') {
+      setError(registerUser?.message);
+      cc?.setSubmitting(false);
+      return;
+    }
+
     console.log('errorSubmit', errorSubmit);
-    console.log('loading', loading);
     console.log('Done');
     cc?.setSubmitting(false);
-    localStorage.setItem('token', registerUser?.token);
-    localStorage.setItem('userId', registerUser?.user?.id);
 
     const onboarding = localStorage.getItem('onboarded');
+    !onboarding && localStorage.setItem('onboarded', 'false');
     const shouldRedirect = onboarding === 'true' ? '/courses' : '/onboarding';
-
+    Cookies.set('Bearer', registerUser?.token, { expires: 180 });
+    Cookies.set('userId', registerUser?.user?.id, { expires: 180 });
+    cc?.setToken(registerUser?.token);
+    cc?.setUserId(registerUser?.user?.id);
     router.push(shouldRedirect);
   };
 

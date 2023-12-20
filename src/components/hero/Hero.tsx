@@ -17,7 +17,7 @@ export default function Hero() {
             <HeroArrow />
             {/* <Image src={HeroArrow} alt="Arcan" className="w-full" /> */}
           </div>
-          <Image className="hero__img" src={HeroI} alt="" />
+          <Image className="hero__img" src={HeroI} alt="" priority />
           <div className="hero__illustration-button">
             <BigPlayBtn />
             {/* <Image src={BigPlayBtn} alt="Arcan" className="w-full" /> */}

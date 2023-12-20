@@ -17,7 +17,7 @@ const Way = () => {
     <section className="way">
       <div className="way__wrapper">
         <div className="way__image-1">
-          <Image src={way1} alt="" />
+          <Image src={way1} alt="" priority />
         </div>
 
         <h2 className="way__title">Вас ждут:</h2>
