@@ -74,17 +74,22 @@ const ModalSignIn = () => {
       }
       cc?.setToken(userData.token);
       cc?.setUserId(userData.user.id);
+      cc?.setUser(userData.user);
       Cookies.set('Bearer', userData?.token, { expires: 180 });
       Cookies.set('userId', userData?.user?.id, { expires: 180 });
       cc?.setSubmitting(false);
-      const onboarding = localStorage.getItem('onboarded');
-      !onboarding && localStorage.setItem('onboarded', 'false');
+      cc?.setModalOpen(!cc?.modalOpen);
+      cc?.setCurrentForm(null);
+      let onboarding = localStorage.getItem('onboarded');
+      if (!onboarding) {
+        localStorage.setItem('onboarded', 'false');
+        onboarding = 'false';
+      }
       const shouldRedirect = onboarding === 'true' ? '/courses' : '/onboarding';
       router.push(shouldRedirect);
     } catch (err) {
       setError((err as Error).message);
     }
-
     console.log('Done');
     cc?.setSubmitting(false);
 

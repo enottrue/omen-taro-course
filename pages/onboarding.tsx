@@ -7,6 +7,9 @@ import { MainContext } from '@/contexts/MainContext';
 import cookie from 'cookie';
 import jwt from 'jsonwebtoken';
 import { GetServerSideProps } from 'next';
+import OnboardingStages from '@/components/onboarding/OnboardingStages';
+
+import { useGetLazyUserData } from '@/hooks/useGetUserData';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const APP_SECRET = process.env.APP_SECRET;
@@ -42,22 +45,40 @@ const Onboarding = ({
 }) => {
   const router = useRouter();
 
+  const {
+    getUser,
+    loading: loadingLazy,
+    error: errorLazy,
+    user,
+  } = useGetLazyUserData(Number(userId));
+
   const cc = useContext(MainContext);
   console.log('cc', cc);
   console.log('token', token, 'userId', userId);
 
   useEffect(() => {
-    // GOOD: This state update is now in a useEffect and won't cause a warning
     cc?.setUserId(userId);
     cc?.setToken(token);
+    const us = getUser({ variables: { userId } });
+    console.log('user', user, us, loadingLazy, errorLazy);
+
+    if (!userId || !token) {
+      router.push('/');
+    }
   }, [userId, token]);
 
   useEffect(() => {
-    // Check if user is already onboarded
+    if (user) {
+      // Handle the case when the user data is not found
+      cc?.setUser(user);
+      console.log('we are here', user);
+    }
+  }, [user]);
+
+  useEffect(() => {
     const isOnboarded = localStorage.getItem('onboarded');
 
     if (isOnboarded === 'true') {
-      // Redirect to home page if already onboarded
       router.push('/courses');
     }
   }, []);
@@ -80,12 +101,14 @@ const Onboarding = ({
       </Head>
       <main>
         <Header token={token} userId={userId} />
-        <div>
+        <OnboardingStages />
+
+        {/* <div>
           <h1>Welcome to the Onboarding Page!</h1>
           <button onClick={handleOnboardingComplete}>
             Complete Onboarding
           </button>
-        </div>
+        </div> */}
       </main>
     </>
   );
