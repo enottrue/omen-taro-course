@@ -6,11 +6,13 @@ import { MainContext } from '@/contexts/MainContext';
 import courseFinishHeader from '@/images/cource-finish-header.png';
 import Image from 'next/image';
 import { useState } from 'react';
+import useUpdateUserData from '@/hooks/useUpdateUserData';
 
 const OnboardingStages = () => {
   const [stage, setStage] = useState(0);
   const router = useRouter();
   const cc = useContext(MainContext);
+  const { update, error, loading } = useUpdateUserData();
 
   const descriptions = [
     'Для перехода между разделами сайта используйте меню в правом верхнем углу',
@@ -73,7 +75,14 @@ const OnboardingStages = () => {
             title="Перейти к обучению"
             className="button_little js-onboarding-next"
             href={index === descriptions.length - 1 ? '/' : undefined}
-            onClick={() => {
+            onClick={async () => {
+              let a;
+              if (cc?.user?.id) {
+                a = await update({
+                  id: cc?.user?.id,
+                  onboarded: true,
+                });
+              }
               localStorage.setItem('onboarded', 'true');
               router.push('/courses');
             }}
