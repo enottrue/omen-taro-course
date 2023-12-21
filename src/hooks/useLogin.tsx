@@ -8,11 +8,15 @@ export const useLoginUser = () => {
     try {
       const response = await loginUser({ variables: { email, password } });
       console.log('LoginUser', response);
+      if (response.data?.loginUser?.user?.onboarded) {
+        localStorage.setItem('onboarded', 'true');
+      }
+
       return {
-        user: response.data?.loginUser?.user, //?.loginUser.user,
-        error: response.data?.loginUser?.error,
-        message: response.data?.loginUser?.message,
-        token: response.data?.loginUser?.token,
+        user: response?.data?.loginUser?.user, //?.loginUser.user,
+        error: response?.data?.loginUser?.error,
+        message: response?.data?.loginUser?.message,
+        token: response?.data?.loginUser?.token,
       };
       return response.data.loginUser;
     } catch (err) {
