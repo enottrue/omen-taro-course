@@ -1,0 +1,52 @@
+.onboarding {
+  padding: calcSize(40) calcSize(40) calcSize(56);
+
+  h1 {
+    font-size: calcSize(35);
+    font-style: italic;
+    font-weight: 700;
+    line-height: 110%;
+    position: relative;
+    z-index: 1;
+    margin-bottom: calcSize(32);
+  }
+}
+
+.onboarding__item {
+  display: none;
+
+  &.active {
+    display: block;
+  }
+}
+
+.onboarding__buttons {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: calcSize(18);
+  margin-top: calcSize(24);
+
+  &_last {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.onboarding__description {
+  font-size: calcSize(18);
+  font-style: normal;
+  font-weight: 400;
+  line-height: 118.5%;
+
+  p {
+    margin-bottom: calcSize(22);
+  }
+}
+
+.onboarding__image {
+  img {
+    display: block;
+    margin: 0;
+    width: 100%;
+    height: auto;
+  }
+}

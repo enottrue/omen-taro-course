@@ -131,6 +131,8 @@ const ModalRegister = () => {
     Cookies.set('userId', registerUser?.user?.id, { expires: 180 });
     cc?.setToken(registerUser?.token);
     cc?.setUserId(registerUser?.user?.id);
+    cc?.setModalOpen(!cc?.modalOpen);
+    cc?.setCurrentForm(null);
     const userData = await getUser({
       variables: { id: registerUser?.user?.id },
     });
