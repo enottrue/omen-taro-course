@@ -71,7 +71,6 @@ const Onboarding = ({
     if (user) {
       // Handle the case when the user data is not found
       cc?.setUser(user);
-      console.log('we are here', user);
     }
   }, [user]);
 

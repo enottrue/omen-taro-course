@@ -32,6 +32,7 @@ export const typeDefs = gql`
     password: String!
     city: String
     phone: String
+    onboarded: Boolean
     updatedAt: String
     createdAt: String
   }
@@ -69,6 +70,7 @@ export const typeDefs = gql`
       email: String
       name: String
       password: String
+      onboarded: Boolean
       city: String
       phone: String
     ): User

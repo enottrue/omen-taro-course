@@ -23,6 +23,7 @@ export const GET_USER = gql`
       email
       city
       phone
+      onboarded
       createdAt
       updatedAt
     }
@@ -37,6 +38,7 @@ export const GET_USERS = gql`
       email
       city
       phone
+      onboarded
       createdAt
       updatedAt
     }
@@ -64,6 +66,7 @@ export const ADD_USER = gql`
       name
       city
       phone
+      onboarded
     }
   }
 `;
@@ -89,6 +92,7 @@ export const REGISTER_USER = gql`
         name
         city
         phone
+        onboarded
       }
       message
       error
@@ -106,9 +110,38 @@ export const LOGIN_USER = gql`
         name
         city
         phone
+        onboarded
       }
       message
       error
+    }
+  }
+`;
+export const UPDATE_USER = gql`
+  mutation UpdateUser(
+    $id: ID!
+    $name: String
+    $email: String
+    $city: String
+    $onboarded: Boolean
+    $phone: String
+  ) {
+    updateUser(
+      id: $id
+      name: $name
+      email: $email
+      onboarded: $onboarded
+      city: $city
+      phone: $phone
+    ) {
+      id
+      name
+      email
+      city
+      phone
+      onboarded
+      createdAt
+      updatedAt
     }
   }
 `;

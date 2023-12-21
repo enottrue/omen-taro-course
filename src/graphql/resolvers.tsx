@@ -165,7 +165,15 @@ export const resolvers = {
     },
     updateUser: async (
       parent: unknown,
-      args: { id: string | number; name: string; email: string },
+      args: {
+        id: string | number;
+        name: string;
+        email: string;
+        phone: string;
+        city: string;
+        password: string;
+        onboarded: boolean;
+      },
       context: IContext,
       info: {},
     ) => {
@@ -181,6 +189,10 @@ export const resolvers = {
         data: {
           name: args.name,
           email: args.email,
+          phone: args.phone,
+          city: args.city,
+          password: args.password,
+          onboarded: args.onboarded,
         },
       });
       return user;
