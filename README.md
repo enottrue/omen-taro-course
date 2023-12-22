@@ -2,12 +2,14 @@ NextJS 13 with linting, pretting, VSCode props and TS, husky configured template
 
 ## Getting Started
 
+The project requires Node 18.17.0 version. Feel free to use nvm use 18.17.0 to make it work.
+
 First, run the development server:
 
 ```bash
 npm run dev
 # or
-yarn dev
+nvm use 18.17.0 && yarn dev
 # or
 pnpm dev
 ```

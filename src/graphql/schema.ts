@@ -24,6 +24,7 @@ export const typeDefs = gql`
     getUser(id: ID!): User
     getUsers: [User!]!
     getCourses: [Course]
+    getCourse(id: ID!): Course
   }
 
   type User {

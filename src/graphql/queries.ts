@@ -153,6 +153,48 @@ export const GET_COURSES = gql`
       name
       lessons {
         id
+        lessonNumber
+        lessonName
+        lessonDescription
+        lessonStages {
+          id
+          stageNumber
+          stageName
+          lessonId
+        }
+        lessonTimecodes
+        lessonStatus
+        courseId
+        updatedAt
+        createdAt
+      }
+      updatedAt
+      createdAt
+    }
+  }
+`;
+
+export const GET_COURSE = gql`
+  query GetCourse($id: ID!) {
+    getCourse(id: $id) {
+      id
+      name
+      lessons {
+        id
+        lessonNumber
+        lessonName
+        lessonDescription
+        lessonStages {
+          id
+          stageNumber
+          stageName
+          lessonId
+        }
+        lessonTimecodes
+        lessonStatus
+        courseId
+        updatedAt
+        createdAt
       }
       updatedAt
       createdAt

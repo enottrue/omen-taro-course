@@ -83,11 +83,39 @@ export const resolvers = {
     ) => {
       const { userId } = context;
 
-      const courses = await prisma.course.findMany({ take: 10 });
-      console.log(678, '***********', courses);
-      return courses;
+      return await prisma.course.findMany({
+        include: {
+          lessons: {
+            include: {
+              lessonStages: true,
+            },
+          },
+        },
+      });
+      // console.log(678, '***********', courses);
+      // return courses;
+    },
+    getCourse: async (
+      parent: unknown,
+      args: { id: string },
+      context: IContext,
+      info: {},
+    ) => {
+      const { id } = args;
+
+      return await prisma.course.findUnique({
+        where: { id: Number(id) },
+        include: {
+          lessons: {
+            include: {
+              lessonStages: true,
+            },
+          },
+        },
+      });
     },
   },
+
   Mutation: {
     addTool: async (
       parent: unknown,
@@ -255,8 +283,9 @@ export const resolvers = {
             error: true,
           };
         }
+        console.log('Что-то не так');
         return {
-          message: 'Что-то пошло не так',
+          message: 'Что-то пошло не так. Попробуй еще раз',
           error: true,
         };
       }
