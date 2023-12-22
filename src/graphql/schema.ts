@@ -23,6 +23,7 @@ export const typeDefs = gql`
     getTool(id: String!): Tool
     getUser(id: ID!): User
     getUsers: [User!]!
+    getCourses: [Course]
   }
 
   type User {
@@ -35,6 +36,36 @@ export const typeDefs = gql`
     onboarded: Boolean
     updatedAt: String
     createdAt: String
+  }
+
+  type Course {
+    id: ID!
+    name: String!
+    lessons: [Lesson]
+    updatedAt: String
+    createdAt: String
+  }
+
+  type Lesson {
+    id: ID!
+    lessonNumber: Int!
+    lessonName: String
+    lessonDescription: String
+    lessonStages: [Stage]
+    lessonTimecodes: [String]
+    lessonStatus: String
+    courseId: Int
+    course: Course
+    updatedAt: String
+    createdAt: String
+  }
+
+  type Stage {
+    id: ID!
+    stageNumber: Int!
+    stageName: String!
+    lessonId: Int
+    lesson: Lesson
   }
 
   type AuthPayload {

@@ -1,5 +1,6 @@
 import { type } from 'os';
 import React from 'react';
+import Link from 'next/link';
 
 interface ButtonProps {
   title?: string;
@@ -29,14 +30,14 @@ const Button: React.FC<ButtonProps> = ({
 }) => {
   if (isLink) {
     return (
-      <a
+      <Link
         href={href}
         className={`button ` + attributes + ' ' + className}
         onClick={onClick}
       >
         {title && <span className="button__text">{title}</span>}
         {children && <span className="button__icon">{children}</span>}
-      </a>
+      </Link>
     );
   }
 
