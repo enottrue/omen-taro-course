@@ -15,7 +15,7 @@ import CourseLessons from '@/components/course_lessons/courseLessons';
 import Footer from '@/components/footer/Footer';
 
 import { apolloClient } from '@/lib/apollo/apollo';
-import { GET_COURSES } from '@/graphql/queries';
+import { GET_COURSES, GET_COURSE } from '@/graphql/queries';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const APP_SECRET = process.env.APP_SECRET;
@@ -33,11 +33,21 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     token = null;
   }
   try {
-    const { data: data2 } = await apolloClient.query({
-      query: GET_COURSES,
+    const { data } = await apolloClient.query({
+      query: GET_COURSE,
+      variables: {
+        id: 1,
+      },
     });
 
-    console.log('ddd', data2);
+    console.log('ddd', data.getCourse);
+    return {
+      props: {
+        userId,
+        token,
+        courses: data.getCourse, // Pass the courses data to the component
+      },
+    };
   } catch (error) {
     console.log('error', error);
   }
@@ -53,11 +63,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 const Cources = ({
   userId,
   token,
+  courses,
 }: {
   userId: string | null;
   token: string | null;
+  courses: {} | undefined;
 }) => {
   const router = useRouter();
+
+  useEffect(() => {
+    console.log(123233, courses);
+  }, [courses]);
 
   const {
     getUser,
@@ -68,7 +84,7 @@ const Cources = ({
 
   const cc = useContext(MainContext);
   console.log('cc', cc);
-  console.log('token', token, 'userId', userId);
+  console.log('token', token, 'userId', userId, 'data', courses);
 
   useEffect(() => {
     cc?.setUserId(userId);
