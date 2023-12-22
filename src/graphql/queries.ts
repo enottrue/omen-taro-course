@@ -145,3 +145,17 @@ export const UPDATE_USER = gql`
     }
   }
 `;
+
+export const GET_COURSES = gql`
+  query GetCourses {
+    getCourses {
+      id
+      name
+      lessons {
+        id
+      }
+      updatedAt
+      createdAt
+    }
+  }
+`;

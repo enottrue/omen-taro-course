@@ -1,0 +1,191 @@
+.cource-lessons {
+  border-radius: calcSize(40);
+  padding-top: calcSize(20);
+  padding-bottom: calcSize(20);
+}
+
+.cource-lessons__item {
+  transition: all 0.1s ease; // Add transition for smooth size changes
+
+  &:not(:last-child) {
+    &::after {
+      content: '';
+      display: block;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.23);
+      margin-right: calcSize(40);
+      margin-left: calcSize(40);
+    }
+  }
+  &.active {
+    border-radius: 40px;
+    background: linear-gradient(180deg, #fff 0%, #fff 53.12%, #ebebeb 100%);
+    &:first-child {
+      margin-top: calcSize(-20);
+    }
+    &:last-child {
+      margin-bottom: calcSize(-20);
+    }
+    &::after {
+      display: none;
+    }
+
+    .cource-lessons__item-content {
+      display: block;
+    }
+  }
+}
+
+.cource-lessons__item-header {
+  display: flex;
+  align-items: center;
+  padding: calcSize(20) calcSize(40);
+  position: relative;
+  justify-content: space-between;
+
+  &::after {
+    content: '';
+    display: block;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='25' height='14' viewBox='0 0 25 14' fill='none'%3E%3Cpath d='M23.6274 13L12.3137 1.68629L1.00002 13' stroke='black' stroke-width='2'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    width: calcSize(25);
+    height: calcSize(14);
+    flex: 0 0 calcSize(25);
+    margin-left: calcSize(15);
+    transform: rotate(180deg);
+    order: 2;
+
+    .active & {
+      transform: rotate(0);
+    }
+  }
+
+  .active & {
+    padding-top: calcSize(40);
+  }
+
+  .cource-lessons__item_compleeted & {
+    &::before {
+      content: '';
+      display: block;
+      width: calcSize(30);
+      height: calcSize(30);
+      margin-top: calcSize(-30);
+      margin-bottom: calcSize(-30);
+      margin-left: calcSize(15);
+      flex: 0 0 calcSize(30);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30' fill='none'%3E%3Ccircle cx='15' cy='15' r='15' fill='%2382B53D'/%3E%3Cpath d='M6.75879 14.25L12.7979 21.8067L23.3645 8.35567' stroke='white' stroke-width='2'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      order: 1;
+    }
+  }
+
+  .cource-lessons__item_paused & {
+    &::before {
+      content: '';
+      display: block;
+      width: calcSize(30);
+      height: calcSize(30);
+      margin-top: calcSize(-30);
+      margin-bottom: calcSize(-30);
+      margin-left: calcSize(15);
+      flex: 0 0 calcSize(30);
+      background-image: url("data:image/svg+xml,%0A%3Csvg width='30' height='30' viewBox='0 0 30 30' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='15' cy='15' r='15' fill='%23FF7635'/%3E%3Cpath d='M11 8V22' stroke='white' stroke-width='2'/%3E%3Cpath d='M19 8V22' stroke='white' stroke-width='2'/%3E%3C/svg%3E%0A");
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      order: 1;
+    }
+  }
+}
+
+.cource-lessons__item-header-counter {
+  align-self: flex-start;
+  margin-right: 8px;
+  font-size: calcSize(18);
+  font-style: normal;
+  font-weight: 700;
+  line-height: 110%;
+  order: 0;
+}
+
+.cource-lessons__item-header-title {
+  margin-right: auto;
+
+  font-size: calcSize(18);
+  font-style: normal;
+  font-weight: 700;
+  line-height: 110%;
+  order: 0;
+}
+
+.cource-lessons__item-content {
+  display: none;
+  padding: 0 0 calcSize(44);
+}
+
+.cource-lessons__item-content-list-item {
+  display: grid;
+  padding: calcSize(22) calcSize(40);
+  grid-template-columns: minmax(0, 1fr) minmax(0, calcSize(30));
+  flex-wrap: wrap;
+  position: relative;
+  align-items: center;
+  column-gap: calcSize(15);
+
+  &::before {
+    content: '';
+    display: block;
+    border-top: 2px solid rgba(236, 236, 236, 0.93);
+    left: calcSize(40);
+    right: calcSize(40);
+    top: 0;
+    position: absolute;
+  }
+
+  &_paused {
+    &::after {
+      content: '';
+      display: block;
+      width: calcSize(30);
+      height: calcSize(30);
+
+      background-image: url("data:image/svg+xml,%0A%3Csvg width='30' height='30' viewBox='0 0 30 30' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='15' cy='15' r='15' fill='%23FF7635'/%3E%3Cpath d='M11 8V22' stroke='white' stroke-width='2'/%3E%3Cpath d='M19 8V22' stroke='white' stroke-width='2'/%3E%3C/svg%3E%0A");
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      grid-column: 2 / 3;
+    }
+  }
+
+  &_compleeted {
+    &::after {
+      content: '';
+      display: block;
+      width: calcSize(30);
+      height: calcSize(30);
+
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30' fill='none'%3E%3Ccircle cx='15' cy='15' r='15' fill='%2382B53D'/%3E%3Cpath d='M6.75879 14.25L12.7979 21.8067L23.3645 8.35567' stroke='white' stroke-width='2'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      grid-column: 2 / 3;
+    }
+  }
+}
+
+.cource-lessons__item-content-list-item-title {
+  font-size: calcSize(18);
+  font-style: normal;
+  font-weight: 400;
+  line-height: 110%;
+  letter-spacing: 0.09px;
+  order: 0;
+}
+
+.cource-lessons__item-content-list-item-button {
+  display: grid;
+  width: 100%;
+  grid-template-columns: minmax(0, 1fr);
+  order: 3;
+  grid-column: 1 / -1;
+  margin-top: calcSize(28);
+}

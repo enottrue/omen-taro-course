@@ -75,6 +75,18 @@ export const resolvers = {
       const users = await prisma.user.findMany({});
       return users;
     },
+    getCourses: async (
+      parent: unknown,
+      args: {},
+      context: IContext,
+      info: {},
+    ) => {
+      const { userId } = context;
+
+      const courses = await prisma.course.findMany({ take: 10 });
+      console.log(678, '***********', courses);
+      return courses;
+    },
   },
   Mutation: {
     addTool: async (
