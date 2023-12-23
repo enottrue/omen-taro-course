@@ -1,18 +1,22 @@
+import Link from 'next/link';
 import React, { useState } from 'react';
+import { Key } from 'react';
 
 interface CourseListItemProps {
   counter: number;
   title: string;
-  contentTitle: {
-    number: number;
-    content: string;
+  lessonNumber: number;
+  contentStages: {
+    stageNumber: number;
+    stageName: string;
   }[];
 }
 
 const CourseListItem: React.FC<CourseListItemProps> = ({
   counter,
   title,
-  contentTitle,
+  contentStages,
+  lessonNumber,
 }) => {
   const [isActive, setIsActive] = useState(false);
 
@@ -25,24 +29,29 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
       className={`cource-lessons__item ${
         isActive ? 'active' : ''
       } cource-lessons__item_compleeted`}
-      onClick={toggleActive}
     >
-      <div className="cource-lessons__item-header" role="button">
+      <div
+        className="cource-lessons__item-header"
+        role="button"
+        onClick={toggleActive}
+      >
         <div className="cource-lessons__item-header-counter">{counter}.</div>
         <div className="cource-lessons__item-header-title">{title}</div>
       </div>
       <div className="cource-lessons__item-content">
         <ol className="cource-lessons__item-content-list">
-          {contentTitle.map((item, i) => {
+          {contentStages.map((item, i: Key) => {
             return (
-              <li
-                className="cource-lessons__item-content-list-item cource-lessons__item-content-list-item_compleeted"
-                key={i}
-              >
-                <span className="cource-lessons__item-content-list-item-title">
-                  {item.content}
-                </span>
-              </li>
+              <Link href={`/lesson/${lessonNumber}/${item.stageNumber}`}>
+                <li
+                  className="cource-lessons__item-content-list-item cource-lessons__item-content-list-item_compleeted"
+                  key={i}
+                >
+                  <span className="cource-lessons__item-content-list-item-title">
+                    {lessonNumber + '.' + item.stageNumber} {item.stageName}
+                  </span>
+                </li>
+              </Link>
             );
           })}
         </ol>

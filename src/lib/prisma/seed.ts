@@ -7,6 +7,8 @@ const main = async () => {
   console.log(`Start seeding...`);
   await prisma.tool.deleteMany({});
   await prisma.user.deleteMany({});
+  await prisma.stageTimecode.deleteMany({});
+
   await prisma.stage.deleteMany({});
   await prisma.lesson.deleteMany({});
   await prisma.course.deleteMany({});
@@ -63,19 +65,24 @@ const main = async () => {
   }
   console.log(`Lessons Database was seeded.`);
 
-  for (const stage in stageData) {
-    if (Object.prototype.hasOwnProperty.call(stageData, stage)) {
-      const element = stageData[stage];
-      await prisma.stage.upsert({
-        where: {
-          id: element.id,
-        },
-        create: element,
-        update: element,
+  for (const stage of stageData) {
+    const { stageTimecodes, ...stageInfo } = stage;
+    console.log('stt', stage);
+    const createdStage = await prisma.stage.upsert({
+      where: { id: stageInfo.id },
+      create: stageInfo,
+      update: stageInfo,
+    });
+
+    for (const timecode of stageTimecodes) {
+      await prisma.stageTimecode.upsert({
+        where: { id: timecode.id },
+        create: timecode, // Fix: Pass the timecode directly
+        update: timecode,
       });
     }
   }
-  console.log(`Stage Database was seeded.`);
+  console.log(`Stage and StageTimeCodes Databases were seeded.`);
 };
 
 main()
