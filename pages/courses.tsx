@@ -67,7 +67,11 @@ const Cources = ({
 }: {
   userId: string | null;
   token: string | null;
-  courses: {} | undefined;
+  courses:
+    | {
+        [k: string]: any;
+      }
+    | undefined;
 }) => {
   const router = useRouter();
 
@@ -115,7 +119,7 @@ const Cources = ({
       <main>
         <Header token={token} userId={userId} />
         <CourseHero />
-        <CourseLessons />
+        <CourseLessons lessons={courses?.lessons} />
       </main>
       <Footer />
     </>
