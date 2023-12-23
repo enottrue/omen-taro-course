@@ -42,7 +42,10 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
         <ol className="cource-lessons__item-content-list">
           {contentStages.map((item, i: Key) => {
             return (
-              <Link href={`/lesson/${lessonNumber}/${item.stageNumber}`}>
+              <Link
+                href={`/lesson/${lessonNumber}/${item.stageNumber}`}
+                key={i}
+              >
                 <li
                   className="cource-lessons__item-content-list-item cource-lessons__item-content-list-item_compleeted"
                   key={i}

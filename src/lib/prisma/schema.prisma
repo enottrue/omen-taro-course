@@ -63,10 +63,11 @@ model StageTimecode {
 }
 
 model Stage {
-  id             Int             @id @default(autoincrement())
-  stageNumber    Int
-  stageName      String
-  lessonId       Int
-  stageTimecodes StageTimecode[]
-  lesson         Lesson          @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  id               Int             @id @default(autoincrement())
+  stageNumber      Int
+  stageName        String
+  stageDescription String?
+  lessonId         Int
+  stageTimecodes   StageTimecode[]
+  lesson           Lesson          @relation(fields: [lessonId], references: [id], onDelete: Cascade)
 }
