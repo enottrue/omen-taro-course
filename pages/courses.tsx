@@ -40,7 +40,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     });
 
-    console.log('ddd', data.getCourse);
     return {
       props: {
         userId,
