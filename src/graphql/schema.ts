@@ -25,6 +25,8 @@ export const typeDefs = gql`
     getUsers: [User!]!
     getCourses: [Course]
     getCourse(id: ID!): Course
+    getLesson(id: ID!): Lesson
+    getLessons: [Lesson]
   }
 
   type User {
@@ -65,8 +67,21 @@ export const typeDefs = gql`
     id: ID!
     stageNumber: Int!
     stageName: String!
+    stageDescription: String
     lessonId: Int
     lesson: Lesson
+    stageTimecodes: [StageTimecode]
+  }
+
+  type StageTimecode {
+    id: ID!
+    name: String!
+    timeCodeStart: String!
+    timeCodeEnd: String!
+    stageId: Int
+    stage: Stage
+    createdAt: String
+    updatedAt: String
   }
 
   type AuthPayload {

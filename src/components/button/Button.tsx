@@ -14,6 +14,7 @@ interface ButtonProps {
   disabled?: boolean;
   download?: boolean;
   target?: string;
+  isLesson?: boolean;
   // attributes?: React.ButtonHTMLAttributes<HTMLButtonElement> &
   // React.AnchorHTMLAttributes<HTMLAnchorElement>;
 }
@@ -30,6 +31,7 @@ const Button: React.FC<ButtonProps> = ({
   type,
   className,
   attributes,
+  isLesson,
   ...rest
 }) => {
   if (isLink) {
@@ -41,8 +43,11 @@ const Button: React.FC<ButtonProps> = ({
         onClick={onClick}
         target={target}
       >
-        {title && <span className="button__text">{title}</span>}
-        {children && <span className="button__icon">{children}</span>}
+        {!isLesson && title && <span className="button__text">{title}</span>}
+        {children && !isLesson && (
+          <span className="button__icon">{children}</span>
+        )}
+        {isLesson && children}
       </Link>
     );
   }
