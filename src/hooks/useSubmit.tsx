@@ -37,7 +37,6 @@ export const useSubmit = (formData: any) => {
         },
       });
 
-      console.log('ddd', submitDataReturn);
       return submitDataReturn?.data?.registerUser;
 
       // Handle the response data here
