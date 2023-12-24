@@ -45,7 +45,6 @@ export const GET_USERS = gql`
   }
 `;
 
-//write mutation to addUser
 export const ADD_USER = gql`
   mutation AddUser(
     $email: String!
@@ -196,6 +195,62 @@ export const GET_COURSE = gql`
         updatedAt
         createdAt
       }
+      updatedAt
+      createdAt
+    }
+  }
+`;
+
+export const GET_LESSON = gql`
+  query getLesson($id: ID!) {
+    getLesson(id: $id) {
+      id
+      lessonNumber
+      lessonName
+      lessonDescription
+      lessonStages {
+        id
+        stageNumber
+        stageName
+        stageDescription
+        stageTimecodes {
+          id
+          name
+          timeCodeStart
+          timeCodeEnd
+        }
+      }
+      lessonTimecodes
+      lessonStatus
+      courseId
+      updatedAt
+      createdAt
+    }
+  }
+`;
+
+export const GET_LESSONS = gql`
+  query getLessons {
+    getLessons {
+      id
+      lessonNumber
+      lessonName
+      lessonDescription
+      lessonStages {
+        id
+        stageNumber
+        stageName
+        stageDescription
+        stageTimecodes {
+          id
+          name
+          timeCodeStart
+          timeCodeEnd
+        }
+      }
+      lessonTimecodes
+      lessonStatus
+      courseId
       updatedAt
       createdAt
     }

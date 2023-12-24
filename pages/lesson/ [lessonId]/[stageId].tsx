@@ -15,13 +15,23 @@ import CourseLessons from '@/components/course_lessons/courseLessons';
 import Footer from '@/components/footer/Footer';
 
 import { apolloClient } from '@/lib/apollo/apollo';
-import { GET_COURSES, GET_COURSE } from '@/graphql/queries';
+import { GET_LESSON, GET_LESSONS } from '@/graphql/queries';
+import CourseLessonHeader from '@/components/lesson_header/lessonHeader';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const APP_SECRET = process.env.APP_SECRET;
   const cookies = context.req.headers.cookie
     ? cookie.parse(context.req.headers.cookie)
     : {};
+
+  if (!context.query.lessonId || !context.query.stageId) {
+    return {
+      redirect: {
+        destination: '/courses',
+        permanent: false,
+      },
+    };
+  }
 
   try {
     //@ts-expect-error
@@ -34,7 +44,53 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   try {
-  } catch (error) {}
+    const lesson = await apolloClient.query({
+      query: GET_LESSON,
+      variables: {
+        id: Number(context.query.lessonId),
+      },
+    });
+    const { lessonId: currentLessonId, stageId: currentStageId } =
+      context.query;
+    console.log(
+      'currentLessonId',
+      currentLessonId,
+      'currentStageId',
+      currentStageId,
+      lesson.data.getLesson,
+    );
+    const stageExists = lesson?.data?.getLesson?.lessonStages.some(
+      (stage: any) => Number(stage.stageNumber) === Number(currentStageId),
+    );
+    console.log('stage presence', stageExists);
+
+    if (!lesson.data.getLesson || !stageExists) {
+      return {
+        redirect: {
+          destination: '/courses',
+          permanent: false,
+        },
+      };
+    }
+
+    return {
+      props: {
+        userId,
+        token,
+        lesson: lesson.data.getLesson,
+        currentLessonId,
+        currentStageId,
+      },
+    };
+  } catch (error) {
+    console.log('error', error);
+    return {
+      redirect: {
+        destination: '/courses',
+        permanent: false,
+      },
+    };
+  }
 
   const { lessonId, stageId } = context.query;
   console.log('lessonId', lessonId, 'stageId', stageId);
@@ -50,17 +106,22 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 const Lesson = ({
   userId,
   token,
-  courses,
+  lesson,
+  currentStageId,
+  currentLessonId,
 }: {
   userId: string | null;
   token: string | null;
-  courses:
+  currentStageId: string | undefined;
+  currentLessonId: string | undefined;
+  lesson:
     | {
         [k: string]: any;
       }
     | undefined;
 }) => {
   const router = useRouter();
+  console.log('lesson', lesson);
 
   const {
     getUser,
@@ -101,6 +162,11 @@ const Lesson = ({
       </Head>
       <main>
         <Header token={token} userId={userId} />
+        <CourseLessonHeader
+          lesson={lesson}
+          currentStageId={currentStageId}
+          currentLessonId={currentLessonId}
+        />
       </main>
       <Footer />
     </>

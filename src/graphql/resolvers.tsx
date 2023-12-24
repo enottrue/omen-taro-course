@@ -114,6 +114,43 @@ export const resolvers = {
         },
       });
     },
+    getLesson: async (
+      parent: unknown,
+      args: { id: string },
+      context: IContext,
+      info: {},
+    ) => {
+      const { id } = args;
+
+      return await prisma.lesson.findUnique({
+        where: { id: Number(id) },
+        include: {
+          lessonStages: {
+            include: {
+              stageTimecodes: true,
+            },
+          },
+        },
+      });
+    },
+    getLessons: async (
+      parent: unknown,
+      args: { id: string },
+      context: IContext,
+      info: {},
+    ) => {
+      const lessons = await prisma.lesson.findMany({
+        include: {
+          lessonStages: {
+            include: {
+              stageTimecodes: true,
+            },
+          },
+        },
+      });
+
+      return lessons;
+    },
   },
 
   Mutation: {
