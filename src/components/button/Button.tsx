@@ -12,6 +12,8 @@ interface ButtonProps {
   isLink?: boolean;
   children?: React.ReactNode;
   disabled?: boolean;
+  download?: boolean;
+  target?: string;
   // attributes?: React.ButtonHTMLAttributes<HTMLButtonElement> &
   // React.AnchorHTMLAttributes<HTMLAnchorElement>;
 }
@@ -22,6 +24,8 @@ const Button: React.FC<ButtonProps> = ({
   isLink = false,
   children,
   onClick,
+  download,
+  target,
   disabled,
   type,
   className,
@@ -33,7 +37,9 @@ const Button: React.FC<ButtonProps> = ({
       <Link
         href={href}
         className={`button ` + attributes + ' ' + className}
+        download={download}
         onClick={onClick}
+        target={target}
       >
         {title && <span className="button__text">{title}</span>}
         {children && <span className="button__icon">{children}</span>}

@@ -1,0 +1,50 @@
+.cource-book {
+  padding: calcSize(40) calcSize(40) calcSize(56);
+}
+
+.cource-book__title {
+  font-size: calcSize(35);
+  font-style: italic;
+  font-weight: 700;
+  line-height: 110%;
+}
+
+.cource-book__img {
+  aspect-ratio: 430 / 60;
+  position: relative;
+  margin-left: calcSize(-40);
+  margin-right: calcSize(-40);
+
+  img {
+    position: absolute;
+    width: calc(100% - calcSize(164));
+    top: calcSize(-148);
+    right: 0;
+  }
+}
+
+.cource-book__content {
+  p {
+    font-size: calcSize(18);
+    font-style: normal;
+    font-weight: 400;
+    line-height: 118.5%;
+
+    &:not(:last-child) {
+      margin-bottom: calcSize(22);
+    }
+  }
+}
+
+.cource-book__icon-download {
+  // width="22" height="24"
+  display: block;
+  width: calcSize(22);
+  height: calcSize(24);
+}
+
+.cource-book__button {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  margin-top: calcSize(64);
+}
