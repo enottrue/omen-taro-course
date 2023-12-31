@@ -20,6 +20,7 @@ export default function VideoPlayer({
 }) {
   const handleVideoEnd: ReactEventHandler<HTMLVideoElement> = (e) => {
     console.log('video ended', e);
+    console.log('before finished status', finished);
     setFinished && setFinished(true);
   };
   return (

@@ -9,36 +9,47 @@ import { useRouter } from 'next/router';
 
 const AuthNav: React.FC = () => {
   const router = useRouter();
+  const isActive01 = router.asPath === '/';
+  const isActive02 = router.asPath === '/courses';
+  const isActive03 = router.asPath === '/course_book';
 
   const cc = useContext(MainContext);
+
+  const handleClick = (e: React.MouseEvent, path: string) => {
+    e.preventDefault();
+    // Change context values here
+    cc?.setMenuOpen(false);
+    // Navigate to the link
+    router.push(path);
+  };
   return (
     <nav className="header__nav">
       <ul>
-        <li>
+        {/* <li>
           <Link href="#" legacyBehavior>
             <a>Личный кабинет</a>
           </Link>
-        </li>
-        <li className="active">
-          <Link href="#" legacyBehavior>
-            <a>Главная</a>
+        </li> */}
+        <li className={isActive01 ? `active` : ''}>
+          <Link href="/" legacyBehavior>
+            <a onClick={(e) => handleClick(e, '/')}>Главная</a>
           </Link>
         </li>
-        <li>
-          <Link href="#" legacyBehavior>
-            <a>Методичка</a>
+        <li className={isActive03 ? `active` : ''}>
+          <Link href="/course_book" legacyBehavior>
+            <a onClick={(e) => handleClick(e, '/course_book')}>Методичка</a>
           </Link>
         </li>
-        <li>
-          <Link href="#" legacyBehavior>
-            <a>Обучающий курс</a>
+        <li className={isActive02 ? `active` : ''}>
+          <Link href="/courses" legacyBehavior>
+            <a onClick={(e) => handleClick(e, '/courses')}>Обучающий курс</a>
           </Link>
         </li>
-        <li>
+        {/* <li>
           <Link href="#" legacyBehavior>
             <a>Магазин раскладов</a>
           </Link>
-        </li>
+        </li> */}
       </ul>
       <Button
         title="Выйти"

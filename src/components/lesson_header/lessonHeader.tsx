@@ -38,6 +38,7 @@ export default function CourseLessonHeader({
         },
       }).then((res) => {
         console.log('res', res, lesson);
+        setFinishedStage(false);
       });
     }
   }, [finishedStage]);
