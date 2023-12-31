@@ -6,12 +6,20 @@ import { useContext } from 'react';
 import { MainContext } from '@/contexts/MainContext';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
+import { useState, useEffect } from 'react';
 
 const AuthNav: React.FC = () => {
   const router = useRouter();
-  const isActive01 = router.asPath === '/';
-  const isActive02 = router.asPath === '/courses';
-  const isActive03 = router.asPath === '/course_book';
+
+  const [activePath, setActivePath] = useState('');
+
+  useEffect(() => {
+    setActivePath(router.asPath);
+  }, [router.asPath]);
+
+  const getActiveClass = (path: string) => {
+    return activePath === path ? 'active' : '';
+  };
 
   const cc = useContext(MainContext);
 
@@ -30,17 +38,17 @@ const AuthNav: React.FC = () => {
             <a>Личный кабинет</a>
           </Link>
         </li> */}
-        <li className={isActive01 ? `active` : ''}>
+        <li className={getActiveClass('/')}>
           <Link href="/" legacyBehavior>
             <a onClick={(e) => handleClick(e, '/')}>Главная</a>
           </Link>
         </li>
-        <li className={isActive03 ? `active` : ''}>
+        <li className={getActiveClass('/course_book')}>
           <Link href="/course_book" legacyBehavior>
             <a onClick={(e) => handleClick(e, '/course_book')}>Методичка</a>
           </Link>
         </li>
-        <li className={isActive02 ? `active` : ''}>
+        <li className={getActiveClass('/courses')}>
           <Link href="/courses" legacyBehavior>
             <a onClick={(e) => handleClick(e, '/courses')}>Обучающий курс</a>
           </Link>

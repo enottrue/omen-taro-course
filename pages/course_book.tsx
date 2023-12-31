@@ -108,7 +108,7 @@ const Book = ({
         <title>Методичка обучающего курса по Таро Omen</title>
         <meta name="Методичка обучающего курса по Таро Omen | Курс Таро" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="shortcut icon" href="/favicon/favicon.ico" />
       </Head>
       <main>
         <Header token={token} userId={userId} />

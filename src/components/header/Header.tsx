@@ -53,7 +53,7 @@ const Header = ({
           className="button_little button_secondary"
           attributes="button_little button_secondary"
           href="#"
-          onClick={handleSubmit}
+          // onClick={handleSubmit}
         >
           <span className="header__telegram-icon">
             <svg
