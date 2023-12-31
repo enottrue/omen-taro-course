@@ -35,6 +35,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     token = null;
   }
   try {
+    console.log('userId0001', '*******', userId);
     const { data } = await apolloClient.query({
       query: GET_COURSE,
       variables: {
@@ -104,17 +105,16 @@ const Cources = ({
   } = useGetLazyUserData(Number(userId));
 
   const cc = useContext(MainContext);
-  console.log('cc', cc);
-  console.log(
-    'token',
-    token,
-    'userId',
-    userId,
-    'data',
-    courses,
-    'stageData',
-    stageData,
-  );
+  // console.log(
+  //   'token',
+  //   token,
+  //   'userId',
+  //   userId,
+  //   'data',
+  //   courses,
+  //   'stageData',
+  //   stageData,
+  // );
   useEffect(() => {
     stageData && cc?.setStageData(stageData);
   }, [stageData]);

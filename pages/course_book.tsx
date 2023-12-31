@@ -38,6 +38,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       query: GET_COURSE,
       variables: {
         id: 1,
+        userId: Number(userId),
       },
     });
 

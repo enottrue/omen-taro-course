@@ -119,7 +119,6 @@ const Lesson = ({
     | undefined;
 }) => {
   const router = useRouter();
-  console.log('lesson00', lesson);
 
   const {
     getUser,

@@ -53,14 +53,13 @@ const Onboarding = ({
   } = useGetLazyUserData(Number(userId));
 
   const cc = useContext(MainContext);
-  console.log('cc', cc);
-  console.log('token', token, 'userId', userId);
+  // console.log('cc', cc);
+  // console.log('token', token, 'userId', userId);
 
   useEffect(() => {
     cc?.setUserId(userId);
     cc?.setToken(token);
     const us = getUser({ variables: { userId } });
-    console.log('user', user, us, loadingLazy, errorLazy);
 
     if (!userId || !token) {
       router.push('/');

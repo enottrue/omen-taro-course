@@ -101,12 +101,12 @@ export const resolvers = {
     },
     getCourse: async (
       parent: unknown,
-      args: { id: string; userId: string | number },
+      args: { id: string; userId: string },
       context: IContext,
       info: {},
     ) => {
       const { id, userId } = args;
-      console.log('rrr', userId);
+      console.log('rrr', context.userId);
 
       const course = await prisma.course.findUnique({
         where: { id: Number(id) },
@@ -115,7 +115,9 @@ export const resolvers = {
             include: {
               lessonStages: {
                 include: {
-                  stageStatuses: true,
+                  stageStatuses: {
+                    where: { userId: Number(userId) },
+                  },
                 },
               },
             },
@@ -135,7 +137,6 @@ export const resolvers = {
       //     });
       //   });
       // });
-      //@ts-expect-error
       // console.log(678, '***********', course.lessons.lessonStages[0]);
 
       return course;
@@ -362,7 +363,6 @@ export const resolvers = {
             },
           });
         }
-        console.log('im heeereee');
 
         //@ts-expect-error
         const token = jwt.sign({ userId: user.id }, APP_SECRET);
