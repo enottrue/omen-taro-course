@@ -106,7 +106,6 @@ export const resolvers = {
       info: {},
     ) => {
       const { id, userId } = args;
-      console.log('rrr', context.userId);
 
       const course = await prisma.course.findUnique({
         where: { id: Number(id) },
@@ -352,7 +351,6 @@ export const resolvers = {
         const user = await context.prisma.user.create({
           data: { ...args, password },
         });
-        console.log(444, args, password, user);
 
         for (let stageId = 1; stageId <= 43; stageId++) {
           await context.prisma.stageStatus.create({

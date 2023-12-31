@@ -115,7 +115,7 @@ const ModalRegister = () => {
       password,
       city,
     });
-    console.log('c', registerUser);
+    // console.log('c', registerUser);
     if (registerUser?.error == 'true') {
       setError(registerUser?.message);
       cc?.setSubmitting(false);

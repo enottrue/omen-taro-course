@@ -53,7 +53,6 @@ export const CourseLessons = (lessons: { [k: string]: any }, userId?: any) => {
   //   'stage',
   //   cc?.stageData,
   // );
-  console.log(45454, lessons);
   return (
     <>
       <section className="cource-lessons bg-white">

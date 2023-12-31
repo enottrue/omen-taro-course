@@ -9,8 +9,6 @@ export const useGetUserData = (userId: number) => {
     skip: !userId,
   });
 
-  console.log(777, data);
-
   return {
     loading,
     error,
