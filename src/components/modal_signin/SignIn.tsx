@@ -66,7 +66,6 @@ const ModalSignIn = () => {
 
     try {
       const userData = await login(email, password);
-      console.log('userData', userData);
       if (userData.error) {
         setError(userData.message);
         cc?.setSubmitting(false);

@@ -62,7 +62,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const stageExists = lesson?.data?.getLesson?.lessonStages.some(
       (stage: any) => Number(stage.stageNumber) === Number(currentStageId),
     );
-    console.log('stage presence', stageExists);
 
     if (!lesson.data.getLesson || !stageExists) {
       return {
@@ -93,7 +92,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   const { lessonId, stageId } = context.query;
-  console.log('lessonId', lessonId, 'stageId', stageId);
 
   return {
     props: {
@@ -121,7 +119,7 @@ const Lesson = ({
     | undefined;
 }) => {
   const router = useRouter();
-  console.log('lesson', lesson);
+  console.log('lesson00', lesson);
 
   const {
     getUser,
@@ -131,8 +129,6 @@ const Lesson = ({
   } = useGetLazyUserData(Number(userId));
 
   const cc = useContext(MainContext);
-  // console.log('cc', cc);
-  // console.log('token', token, 'userId', userId, 'data', courses);
 
   useEffect(() => {
     cc?.setUserId(userId);

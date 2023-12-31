@@ -87,7 +87,11 @@ export const resolvers = {
         include: {
           lessons: {
             include: {
-              lessonStages: true,
+              lessonStages: {
+                include: {
+                  stageStatuses: true,
+                },
+              },
             },
           },
         },
@@ -97,22 +101,44 @@ export const resolvers = {
     },
     getCourse: async (
       parent: unknown,
-      args: { id: string },
+      args: { id: string; userId: string | number },
       context: IContext,
       info: {},
     ) => {
-      const { id } = args;
+      const { id, userId } = args;
+      console.log('rrr', userId);
 
-      return await prisma.course.findUnique({
+      const course = await prisma.course.findUnique({
         where: { id: Number(id) },
         include: {
           lessons: {
             include: {
-              lessonStages: true,
+              lessonStages: {
+                include: {
+                  stageStatuses: true,
+                },
+              },
             },
           },
         },
       });
+      if (!course) {
+        throw new Error(`No course found for id: ${id}`);
+      }
+
+      // Filter stageStatuses based on userId
+      // course.lessons.forEach((lesson) => {
+      //   lesson.lessonStages.forEach((stage) => {
+      //     stage.stageStatuses = stage.stageStatuses.filter((status) => {
+      //       console.log('000', status.userId, userId);
+      //       return status.userId == Number(userId);
+      //     });
+      //   });
+      // });
+      //@ts-expect-error
+      // console.log(678, '***********', course.lessons.lessonStages[0]);
+
+      return course;
     },
     getLesson: async (
       parent: unknown,
@@ -128,6 +154,7 @@ export const resolvers = {
           lessonStages: {
             include: {
               stageTimecodes: true,
+              stageStatuses: true,
             },
           },
         },
@@ -144,12 +171,32 @@ export const resolvers = {
           lessonStages: {
             include: {
               stageTimecodes: true,
+              stageStatuses: true,
             },
           },
         },
       });
 
       return lessons;
+    },
+    getStageStatus: async (
+      parent: unknown,
+      args: { userId: string | number },
+      context: IContext,
+      info: {},
+    ) => {
+      const { userId: id } = args;
+      if (id === undefined || isNaN(Number(id))) {
+        throw new Error('Invalid user ID');
+      }
+
+      return await prisma.stageStatus.findMany({
+        where: { userId: Number(id) },
+        include: {
+          user: true,
+          stage: true,
+        },
+      });
     },
   },
 
@@ -304,6 +351,19 @@ export const resolvers = {
         const user = await context.prisma.user.create({
           data: { ...args, password },
         });
+        console.log(444, args, password, user);
+
+        for (let stageId = 1; stageId <= 43; stageId++) {
+          await context.prisma.stageStatus.create({
+            data: {
+              stageId,
+              userId: user.id,
+              status: 'new',
+            },
+          });
+        }
+        console.log('im heeereee');
+
         //@ts-expect-error
         const token = jwt.sign({ userId: user.id }, APP_SECRET);
 
@@ -354,6 +414,93 @@ export const resolvers = {
         token,
         user,
       };
+    },
+    addStageStatus: async (
+      parent: unknown,
+      args: {
+        stageId: Number;
+        userId: Number;
+        status: string;
+      },
+      context: IContext,
+      info: {},
+    ) => {
+      // const { userId } = context;
+      const { stageId, status, userId } = args;
+
+      const existingStageStatus = await context.prisma.stageStatus.findFirst({
+        where: {
+          userId: Number(userId),
+          stageId: Number(stageId),
+        },
+      });
+
+      if (existingStageStatus) {
+        throw new Error('StageStatus already exists for this user and stage');
+      }
+
+      const stageStatus = await context.prisma.stageStatus.create({
+        data: {
+          stageId: Number(stageId),
+          userId: Number(userId),
+          status: 'new',
+        },
+      });
+
+      return stageStatus;
+
+      // const user = await context.prisma.user.findUnique({
+      //   where: { email: args.email },
+      // });
+      // if (!user) {
+      //   throw new Error('Неправильный пароль или email');
+      // }
+      // const valid = await bcrypt.compare(args.password, user.password);
+      // if (!valid) {
+      //   throw new Error('Неправильный пароль или email');
+      // }
+      // //@ts-expect-error
+      // const token = jwt.sign({ userId: user.id }, APP_SECRET);
+      // return {
+      //   token,
+      //   user,
+      // };
+    },
+    changeStageStatus: async (
+      parent: unknown,
+      args: {
+        stageId: number;
+        userId: number;
+        status: string;
+      },
+      context: IContext,
+      info: {},
+    ) => {
+      const { stageId, status, userId } = args;
+      const stageStatus = await prisma.stageStatus.findFirst({
+        where: {
+          stageId: Number(stageId),
+          userId: Number(userId),
+        },
+      });
+
+      if (!stageStatus) {
+        throw new Error('StageStatus not found');
+      }
+
+      const updatedStageStatus = await prisma.stageStatus.update({
+        where: { id: stageStatus.id },
+        data: { status },
+        include: {
+          stage: {
+            include: {
+              stageStatuses: true,
+            },
+          },
+        },
+      });
+
+      return updatedStageStatus;
     },
   },
 };

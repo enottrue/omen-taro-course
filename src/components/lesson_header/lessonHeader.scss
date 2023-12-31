@@ -45,6 +45,9 @@
     height: auto;
     display: block;
   }
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .cource-lesson-header__media-button {
@@ -111,6 +114,28 @@
 
 .cource-lesson-header__info {
   margin-top: calcSize(20);
+  p {
+    font-size: calcSize(18);
+    font-style: normal;
+    font-weight: 400;
+    line-height: 118.5%;
+
+    &:not(:last-child) {
+      margin-bottom: calcSize(22);
+    }
+  }
+}
+
+.cource-lesson-content {
+  padding: calcSize(10) calcSize(40);
+}
+
+.cource-lesson-content__info {
+  border-radius: calcSize(40);
+  padding: calcSize(32) calcSize(24);
+  background: var(--color-bg-darken-600);
+  box-shadow: 0px 4px 16px 0px rgba(19, 36, 46, 0.1);
+
   p {
     font-size: calcSize(18);
     font-style: normal;

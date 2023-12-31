@@ -5,12 +5,15 @@ import {
   GET_USERS,
   ADD_USER,
   REGISTER_USER,
+  ADD_STAGE_STATUS,
 } from '../graphql/queries';
 
 export const useSubmit = (formData: any) => {
   const [createUserMutation, { loading, error }] = useMutation(REGISTER_USER, {
     errorPolicy: 'all',
   });
+  const [addStageStatusMutation] = useMutation(ADD_STAGE_STATUS);
+
   const [errorSubmit, setErrorSubmit] = useState('');
 
   const handleSubmit = async (formData: any) => {
