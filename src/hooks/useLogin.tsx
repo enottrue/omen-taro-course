@@ -7,6 +7,7 @@ export const useLoginUser = () => {
   const login = async (email: String, password: String) => {
     try {
       const response = await loginUser({ variables: { email, password } });
+ 
       if (response.data?.loginUser?.user?.onboarded) {
         localStorage.setItem('onboarded', 'true');
       }

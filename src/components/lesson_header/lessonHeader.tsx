@@ -13,6 +13,7 @@ import { ADD_STAGE_STATUS, CHANGE_STAGE_STATUS } from '@/graphql/queries';
 import { useContext } from 'react';
 import { MainContext } from '@/contexts/MainContext';
 import { stageData } from '@/lib/dump-data/lessonsData';
+ 
 
 export default function CourseLessonHeader({
   lesson,
@@ -23,7 +24,7 @@ export default function CourseLessonHeader({
   currentLessonId: string | undefined;
   currentStageId: string | undefined;
 }) {
-  const cc = useContext(MainContext);
+   const cc = useContext(MainContext);
 
   const [finishedStage, setFinishedStage] = useState(false);
   const [changeStageStatus, { data }] = useMutation(CHANGE_STAGE_STATUS);
@@ -42,7 +43,7 @@ export default function CourseLessonHeader({
       });
     }
   }, [finishedStage]);
-
+ 
   const nextStageExists = lesson?.lessonStages?.some((stage: any) => {
     return Number(stage.stageNumber) === Number(currentStageId) + 1;
   });
@@ -70,7 +71,7 @@ export default function CourseLessonHeader({
   };
 
   return (
-    <>
+     <>
       <section className="cource-lesson-header">
         <div className="cource-lesson-header__content">
           <h1 className="cource-lesson-header__title">
@@ -100,6 +101,7 @@ export default function CourseLessonHeader({
               }}
             />
             {/* <p>
+ 
             Старшие Арканы имеют глубинную символику и серьезное значение...
           </p>
           <p>
@@ -113,8 +115,9 @@ export default function CourseLessonHeader({
             Последовательность Старших Арканов символизирует человеческую
             жизнь...
           </p> */}
-          </div>
+           </div>
           {/* <div
+ 
           className="cource-lesson-header__media js-modal-open"
           data-modal="video-modal"
         >
@@ -126,7 +129,7 @@ export default function CourseLessonHeader({
           <div className="cource-lesson-header__media-button">
             <PlayButton />
           </div>
-        </div> */}
+         </div> */}
           <VideoPlayer
             url={`https://storage.yandexcloud.net/omen-course/${currentLessonId}_${currentStageId}.mp4`}
             preview={`/preview/${currentLessonId}_${currentStageId}.png`}
@@ -197,6 +200,7 @@ export default function CourseLessonHeader({
             // onClick={(e) => {
             //   router.push(`/courses`);
             // }}
+ 
           >
             <span className="cource-lesson-header__navigation-item-icon">
               <svg
@@ -211,12 +215,13 @@ export default function CourseLessonHeader({
               </svg>
             </span>
             <span className="cource-lesson-header__navigation-item-title">
-              Вернуться к списку уроков
+               Вернуться к списку уроков
             </span>
           </Link>
         </div>
       </section>
       <LessonTimeline stage={lesson.lessonStages[Number(currentStageId) - 1]} />
     </>
+ 
   );
 }

@@ -145,7 +145,7 @@ export const UPDATE_USER = gql`
   }
 `;
 
-export const ADD_STAGE_STATUS = gql`
+ export const ADD_STAGE_STATUS = gql`
   mutation AddStageStatus($stageId: Int!, $userId: Int!, $status: String!) {
     addStageStatus(stageId: $stageId, userId: $userId, status: $status) {
       id
@@ -166,6 +166,7 @@ export const ADD_STAGE_STATUS = gql`
   }
 `;
 
+ 
 export const GET_COURSES = gql`
   query GetCourses {
     getCourses {
@@ -195,8 +196,9 @@ export const GET_COURSES = gql`
 `;
 
 export const GET_COURSE = gql`
-  query GetCourse($id: ID!, $userId: Int) {
+   query GetCourse($id: ID!, $userId: Int) {
     getCourse(id: $id, userId: $userId) {
+ 
       id
       name
       lessons {
@@ -209,7 +211,7 @@ export const GET_COURSE = gql`
           stageNumber
           stageName
           lessonId
-          stageDescription
+           stageDescription
           stageStatuses {
             id
             status
@@ -217,6 +219,7 @@ export const GET_COURSE = gql`
             createdAt
             updatedAt
           }
+ 
         }
         lessonTimecodes
         lessonStatus
@@ -248,13 +251,14 @@ export const GET_LESSON = gql`
           timeCodeStart
           timeCodeEnd
         }
-        stageStatuses {
+         stageStatuses {
           id
           status
           userId
           createdAt
           updatedAt
         }
+ 
       }
       lessonTimecodes
       lessonStatus
@@ -292,7 +296,7 @@ export const GET_LESSONS = gql`
     }
   }
 `;
-export const GET_STAGE_STATUS = gql`
+ export const GET_STAGE_STATUS = gql`
   query getStageStatus($userId: Int!) {
     getStageStatus(userId: $userId) {
       id
@@ -339,3 +343,4 @@ export const CHANGE_STAGE_STATUS = gql`
     }
   }
 `;
+ 

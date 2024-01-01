@@ -28,6 +28,7 @@ export const typeDefs = gql`
     getLesson(id: ID!): Lesson
     getLessons: [Lesson]
     getStageStatus(userId: Int!): [StageStatus]
+ 
   }
 
   type User {
@@ -71,7 +72,8 @@ export const typeDefs = gql`
     stageDescription: String
     lessonId: Int
     lesson: Lesson
-    stageStatuses: [StageStatus]
+     stageStatuses: [StageStatus]
+ 
     stageTimecodes: [StageTimecode]
   }
 

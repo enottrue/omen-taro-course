@@ -62,6 +62,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const stageExists = lesson?.data?.getLesson?.lessonStages.some(
       (stage: any) => Number(stage.stageNumber) === Number(currentStageId),
     );
+ 
 
     if (!lesson.data.getLesson || !stageExists) {
       return {
@@ -92,6 +93,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   const { lessonId, stageId } = context.query;
+ 
 
   return {
     props: {
@@ -119,6 +121,7 @@ const Lesson = ({
     | undefined;
 }) => {
   const router = useRouter();
+ 
 
   const {
     getUser,
@@ -128,6 +131,7 @@ const Lesson = ({
   } = useGetLazyUserData(Number(userId));
 
   const cc = useContext(MainContext);
+ 
 
   useEffect(() => {
     cc?.setUserId(userId);
@@ -153,7 +157,8 @@ const Lesson = ({
         <title>Обучающий курс по Таро</title>
         <meta name="Обучающий курс по Таро - Omen | Курс Таро" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="shortcut icon" href="/favicon/favicon.ico" />
+         <link rel="shortcut icon" href="/favicon/favicon.ico" />
+ 
       </Head>
       <main>
         <Header token={token} userId={userId} />

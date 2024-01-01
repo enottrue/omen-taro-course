@@ -87,11 +87,12 @@ export const resolvers = {
         include: {
           lessons: {
             include: {
-              lessonStages: {
+               lessonStages: {
                 include: {
                   stageStatuses: true,
                 },
               },
+ 
             },
           },
         },
@@ -101,18 +102,19 @@ export const resolvers = {
     },
     getCourse: async (
       parent: unknown,
-      args: { id: string; userId: string },
+       args: { id: string; userId: string },
       context: IContext,
       info: {},
     ) => {
       const { id, userId } = args;
 
       const course = await prisma.course.findUnique({
+ 
         where: { id: Number(id) },
         include: {
           lessons: {
             include: {
-              lessonStages: {
+               lessonStages: {
                 include: {
                   stageStatuses: {
                     where: { userId: Number(userId) },
@@ -139,6 +141,7 @@ export const resolvers = {
       // console.log(678, '***********', course.lessons.lessonStages[0]);
 
       return course;
+ 
     },
     getLesson: async (
       parent: unknown,
@@ -154,7 +157,8 @@ export const resolvers = {
           lessonStages: {
             include: {
               stageTimecodes: true,
-              stageStatuses: true,
+               stageStatuses: true,
+ 
             },
           },
         },
@@ -171,7 +175,8 @@ export const resolvers = {
           lessonStages: {
             include: {
               stageTimecodes: true,
-              stageStatuses: true,
+               stageStatuses: true,
+ 
             },
           },
         },
@@ -179,7 +184,7 @@ export const resolvers = {
 
       return lessons;
     },
-    getStageStatus: async (
+     getStageStatus: async (
       parent: unknown,
       args: { userId: string | number },
       context: IContext,
@@ -198,6 +203,7 @@ export const resolvers = {
         },
       });
     },
+ 
   },
 
   Mutation: {

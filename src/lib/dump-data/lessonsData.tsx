@@ -3,8 +3,9 @@ export const coursesData = [
     id: 1,
     name: 'Обучающий курс по Таро для колоды карт таро Omen',
   },
-];
+ ];
 
+ 
 export const lessonsData = [
   {
     id: 1,
@@ -46,6 +47,7 @@ export const lessonsData = [
     lessonTimecodes: ['00:00', '01:00', '02:00'],
     courseId: 1,
   },
+ 
 ];
 
 export const stageData = [
@@ -91,12 +93,14 @@ export const stageData = [
         id: 4,
         name: 'Оригинал и последующие копии: в чем отличия?',
         stageId: 1,
+ 
         timeCodeStart: '3:19',
         timeCodeEnd: '5:41',
       },
       {
         id: 5,
         stageId: 1,
+ 
         name: 'Как родилось магическое Таро',
         timeCodeStart: '5:41',
         timeCodeEnd: '8:11',
@@ -104,6 +108,7 @@ export const stageData = [
       {
         id: 6,
         stageId: 1,
+ 
         name: 'Ключевой Аркан. Космическое женское начало',
         timeCodeStart: '8:11',
         timeCodeEnd: '11:06',
@@ -111,6 +116,7 @@ export const stageData = [
       {
         id: 7,
         stageId: 1,
+ 
         name: 'Куда «пропала» оригинальная колода?',
         timeCodeStart: '11:06',
         timeCodeEnd: '13:46',
@@ -118,6 +124,7 @@ export const stageData = [
       {
         id: 8,
         stageId: 1,
+ 
         name: 'Магическое семя Таро',
         timeCodeStart: '13:46',
         timeCodeEnd: '15:36',
@@ -148,14 +155,16 @@ export const stageData = [
     lessonId: 1,
     stageTimecodes: [
       {
-        id: 10,
+         id: 10,
+ 
         stageId: 2,
         name: 'Заставка',
         timeCodeStart: '0:00',
         timeCodeEnd: '0:08',
       },
       {
-        id: 11,
+         id: 11,
+ 
         stageId: 2,
 
         name: 'Преимущества работы с ритуальным Таро',
@@ -163,7 +172,8 @@ export const stageData = [
         timeCodeEnd: '2:10',
       },
       {
-        id: 12,
+         id: 12,
+ 
         stageId: 2,
 
         name: 'Старшие Арканы магического Таро. Мир духа и мир людей',
@@ -171,7 +181,8 @@ export const stageData = [
         timeCodeEnd: '4:21',
       },
       {
-        id: 13,
+         id: 13,
+ 
         stageId: 2,
 
         name: 'Младшие Арканы. События, обстоятельства, реакции',
@@ -179,7 +190,8 @@ export const stageData = [
         timeCodeEnd: '6:15',
       },
       {
-        id: 14,
+         id: 14,
+ 
         stageId: 2,
 
         name: 'Как с помощью магического Таро можно влиять на судьбу',
@@ -204,22 +216,25 @@ export const stageData = [
     lessonId: 1,
     stageTimecodes: [
       {
-        id: 15,
+         id: 15,
         stageId: 3,
+ 
         name: 'Заставка',
         timeCodeStart: '0:00',
         timeCodeEnd: '0:08',
       },
       {
-        id: 16,
+         id: 16,
         stageId: 3,
+ 
         name: 'Ритуальное Таро Памелы Смит и магическое искусство Викка',
         timeCodeStart: '0:08',
         timeCodeEnd: '2:50',
       },
       {
-        id: 17,
+         id: 17,
         stageId: 3,
+ 
         name: 'Древние богини в женских Арканах',
         timeCodeStart: '2:50',
         timeCodeEnd: '5:32',
@@ -242,14 +257,16 @@ export const stageData = [
     lessonId: 2,
     stageTimecodes: [
       {
-        id: 18,
+         id: 18,
+ 
         stageId: 4,
         name: 'Заставка',
         timeCodeStart: '0:00',
         timeCodeEnd: '0:08',
       },
       {
-        id: 19,
+         id: 19,
+ 
         stageId: 4,
 
         name: 'Ритуальная подготовка к работе с Таро. Зачем она нужна?',
@@ -257,7 +274,8 @@ export const stageData = [
         timeCodeEnd: '2:56',
       },
       {
-        id: 20,
+         id: 20,
+ 
         stageId: 4,
 
         name: 'Как создать свой собственный ритуал',
@@ -265,7 +283,8 @@ export const stageData = [
         timeCodeEnd: '3:54',
       },
       {
-        id: 21,
+         id: 21,
+ 
         stageId: 4,
 
         name: 'Сценарии ритуалов магических, религиозных и мистических традиций',
@@ -277,7 +296,8 @@ export const stageData = [
   {
     id: 5,
     stageNumber: 2,
-    stageName: 'Ритуал настройки на колоду',
+     stageName: 'Ритуал настройки на колоду',
+ 
     stageDescription: `<p>
       В колоду Таро Уэйт заложил основы ритуальной магии. Совершая ритуал, маги настраивают Вселенную на нужный лад. При помощи ритуалов можно настроить все, что угодно.
     </p>
@@ -290,21 +310,24 @@ export const stageData = [
     lessonId: 2,
     stageTimecodes: [
       {
-        id: 22,
+         id: 22,
+ 
         stageId: 5,
         name: 'Заставка',
         timeCodeStart: '0:00',
         timeCodeEnd: '0:08',
       },
       {
-        id: 23,
+         id: 23,
+ 
         stageId: 5,
         name: 'Ритуал настройки на колоду',
         timeCodeStart: '0:08',
         timeCodeEnd: '0:26',
       },
       {
-        id: 24,
+         id: 24,
+ 
         stageId: 5,
         name: 'Описание ритуала',
         timeCodeStart: '0:26',
@@ -312,7 +335,7 @@ export const stageData = [
       },
     ],
   },
-
+ 
   {
     id: 6,
     stageNumber: 3,
@@ -2469,5 +2492,6 @@ export const stageData = [
         timeCodeEnd: '1:44',
       },
     ],
+ 
   },
 ];

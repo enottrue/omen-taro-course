@@ -58,6 +58,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   const { lessonId, stageId } = context.query;
+ 
 
   return {
     props: {
@@ -81,6 +82,7 @@ const Lesson = ({
     | undefined;
 }) => {
   const router = useRouter();
+ 
 
   const {
     getUser,
@@ -90,11 +92,13 @@ const Lesson = ({
   } = useGetLazyUserData(Number(userId));
 
   const cc = useContext(MainContext);
+ 
 
   useEffect(() => {
     cc?.setUserId(userId);
     cc?.setToken(token);
     const us = getUser({ variables: { userId } });
+ 
 
     if (!userId || !token) {
       router.push('/');
@@ -115,6 +119,7 @@ const Lesson = ({
         <meta name="Обучающий курс по Таро - Omen | Курс Таро" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="shortcut icon" href="/favicon/favicon.ico" />
+ 
       </Head>
       <main>
         <Header token={token} userId={userId} />

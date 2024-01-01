@@ -5,6 +5,7 @@ import { useQuery } from '@apollo/client';
 import { GET_STAGE_STATUS } from '@/graphql/queries';
 import { useContext } from 'react';
 import { MainContext } from '@/contexts/MainContext';
+ 
 
 // const lessons = [
 //   {
@@ -53,6 +54,7 @@ export const CourseLessons = (lessons: { [k: string]: any }, userId?: any) => {
   //   'stage',
   //   cc?.stageData,
   // );
+ 
   return (
     <>
       <section className="cource-lessons bg-white">

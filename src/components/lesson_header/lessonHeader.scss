@@ -45,9 +45,10 @@
     height: auto;
     display: block;
   }
-  &:hover {
+   &:hover {
     cursor: pointer;
   }
+ 
 }
 
 .cource-lesson-header__media-button {
@@ -125,7 +126,7 @@
     }
   }
 }
-
+ 
 .cource-lesson-content {
   padding: calcSize(10) calcSize(40);
 }
@@ -147,3 +148,4 @@
     }
   }
 }
+ 

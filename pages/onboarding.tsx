@@ -53,13 +53,13 @@ const Onboarding = ({
   } = useGetLazyUserData(Number(userId));
 
   const cc = useContext(MainContext);
-  // console.log('cc', cc);
-  // console.log('token', token, 'userId', userId);
+ 
 
   useEffect(() => {
     cc?.setUserId(userId);
     cc?.setToken(token);
     const us = getUser({ variables: { userId } });
+ 
 
     if (!userId || !token) {
       router.push('/');
@@ -95,7 +95,8 @@ const Onboarding = ({
         <title>Колода карт таро Omen с обучающим курсом по Таро</title>
         <meta name="Обучающий курс по Таро - Omen | Введение" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="shortcut icon" href="/favicon/favicon.ico" />
+         <link rel="shortcut icon" href="/favicon/favicon.ico" />
+ 
       </Head>
       <main>
         <Header token={token} userId={userId} />
