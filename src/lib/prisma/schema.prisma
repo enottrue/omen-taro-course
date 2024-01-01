@@ -33,7 +33,7 @@ model User {
 model Course {
   id        Int      @id @default(autoincrement())
   name      String
-   lessons   Lesson[]
+  lessons   Lesson[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -81,50 +81,6 @@ model StageStatus {
   userId    Int
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   status    String   @default("new")
- 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-}
-
-model Course {
-  id        Int      @id @default(autoincrement())
-  name      String
-  lessons   Lesson[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Lesson {
-  id                Int      @id @default(autoincrement())
-  lessonNumber      Int
-  lessonName        String
-  lessonDescription String?
-  lessonStages      Stage[]
-  lessonTimecodes   String[]
-  lessonStatus      String   @default("new")
-  courseId          Int
-  course            Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-}
-
-model StageTimecode {
-  id            Int      @id @default(autoincrement())
-  name          String
-  timeCodeStart String
-  timeCodeEnd   String
-  stageId       Int
-  stage         Stage    @relation(fields: [stageId], references: [id], onDelete: Cascade)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-}
-
-model Stage {
-  id               Int             @id @default(autoincrement())
-  stageNumber      Int
-  stageName        String
-  stageDescription String?
-  lessonId         Int
-  stageTimecodes   StageTimecode[]
-  lesson           Lesson          @relation(fields: [lessonId], references: [id], onDelete: Cascade)
 }
