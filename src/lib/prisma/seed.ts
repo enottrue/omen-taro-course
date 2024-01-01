@@ -6,7 +6,8 @@ import { lessonsData, coursesData, stageData } from '../dump-data/lessonsData';
 const main = async () => {
   console.log(`Start seeding...`);
   await prisma.tool.deleteMany({});
-  await prisma.user.deleteMany({});
+   // await prisma.user.deleteMany({});
+ 
   await prisma.stageTimecode.deleteMany({});
 
   await prisma.stage.deleteMany({});

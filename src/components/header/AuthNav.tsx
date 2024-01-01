@@ -6,39 +6,58 @@ import { useContext } from 'react';
 import { MainContext } from '@/contexts/MainContext';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
+import { useState, useEffect } from 'react';
 
 const AuthNav: React.FC = () => {
   const router = useRouter();
 
+  const [activePath, setActivePath] = useState('');
+
+  useEffect(() => {
+    setActivePath(router.asPath);
+  }, [router.asPath]);
+
+  const getActiveClass = (path: string) => {
+    return activePath === path ? 'active' : '';
+  };
+
   const cc = useContext(MainContext);
+
+  const handleClick = (e: React.MouseEvent, path: string) => {
+    e.preventDefault();
+    // Change context values here
+    cc?.setMenuOpen(false);
+    // Navigate to the link
+    router.push(path);
+  };
   return (
     <nav className="header__nav">
       <ul>
-        <li>
+        {/* <li>
           <Link href="#" legacyBehavior>
             <a>Личный кабинет</a>
           </Link>
-        </li>
-        <li className="active">
-          <Link href="#" legacyBehavior>
-            <a>Главная</a>
+        </li> */}
+        <li className={getActiveClass('/')}>
+          <Link href="/" legacyBehavior>
+            <a onClick={(e) => handleClick(e, '/')}>Главная</a>
           </Link>
         </li>
-        <li>
-          <Link href="#" legacyBehavior>
-            <a>Методичка</a>
+        <li className={getActiveClass('/course_book')}>
+          <Link href="/course_book" legacyBehavior>
+            <a onClick={(e) => handleClick(e, '/course_book')}>Методичка</a>
           </Link>
         </li>
-        <li>
-          <Link href="#" legacyBehavior>
-            <a>Обучающий курс</a>
+        <li className={getActiveClass('/courses')}>
+          <Link href="/courses" legacyBehavior>
+            <a onClick={(e) => handleClick(e, '/courses')}>Обучающий курс</a>
           </Link>
         </li>
-        <li>
+        {/* <li>
           <Link href="#" legacyBehavior>
             <a>Магазин раскладов</a>
           </Link>
-        </li>
+        </li> */}
       </ul>
       <Button
         title="Выйти"

@@ -1,6 +1,9 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { Key } from 'react';
+import { useContext } from 'react';
+import { MainContext } from '@/contexts/MainContext';
+ 
 
 interface CourseListItemProps {
   counter: number;
@@ -9,6 +12,7 @@ interface CourseListItemProps {
   contentStages: {
     stageNumber: number;
     stageName: string;
+     stageStatuses: any[];
   }[];
 }
 
@@ -19,16 +23,25 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
   lessonNumber,
 }) => {
   const [isActive, setIsActive] = useState(false);
+   const cc = useContext(MainContext);
+
+ 
 
   const toggleActive = () => {
     setIsActive(!isActive);
   };
+   const isAllFinished = contentStages.every((stage) => {
+    if (!stage.stageStatuses[0]) {
+    }
+    return stage.stageStatuses[0]?.status === 'finished';
+  });
 
   return (
     <div
-      className={`cource-lessons__item ${
-        isActive ? 'active' : ''
-      } cource-lessons__item_compleeted`}
+      className={`cource-lessons__item ${isActive ? 'active' : ''}  ${
+        isAllFinished ? 'cource-lessons__item_compleeted' : ''
+      }`}
+ 
     >
       <div
         className="cource-lessons__item-header"
@@ -47,7 +60,14 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
                 key={i}
               >
                 <li
-                  className="cource-lessons__item-content-list-item cource-lessons__item-content-list-item_compleeted"
+                   className={`cource-lessons__item-content-list-item ${
+                    item.stageStatuses[0]?.status === 'finished'
+                      ? 'cource-lessons__item-content-list-item_compleeted'
+                      : item.stageStatuses[0]?.status === 'paused'
+                      ? 'cource-lessons__item-content-list-item_paused'
+                      : ''
+                  }`}
+ 
                   key={i}
                 >
                   <span className="cource-lessons__item-content-list-item-title">

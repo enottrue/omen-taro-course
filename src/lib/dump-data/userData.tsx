@@ -17,6 +17,14 @@ export const userData: User[] = [
     phone: '9876543210',
     city: 'San Francisco',
   },
+  {
+    id: 3,
+    name: 'asd asd',
+    email: 'asd@asd.com',
+    password: '$2b$10$YU0bn3gQkN0Cy3Ic85uiXug/Tq1ENo/KG5q..aAOV6ZbnxSHJuYyK',
+    phone: '9876543210',
+    city: 'San Francisco',
+  },
 ];
 
 export default userData;

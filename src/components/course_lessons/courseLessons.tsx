@@ -1,6 +1,11 @@
 import { CoursePdfItem } from '@/components/course_manual/courseManual';
 import CourseListItem from '@/components/course_list_item/courseListItem';
 import { Key } from 'react';
+import { useQuery } from '@apollo/client';
+import { GET_STAGE_STATUS } from '@/graphql/queries';
+import { useContext } from 'react';
+import { MainContext } from '@/contexts/MainContext';
+ 
 
 // const lessons = [
 //   {
@@ -39,8 +44,17 @@ import { Key } from 'react';
 //   },
 // ];
 
-export const CourseLessons = (lessons: { [k: string]: any }) => {
-  console.log('lessons', lessons.lessons);
+export const CourseLessons = (lessons: { [k: string]: any }, userId?: any) => {
+  const cc = useContext(MainContext);
+  // console.log(
+  //   'lessons',
+  //   lessons.lessons,
+  //   'userId',
+  //   cc?.userId,
+  //   'stage',
+  //   cc?.stageData,
+  // );
+ 
   return (
     <>
       <section className="cource-lessons bg-white">

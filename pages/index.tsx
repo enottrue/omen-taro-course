@@ -66,7 +66,7 @@ export default function Home({
         <title>Колода карт таро Omen с обучающим курсом по Таро</title>
         <meta name="Колода карт таро Omen с обучающим курсом по Таро" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="shortcut icon" href="/favicon/favicon.ico" />
       </Head>
       <main>
         <Header token={token} userId={userId} />

@@ -18,13 +18,70 @@ model Tool {
 }
 
 model User {
+  id            Int           @id @default(autoincrement())
+  name          String
+  email         String        @unique
+  phone         String?
+  city          String?
+  password      String
+  stageStatuses StageStatus[]
+  onboarded     Boolean       @default(false)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model Course {
   id        Int      @id @default(autoincrement())
   name      String
-  email     String   @unique
-  phone     String?
-  city      String?
-  password  String
-  onboarded Boolean  @default(false)
+   lessons   Lesson[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Lesson {
+  id                Int      @id @default(autoincrement())
+  lessonNumber      Int
+  lessonName        String
+  lessonDescription String?
+  lessonStages      Stage[]
+  lessonTimecodes   String[]
+  lessonStatus      String   @default("new")
+  courseId          Int
+  course            Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model StageTimecode {
+  id            Int      @id @default(autoincrement())
+  name          String
+  timeCodeStart String
+  timeCodeEnd   String
+  stageId       Int
+  stage         Stage    @relation(fields: [stageId], references: [id], onDelete: Cascade)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Stage {
+  id               Int             @id @default(autoincrement())
+  stageNumber      Int
+  stageName        String
+  stageDescription String?
+  lessonId         Int
+  stageStatuses    StageStatus[]
+  stageTimecodes   StageTimecode[]
+  lesson           Lesson          @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+}
+
+model StageStatus {
+  id        Int      @id @default(autoincrement())
+  stageId   Int
+  stage     Stage    @relation(fields: [stageId], references: [id], onDelete: Cascade)
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status    String   @default("new")
+ 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

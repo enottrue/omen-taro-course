@@ -32,7 +32,7 @@ export const useUpdateUserData = () => {
     };
     try {
       const response = await updateUser({ variables });
-      console.log('updatedUser', response);
+ 
       //   if (response.data?.loginUser?.user?.onboarded) {
       //     console.log('onboarded value is changed');
       //     localStorage.setItem('onboarded', 'true');

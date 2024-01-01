@@ -24,9 +24,11 @@ export const typeDefs = gql`
     getUser(id: ID!): User
     getUsers: [User!]!
     getCourses: [Course]
-    getCourse(id: ID!): Course
+    getCourse(id: ID!, userId: Int): Course
     getLesson(id: ID!): Lesson
     getLessons: [Lesson]
+    getStageStatus(userId: Int!): [StageStatus]
+ 
   }
 
   type User {
@@ -70,6 +72,8 @@ export const typeDefs = gql`
     stageDescription: String
     lessonId: Int
     lesson: Lesson
+     stageStatuses: [StageStatus]
+ 
     stageTimecodes: [StageTimecode]
   }
 
@@ -85,10 +89,23 @@ export const typeDefs = gql`
   }
 
   type AuthPayload {
+    id: ID
+    onboarded: Boolean
     token: String
     user: User
     message: String
     error: String
+  }
+
+  type StageStatus {
+    id: ID!
+    stageId: Int!
+    stage: Stage!
+    userId: Int!
+    user: User!
+    status: String!
+    createdAt: String!
+    updatedAt: String!
   }
 
   type Mutation {
@@ -130,5 +147,7 @@ export const typeDefs = gql`
       city: String
     ): AuthPayload
     loginUser(email: String!, password: String!): AuthPayload
+    addStageStatus(stageId: Int!, userId: Int!, status: String!): StageStatus
+    changeStageStatus(stageId: Int!, userId: Int!, status: String!): StageStatus
   }
 `;

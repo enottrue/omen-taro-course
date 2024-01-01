@@ -20,6 +20,8 @@ export const MainContext = createContext<{
   setUserId: React.Dispatch<React.SetStateAction<string | null>>;
   user: any;
   setUser: React.Dispatch<React.SetStateAction<null>>;
+  stageData: any;
+  setStageData: React.Dispatch<React.SetStateAction<any>>;
 } | null>(null);
 
 let loading;
@@ -48,7 +50,6 @@ export const MainContextProvider = ({
     loading = d.loading;
     error = d.error;
     data = d.data;
-    console.log('data', data, loading, error);
   }
   const [modalOpen, setModalOpen] = useState(false);
   const [currentForm, setCurrentForm] = useState<string | null>(null);
@@ -57,6 +58,7 @@ export const MainContextProvider = ({
   const [userId, setUserId] = useState<string | null>(tuserId || null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [user, setUser] = useState(data?.getUser || null);
+  const [stageData, setStageData] = useState<any>(null);
 
   return (
     <MainContext.Provider
@@ -75,6 +77,8 @@ export const MainContextProvider = ({
         setUserId,
         user,
         setUser,
+        stageData,
+        setStageData,
       }}
     >
       {children}

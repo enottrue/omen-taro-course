@@ -15,13 +15,17 @@ import CourseLessons from '@/components/course_lessons/courseLessons';
 import Footer from '@/components/footer/Footer';
 
 import { apolloClient } from '@/lib/apollo/apollo';
-import { GET_COURSES, GET_COURSE } from '@/graphql/queries';
+import { GET_COURSES, GET_COURSE, GET_STAGE_STATUS } from '@/graphql/queries';
+import { useLazyQuery, useQuery } from '@apollo/client';
+ 
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const APP_SECRET = process.env.APP_SECRET;
   const cookies = context.req.headers.cookie
     ? cookie.parse(context.req.headers.cookie)
     : {};
+  context.res.setHeader('Cache-Control', 'no-store');
+
 
   try {
     //@ts-expect-error
@@ -37,6 +41,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       query: GET_COURSE,
       variables: {
         id: 1,
+        userId: Number(userId),
+      },
+    });
+    const { data: stageData } = await apolloClient.query({
+      query: GET_STAGE_STATUS,
+      variables: {
+        userId: Number(userId),
       },
     });
 
@@ -45,6 +56,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         userId,
         token,
         courses: data.getCourse, // Pass the courses data to the component
+        stageData: stageData.getStageStatus,
+
       },
     };
   } catch (error) {
@@ -63,6 +76,8 @@ const Cources = ({
   userId,
   token,
   courses,
+  stageData,
+ 
 }: {
   userId: string | null;
   token: string | null;
@@ -71,12 +86,20 @@ const Cources = ({
         [k: string]: any;
       }
     | undefined;
+   stageData: { [k: string]: any };
 }) => {
   const router = useRouter();
 
+  const { data: tt } = useQuery(GET_COURSE, {
+    variables: { id: 1, userId: Number(userId) }, // replace with your actual course ID
+  });
+
   useEffect(() => {
-    console.log(123233, courses);
-  }, [courses]);
+    courses = tt?.getCourse;
+  }, [tt]);
+
+  useEffect(() => {}, [courses]);
+ 
 
   const {
     getUser,
@@ -86,14 +109,26 @@ const Cources = ({
   } = useGetLazyUserData(Number(userId));
 
   const cc = useContext(MainContext);
-  console.log('cc', cc);
-  console.log('token', token, 'userId', userId, 'data', courses);
+   // console.log(
+  //   'token',
+  //   token,
+  //   'userId',
+  //   userId,
+  //   'data',
+  //   courses,
+  //   'stageData',
+  //   stageData,
+  // );
+  useEffect(() => {
+    stageData && cc?.setStageData(stageData);
+  }, [stageData]);
+ 
 
   useEffect(() => {
     cc?.setUserId(userId);
     cc?.setToken(token);
     const us = getUser({ variables: { userId } });
-    console.log('user', user, us, loadingLazy, errorLazy);
+ 
 
     if (!userId || !token) {
       router.push('/');
@@ -113,7 +148,8 @@ const Cources = ({
         <title>Обучающий курс по Таро</title>
         <meta name="Обучающий курс по Таро - Omen | Курс Таро" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
+         <link rel="shortcut icon" href="/favicon/favicon.ico" />
+ 
       </Head>
       <main>
         <Header token={token} userId={userId} />

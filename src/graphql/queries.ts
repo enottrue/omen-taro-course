@@ -145,6 +145,28 @@ export const UPDATE_USER = gql`
   }
 `;
 
+ export const ADD_STAGE_STATUS = gql`
+  mutation AddStageStatus($stageId: Int!, $userId: Int!, $status: String!) {
+    addStageStatus(stageId: $stageId, userId: $userId, status: $status) {
+      id
+      stageId
+      stage {
+        id
+        name
+      }
+      userId
+      user {
+        id
+        name
+      }
+      status
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+ 
 export const GET_COURSES = gql`
   query GetCourses {
     getCourses {
@@ -174,8 +196,9 @@ export const GET_COURSES = gql`
 `;
 
 export const GET_COURSE = gql`
-  query GetCourse($id: ID!) {
-    getCourse(id: $id) {
+   query GetCourse($id: ID!, $userId: Int) {
+    getCourse(id: $id, userId: $userId) {
+ 
       id
       name
       lessons {
@@ -188,6 +211,15 @@ export const GET_COURSE = gql`
           stageNumber
           stageName
           lessonId
+           stageDescription
+          stageStatuses {
+            id
+            status
+            userId
+            createdAt
+            updatedAt
+          }
+ 
         }
         lessonTimecodes
         lessonStatus
@@ -219,6 +251,14 @@ export const GET_LESSON = gql`
           timeCodeStart
           timeCodeEnd
         }
+         stageStatuses {
+          id
+          status
+          userId
+          createdAt
+          updatedAt
+        }
+ 
       }
       lessonTimecodes
       lessonStatus
@@ -256,3 +296,51 @@ export const GET_LESSONS = gql`
     }
   }
 `;
+ export const GET_STAGE_STATUS = gql`
+  query getStageStatus($userId: Int!) {
+    getStageStatus(userId: $userId) {
+      id
+      stageId
+      userId
+      status
+      createdAt
+      updatedAt
+      stage {
+        id
+        stageNumber
+        stageName
+        stageDescription
+        lessonId
+      }
+      updatedAt
+      createdAt
+    }
+  }
+`;
+export const CHANGE_STAGE_STATUS = gql`
+  mutation ChangeStageStatus($stageId: Int!, $userId: Int!, $status: String!) {
+    changeStageStatus(stageId: $stageId, userId: $userId, status: $status) {
+      id
+      stageId
+      userId
+      status
+      createdAt
+      updatedAt
+      stage {
+        id
+        stageNumber
+        stageName
+        stageDescription
+        stageStatuses {
+          id
+          status
+          userId
+          createdAt
+          updatedAt
+        }
+        lessonId
+      }
+    }
+  }
+`;
+ 
