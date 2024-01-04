@@ -48,7 +48,7 @@ const ModalRegister = () => {
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const value = event.target.value;
-    const re = /^[a-zA-Z\s-]+$/;
+    const re = /^[a-zA-Zа-яА-Я\s-]+$/;
     const isValid = re.test(value);
     if (isValid || value === '') {
       setCity(value);

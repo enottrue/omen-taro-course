@@ -52,7 +52,8 @@ const Header = ({
           isLink={true}
           className="button_little button_secondary"
           attributes="button_little button_secondary"
-          href="#"
+          href="https://t.me/omen_taro_bot"
+          target="_blank"
           // onClick={handleSubmit}
         >
           <span className="header__telegram-icon">
