@@ -160,7 +160,7 @@ const ModalRegister = () => {
 
         <form className="modal__login-form" action="">
           <div className="modal__login-form-grid active" id="step-1">
-            <label className="custom-input">
+            <label className="custom-input" id="name">
               <input
                 className="custom-input__element  focus-within:border-sky-500 focus-within:border-1"
                 placeholder="Фамилия Имя"
@@ -171,7 +171,7 @@ const ModalRegister = () => {
                 }}
               />
             </label>
-            <label className="custom-input">
+            <label className="custom-input" id="password">
               <input
                 className="custom-input__element  focus-within:border-sky-500 focus-within:border-1"
                 placeholder="Пароль"
@@ -183,7 +183,7 @@ const ModalRegister = () => {
               />
             </label>
 
-            <label className="custom-input">
+            <label className="custom-input" id="email">
               <input
                 className="custom-input__element focus-within:border-sky-500 focus-within:border-1"
                 placeholder="E-mail"
@@ -196,7 +196,7 @@ const ModalRegister = () => {
               />
             </label>
 
-            <label className="custom-input">
+            <label className="custom-input" id="phone">
               <input
                 className="custom-input__element focus-within:border-sky-500 focus-within:border-1"
                 placeholder="Номер телефона"
