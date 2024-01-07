@@ -11,9 +11,12 @@ import Cookies from 'js-cookie';
 import useGetUserData from '@/hooks/useGetUserData';
 import { useLazyQuery } from '@apollo/client';
 import { GET_USER } from '@/graphql/queries';
+import { useMetrica } from 'next-yandex-metrica';
 
 const ModalRegister = () => {
   const router = useRouter();
+  const { reachGoal } = useMetrica();
+
   const [getUser, { loading: loadingLazy, data, error: errorLazy }] =
     useLazyQuery(GET_USER);
 
@@ -121,7 +124,7 @@ const ModalRegister = () => {
       cc?.setSubmitting(false);
       return;
     }
-
+    reachGoal('form_register');
     cc?.setSubmitting(false);
 
     const onboarding = localStorage.getItem('onboarded');
