@@ -12,7 +12,7 @@ const defaultOptions: DefaultOptions = {
 };
 
 export const apolloClient = new ApolloClient({
-  uri: 'http://localhost:3000/api/graphql',
+  uri: 'https://omen-taro.ru/api/graphql',
   cache: new InMemoryCache(),
   defaultOptions: defaultOptions,
 });
