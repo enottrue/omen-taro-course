@@ -27,7 +27,7 @@ env:
   DOCKER_IMAGE: omen-nextjs
 
 jobs:
-  build_images:
+  build:
     runs-on: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v3
@@ -60,3 +60,50 @@ jobs:
             ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE }}:${{ steps.version.outputs.version }}
           cache-from: type=registry,ref=${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE }}:buildcache
           cache-to: type=registry,ref=${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE }}:buildcache,mode=max
+
+  deploy:
+    runs-on: [ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v3
+        name: Code checkout
+        id: checkout
+
+      - name: check version
+        shell: bash
+        id: version
+        run: |
+          echo "version=$(git rev-parse --short=9 HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Deploy
+        shell: bash
+        run:
+          echo "${{ secrets.DEPLOY_SSH_KEY }}" > .id_ed25519 && chmod 600 .id_ed25519 ;
+          ssh -o StrictHostKeyChecking=no -i .id_ed25519 "${{ env.DEPLOY_USER }}"@"${{ env.DEPLOY_SERVER }}" 'set -e ;
+            rm -rf ${{ env.DEPLOY_DIRECTORY }}_tmp ;
+            mkdir -p ${{ env.DEPLOY_DIRECTORY }}_tmp ; 
+            cd ${{ env.DEPLOY_DIRECTORY }}_tmp ;
+            echo "NODE_ENV=production" | tee .env ;
+            echo "DATABASE_URL=postgresql://omen_nextjs:${{ secrets.POSTGRES_PASSWORD }}@db:5432/omen_nextjs?schema=public" | tee -a .env ;
+            echo "APP_SECRET=${{ env.APP_SECRET }} | tee -a .env ;
+            echo "IMAGE_NAME=${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE }}:${{ steps.version.outputs.version }}" | tee -a .env ;
+          '
+
+          scp -o StrictHostKeyChecking=no -i .id_ed25519 ./docker-compose.yaml "${{ env.DEPLOY_USER }}"@"${{ env.DEPLOY_SERVER }}":~/${{ env.DEPLOY_DIRECTORY }}_tmp/docker-compose.yaml 
+
+          ssh -o StrictHostKeyChecking=no -i .id_ed25519 "${{ env.DEPLOY_USER }}"@"${{ env.DEPLOY_SERVER }}" 'set -e ;
+            rm -rf ${{ env.DEPLOY_DIRECTORY }}_prev ;
+            if [ -d ${{ env.DEPLOY_DIRECTORY }} ]; then mv ${{ env.DEPLOY_DIRECTORY }} ${{ env.DEPLOY_DIRECTORY }}_prev ; fi ;
+            mv ${{ env.DEPLOY_DIRECTORY }}_tmp ${{ env.DEPLOY_DIRECTORY }} ;
+            cd ${{ env.DEPLOY_DIRECTORY }} ;
+            docker compose pull -q ;
+            docker compose up -d --no-start --remove-orphans ;
+            docker compose restart ;
+            sleep 2 ;
+            docker compose logs ; '
+
+      - name: Clean
+        shell: bash
+        if: ${{ always() }}
+        run: |
+          rm -f .id_ed25519
+          rm -f .env

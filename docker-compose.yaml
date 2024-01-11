@@ -9,5 +9,4 @@ services:
       - "traefik.http.routers.bot.tls.certresolver=default"
     env_file: .env
     ports:
-      - 3000:3000
-    user: node
+      - 3001:3001
