@@ -1,0 +1,13 @@
+services:
+  server:
+    image: ${IMAGE_NAME}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.bot.entrypoints=secure"
+      - "traefik.http.routers.bot.rule=Host(`omen-taro.ru`)"
+      - "traefik.http.routers.bot.tls=true"
+      - "traefik.http.routers.bot.tls.certresolver=default"
+    env_file: .env
+    ports:
+      - 3000:3000
+    user: node
