@@ -3,10 +3,19 @@ services:
     image: ${IMAGE_NAME}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.bot.entrypoints=secure"
-      - "traefik.http.routers.bot.rule=Host(`omen-taro.ru`)"
-      - "traefik.http.routers.bot.tls=true"
-      - "traefik.http.routers.bot.tls.certresolver=default"
+      - "traefik.http.routers.nextjs.entrypoints=secure"
+      - "traefik.http.routers.nextjs.rule=Host(`omen-taro.ru`)"
+      - "traefik.http.routers.nextjs.tls=true"
+      - "traefik.http.routers.nextjs.tls.certresolver=default"
     env_file: .env
     ports:
       - 3001:3001
+    networks:
+      omen:
+        aliases:
+          - nextjs
+
+networks:
+  omen:
+    external: true
+    driver: bridge
