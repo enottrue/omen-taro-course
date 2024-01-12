@@ -5,44 +5,6 @@ import { useQuery } from '@apollo/client';
 import { GET_STAGE_STATUS } from '@/graphql/queries';
 import { useContext } from 'react';
 import { MainContext } from '@/contexts/MainContext';
- 
-
-// const lessons = [
-//   {
-//     contentTitle: [
-//       {
-//         number: 1,
-//         content: '1.1. История создания колоды Таро А.Э.Уэйта.',
-//       },
-//       {
-//         number: 1,
-//         content: '1.2. История создания колоды Таро А.Э.Уэйта.',
-//       },
-//     ],
-//     counter: 1,
-//     title: 'История создания колоды.',
-//   },
-//   {
-//     contentTitle: [
-//       {
-//         number: 1,
-//         content: '2.1. История создания колоды Таро А.Э.Уэйта.',
-//       },
-//     ],
-//     counter: 2,
-//     title: 'Ритуальная подготовка перед работой с таро.',
-//   },
-//   {
-//     contentTitle: [
-//       {
-//         number: 1,
-//         content: '3.1. История создания колоды Таро А.Э.Уэйта.',
-//       },
-//     ],
-//     counter: 3,
-//     title: 'Значения арканов. Старшие арканы.',
-//   },
-// ];
 
 export const CourseLessons = (lessons: { [k: string]: any }, userId?: any) => {
   const cc = useContext(MainContext);
@@ -54,7 +16,7 @@ export const CourseLessons = (lessons: { [k: string]: any }, userId?: any) => {
   //   'stage',
   //   cc?.stageData,
   // );
- 
+
   return (
     <>
       <section className="cource-lessons bg-white">

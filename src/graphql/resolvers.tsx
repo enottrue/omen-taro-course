@@ -87,12 +87,11 @@ export const resolvers = {
         include: {
           lessons: {
             include: {
-               lessonStages: {
+              lessonStages: {
                 include: {
                   stageStatuses: true,
                 },
               },
- 
             },
           },
         },
@@ -102,21 +101,29 @@ export const resolvers = {
     },
     getCourse: async (
       parent: unknown,
-       args: { id: string; userId: string },
+      args: { id: string; userId: string },
       context: IContext,
       info: {},
     ) => {
       const { id, userId } = args;
 
       const course = await prisma.course.findUnique({
- 
         where: { id: Number(id) },
         include: {
           lessons: {
+            orderBy: {
+              id: 'asc',
+            },
             include: {
-               lessonStages: {
+              lessonStages: {
+                orderBy: {
+                  id: 'asc',
+                },
                 include: {
                   stageStatuses: {
+                    orderBy: {
+                      id: 'asc',
+                    },
                     where: { userId: Number(userId) },
                   },
                 },
@@ -141,7 +148,6 @@ export const resolvers = {
       // console.log(678, '***********', course.lessons.lessonStages[0]);
 
       return course;
- 
     },
     getLesson: async (
       parent: unknown,
@@ -155,10 +161,12 @@ export const resolvers = {
         where: { id: Number(id) },
         include: {
           lessonStages: {
+            orderBy: {
+              id: 'asc',
+            },
             include: {
               stageTimecodes: true,
-               stageStatuses: true,
- 
+              stageStatuses: true,
             },
           },
         },
@@ -173,10 +181,12 @@ export const resolvers = {
       const lessons = await prisma.lesson.findMany({
         include: {
           lessonStages: {
+            orderBy: {
+              id: 'asc',
+            },
             include: {
               stageTimecodes: true,
-               stageStatuses: true,
- 
+              stageStatuses: true,
             },
           },
         },
@@ -184,7 +194,7 @@ export const resolvers = {
 
       return lessons;
     },
-     getStageStatus: async (
+    getStageStatus: async (
       parent: unknown,
       args: { userId: string | number },
       context: IContext,
@@ -197,13 +207,15 @@ export const resolvers = {
 
       return await prisma.stageStatus.findMany({
         where: { userId: Number(id) },
+        orderBy: {
+          id: 'asc',
+        },
         include: {
           user: true,
           stage: true,
         },
       });
     },
- 
   },
 
   Mutation: {
@@ -358,7 +370,7 @@ export const resolvers = {
           data: { ...args, password },
         });
 
-        for (let stageId = 1; stageId <= 43; stageId++) {
+        for (let stageId = 1; stageId <= 44; stageId++) {
           await context.prisma.stageStatus.create({
             data: {
               stageId,

@@ -6,8 +6,8 @@ import { lessonsData, coursesData, stageData } from '../dump-data/lessonsData';
 const main = async () => {
   console.log(`Start seeding...`);
   await prisma.tool.deleteMany({});
-   // await prisma.user.deleteMany({});
- 
+  // await prisma.user.deleteMany({});
+
   await prisma.stageTimecode.deleteMany({});
 
   await prisma.stage.deleteMany({});
@@ -26,15 +26,15 @@ const main = async () => {
     });
   });
 
-  users.forEach(async (user) => {
-    await prisma.user.upsert({
-      where: {
-        id: user.id,
-      },
-      create: user,
-      update: user,
-    });
-  });
+  // users.forEach(async (user) => {
+  //   await prisma.user.upsert({
+  //     where: {
+  //       id: user.id,
+  //     },
+  //     create: user,
+  //     update: user,
+  //   });
+  // });
   console.log(`Users Database was seeded.`);
 
   for (const course in coursesData) {
