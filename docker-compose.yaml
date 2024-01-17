@@ -8,6 +8,7 @@ services:
       - "traefik.http.routers.nextjs.tls=true"
       - "traefik.http.routers.nextjs.tls.certresolver=default"
     env_file: .env
+    restart: always
     ports:
       - 3001:3001
     networks:
