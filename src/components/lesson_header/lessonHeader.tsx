@@ -7,9 +7,13 @@ import Link from 'next/link';
 import VideoPlayer from '../video_player/videoPlayer';
 import LessonTimeline from '../lesson_timeline/lessonTimeline';
 import { useEffect, useState } from 'react';
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 
-import { ADD_STAGE_STATUS, CHANGE_STAGE_STATUS } from '@/graphql/queries';
+import {
+  ADD_STAGE_STATUS,
+  CHANGE_STAGE_STATUS,
+  GET_STAGE_STATUS,
+} from '@/graphql/queries';
 import { useContext } from 'react';
 import { MainContext } from '@/contexts/MainContext';
 import { stageData } from '@/lib/dump-data/lessonsData';
@@ -26,7 +30,36 @@ export default function CourseLessonHeader({
   const cc = useContext(MainContext);
 
   const [finishedStage, setFinishedStage] = useState(false);
-  const [changeStageStatus, { data }] = useMutation(CHANGE_STAGE_STATUS);
+  const [createStageStatus] = useMutation(ADD_STAGE_STATUS);
+  const [changeStageStatus] = useMutation(CHANGE_STAGE_STATUS);
+
+  const {
+    loading: stageStatusLoading,
+    error: stageStatusError,
+    data: stageStatusData,
+  } = useQuery(GET_STAGE_STATUS, {
+    variables: {
+      stageId: Number(currentStageId),
+      userId: Number(cc?.userId),
+    },
+  });
+
+  useEffect(() => {
+    if (
+      stageStatusError &&
+      stageStatusError.message === 'ApolloError: StageStatus not found'
+    ) {
+      // If the StageStatus doesn't exist, create it
+      createStageStatus({
+        variables: {
+          stageId: Number(currentStageId),
+          userId: Number(cc?.userId),
+          status: 'new',
+        },
+      });
+    }
+  }, [stageStatusError, stageStatusLoading, stageStatusData]);
+
   // addStageStatus({ variables: { stageId: 1, userId: 1, status: 'new' } });
   useEffect(() => {
     console.log(

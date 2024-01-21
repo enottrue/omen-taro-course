@@ -7,6 +7,7 @@ function LessonTimeline(stage: any) {
   return (
     <section className="cource-lesson-content">
       <div className="cource-lesson-content__info">
+        <h3>Таймкоды</h3>
         {sections.map((section: any, i: Key) => {
           return (
             <p key={i}>

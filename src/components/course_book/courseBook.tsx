@@ -25,7 +25,7 @@ const CourseBook = () => {
           пособии вы найдете <br />
           значения арканов, <br />
           историю возникновения <br />
-          колоды таро А. Уэйта <br />и расклады.
+          колоды Таро А. Уэйта <br />и расклады.
         </p>
         <p>
           Если в процессе работы
@@ -40,8 +40,7 @@ const CourseBook = () => {
         <Button
           title="Скачать методичку"
           isLink
-          href="/Omen_taro_book.pdf"
-          download
+          href="/Omen_taro_book_new.pdf"
           target="_blank"
         >
           <span className="cource-book__icon-download">

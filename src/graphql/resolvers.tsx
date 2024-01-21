@@ -501,11 +501,18 @@ export const resolvers = {
       });
 
       if (!stageStatus) {
-        throw new Error('StageStatus not found');
+        // throw new Error('StageStatus not found');
+        const updatedStageStatus = await prisma.stageStatus.create({
+          data: {
+            stageId: Number(stageId),
+            userId: Number(userId),
+            status,
+          },
+        });
       }
 
       const updatedStageStatus = await prisma.stageStatus.update({
-        where: { id: stageStatus.id },
+        where: { id: stageStatus?.id },
         data: { status },
         include: {
           stage: {

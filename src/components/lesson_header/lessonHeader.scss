@@ -45,10 +45,9 @@
     height: auto;
     display: block;
   }
-   &:hover {
+  &:hover {
     cursor: pointer;
   }
- 
 }
 
 .cource-lesson-header__media-button {
@@ -126,7 +125,7 @@
     }
   }
 }
- 
+
 .cource-lesson-content {
   padding: calcSize(10) calcSize(40);
 }
@@ -147,5 +146,11 @@
       margin-bottom: calcSize(22);
     }
   }
+  h3 {
+    font-size: calcSize(22);
+    font-style: normal;
+    font-weight: 700;
+    line-height: 110%;
+    margin-bottom: calcSize(15);
+  }
 }
- 
