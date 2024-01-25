@@ -3,10 +3,15 @@ services:
     image: ${IMAGE_NAME}
     labels:
       - "traefik.enable=true"
+      - "traefik.http.middlewares.qr301.redirectregex.regex=^((https|http):\\/\\/omen-taro\\.ru\\/)qr$"
+      - "traefik.http.middlewares.qr301.redirectregex.replacement=$${1}"
+      - "traefik.http.middlewares.qr301.redirectregex.permanent=true"
+
       - "traefik.http.routers.nextjs.entrypoints=secure"
       - "traefik.http.routers.nextjs.rule=Host(`omen-taro.ru`)"
       - "traefik.http.routers.nextjs.tls=true"
       - "traefik.http.routers.nextjs.tls.certresolver=default"
+      - "traefik.http.routers.nextjs.middlewares=qr301@docker"
     env_file: .env
     restart: always
     ports:
