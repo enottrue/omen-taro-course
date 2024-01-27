@@ -10,7 +10,7 @@ const main = async () => {
 
   await prisma.stageTimecode.deleteMany({});
 
-  await prisma.stage.deleteMany({});
+  // await prisma.stage.deleteMany({});
   await prisma.lesson.deleteMany({});
   await prisma.course.deleteMany({});
 

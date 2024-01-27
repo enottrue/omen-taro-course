@@ -30,10 +30,11 @@ export const useSubmit = (formData: any) => {
 
     try {
       // Call the GraphQL mutation to create a user
+
       const submitDataReturn: any = await createUserMutation({
         variables: {
           name: formData?.name,
-          email: formData?.email,
+          email: formData?.email?.toLowerCase(),
           phone: formData?.phone,
           password: formData?.password,
           city: formData?.city,

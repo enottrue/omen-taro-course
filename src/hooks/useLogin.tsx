@@ -5,9 +5,10 @@ export const useLoginUser = () => {
   const [loginUser, { data, loading, error }] = useMutation(LOGIN_USER);
 
   const login = async (email: String, password: String) => {
+    const em = email.toLowerCase();
     try {
-      const response = await loginUser({ variables: { email, password } });
- 
+      const response = await loginUser({ variables: { email: em, password } });
+
       if (response.data?.loginUser?.user?.onboarded) {
         localStorage.setItem('onboarded', 'true');
       }

@@ -17,7 +17,6 @@ import Footer from '@/components/footer/Footer';
 import { apolloClient } from '@/lib/apollo/apollo';
 import { GET_COURSES, GET_COURSE, GET_STAGE_STATUS } from '@/graphql/queries';
 import { useLazyQuery, useQuery } from '@apollo/client';
- 
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const APP_SECRET = process.env.APP_SECRET;
@@ -25,7 +24,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     ? cookie.parse(context.req.headers.cookie)
     : {};
   context.res.setHeader('Cache-Control', 'no-store');
-
 
   try {
     //@ts-expect-error
@@ -44,6 +42,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         userId: Number(userId),
       },
     });
+
+    console.log('ddd', data);
     const { data: stageData } = await apolloClient.query({
       query: GET_STAGE_STATUS,
       variables: {
@@ -57,7 +57,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         token,
         courses: data.getCourse, // Pass the courses data to the component
         stageData: stageData.getStageStatus,
-
       },
     };
   } catch (error) {
@@ -77,7 +76,6 @@ const Cources = ({
   token,
   courses,
   stageData,
- 
 }: {
   userId: string | null;
   token: string | null;
@@ -86,7 +84,7 @@ const Cources = ({
         [k: string]: any;
       }
     | undefined;
-   stageData: { [k: string]: any };
+  stageData: { [k: string]: any };
 }) => {
   const router = useRouter();
 
@@ -99,7 +97,6 @@ const Cources = ({
   }, [tt]);
 
   useEffect(() => {}, [courses]);
- 
 
   const {
     getUser,
@@ -109,7 +106,7 @@ const Cources = ({
   } = useGetLazyUserData(Number(userId));
 
   const cc = useContext(MainContext);
-   // console.log(
+  // console.log(
   //   'token',
   //   token,
   //   'userId',
@@ -122,13 +119,11 @@ const Cources = ({
   useEffect(() => {
     stageData && cc?.setStageData(stageData);
   }, [stageData]);
- 
 
   useEffect(() => {
     cc?.setUserId(userId);
     cc?.setToken(token);
     const us = getUser({ variables: { userId } });
- 
 
     if (!userId || !token) {
       router.push('/');
@@ -148,8 +143,7 @@ const Cources = ({
         <title>Обучающий курс по Таро</title>
         <meta name="Обучающий курс по Таро - Omen | Курс Таро" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-         <link rel="shortcut icon" href="/favicon/favicon.ico" />
- 
+        <link rel="shortcut icon" href="/favicon/favicon.ico" />
       </Head>
       <main>
         <Header token={token} userId={userId} />

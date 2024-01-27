@@ -21,7 +21,7 @@ export const CourseLessons = (lessons: { [k: string]: any }, userId?: any) => {
     <>
       <section className="cource-lessons bg-white">
         <CoursePdfItem />
-        {lessons.lessons.map((lesson: any, i: Key) => {
+        {lessons?.lessons.map((lesson: any, i: Key) => {
           return (
             <CourseListItem
               contentStages={lesson.lessonStages}

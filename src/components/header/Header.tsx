@@ -104,22 +104,51 @@ const Header = ({
               cc?.setMenuOpen(!cc?.menuOpen);
             }}
           >
-            <span className="header__icon">
-              <svg width="800" height="800" viewBox="0 0 20 20" fill="#FFF">
-                <g id="Page-1" fillRule="evenodd" stroke="none" strokeWidth="1">
-                  <g
-                    id="Dribbble-Light-Preview"
-                    transform="translate(-140 -2159)"
-                  >
-                    <g id="icons" transform="translate(56 160)">
-                      <path
-                        id="profile_round-[#1342]"
-                        d="M100.56 2017H87.44c-.7 0-1.23-.7-.96-1.34 1.23-2.96 4.14-4.66 7.52-4.66s6.29 1.7 7.52 4.66c.27.64-.25 1.34-.96 1.34m-10.64-12c0-2.2 1.83-4 4.08-4s4.08 1.8 4.08 4-1.83 4-4.08 4a4.05 4.05 0 0 1-4.08-4m14.04 11.64a9.52 9.52 0 0 0-6.12-6.97 5.93 5.93 0 0 0 2.21-5.6 6.1 6.1 0 0 0-5.32-5.03 6.08 6.08 0 0 0-6.85 5.96c0 1.89.89 3.57 2.28 4.67a9.52 9.52 0 0 0-6.12 6.97c-.27 1.22.74 2.36 2.01 2.36h15.9c1.27 0 2.28-1.14 2-2.36"
-                      />
+            <span className="button__icon">
+              <span className="header__icon">
+                <span className="header__icon-open">
+                  <svg width="800" height="800" viewBox="0 0 20 20" fill="#FFF">
+                    <g
+                      id="Page-1"
+                      fillRule="evenodd"
+                      stroke="none"
+                      strokeWidth="1"
+                    >
+                      <g
+                        id="Dribbble-Light-Preview"
+                        transform="translate(-140 -2159)"
+                      >
+                        <g id="icons" transform="translate(56 160)">
+                          <path
+                            id="profile_round-[#1342]"
+                            d="M100.56 2017H87.44c-.7 0-1.23-.7-.96-1.34 1.23-2.96 4.14-4.66 7.52-4.66s6.29 1.7 7.52 4.66c.27.64-.25 1.34-.96 1.34m-10.64-12c0-2.2 1.83-4 4.08-4s4.08 1.8 4.08 4-1.83 4-4.08 4a4.05 4.05 0 0 1-4.08-4m14.04 11.64a9.52 9.52 0 0 0-6.12-6.97 5.93 5.93 0 0 0 2.21-5.6 6.1 6.1 0 0 0-5.32-5.03 6.08 6.08 0 0 0-6.85 5.96c0 1.89.89 3.57 2.28 4.67a9.52 9.52 0 0 0-6.12 6.97c-.27 1.22.74 2.36 2.01 2.36h15.9c1.27 0 2.28-1.14 2-2.36"
+                          />
+                        </g>
+                      </g>
                     </g>
-                  </g>
-                </g>
-              </svg>
+                  </svg>
+                </span>
+                <span className="header__icon-close">
+                  <svg
+                    width="22"
+                    height="22"
+                    viewBox="0 0 22 22"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M16.2791 5.61243L5.50409 16.3874"
+                      stroke="#fff"
+                      strokeWidth="2"
+                    />
+                    <path
+                      d="M5.50427 5.61243L16.2792 16.3874"
+                      stroke="#fff"
+                      strokeWidth="2"
+                    />
+                  </svg>
+                </span>
+              </span>
             </span>
           </Button>
         )}

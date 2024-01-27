@@ -23,6 +23,15 @@ const OnboardingStages = () => {
     'После прохождения курса вы сможете скачать электронную методичку и получить именной сертификат:',
   ];
 
+  const images: string[][] = [
+    ['/onboarding/1.png'],
+    ['/onboarding/2-1.png', '/onboarding/2-2.png'],
+    ['/onboarding/3-1.png', '/onboarding/3-2.png'],
+    ['/onboarding/4.png'],
+    ['/onboarding/5-1.png', '/onboarding/5-2.png', '/onboarding/5-3.png'],
+    ['/onboarding/6.png'],
+  ];
+
   const skipButtonHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     // code logic here
     localStorage.setItem('onboarded', 'true');
@@ -44,7 +53,17 @@ const OnboardingStages = () => {
         <p>{description}</p>
       </div>
 
-      <div className={`onboarding__image ${index + 1}`}> {index + 1}</div>
+      {images[index].map((src, i) => (
+        <div className={`onboarding__image ${index + 1} mt-4`}>
+          <Image
+            key={i}
+            src={`${src}`}
+            alt={`Image ${i}`}
+            width={'375'}
+            height={'1000'}
+          />
+        </div>
+      ))}
 
       <div
         className={`onboarding__buttons ${
@@ -116,9 +135,9 @@ const OnboardingStages = () => {
             </p>
           </div>
 
-          <div className="onboarding__image">
+          {/* <div className="onboarding__image">
             <Image src={courseFinishHeader} alt="" />
-          </div>
+          </div> */}
 
           <div className="onboarding__buttons">
             <Button

@@ -493,37 +493,89 @@ export const resolvers = {
       info: {},
     ) => {
       const { stageId, status, userId } = args;
+      // const stageStatus = await prisma.stageStatus.findFirst({
+      //   where: {
+      //     stageId: Number(stageId),
+      //     userId: Number(userId),
+      //   },
+      // });
+
+      // const updatedStageStatus = await prisma.stageStatus.upsert({
+      //   where: { id: stageStatus?.id },
+      //   create: {
+      //     status,
+      //     stage: { connect: { id: stageId } },
+      //     user: { connect: { id: userId } },
+      //   },
+      //   update: { status },
+      //   include: {
+      //     stage: {
+      //       include: {
+      //         stageStatuses: true,
+      //       },
+      //     },
+      //   },
+      // });
+
       const stageStatus = await prisma.stageStatus.findFirst({
         where: {
           stageId: Number(stageId),
           userId: Number(userId),
         },
       });
+      console.log(stageStatus, '000');
 
-      if (!stageStatus) {
-        // throw new Error('StageStatus not found');
-        const updatedStageStatus = await prisma.stageStatus.create({
-          data: {
-            stageId: Number(stageId),
-            userId: Number(userId),
-            status,
+      if (stageStatus) {
+        // Update the existing record
+        const updatedStageStatus = await prisma.stageStatus.update({
+          where: { id: stageStatus.id },
+          data: { status },
+          include: {
+            stage: true,
+            user: true,
           },
         });
+        return updatedStageStatus;
+      } else {
+        // Create a new record
+        const newStageStatus = await prisma.stageStatus.create({
+          data: {
+            status,
+            stage: { connect: { id: stageId } },
+            user: { connect: { id: userId } },
+          },
+          include: {
+            stage: true,
+            user: true,
+          },
+        });
+        return newStageStatus;
       }
 
-      const updatedStageStatus = await prisma.stageStatus.update({
-        where: { id: stageStatus?.id },
-        data: { status },
-        include: {
-          stage: {
-            include: {
-              stageStatuses: true,
-            },
-          },
-        },
-      });
-
-      return updatedStageStatus;
+      // if (!stageStatus) {
+      //   // throw new Error('StageStatus not found');
+      //   const updatedStageStatus = await prisma.stageStatus.create({
+      //     data: {
+      //       stageId: Number(stageId),
+      //       userId: Number(userId),
+      //       status,
+      //     },
+      //   });
+      //   return updatedStageStatus;
+      // } else {
+      //   const updatedStageStatus = await prisma.stageStatus.update({
+      //     where: { id: stageStatus?.id },
+      //     data: { status },
+      //     include: {
+      //       stage: {
+      //         include: {
+      //           stageStatuses: true,
+      //         },
+      //       },
+      //     },
+      //   });
+      //   return updatedStageStatus;
+      // }
     },
   },
 };
