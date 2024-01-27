@@ -52,7 +52,7 @@ const Header = ({
           isLink={true}
           className="button_little button_secondary"
           attributes="button_little button_secondary"
-          href="https://t.me/omen_taro_bot"
+          href="https://t.me/salacoste"
           target="_blank"
           // onClick={handleSubmit}
         >
