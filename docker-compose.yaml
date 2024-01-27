@@ -12,8 +12,13 @@ services:
       - "traefik.http.routers.nextjs.tls=true"
       - "traefik.http.routers.nextjs.tls.certresolver=default"
       - "traefik.http.routers.nextjs.middlewares=qr301@docker"
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "20"
     env_file: .env
-    restart: always
     ports:
       - 3001:3001
     networks:
