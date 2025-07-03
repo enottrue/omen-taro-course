@@ -8,9 +8,7 @@ import cookie from 'cookie';
 import jwt from 'jsonwebtoken';
 import { GetServerSideProps } from 'next';
 import OnboardingStages from '@/components/onboarding/OnboardingStages';
-
 import { useGetLazyUserData } from '@/hooks/useGetUserData';
-
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const APP_SECRET = process.env.APP_SECRET;
   const cookies = context.req.headers.cookie
@@ -61,9 +59,9 @@ const Onboarding = ({
     const us = getUser({ variables: { userId } });
  
 
-    if (!userId || !token) {
-      router.push('/');
-    }
+    // if (!userId || !token) {
+    //   router.push('/');
+    // }
   }, [userId, token]);
 
   useEffect(() => {

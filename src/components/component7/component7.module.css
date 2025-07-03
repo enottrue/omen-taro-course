@@ -1,0 +1,116 @@
+.aboutThe,
+.instructor {
+  margin: 0;
+  position: relative;
+  letter-spacing: -0.05em;
+  line-height: 90%;
+  font-weight: 700;
+}
+.aboutThe {
+  font-size: inherit;
+  font-style: italic;
+  font-family: inherit;
+}
+.instructor {
+  font-size: var(--font-size-36);
+  font-family: var(--font-unbounded);
+}
+.astrologerDetails {
+  width: 16.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.vzroslyiDerzitSarSveta1Icon {
+  width: 16.25rem;
+  height: 16.25rem;
+  position: relative;
+  border-radius: var(--br-30);
+  object-fit: cover;
+}
+.professionalAstrologerWith {
+  width: 15.813rem;
+  position: relative;
+  font-size: var(--font-size-16);
+  line-height: 120%;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-family: var(--font-roboto);
+  color: var(--color-midnightblue-100);
+  display: inline-block;
+}
+.featuresSummary {
+  margin-left: -0.125rem;
+  margin: 0;
+  width: 1.063rem;
+  position: relative;
+  font-size: inherit;
+  letter-spacing: -0.05em;
+  line-height: 90%;
+  display: inline-block;
+  font-style: italic;
+  font-weight: 700;
+  font-family: inherit;
+  flex-shrink: 0;
+}
+.guidanceInfo {
+  height: 1.313rem;
+  width: 1rem;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-2) 0 0;
+  box-sizing: border-box;
+}
+.clearStraightforwardGuidanc {
+  width: 14.188rem;
+  position: relative;
+  font-size: var(--font-size-14);
+  line-height: 120%;
+  font-family: var(--font-roboto);
+  color: var(--color-midnightblue-100);
+  display: inline-block;
+  flex-shrink: 0;
+}
+.instructorDetails {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--gap-4);
+}
+.expertiseGuidance {
+  flex-direction: column;
+  gap: var(--gap-12);
+  color: var(--color-royalblue-100);
+}
+.expertiseGuidance,
+.instructorInfo,
+.section {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.instructorInfo {
+  border-radius: var(--br-30);
+  background-color: var(--color-white);
+  flex-direction: column;
+  padding: var(--padding-32) var(--padding-30);
+  gap: var(--gap-22);
+}
+.section {
+  align-self: stretch;
+  background-color: var(--color-midnightblue-100);
+  overflow: hidden;
+  flex-direction: row;
+  text-align: left;
+  font-size: var(--font-size-40);
+  color: var(--color-midnightblue-100);
+  font-family: var(--font-wittgenstein);
+  margin: 0 auto;
+  height: auto;
+}

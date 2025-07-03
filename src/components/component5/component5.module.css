@@ -1,0 +1,220 @@
+.image3Icon,
+.image4Icon {
+  object-fit: cover;
+  position: absolute;
+}
+.image3Icon {
+  width: 23.875rem;
+  margin: 0 !important;
+  top: 36.813rem;
+  left: -0.187rem;
+  max-height: 100%;
+}
+.image4Icon {
+  width: 100%;
+  left: 0;
+  top: 0.125rem;
+  height: 100%;
+  transform: scale(1);
+}
+.wrapperImage4 {
+  width: 16.188rem;
+  position: absolute;
+  margin: 0 !important;
+  top: 0.031rem;
+  left: 13.469rem;
+  max-height: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+.image5Icon {
+  width: 100%;
+  z-index: 1;
+  object-fit: cover;
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  transform: scale(1);
+}
+.wrapperImage5 {
+  width: 22.031rem;
+  position: absolute;
+  margin: 0 !important;
+  top: 14.05rem;
+  left: 10.544rem;
+  max-height: 100%;
+  z-index: 1;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.whatYoull {
+  font-size: inherit;
+  font-style: italic;
+  font-family: inherit;
+  white-space: pre-wrap;
+}
+.after,
+.gain,
+.whatYoull {
+  margin: 0;
+  position: relative;
+  letter-spacing: -0.05em;
+  line-height: 90%;
+  font-weight: 700;
+}
+.gain {
+  font-size: inherit;
+  font-style: italic;
+  font-family: inherit;
+}
+.after {
+  font-size: var(--font-size-36);
+  font-family: var(--font-unbounded);
+}
+.frameWrapper,
+.gainParent,
+.whatYoullParent {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.gainParent {
+  flex-direction: row;
+  gap: var(--gap-6);
+}
+.frameWrapper,
+.whatYoullParent {
+  flex-direction: column;
+}
+.whatYoullParent {
+  width: 16.25rem;
+}
+.frameWrapper {
+  align-self: stretch;
+}
+.theAbilityTo {
+  font-family: var(--font-roboto);
+}
+.theAbilityToReadYourFinan {
+  margin: 0;
+}
+.theAbilityToContainer {
+  align-self: stretch;
+  position: relative;
+  line-height: 120%;
+}
+.aClearListContainer,
+.aDeeperUnderstandingContainer {
+  width: 11rem;
+  position: relative;
+  line-height: 120%;
+  display: inline-block;
+}
+.aDeeperUnderstandingContainer {
+  width: 9.813rem;
+}
+.andASkill {
+  align-self: stretch;
+  position: relative;
+  line-height: 120%;
+  font-weight: 300;
+}
+.frameParent,
+.theAbilityToReadYourFinanParent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.theAbilityToReadYourFinanParent {
+  width: 12.25rem;
+  gap: var(--gap-22);
+  font-size: var(--font-size-14);
+  font-family: var(--font-roboto);
+}
+.frameParent {
+  width: 16.25rem;
+  gap: var(--gap-32);
+  z-index: 3;
+}
+.thisIsntLearnContainer {
+  margin: 0 !important;
+  width: 14.625rem;
+  position: absolute;
+  top: 44.804rem;
+  left: 1.875rem;
+  font-size: var(--font-size-22);
+  letter-spacing: -0.05em;
+  line-height: 90%;
+  font-weight: 700;
+  font-family: var(--font-unbounded);
+  display: inline-block;
+  transform: rotate(-15deg);
+  transform-origin: 0 0;
+  z-index: 1;
+}
+.enrollNow,
+.thisIsA {
+  font-size: var(--font-size-14);
+  font-family: var(--font-roboto);
+}
+.thisIsA {
+  width: 12.25rem;
+  position: absolute;
+  margin: 0 !important;
+  top: 46.996rem;
+  left: 6.25rem;
+  line-height: 120%;
+  font-weight: 300;
+  display: inline-block;
+  transform: rotate(-15deg);
+  transform-origin: 0 0;
+  z-index: 2;
+}
+.enrollNow {
+  position: relative;
+  line-height: 90%;
+  color: var(--color-midnightblue-100);
+  text-align: right;
+}
+.enrollNowOnly50Wrapper {
+  cursor: pointer;
+  border: 0;
+  padding: var(--padding-14) var(--padding-20);
+  background-color: var(--color-white);
+  width: 16.25rem;
+  border-radius: 964px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  z-index: 6;
+}
+.section {
+  align-self: stretch;
+  background-color: var(--color-midnightblue-100);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-32) var(--padding-30);
+  position: relative;
+  gap: 15.312rem;
+  text-align: left;
+  font-size: var(--font-size-40);
+  color: var(--color-white);
+  font-family: var(--font-wittgenstein);
+  margin: 0 auto;
+  background-image: url('../../images/money.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}

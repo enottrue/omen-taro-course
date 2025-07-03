@@ -1,8 +1,22 @@
 import Head from 'next/head';
+import Component1 from "../src/components/component1/component1";
+import Component2 from "../src/components/component2/component2";
+import Component3 from "../src/components/component3/component3";
+import Component4 from "../src/components/component4/component4";
+import Component5 from "../src/components/component5/component5";
+import Component6 from "../src/components/component6/component6";
+import Component7 from "../src/components/component7/component7";
+import Component8 from "../src/components/component8/component8";
+import Component9 from "../src/components/component9/component9";
+import SmartInvestment from "../src/components/smart-investment/smart-investment";
+import Discover from "../src/components/discover/discover";
+import ModalForm from "../src/components/modal-form/modal-form";
+import ModalFormAuth from "@/components/modal-form-auth/modal-form-auth";
+import ModalFormRegister from "@/components/modal-form-register/modal-form-register";
 import Image from 'next/image';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { Inter } from 'next/font/google';
-// import styles from '@/styles/Home.module.css';
+
 import Header from '@/components/header/Header';
 import Hero from '@/components/hero/Hero';
 import ToLearn from '@/components/to-learn/ToLearn';
@@ -10,6 +24,7 @@ import About from '@/components/about/About';
 import Way from '@/components/way/Way';
 import Footer from '@/components/footer/Footer';
 import Modal from '@/components/modal/Modal';
+
 
 import { MainContext } from '@/contexts/MainContext';
 import cookie from 'cookie';
@@ -53,12 +68,39 @@ export default function Home({
   token: string | null;
 }) {
   const cc = useContext(MainContext);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
 
   useEffect(() => {
     // GOOD: This state update is now in a useEffect and won't cause a warning
     cc?.setUserId(userId);
     cc?.setToken(token);
   }, [userId, token]);
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleOpenAuthModal = () => {
+    setIsAuthModalOpen(true);
+  };
+
+  const handleCloseAuthModal = () => {
+    setIsAuthModalOpen(false);
+  };
+
+  const handleOpenRegisterModal = () => {
+    setIsRegisterModalOpen(true);
+  };
+
+  const handleCloseRegisterModal = () => {
+    setIsRegisterModalOpen(false);
+  };
 
   return (
     <>
@@ -69,14 +111,28 @@ export default function Home({
         <link rel="shortcut icon" href="/favicon/favicon.ico" />
       </Head>
       <main>
-        <Header token={token} userId={userId} />
+        <Component1 onOpenModal={handleOpenAuthModal} onOpenRegisterModal={handleOpenRegisterModal} />
+        <Component2 />
+        <Discover onOpenRegisterModal={handleOpenRegisterModal} />
+        <Component3 />
+        <Component4 onOpenAuthModal={handleOpenRegisterModal} />
+        <Component5 onOpenAuthModal={handleOpenRegisterModal} />
+        <Component6 />
+        <SmartInvestment onOpenRegisterModal={handleOpenRegisterModal} />
+        <Component7 />
+        <Component8 />
+        <Component9 onOpenAuthModal={handleOpenRegisterModal} />
+        <ModalForm isOpen={isModalOpen} onClose={handleCloseModal} />
+        <ModalFormAuth isOpen={isAuthModalOpen} onClose={handleCloseAuthModal} />
+        <ModalFormRegister isOpen={isRegisterModalOpen} onClose={handleCloseRegisterModal} />
+        {/* <Header token={token} userId={userId} />
         <Hero />
         <ToLearn />
         <About />
-        <Way />
+        <Way /> */}
         <Footer />
       </main>
-      <Modal />
+      {/* <Modal /> */}
     </>
   );
 }

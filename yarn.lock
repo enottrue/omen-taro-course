@@ -6264,6 +6264,7 @@ __metadata:
     react-player: "npm:^2.14.1"
     sass: "npm:^1.69.5"
     sharp: "npm:^0.33.1"
+    swiper: "npm:^11.2.10"
     tailwindcss: "npm:^3.2.7"
     ts-node: "npm:^10.9.1"
     typescript: "npm:5.0.4"
@@ -7717,6 +7718,13 @@ __metadata:
   bin:
     svgo: ./bin/svgo
   checksum: b3f00b3319dee6ddc53f8b8ac5acef581860e1708c98b492169e096621edc1bdf46e3778099e3dffb5116bf0d4c074a686099843dbc020c73b3ccfae7b6a88f0
+  languageName: node
+  linkType: hard
+
+"swiper@npm:^11.2.10":
+  version: 11.2.10
+  resolution: "swiper@npm:11.2.10"
+  checksum: b7e3a7c79d92ccc62af77744edc376c9aefc771a0abd50c4adf07b5e3450b5da9ca7f84f5809e275ff65e1bc9d4500d930628e84a76fc7f2db403291c69b7fac
   languageName: node
   linkType: hard
 

@@ -1,0 +1,39 @@
+.image6Icon,
+.smartInvestmentChild,
+.smartInvestmentItem {
+  width: 9.35rem;
+  position: absolute;
+  margin: 0 !important;
+  top: 1.625rem;
+  left: 11.625rem;
+  max-height: 100%;
+  object-fit: cover;
+}
+
+.smartInvestmentChild,
+.smartInvestmentItem {
+  width: 6.325rem;
+  top: 24.875rem;
+  left: 1.5rem;
+  object-fit: contain;
+}
+
+.smartInvestmentItem {
+  width: 6.481rem;
+  top: 30.5rem;
+  left: 13.925rem;
+}
+
+.smartInvestment {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-self: stretch;
+  background-color: var(--color-midnightblue-100);
+  overflow: hidden;
+  align-items: flex-end;
+  padding: var(--padding-32) var(--padding-30);
+  gap: 5.125rem;
+  margin: 0 auto;
+} 

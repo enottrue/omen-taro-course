@@ -1,0 +1,191 @@
+.testimonialsSlider {
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px 0;
+  position: relative;
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.slide {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.testimonialCard {
+  background: var(--color-gray-400);
+  backdrop-filter: blur(2px);
+  border-radius: var(--br-30);
+  padding: var(--padding-28) var(--padding-20) var(--padding-28) var(--padding-30);
+  border: 1px solid var(--color-gray-300);
+  box-shadow: 0 2px 4px rgba(2, 13, 66, 0.6);
+}
+
+.testimonialContent {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.testimonialText {
+  font-size: var(--font-size-14);
+  line-height: 120%;
+  color: var(--color-white);
+  font-weight: 300;
+  font-family: var(--font-roboto);
+  text-align: left;
+  width: 100%;
+}
+
+.testimonialAuthor {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: flex-start;
+}
+
+.authorAvatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--color-gray-300);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.authorName {
+  font-size: var(--font-size-14);
+  color: var(--color-white);
+  line-height: 120%;
+}
+
+.starsRating {
+  height: 0.25rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--gap-10);
+}
+
+.star {
+  height: 0.5rem;
+  width: 0.5rem;
+  position: relative;
+  border-radius: 50%;
+  background-color: var(--color-white);
+}
+
+/* Swiper navigation buttons - более специфичные стили */
+.testimonialsSlider .swiper-button-next,
+.testimonialsSlider .swiper-button-prev {
+  color: var(--color-white) !important;
+  background: var(--color-gray-400) !important;
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50% !important;
+  backdrop-filter: blur(2px) !important;
+  border: 1px solid var(--color-gray-300) !important;
+  position: absolute !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  z-index: 10 !important;
+  margin-top: 0 !important;
+}
+
+.testimonialsSlider .swiper-button-next {
+  right: -50px !important;
+}
+
+.testimonialsSlider .swiper-button-prev {
+  left: -50px !important;
+}
+
+/* На маленьких экранах кнопки навигации не должны выходить за контейнер */
+@media (max-width: 768px) {
+  .testimonialsSlider .swiper-button-next {
+    right: 10px !important;
+  }
+  
+  .testimonialsSlider .swiper-button-prev {
+    left: 10px !important;
+  }
+}
+
+.testimonialsSlider .swiper-button-next:after,
+.testimonialsSlider .swiper-button-prev:after {
+  font-size: 18px !important;
+  font-weight: bold !important;
+}
+
+/* Swiper pagination */
+.testimonialsSlider .swiper-pagination {
+  position: relative !important;
+  margin-top: 20px !important;
+  text-align: center !important;
+}
+
+.testimonialsSlider .swiper-pagination-bullet {
+  background: var( --color-royalblue-100);
+  opacity: 0.3 !important;
+  margin: 0 4px !important;
+  width: 6px !important;
+  height: 6px !important;
+  
+}
+
+.testimonialsSlider .swiper-pagination-bullet-active {
+  opacity: 1 !important;
+  background: var(--color-white) !important;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .testimonialsSlider {
+    padding: 10px 0;
+  }
+  
+  .testimonialCard {
+    padding: 20px;
+    margin: 0 5px;
+  }
+  
+  .testimonialText {
+    font-size: 14px;
+  }
+  
+  .testimonialsSlider .swiper-button-next,
+  .testimonialsSlider .swiper-button-prev {
+    width: 35px !important;
+    height: 35px !important;
+    display: none !important; /* Скрываем кнопки на мобильных */
+  }
+  
+  .testimonialsSlider .swiper-button-next:after,
+  .testimonialsSlider .swiper-button-prev:after {
+    font-size: 16px !important;
+  }
+  
+  .testimonialsSlider .swiper-pagination {
+    margin-top: 15px !important;
+  }
+}
+
+/* Для очень маленьких экранов */
+@media (max-width: 400px) {
+  .testimonialCard {
+    padding: 15px;
+    margin: 0 2px;
+  }
+  
+  .testimonialText {
+    font-size: 13px;
+  }
+} 

@@ -1,0 +1,124 @@
+.forYouIf,
+.thisCourseIs {
+  margin: 0;
+  position: relative;
+  letter-spacing: -0.05em;
+  line-height: 90%;
+  font-weight: 700;
+}
+.thisCourseIs {
+  font-size: inherit;
+  font-style: italic;
+  font-family: inherit;
+}
+.forYouIf {
+  font-size: var(--font-size-36);
+  font-family: var(--font-unbounded);
+}
+.courseCompatibility,
+.financialIntention {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.financialIntention {
+  width: 16.25rem;
+}
+.courseCompatibility {
+  align-self: stretch;
+  position: relative;
+  z-index: 1;
+}
+.youWantFinancial {
+  width: 13rem;
+  position: relative;
+  line-height: 110%;
+  display: flex;
+  align-items: flex-end;
+}
+.clarityStatementsWrapper {
+  width: 16.25rem;
+  height: 11.25rem;
+  border-radius: var(--br-30);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-20) var(--padding-30);
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+.clarityStatementsBg {
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 0;
+}
+.youreDoneDepending {
+  margin: 0;
+}
+.youreDoneDependingContainer1 {
+  width: 100%;
+}
+.youreAstrologyCuriousButContainer {
+  width: 13rem;
+  position: relative;
+  line-height: 120%;
+  display: flex;
+  align-items: flex-end;
+}
+.clarityStatementsParent {
+  flex-direction: column;
+  gap: var(--gap-12);
+  font-size: var(--font-size-16);
+  font-family: var(--font-roboto);
+}
+.clarityStatementsParent,
+.idealProfile,
+.suitableTarget {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.idealProfile {
+  width: 16.25rem;
+  flex-direction: column;
+  gap: 5.125rem;
+  flex-shrink: 0;
+}
+.suitableTarget {
+  flex-direction: row;
+  padding: 0 var(--padding-30);
+}
+.image3Icon {
+  width: 23.794rem;
+  position: relative;
+  max-height: 100%;
+  object-fit: cover;
+  flex-shrink: 0;
+  margin-top: -55.5rem;
+}
+.audienceAlignment {
+  align-self: stretch;
+  max-width: 320px;
+  height: 60.625rem;
+  background-color: var(--color-midnightblue-100);
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-32) 0;
+  box-sizing: border-box;
+  text-align: left;
+  font-size: var(--font-size-40);
+  color: var(--color-white);
+  font-family: var(--font-wittgenstein);
+  margin: 0 auto;
+  padding-top: 2rem;
+}

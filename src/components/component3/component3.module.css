@@ -1,0 +1,192 @@
+.frameChild {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: var(--color-gray-100);
+  width: 100%;
+  height: 100%;
+  display: none;
+}
+.pathSeparators {
+  margin: 0;
+  align-self: stretch;
+  position: relative;
+  font-size: inherit;
+  line-height: 110%;
+  font-weight: 700;
+  font-family: inherit;
+}
+.frameContainer,
+.frameWrapper,
+.pathSeparatorsWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.pathSeparatorsWrapper {
+  width: 13.75rem;
+  justify-content: flex-start;
+}
+.frameContainer,
+.frameWrapper {
+  height: 7.625rem;
+}
+.frameContainer {
+  border-radius: var(--br-30);
+  justify-content: flex-end;
+  padding: var(--padding-20) var(--padding-30);
+  box-sizing: border-box;
+  background-image: url(/frame-2087325283@3x.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top;
+}
+.frameWrapper {
+  align-self: stretch;
+  justify-content: flex-start;
+}
+.discoverWhereYour {
+  align-self: stretch;
+  position: relative;
+  font-size: var(--font-size-14);
+  line-height: 110%;
+  font-weight: 300;
+}
+.pathDescriptionInner,
+.pathDescriptionInternal {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.pathDescriptionInner {
+  align-self: stretch;
+  justify-content: flex-start;
+  gap: var(--gap-10);
+}
+.pathDescriptionInternal {
+  width: 17.5rem;
+  border-radius: var(--br-30);
+  background-color: var(--color-midnightblue-100);
+  justify-content: flex-end;
+  padding: var(--padding-20) var(--padding-30);
+  box-sizing: border-box;
+}
+.pathDescriptionInternalWrapper {
+  align-self: stretch;
+  justify-content: flex-start;
+  margin-top: -0.625rem;
+  position: relative;
+}
+.frameParent,
+.frameWrapper1,
+.pathDescriptionInternalWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.frameParent {
+  align-self: stretch;
+  justify-content: flex-start;
+}
+.frameWrapper1 {
+  background-image: url(/frame-20873252831@3x.png);
+}
+.frameWrapper1,
+.frameWrapper5,
+.frameWrapper9 {
+  border-radius: var(--br-30);
+  justify-content: flex-end;
+  padding: var(--padding-20) var(--padding-30);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top;
+}
+.frameWrapper5 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-image: url(/frame-20873252832@3x.png);
+}
+.frameWrapper9 {
+  background-image: url(/frame-20873252833@3x.png);
+}
+.frameWrapper13,
+.frameWrapper9,
+.idealMoneyPath {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.frameWrapper13 {
+  border-radius: var(--br-30);
+  justify-content: flex-end;
+  padding: var(--padding-20) var(--padding-30);
+  background-image: url(/frame-20873252834@3x.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top;
+}
+.idealMoneyPath {
+  position: absolute;
+  top: 8.25rem;
+  left: 1.25rem;
+  width: 17.5rem;
+  justify-content: flex-start;
+  gap: var(--gap-22);
+}
+.frameItem {
+  position: absolute;
+  top: 4.75rem;
+  left: 3.75rem;
+  width: 0;
+}
+.theCourse,
+.whatsInside {
+  margin: 0;
+  position: relative;
+  letter-spacing: -0.05em;
+  line-height: 90%;
+  font-weight: 700;
+}
+.whatsInside {
+  font-size: inherit;
+  font-style: italic;
+  font-family: inherit;
+}
+.theCourse {
+  font-size: var(--font-size-36);
+  font-family: var(--font-unbounded);
+}
+.whatsInsideParent {
+  position: absolute;
+  top: 2rem;
+  left: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  font-size: var(--font-size-40);
+  font-family: var(--font-wittgenstein);
+}
+.rectangleParent {
+  height: 78.5rem;
+  width: 20rem;
+  position: relative;
+  background-color: var(--color-gray-100);
+}
+.section {
+  align-self: stretch;
+  height: auto;
+  background-color: var(--color-black);
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  text-align: left;
+  font-size: var(--font-size-20);
+  color: var(--color-white);
+  font-family: var(--font-roboto);
+  margin: 0 auto;
+}

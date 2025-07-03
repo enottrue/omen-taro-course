@@ -1,0 +1,173 @@
+.unsplashutbx9x3y8lyIcon {
+  width: 20rem;
+  height: 31.813rem;
+  position: absolute;
+  margin: 0 !important;
+  top: 0;
+  left: calc(50% - 160px);
+  object-fit: cover;
+}
+.say,
+.whatStudents {
+  margin: 0;
+  position: relative;
+  letter-spacing: -0.05em;
+  line-height: 90%;
+  font-weight: 700;
+}
+.whatStudents {
+  font-size: inherit;
+  font-style: italic;
+  font-family: inherit;
+  white-space: pre-wrap;
+}
+.say {
+  font-size: var(--font-size-36);
+  font-family: var(--font-unbounded);
+}
+.whatStudentsParent {
+  width: 16.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.iUsedTo {
+  width: 12.25rem;
+  position: relative;
+  line-height: 120%;
+  font-weight: 300;
+  display: inline-block;
+}
+.imageIcon {
+  width: 2rem;
+  position: relative;
+  border-radius: 50%;
+  max-height: 100%;
+  object-fit: cover;
+}
+.jessica37 {
+  position: relative;
+  line-height: 120%;
+}
+.iUsedToDependOnAstrologerParent,
+.imageParent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--gap-10);
+}
+.iUsedToDependOnAstrologerParent {
+  width: 16.25rem;
+  backdrop-filter: blur(2px);
+  border-radius: var(--br-30);
+  background-color: var(--color-gray-400);
+  border: 1px solid var(--color-gray-300);
+  box-sizing: border-box;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: var(--padding-28) var(--padding-20) var(--padding-28)
+    var(--padding-30);
+}
+.star,
+.starIndicators {
+  height: 0.5rem;
+  width: 0.5rem;
+  position: relative;
+  border-radius: 50%;
+  background-color: var(--color-white);
+}
+.starIndicators {
+  height: 0.375rem;
+  width: 0.375rem;
+  background-color: var(--color-royalblue-100);
+}
+.starsRating {
+  height: 0.25rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--gap-10);
+}
+.frameGroup,
+.frameParent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-22);
+}
+.frameGroup {
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-14);
+  font-family: var(--font-roboto);
+  width: 100%;
+  max-width: 260px;
+}
+.frameParent {
+  align-items: flex-start;
+  justify-content: flex-start;
+  z-index: 1;
+}
+.over10000Women {
+  margin: 0;
+  align-self: stretch;
+  position: relative;
+  font-size: inherit;
+  letter-spacing: -0.05em;
+  line-height: 90%;
+  font-weight: 700;
+  font-family: inherit;
+}
+.haveAlreadyTaken {
+  margin: 0;
+}
+.haveAlreadyTakenContainer {
+  width: 15.569rem;
+  flex: 1;
+  position: relative;
+  font-size: var(--font-size-14);
+  line-height: 120%;
+  font-weight: 300;
+  font-family: var(--font-roboto);
+  color: var(--color-white);
+  text-align: center;
+  display: inline-block;
+}
+.over10000WomenParent {
+  height: 3.369rem;
+  width: 16.125rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--gap-6);
+}
+.reviewsInfo,
+.section {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.reviewsInfo {
+  flex-direction: row;
+  padding: 0 var(--padding-1);
+  font-size: var(--font-size-22);
+  color: var(--color-royalblue-100);
+  font-family: var(--font-unbounded);
+}
+.section {
+  align-self: stretch;
+  background-color: var(--color-black);
+  overflow: hidden;
+  flex-direction: column;
+  padding: var(--padding-32) var(--padding-30) 2.381rem;
+  position: relative;
+  gap: 5.5rem;
+  text-align: left;
+  font-size: var(--font-size-40);
+  color: var(--color-white);
+  font-family: var(--font-wittgenstein);
+  margin: 0 auto;
+}

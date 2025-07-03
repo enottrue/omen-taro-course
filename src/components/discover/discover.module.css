@@ -1,0 +1,160 @@
+.discover,
+.youll {
+  margin: 0;
+  position: relative;
+  letter-spacing: -0.05em;
+  line-height: 90%;
+  font-weight: 700;
+}
+
+.youll {
+  font-size: inherit;
+  font-style: italic;
+  font-family: inherit;
+}
+
+.discover {
+  font-size: var(--font-size-36);
+  font-family: var(--font-unbounded);
+}
+
+.youllParent {
+  width: 16.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.h2 {
+  margin-top: -0.313rem;
+  margin-left: -0.313rem;
+  margin: 0;
+  width: 2.5rem;
+  position: relative;
+  font-size: inherit;
+  line-height: 120%;
+  font-weight: 300;
+  font-family: inherit;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.wrapper {
+  height: 2.375rem;
+  width: 2.188rem;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.whereYouCan {
+  width: 13.625rem;
+  position: relative;
+  font-size: var(--font-size-14);
+  line-height: 120%;
+  font-weight: 300;
+  color: var(--color-white);
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.frameContainer {
+  align-self: stretch;
+  border-radius: var(--br-14);
+  background-color: var(--color-slateblue);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: var(--padding-10) var(--padding-20) var(--padding-10) 0;
+  gap: var(--gap-10);
+}
+
+.howToTurn,
+.whichPathFits {
+  width: 12.188rem;
+  position: relative;
+  font-size: var(--font-size-14);
+  line-height: 120%;
+  font-weight: 300;
+  color: var(--color-white);
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.howToTurn {
+  width: 12.375rem;
+}
+
+.frameParent1 {
+  align-self: stretch;
+  border-radius: var(--br-14);
+  background-color: var(--color-slateblue);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: var(--padding-10) 1.062rem var(--padding-10) 0;
+  gap: var(--gap-10);
+}
+
+.frameGroup,
+.frameParent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.frameGroup {
+  width: 16.25rem;
+  gap: var(--gap-12);
+  color: var(--color-black);
+  font-family: var(--font-roboto);
+}
+
+.frameParent {
+  gap: var(--gap-22);
+}
+
+.enrollNow {
+  position: relative;
+  font-size: var(--font-size-14);
+  line-height: 90%;
+  font-family: var(--font-roboto);
+  color: var(--color-midnightblue-100);
+  text-align: right;
+}
+
+.enrollNowOnly50Wrapper {
+  cursor: pointer;
+  border: 0;
+  padding: var(--padding-14) var(--padding-20);
+  background-color: var(--color-white);
+  width: 16.25rem;
+  border-radius: 964px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.section {
+  align-self: stretch;
+  background-color: var(--color-midnightblue-100);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-32) var(--padding-30);
+  gap: 1.187rem;
+  text-align: left;
+  font-size: var(--font-size-40);
+  color: var(--color-white);
+  font-family: var(--font-wittgenstein);
+  margin: 0 auto;
+} 

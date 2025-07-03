@@ -1,0 +1,264 @@
+.unsplashutbx9x3y8lyIcon {
+  width: 20rem;
+  height: 46.688rem;
+  position: relative;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.graphicIndicatorsChild,
+.graphicIndicatorsItem {
+  width: 37.438rem;
+  height: 24.5rem;
+  position: absolute;
+  margin: 0 !important;
+  top: 26.126rem;
+  left: calc(50% - 186.89px);
+  filter: blur(184px);
+  border-radius: 50%;
+  background-color: var(--color-gray-500);
+  transform: rotate(13.6deg);
+  transform-origin: 0 0;
+  mix-blend-mode: multiply;
+  z-index: 1;
+}
+.graphicIndicatorsItem {
+  top: -18.937rem;
+}
+.price,
+.unitPrice {
+  margin: 0;
+  position: relative;
+  font-size: inherit;
+  letter-spacing: -0.05em;
+  line-height: 90%;
+  font-weight: 300;
+  font-family: inherit;
+}
+.unitPrice {
+  font-weight: 700;
+}
+.enrollBenefits {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--gap-10);
+}
+.neTimePayment {
+  margin: 0;
+}
+.neTimePaymentLifetimeContainer {
+  width: 12.25rem;
+  position: relative;
+  font-size: var(--font-size-14);
+  line-height: 120%;
+  font-weight: 300;
+  font-family: var(--font-roboto);
+  text-align: center;
+  display: inline-block;
+}
+.purchaseOptions {
+  align-self: stretch;
+  backdrop-filter: blur(12px);
+  border-radius: var(--br-30);
+  background-color: var(--color-midnightblue-200);
+  border: 1px solid var(--color-gray-300);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: var(--padding-28) var(--padding-20) var(--padding-28)
+    var(--padding-30);
+  gap: 1.937rem;
+}
+.image7Icon {
+  width: 3rem;
+  position: relative;
+  max-height: 100%;
+  object-fit: cover;
+}
+.limitedTimeOffer {
+  text-transform: uppercase;
+}
+.limitedTimeOffer,
+.only200SpotsContainer,
+.priceMayIncreaseContainer {
+  width: 12.25rem;
+  position: relative;
+  line-height: 120%;
+  display: inline-block;
+}
+.only200SpotsContainer {
+  font-size: var(--font-size-24);
+  text-transform: uppercase;
+}
+.priceMayIncreaseContainer {
+  font-weight: 300;
+}
+.costOptions,
+.earlyDiscount {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.earlyDiscount {
+  backdrop-filter: blur(8px);
+  border-radius: var(--br-30);
+  background-color: var(--color-gray-200);
+  border: 1px solid var(--color-gray-300);
+  align-items: center;
+  padding: var(--padding-18) var(--padding-30) var(--padding-28);
+  gap: var(--gap-12);
+  text-align: center;
+  font-size: var(--font-size-14);
+  font-family: var(--font-roboto);
+}
+.costOptions {
+  align-items: flex-start;
+}
+.ready,
+.toLearn {
+  margin: 0;
+  position: relative;
+  letter-spacing: -0.05em;
+  line-height: 90%;
+  font-weight: 700;
+}
+.ready {
+  font-size: inherit;
+  font-style: italic;
+  font-family: inherit;
+}
+.toLearn {
+  font-size: var(--font-size-36);
+  font-family: var(--font-unbounded);
+}
+.learnMoment {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  font-size: var(--font-size-40);
+  font-family: var(--font-wittgenstein);
+}
+.enrollNow {
+  position: relative;
+  font-size: var(--font-size-14);
+  line-height: 90%;
+  font-family: var(--font-roboto);
+  color: var(--color-midnightblue-100);
+  text-align: right;
+}
+.enrollProcess {
+  cursor: pointer;
+  border: 0;
+  padding: var(--padding-14) var(--padding-20);
+  background-color: var(--color-white);
+  width: 16.25rem;
+  height: 2.563rem;
+  border-radius: 964px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+.accessSummary {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--gap-32);
+}
+.chartVisibilityChild {
+  width: 16.25rem;
+  height: 11.25rem;
+  border-radius: var(--br-30);
+  object-fit: cover;
+}
+.yourChartAlready {
+  margin: 0;
+  align-self: stretch;
+  position: relative;
+  font-size: inherit;
+  letter-spacing: -0.05em;
+  line-height: 90%;
+  font-weight: 700;
+  font-family: inherit;
+}
+.itsTimeFor {
+  width: 15.625rem;
+  position: relative;
+  font-size: var(--font-size-14);
+  line-height: 120%;
+  font-weight: 300;
+  font-family: var(--font-roboto);
+  display: inline-block;
+}
+.yourChartAlreadyKnowsWhereParent {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--gap-6);
+}
+.accessBeginning {
+  cursor: pointer;
+  border: 0;
+  padding: var(--padding-14) var(--padding-20);
+  background-color: var(--color-white);
+  align-self: stretch;
+  height: 2.563rem;
+  border-radius: 964px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+.chartVisibility {
+  align-self: stretch;
+  flex-direction: column;
+  gap: var(--gap-32);
+  font-size: var(--font-size-22);
+}
+.chartVisibility,
+.graphicIndicators,
+.priceOffering,
+.subscriptionPlan {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.subscriptionPlan {
+  width: 16.25rem;
+  flex-direction: column;
+  gap: 5.75rem;
+  flex-shrink: 0;
+}
+.graphicIndicators,
+.priceOffering {
+  position: relative;
+}
+.priceOffering {
+  flex-direction: row;
+  padding: 0 var(--padding-30);
+  margin-top: -44.688rem;
+  text-align: left;
+  font-size: var(--font-size-36);
+  color: var(--color-white);
+  font-family: var(--font-unbounded);
+}
+.graphicIndicators {
+  align-self: stretch;
+  background-color: var(--color-navy);
+  overflow: hidden;
+  flex-direction: column;
+  padding: 0 0 1.975rem;
+  margin: 0 auto;
+}

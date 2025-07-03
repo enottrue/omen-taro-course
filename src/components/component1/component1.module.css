@@ -1,0 +1,284 @@
+.lyIcon {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  left: 0;
+  top: 34.5rem;
+  transform: scale(1);
+}
+.child,
+.wrapperUnsp {
+  position: absolute;
+  margin: 0 !important;
+}
+.wrapperUnsp {
+  width: 30.25rem;
+  height: 45.313rem;
+  top: 70.438rem;
+  left: calc(50% - 242px);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 0;
+}
+.child {
+  width: 37.438rem;
+  height: 24.5rem;
+  top: 25.126rem;
+  left: calc(50% - 153.89px);
+  filter: blur(184px);
+  border-radius: 50%;
+  background-color: var(--color-gray-500);
+  transform: rotate(13.6deg);
+  transform-origin: 0 0;
+  mix-blend-mode: multiply;
+  z-index: 1;
+}
+.image3Icon {
+  width: 100%;
+  z-index: 2;
+  object-fit: cover;
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  transform: scale(1);
+}
+.wrapperImage3 {
+  width: 36.475rem;
+  position: absolute;
+  margin: 0 !important;
+  top: 5.688rem;
+  left: -1.062rem;
+  max-height: 100%;
+  z-index: 2;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.wrapperGroup2Child {
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  object-fit: cover;
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: scale(1);
+}
+.wrapperGroup2 {
+  width: 25.069rem;
+  height: 20.038rem;
+  position: absolute;
+  margin: 0 !important;
+  top: 13.156rem;
+  left: -2.5rem;
+  z-index: 3;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.noMoreGuessing {
+  margin: 0;
+}
+.noMoreGuessingContainer {
+  width: 17.813rem;
+  flex: 1;
+  position: absolute;
+  margin: 0 !important;
+  top: 32.375rem;
+  left: 1.875rem;
+  line-height: 120%;
+  font-weight: 300;
+  display: inline-block;
+  z-index: 4;
+}
+.cosmo,
+.irena {
+  position: relative;
+  letter-spacing: -0.05em;
+  line-height: 90%;
+}
+.cosmo {
+  margin: 0;
+  font-size: inherit;
+  font-style: italic;
+  font-weight: 700;
+  font-family: inherit;
+}
+.irena {
+  font-size: var(--font-size-14);
+  font-family: var(--font-unbounded);
+}
+.cosmoParent,
+.frameWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+.frameWrapper {
+  height: 1.875rem;
+  width: 3.438rem;
+  flex-direction: row;
+  justify-content: flex-start;
+  padding: 0 0 var(--padding-2);
+  box-sizing: border-box;
+}
+.div {
+  position: relative;
+  line-height: 90%;
+}
+.wrapper {
+  border-radius: 500px;
+  border: 1px solid var(--color-midnightblue-100);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  justify-content: center;
+  padding: var(--padding-4) 0.562rem var(--padding-5);
+  transition: all 0.2s ease;
+}
+.wrapper:hover {
+  background-color: var(--color-midnightblue-100);
+  color: var(--color-white);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(19, 36, 46, 0.2);
+}
+.div1 {
+  position: relative;
+  font-size: var(--font-size-12);
+  line-height: 90%;
+  font-family: var(--font-roboto);
+  color: var(--color-white);
+  text-align: center;
+}
+.container {
+  cursor: pointer;
+  border: 0;
+  padding: var(--padding-6) var(--padding-10) 0.437rem;
+  background-color: var(--color-midnightblue-100);
+  border-radius: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.frameContainer,
+.frameGroup {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.frameContainer {
+  justify-content: flex-end;
+  gap: var(--gap-6);
+  text-align: center;
+  font-size: var(--font-size-12);
+  font-family: var(--font-roboto);
+}
+.frameGroup {
+  width: 18.125rem;
+  border-radius: var(--br-100);
+  background-color: var(--color-white);
+  justify-content: space-between;
+  padding: var(--padding-10) var(--padding-10) var(--padding-10)
+    var(--padding-20);
+  box-sizing: border-box;
+  gap: var(--gap-20);
+  top: 0;
+  z-index: 99;
+  position: sticky;
+  text-align: left;
+  font-size: 1.063rem;
+  color: var(--color-midnightblue-100);
+  font-family: var(--font-wittgenstein);
+}
+.birthChart {
+  margin: 0;
+  position: relative;
+  font-size: var(--font-size-36);
+  letter-spacing: -0.05em;
+  line-height: 90%;
+  font-weight: 700;
+  font-family: var(--font-unbounded);
+}
+.yourMoneyIsInYourParent {
+  flex-direction: column;
+}
+.frameDiv,
+.frameParent,
+.yourMoneyIsInYourParent {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.frameDiv {
+  flex-direction: row;
+  padding: 0 var(--padding-15);
+}
+.frameParent {
+  flex-direction: column;
+  gap: 2.875rem;
+  font-size: var(--font-size-40);
+  font-family: var(--font-wittgenstein);
+}
+.isAPersonalized {
+  width: 17.813rem;
+  position: absolute;
+  margin: 0 !important;
+  top: 52.563rem;
+  left: 1.25rem;
+  line-height: 120%;
+  font-weight: 300;
+  display: inline-block;
+  z-index: 2;
+}
+.enrollNow {
+  position: relative;
+  font-size: var(--font-size-14);
+  line-height: 90%;
+  font-family: var(--font-roboto);
+  color: var(--color-midnightblue-100);
+  text-align: right;
+}
+.enrollNowOnly50Wrapper,
+.section {
+  display: flex;
+  box-sizing: border-box;
+}
+.enrollNowOnly50Wrapper {
+  cursor: pointer;
+  border: 0;
+  padding: var(--padding-14) var(--padding-20);
+  background-color: var(--color-white);
+  width: 16.25rem;
+  border-radius: 964px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.section {
+  width: 20rem;
+  background-color: var(--color-navy);
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-15) var(--padding-15) 2.312rem;
+  position: relative;
+  gap: 25.437rem;
+  text-align: left;
+  font-size: var(--font-size-12);
+  color: var(--color-white);
+  font-family: var(--font-roboto);
+  margin: 0 auto;
+  background-image: url('../../images/back-star.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}

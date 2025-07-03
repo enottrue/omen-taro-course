@@ -1,0 +1,116 @@
+.useIt {
+  font-family: var(--font-roboto);
+}
+
+.useItForYourFamily {
+  margin: 0;
+}
+
+.useItForContainer {
+  width: 9.25rem;
+  position: relative;
+  line-height: 120%;
+  display: inline-block;
+}
+
+.analysisAccess {
+  width: 18.438rem;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+
+.learnYourWayContainer {
+  width: 11rem;
+  position: relative;
+  line-height: 120%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.structuredLearning {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0 2.187rem;
+}
+
+.selfpacedContentChild {
+  width: 6.175rem;
+  position: relative;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.stressFreeLearningContainer {
+  width: 11rem;
+  position: relative;
+  line-height: 120%;
+  display: inline-block;
+}
+
+.learningStyle,
+.selfpacedContent {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.learningStyle {
+  flex-direction: column;
+  padding: 1.437rem 0 0;
+}
+
+.selfpacedContent {
+  flex-direction: row;
+  gap: 1.262rem;
+}
+
+.enrollNow {
+  position: relative;
+  font-size: var(--font-size-14);
+  line-height: 90%;
+  font-family: var(--font-roboto);
+  color: var(--color-midnightblue-100);
+  text-align: right;
+}
+
+.enrollPromotion {
+  cursor: pointer;
+  border: 0;
+  padding: var(--padding-14) var(--padding-20);
+  background-color: var(--color-white);
+  width: 16.25rem;
+  border-radius: 964px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.effortlessAcquisition,
+.familyBenefits,
+.learningApproach {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: 1.487rem;
+}
+
+.familyBenefits,
+.learningApproach {
+  align-items: flex-start;
+  gap: 1.937rem;
+}
+
+.familyBenefits {
+  gap: 4.125rem;
+  text-align: left;
+  font-size: var(--font-size-14);
+  color: var(--color-white);
+  font-family: var(--font-roboto);
+} 

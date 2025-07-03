@@ -1,0 +1,114 @@
+.introVideo,
+.watchThe {
+  margin: 0;
+  position: relative;
+  letter-spacing: -0.05em;
+  line-height: 90%;
+  font-weight: 700;
+}
+.watchThe {
+  font-size: inherit;
+  font-style: italic;
+  font-family: inherit;
+}
+.introVideo {
+  font-size: var(--font-size-36);
+  font-family: var(--font-unbounded);
+}
+.watchTheParent {
+  width: 16.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.whyICreated {
+  text-transform: uppercase;
+}
+.whyICreatedContainer {
+  width: 16.25rem;
+  position: relative;
+  font-size: var(--font-size-12);
+  line-height: 120%;
+  display: inline-block;
+  font-family: var(--font-roboto);
+}
+.frameGroup {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--gap-22);
+}
+.frameChild {
+  width: 16.25rem;
+  height: 9.125rem;
+  position: relative;
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.frameChild:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.watchTheVideo {
+  position: relative;
+  font-size: var(--font-size-14);
+  line-height: 90%;
+  font-family: var(--font-roboto);
+  color: var(--color-midnightblue-100);
+  text-align: right;
+}
+.frameItem {
+  width: 0.706rem;
+  height: 0.706rem;
+  position: relative;
+  max-height: 100%;
+  object-fit: contain;
+}
+.watchTheVideoParent {
+  cursor: pointer;
+  border: 0;
+  padding: var(--padding-14) var(--padding-20);
+  background-color: var(--color-white);
+  width: 16.25rem;
+  height: 2.563rem;
+  border-radius: 964px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  gap: var(--gap-10);
+}
+.frameParent,
+.section {
+  display: flex;
+  justify-content: flex-start;
+}
+.frameParent {
+  width: 16.25rem;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap-22);
+}
+.section {
+  width: 20rem;
+  height: auto;
+  background-color: var(--color-midnightblue-100);
+  overflow: hidden;
+  flex-shrink: 0;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: var(--padding-32) var(--padding-30);
+  box-sizing: border-box;
+  text-align: left;
+  font-size: var(--font-size-40);
+  color: var(--color-white);
+  font-family: var(--font-wittgenstein);
+  margin: 0 auto;
+}
