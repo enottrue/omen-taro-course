@@ -56,15 +56,15 @@
 
 .modal-close {
   position: absolute;
-  top: 1.2rem;
-  right: 1.2rem;
+  top: 1rem;
+  right: 1rem;
   background: none;
   border: none;
   font-size: 1.5rem;
   color: var(--color-white);
   border-radius: 50%;
-  width: 32px;
-  height: 32px;
+  width: 46px;
+  height: 46px;
   display: flex;
   align-items: center;
   justify-content: center;
