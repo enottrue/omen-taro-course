@@ -179,7 +179,7 @@
   cursor: pointer;
   transition: background 0.2s;
   margin: 0.5rem auto;
-  margin-bottom: 1.2rem;
+  margin-bottom: 0rem;
 }
 
 .modal-submit:hover:not(:disabled) {

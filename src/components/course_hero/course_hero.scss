@@ -98,13 +98,16 @@
 }
 
 .frame-inner {
-  position: absolute;
+  position: relative;
   top: 47.5rem;
   left: -2.562rem;
   width: 25.069rem;
   height: 20.038rem;
   object-fit: contain;
   z-index: 4;
+  .wrapperGroup2 {
+    position: relative;
+    }
 }
 
 .unsplashutbx9x3y8ly-parent {
@@ -215,6 +218,9 @@ header.component1 {
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
+  .cosmo {
+    color: var(--color-white);
+  }
 }
 
 .frame-div {
@@ -510,11 +516,14 @@ header {
   padding: 0 var(--padding-20);
   font-size: 1.25rem;
   color: var(--color-white);
+  .cosmo-group, .cosmo-group .cosmo, .cosmo-group .irena1 {
+    color: var(--color-white);
+  }
 }
 
 .frame-section {
   align-self: stretch;
-  height: 36.438rem;
+  height: 16.438rem;
   gap: 5.087rem;
   text-align: left;
   font-size: 2.5rem;
@@ -569,4 +578,57 @@ header {
   justify-content: flex-start;
   opacity: 0.9;
   z-index: 1;
+}
+
+// Frame section styles
+.frame-section {
+  width: 100%;
+  position: relative;
+  z-index: 5;
+  top: 1rem;
+}
+
+// Override component1 styles for wrapperGroup2 in course hero
+.frame-section .component1_wrapperGroup2__5EqMV {
+  top: 0rem;
+}
+
+.frame-wrapper2 {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 0;
+}
+
+.frame-wrapper3 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cosmo-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cosmo {
+  font-size: inherit;
+  font-style: italic;
+  font-weight: 700;
+  font-family: var(--font-wittgenstein);
+  position: relative;
+  letter-spacing: -0.05em;
+  line-height: 90%;
+  margin: 0;
+  color: var(--color-midnightblue);
+}
+
+.irena1 {
+  font-size: inherit;
+  font-weight: 700;
+  font-family: var(--font-unbounded);
+  color: var(--color-midnightblue);
+  margin: 0;
 }

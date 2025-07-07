@@ -128,14 +128,18 @@ const CourseHero = ({ lessons }: CourseHeroProps) => {
       </section>
       
       <section className="frame-section">
-        <div className="frame-wrapper2">
-          <div className="frame-wrapper3">
-            <div className="cosmo-group">
-              <h3 className="cosmo">Cosmo.</h3>
-              <b className="irena1">Irena</b>
-            </div>
-          </div>
-        </div>
+        
+      <div className={styles.wrapperGroup2}>
+        <Image
+          className={styles.wrapperGroup2Child}
+          width={401.1}
+          height={320.6}
+          sizes=""
+          alt=""
+          src={group2}
+          priority
+        />
+      </div>
       </section>
       
       {/* Секция cource-lessons bg-white внутри root */}
@@ -143,6 +147,14 @@ const CourseHero = ({ lessons }: CourseHeroProps) => {
         <CourseLessons lessons={lessons} />
         <div className="cource-bottom-bg"> </div>
       </section>
+      <div className="frame-wrapper2">
+          <div className="frame-wrapper3">
+            <div className="cosmo-group">
+              <h3 className="cosmo">Cosmo.</h3>
+              <b className="irena1">Irena</b>
+            </div>
+          </div>
+        </div>  
     </div>
 );
 };
