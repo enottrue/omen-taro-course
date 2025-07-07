@@ -199,6 +199,76 @@
   color: var(--color-midnightblue-100);
   font-family: var(--font-wittgenstein);
 }
+
+.burgerMenu {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: var(--padding-6) var(--padding-10) 0.437rem;
+  border-radius: 500px;
+  background-color: var(--color-midnightblue-100);
+  transition: all 0.2s ease;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 12px;
+
+}
+
+.burgerMenu:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(19, 36, 46, 0.2);
+}
+
+.burgerLine {
+  width: 12px;
+  height: 1px;
+  background-color: var(--color-white);
+  border-radius: 1px;
+  transition: all 0.2s ease;
+}
+
+.burgerDropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: var(--color-white);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  width: 275px;
+  margin-top: 8px;
+}
+
+.burgerDropdownContent {
+  padding: 0;
+}
+
+.burgerMenuItem {
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: var(--font-size-12);
+  color: var(--color-midnightblue-100);
+  font-family: var(--font-roboto);
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.burgerMenuItem:last-child {
+  border-bottom: none;
+}
+
+.burgerMenuItem:hover {
+  background-color: var(--color-midnightblue-100);
+  color: var(--color-white);
+}
+
+.screenImageContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
 .birthChart {
   margin: 0;
   position: relative;

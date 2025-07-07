@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import Button from '@/components/button/Button'; // Replace with the actual path to your Button component
 import ButtonArrow from '@/images/svg/button-arrow.svg'; // Replace with the actual path to your SVG component
 import { useRouter } from 'next/router';
@@ -7,29 +7,34 @@ import courseFinishHeader from '@/images/cource-finish-header.png';
 import Image from 'next/image';
 import { useState } from 'react';
 import useUpdateUserData from '@/hooks/useUpdateUserData';
+import Component1 from "../component1/component1";
+import OnboardingMenuShell from '../component1/OnboardingMenuShell';
+
 
 const OnboardingStages = () => {
   const [stage, setStage] = useState(0);
+  const [isBurgerOpen, setIsBurgerOpen] = useState(false);
+  const burgerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const cc = useContext(MainContext);
   const { update, error, loading } = useUpdateUserData();
 
   const descriptions = [
-    'Для перехода между разделами сайта используйте меню в правом верхнем углу',
-    'Каждый урок содержит несколько видео. Для того, чтобы перейти к просмотру, нажмите на стрелочку рядом с названием урока – откроется список видео:',
-    'Используйте обозначения, чтобы ориентироваться в уроках и понимать, на каком видео вы остановились:',
+    '',
+    '',
+    '',
     'Нажмите на название видео, чтобы перейти к просмотру:',
     'Используйте следующие кнопки, чтобы переключаться между уроками, либо вернуться в меню курса:',
     'После прохождения курса вы сможете скачать электронную методичку и получить именной сертификат:',
   ];
 
   const images: string[][] = [
-    ['/onboarding/1.png'],
-    ['/onboarding/2-1.png', '/onboarding/2-2.png'],
-    ['/onboarding/3-1.png', '/onboarding/3-2.png'],
-    ['/onboarding/4.png'],
-    ['/onboarding/5-1.png', '/onboarding/5-2.png', '/onboarding/5-3.png'],
-    ['/onboarding/6.png'],
+    ['/onboarding/screen2.png'],
+    ['/onboarding/screen3.png'],
+    ['/onboarding/screen4.png'],
+    ['/onboarding/screen5.png'],
+    ['/onboarding/screen6.png'],
+    ['/onboarding/screen7.png'],
   ];
 
   const skipButtonHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -37,7 +42,6 @@ const OnboardingStages = () => {
     localStorage.setItem('onboarded', 'true');
     router.push('/courses');
   };
-
   const nextButtonHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     setStage(stage + 1);
 
@@ -46,6 +50,27 @@ const OnboardingStages = () => {
       router.push('/courses');
     }
   };
+
+  const handleBurgerClick = () => {
+    setIsBurgerOpen(!isBurgerOpen);
+  };
+
+  // Close burger menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (burgerRef.current && !burgerRef.current.contains(event.target as Node)) {
+        setIsBurgerOpen(false);
+      }
+    };
+
+    if (isBurgerOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isBurgerOpen]);
 
   const stages = descriptions.map((description, index) => (
     <div className="onboarding__item active" key={index}>
@@ -59,7 +84,7 @@ const OnboardingStages = () => {
             key={i}
             src={`${src}`}
             alt={`Image ${i}`}
-            width={'375'}
+            width={'290'}
             height={'1000'}
           />
         </div>
@@ -116,50 +141,50 @@ const OnboardingStages = () => {
   ));
 
   return (
-    <section className="onboarding">
-      <h1>Начало работы</h1>
-      {stage == 0 && (
-        <div className="onboarding__item active">
-          <div className="onboarding__description">
-            <p>
-              Добро пожаловать на обучающий курс по колоде Уэйта, который идет в
-              комплекте с колодой!
-            </p>
-            <p>
-              Прежде, чем начать обучение – предлагаем ознакомиться с тем, как
-              устроен сайт, чтобы обучение было быстрым и эффективным.
-            </p>
-            <p>
-              Если возникнут вопросы, вы можете задать их в нашем боте в
-              Telegram по кнопке на верхней панели
-            </p>
+    <OnboardingMenuShell
+      hideLoginButton={true}
+      onBurgerClick={handleBurgerClick}
+      isBurgerOpen={isBurgerOpen}
+      burgerRef={burgerRef}
+    >
+    
+      <div className="onboarding__content">
+        {stage == 0 && (
+          <div className="onboarding__item active">
+            <div className="onboarding__description">
+             <div className="onboarding__image">
+               <Image
+                 src="/onboarding/screen1.png"
+                 alt="Onboarding Screen 1"
+                 width={600} // Adjust the width as needed
+                 height={400} // Adjust the height as needed
+                 layout="responsive"
+               />
+             </div>
+             {/* <p>Добро пожаловать на обучающий курс по колоде Уэйта, который идет в комплекте с колодой!</p> */}
+            </div>
+            <div className="onboarding__buttons">
+              <Button
+                title="Пропустить"
+                isLink={true}
+                className="button_ternary button_little"
+                onClick={skipButtonHandler}
+              />
+              <Button
+                title="Далее"
+                className="button_little js-onboarding-next"
+                onClick={nextButtonHandler}
+              >
+                <span className="onboarding__button-icon">
+                  <ButtonArrow />
+                </span>
+              </Button>
+            </div>
           </div>
-
-          {/* <div className="onboarding__image">
-            <Image src={courseFinishHeader} alt="" />
-          </div> */}
-
-          <div className="onboarding__buttons">
-            <Button
-              title="Пропустить"
-              isLink={true}
-              className="button_ternary button_little"
-              onClick={skipButtonHandler}
-            />
-            <Button
-              title="Далее"
-              className="button_little js-onboarding-next"
-              onClick={nextButtonHandler}
-            >
-              <span className="onboarding__button-icon">
-                <ButtonArrow />
-              </span>
-            </Button>
-          </div>
-        </div>
-      )}
-      {stage > 0 && stages[stage - 1]}
-    </section>
+        )}
+        {stage > 0 && stages[stage - 1]}
+      </div>
+    </OnboardingMenuShell>
   );
 };
 

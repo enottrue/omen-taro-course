@@ -18,7 +18,6 @@ const ModalFormAuth: NextPage<ModalFormAuthType> = ({
   isOpen = false, 
   onClose 
 }) => {
-  const [isVisible, setIsVisible] = useState(isOpen);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -27,17 +26,13 @@ const ModalFormAuth: NextPage<ModalFormAuthType> = ({
   const router = useRouter();
 
   useEffect(() => {
-    setIsVisible(isOpen);
-  }, [isOpen]);
-
-  useEffect(() => {
     const handleEscKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && isVisible) {
+      if (event.key === 'Escape' && isOpen) {
         handleClose();
       }
     };
 
-    if (isVisible) {
+    if (isOpen) {
       document.addEventListener('keydown', handleEscKey);
       document.body.style.overflow = 'hidden'; // Prevent background scrolling
     }
@@ -46,11 +41,11 @@ const ModalFormAuth: NextPage<ModalFormAuthType> = ({
       document.removeEventListener('keydown', handleEscKey);
       document.body.style.overflow = 'unset';
     };
-  }, [isVisible]);
+  }, [isOpen]);
 
   const handleClose = () => {
-    setIsVisible(false);
     onClose?.();
+    cc?.setCurrentForm && cc.setCurrentForm(null);
   };
 
   const handleBackdropClick = (e: React.MouseEvent) => {
@@ -115,7 +110,7 @@ const ModalFormAuth: NextPage<ModalFormAuthType> = ({
     }
   };
 
-  if (!isVisible) return null;
+  if (!isOpen) return null;
 
   return (
     <div 
@@ -156,6 +151,17 @@ const ModalFormAuth: NextPage<ModalFormAuthType> = ({
           <button className={styles['modal-submit']} type="submit" disabled={loading || cc?.submitting}>
             {loading || cc?.submitting ? 'Вход...' : 'Войти'}
           </button>
+          <a 
+            href="#"
+            className={styles['modal-link-simple']}
+            onClick={(e) => {
+              e.preventDefault();
+              handleClose();
+              cc?.setCurrentForm && cc.setCurrentForm('register');
+            }}
+          >
+            Нет аккаунта? Зарегистрироваться
+          </a>
         </form>
       </div>
     </div>

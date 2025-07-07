@@ -10,11 +10,8 @@ import Component8 from "../src/components/component8/component8";
 import Component9 from "../src/components/component9/component9";
 import SmartInvestment from "../src/components/smart-investment/smart-investment";
 import Discover from "../src/components/discover/discover";
-import ModalForm from "../src/components/modal-form/modal-form";
-import ModalFormAuth from "@/components/modal-form-auth/modal-form-auth";
-import ModalFormRegister from "@/components/modal-form-register/modal-form-register";
 import Image from 'next/image';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { Inter } from 'next/font/google';
 
 import Header from '@/components/header/Header';
@@ -24,7 +21,6 @@ import About from '@/components/about/About';
 import Way from '@/components/way/Way';
 import Footer from '@/components/footer/Footer';
 import Modal from '@/components/modal/Modal';
-
 
 import { MainContext } from '@/contexts/MainContext';
 import cookie from 'cookie';
@@ -68,39 +64,12 @@ export default function Home({
   token: string | null;
 }) {
   const cc = useContext(MainContext);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
 
   useEffect(() => {
     // GOOD: This state update is now in a useEffect and won't cause a warning
     cc?.setUserId(userId);
     cc?.setToken(token);
   }, [userId, token]);
-
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleOpenAuthModal = () => {
-    setIsAuthModalOpen(true);
-  };
-
-  const handleCloseAuthModal = () => {
-    setIsAuthModalOpen(false);
-  };
-
-  const handleOpenRegisterModal = () => {
-    setIsRegisterModalOpen(true);
-  };
-
-  const handleCloseRegisterModal = () => {
-    setIsRegisterModalOpen(false);
-  };
 
   return (
     <>
@@ -111,28 +80,20 @@ export default function Home({
         <link rel="shortcut icon" href="/favicon/favicon.ico" />
       </Head>
       <main>
-        <Component1 onOpenModal={handleOpenAuthModal} onOpenRegisterModal={handleOpenRegisterModal} />
+        <Component1 />
         <Component2 />
-        <Discover onOpenRegisterModal={handleOpenRegisterModal} />
+        <Discover />
         <Component3 />
-        <Component4 onOpenAuthModal={handleOpenRegisterModal} />
-        <Component5 onOpenAuthModal={handleOpenRegisterModal} />
+        <Component4 />
+        <Component5 />
         <Component6 />
-        <SmartInvestment onOpenRegisterModal={handleOpenRegisterModal} />
+        <SmartInvestment />
         <Component7 />
         <Component8 />
-        <Component9 onOpenAuthModal={handleOpenRegisterModal} />
-        <ModalForm isOpen={isModalOpen} onClose={handleCloseModal} />
-        <ModalFormAuth isOpen={isAuthModalOpen} onClose={handleCloseAuthModal} />
-        <ModalFormRegister isOpen={isRegisterModalOpen} onClose={handleCloseRegisterModal} />
-        {/* <Header token={token} userId={userId} />
-        <Hero />
-        <ToLearn />
-        <About />
-        <Way /> */}
+        <Component9 />
+        <Modal />
         <Footer />
       </main>
-      {/* <Modal /> */}
     </>
   );
 }

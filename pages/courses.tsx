@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import Header from '@/components/header/Header';
 import { useContext } from 'react';
 import { MainContext } from '@/contexts/MainContext';
 import cookie from 'cookie';
@@ -11,12 +10,12 @@ import OnboardingStages from '@/components/onboarding/OnboardingStages';
 
 import { useGetLazyUserData } from '@/hooks/useGetUserData';
 import CourseHero from '@/components/course_hero/Course_hero';
-import CourseLessons from '@/components/course_lessons/courseLessons';
 import Footer from '@/components/footer/Footer';
 
 import { apolloClient } from '@/lib/apollo/apollo';
 import { GET_COURSES, GET_COURSE, GET_STAGE_STATUS } from '@/graphql/queries';
 import { useLazyQuery, useQuery } from '@apollo/client';
+import styles from '@/components/component1/component1.module.css';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const APP_SECRET = process.env.APP_SECRET;
@@ -125,9 +124,9 @@ const Cources = ({
     cc?.setToken(token);
     const us = getUser({ variables: { userId } });
 
-    if (!userId || !token) {
-      router.push('/');
-    }
+    // if (!userId || !token) {
+    //   router.push('/');
+    // }
   }, [userId, token]);
 
   useEffect(() => {
@@ -146,9 +145,7 @@ const Cources = ({
         <link rel="shortcut icon" href="/favicon/favicon.ico" />
       </Head>
       <main>
-        <Header token={token} userId={userId} />
-        <CourseHero />
-        <CourseLessons lessons={courses?.lessons} />
+        <CourseHero lessons={courses?.lessons} />
       </main>
       <Footer />
     </>

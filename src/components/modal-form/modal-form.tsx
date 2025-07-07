@@ -165,8 +165,8 @@ const ModalForm: NextPage<ModalFormType> = ({
         </button>
         <h3 className={styles['modal-title']}>fill out</h3>
         <h2 className={styles['modal-title-ru']}>
-          регис-<br />
-          трация
+          Автори-<br />
+          зация
         </h2>
         <form className={styles['modal-fields']} onSubmit={handleSubmit}>
           <input

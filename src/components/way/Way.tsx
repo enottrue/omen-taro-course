@@ -135,7 +135,7 @@ const Way = () => {
                   onboarding === 'true' ? '/courses' : '/onboarding';
                 router.push(shouldRedirect);
               } else {
-                cc?.setModalOpen(!cc?.modalOpen);
+                cc?.setModalOpen(true);
                 cc?.setCurrentForm('register');
               }
             }}

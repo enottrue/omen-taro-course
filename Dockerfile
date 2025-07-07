@@ -4,15 +4,10 @@ FROM base AS deps
 WORKDIR /app
 
 RUN apk add --no-cache libc6-compat
-RUN --mount=type=bind,source=package.json,target=package.json \
-    --mount=type=bind,source=yarn.lock,target=yarn.lock \
-    --mount=type=cache,target=/root/.npm \
-    --mount=type=cache,target=/root/.yarn \
-    yarn set version stable && \
-    echo 'nodeLinker: node-modules' >> /app/.yarnrc.yml && \
-    yarn --immutable && yarn add sharp
-
-
+COPY package.json yarn.lock ./
+RUN yarn set version stable && \
+    echo 'nodeLinker: node-modules' >> .yarnrc.yml && \
+    yarn --immutable
 
 FROM base AS builder
 WORKDIR /app
@@ -20,8 +15,6 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN yarn run prisma:generate && yarn run build
-
-
 
 FROM base AS runner
 WORKDIR /app

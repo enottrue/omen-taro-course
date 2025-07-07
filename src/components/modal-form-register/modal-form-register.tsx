@@ -6,7 +6,6 @@ import { MainContext } from '@/contexts/MainContext';
 import useSubmit from '@/hooks/useSubmit';
 import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
-import useGetUserData from '@/hooks/useGetUserData';
 import { useLazyQuery } from '@apollo/client';
 import { GET_USER } from '@/graphql/queries';
 import { useMetrica } from 'next-yandex-metrica';
@@ -22,44 +21,39 @@ const ModalFormRegister: NextPage<ModalFormRegisterType> = ({
   isOpen = false, 
   onClose 
 }) => {
-  const [isVisible, setIsVisible] = useState(isOpen);
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [city, setCity] = useState('');
   const [error, setError] = useState('');
-  const { handleSubmit, loading, errorSubmit } = useSubmit({});
+  const { handleSubmit, loading } = useSubmit({});
   const cc = useContext(MainContext);
   const router = useRouter();
   const { reachGoal } = useMetrica();
   const [getUser, { loading: loadingLazy, data, error: errorLazy }] = useLazyQuery(GET_USER);
 
   useEffect(() => {
-    setIsVisible(isOpen);
-  }, [isOpen]);
-
-  useEffect(() => {
     const handleEscKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && isVisible) {
+      if (event.key === 'Escape' && isOpen) {
         handleClose();
       }
     };
 
-    if (isVisible) {
+    if (isOpen) {
       document.addEventListener('keydown', handleEscKey);
-      document.body.style.overflow = 'hidden'; // Prevent background scrolling
+      document.body.style.overflow = 'hidden';
     }
 
     return () => {
       document.removeEventListener('keydown', handleEscKey);
       document.body.style.overflow = 'unset';
     };
-  }, [isVisible]);
+  }, [isOpen]);
 
   const handleClose = () => {
-    setIsVisible(false);
     onClose?.();
+    cc?.setCurrentForm && cc.setCurrentForm(null);
   };
 
   const handleBackdropClick = (e: React.MouseEvent) => {
@@ -178,7 +172,7 @@ const ModalFormRegister: NextPage<ModalFormRegisterType> = ({
     }
   };
 
-  if (!isVisible) return null;
+  if (!isOpen) return null;
 
   return (
     <div 
@@ -243,6 +237,17 @@ const ModalFormRegister: NextPage<ModalFormRegisterType> = ({
           <button className={styles['modal-submit']} type="submit" disabled={loading || cc?.submitting}>
             {loading || cc?.submitting ? 'Регистрация...' : 'Зарегистрироваться'}
           </button>
+          <a 
+            href="#"
+            className={styles['modal-link-simple']}
+            onClick={(e) => {
+              e.preventDefault();
+              handleClose();
+              cc?.setCurrentForm && cc.setCurrentForm('auth');
+            }}
+          >
+            У вас уже есть аккаунт?
+          </a>
         </form>
       </div>
     </div>

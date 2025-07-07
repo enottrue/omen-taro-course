@@ -52,7 +52,7 @@ const Header = ({
           isLink={true}
           className="button_little button_secondary"
           attributes="button_little button_secondary"
-          href="https://t.me/salacoste"
+          href="mailto:support@astro-irena.com"
           target="_blank"
           // onClick={handleSubmit}
         >
@@ -73,8 +73,8 @@ const Header = ({
             className="button_little js-modal-open"
             data-modal="register"
             onClick={() => {
-              cc?.setModalOpen(!cc?.modalOpen);
-              cc?.setCurrentForm('signin');
+              cc?.setModalOpen(true);
+              cc?.setCurrentForm('auth');
             }}
           >
             <span className="header__icon">

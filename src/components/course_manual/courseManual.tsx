@@ -1,39 +1,37 @@
 import React from 'react';
 import Button from '@/components/button/Button';
 import { useState } from 'react';
+import Image from 'next/image';
+import CourseListItem from '@/components/course_list_item/courseListItem';
+import { Key } from 'react';
 
-export const CoursePdfItem = () => {
-  const [state, setState] = useState(true);
+interface CoursePdfItemProps {
+  lessons?: any[];
+}
 
+export const CoursePdfItem = ({ lessons }: CoursePdfItemProps) => {
   return (
-    <div
-      className={'cource-lessons__item' + ' ' + (state ? 'active' : '')}
-      onClick={() => setState(!state)}
-    >
-      <div className="cource-lessons__item-header" role="button">
-        <div className="cource-lessons__item-header-counter"> </div>
-        <div className="cource-lessons__item-header-title">
-          Электронная методичка.
-        </div>
+    <>
+      <div className="about-the-parent">
+        <h1 className="cosmo">About the</h1>
+        <h2 className="instructor">Instructor:</h2>
       </div>
-      <div className="cource-lessons__item-content">
-        <ol className="cource-lessons__item-content-list">
-          <li className="cource-lessons__item-content-list-item">
-            <span className="cource-lessons__item-content-list-item-title">
-              Электронная методичка
-            </span>
-            <span className="cource-lessons__item-content-list-item-button">
-              <Button
-                title="Скачать в PDF"
-                href="/course_book"
-                isLink={true}
-                className="button_secondary button_secondary_smaller"
-              />
-            </span>
-          </li>
-        </ol>
+      
+      <div className="frame-parent5">
+        {/* Убираем аккордеон "Электронная методичка" и оставляем только уроки */}
+        {lessons?.map((lesson: any, i: Key) => {
+          return (
+            <CourseListItem
+              contentStages={lesson.lessonStages}
+              counter={lesson.lessonNumber}
+              title={lesson.lessonName}
+              lessonNumber={lesson.lessonNumber}
+              key={i}
+            />
+          );
+        })}
       </div>
-    </div>
+    </>
   );
 };
 

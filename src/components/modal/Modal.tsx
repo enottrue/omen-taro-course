@@ -2,8 +2,8 @@ import React from 'react';
 import Button from '../button/Button';
 import Image from 'next/image';
 import Arrow from '@/images/svg/button-arrow.svg';
-import ModalRegister from '@/components/modal_register/Register';
-import ModalSignIn from '@/components/modal_signin/SignIn';
+import ModalFormRegister from '@/components/modal-form-register/modal-form-register';
+import ModalFormAuth from '@/components/modal-form-auth/modal-form-auth';
 
 //import useContext and MainContext
 import { useContext, useEffect } from 'react';
@@ -12,20 +12,19 @@ const Modal = () => {
   const cc = useContext(MainContext);
 
   useEffect(() => {
-    if (cc?.modalOpen) {
+    if (cc?.currentForm) {
       document.body.classList.add('body-modal-open');
       cc?.setModalOpen(true);
     } else {
       document.body.classList.remove('body-modal-open');
       cc?.setModalOpen(false);
-      cc?.setCurrentForm(null);
     }
-  }, [cc?.modalOpen]);
+  }, [cc?.currentForm]);
 
-  return cc?.currentForm === 'signin' ? (
-    <ModalSignIn />
+  return cc?.currentForm === 'auth' ? (
+    <ModalFormAuth isOpen={true} />
   ) : cc?.currentForm === 'register' ? (
-    <ModalRegister />
+    <ModalFormRegister isOpen={true} />
   ) : null;
 };
 

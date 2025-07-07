@@ -15,7 +15,7 @@
 .modalContent {
   position: relative;
   max-width: 90vw;
-  max-height: 90vh;
+  max-height: 95vh;
   background-color: #000;
   border-radius: 8px;
   overflow: hidden;

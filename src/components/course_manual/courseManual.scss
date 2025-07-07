@@ -1,0 +1,217 @@
+// Accordion styles from Irena-astro-clean
+.accordion-content {
+  display: none;
+  color: var(--color-midnightblue);
+  font-size: 0.95rem;
+  transition: all 0.2s;
+}
+
+.content-wrapper {
+  width: 100%;
+}
+
+.accordion.active .accordion-content {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 0.8rem;
+  
+  .btn-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+}
+
+.accordion.active {
+  display: flex;
+  flex-direction: column;
+}
+
+.accordion-header {
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.b-tn {
+  width: 90%;
+  padding: 0.7rem 0;
+  border-radius: 999px;
+  border: none;
+  background: var(--color-midnightblue);
+  color: var(--color-white);
+  font-family: var(--font-roboto);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin: 0.5rem auto;
+  margin-bottom: 1.2rem;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+
+  img {
+    margin: 0 10px;
+  }
+}
+
+.content-wrapper-inner {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 0.8rem;
+}
+
+// Instructor section styles
+.instructor {
+  margin: 0;
+  position: relative;
+  font-size: 2.25rem;
+  letter-spacing: -0.05em;
+  line-height: 90%;
+  font-weight: 700;
+  font-family: var(--font-unbounded);
+}
+
+.about-the-parent {
+  width: 16.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.b,
+.empty-elements {
+  position: relative;
+  line-height: 120%;
+}
+
+.b {
+  width: 9.688rem;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.container,
+.empty-elements-parent {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.empty-elements-parent {
+  gap: var(--gap-6);
+}
+
+.icon {
+  width: 1.625rem;
+  position: relative;
+  max-height: 100%;
+}
+
+.frame-icon {
+  height: 1.413rem;
+  width: 1.413rem;
+  position: relative;
+  transition: transform 0.3s ease;
+  
+  &.rotated {
+    transform: rotate(180deg);
+  }
+}
+
+.frame-parent6,
+.group {
+  display: flex;
+  flex-direction: row;
+}
+
+.group {
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--gap-12);
+  align-items: center;
+}
+
+.frame-parent6 {
+  width: 15.813rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0;
+}
+
+.frame-child3 {
+  align-self: stretch;
+  height: 0.063rem;
+  position: relative;
+  max-width: 100%;
+  overflow: hidden;
+  max-height: 100%;
+}
+
+.frame-parent4,
+.frame-parent5 {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.frame-parent5 {
+  flex-direction: column;
+  gap: var(--gap-12);
+  font-size: var(--font-size-14);
+  font-family: var(--font-roboto);
+}
+
+.frame-parent4 {
+  align-self: stretch;
+  border-radius: var(--br-30);
+  background-color: var(--color-white);
+  flex-direction: column;
+  padding: 2rem var(--padding-30);
+  gap: 1.375rem;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+// Responsive styles
+@media (max-width: 768px) {
+  .frame-parent4 {
+    padding: 1.5rem var(--padding-20);
+  }
+
+  .frame-parent5 {
+    gap: 0.75rem;
+  }
+
+  .about-the-parent {
+    width: 100%;
+  }
+
+  .frame-parent6 {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .frame-parent4 {
+    padding: 1rem var(--padding-15);
+  }
+
+  .accordion-header {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .group {
+    justify-content: center;
+  }
+} 

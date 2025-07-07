@@ -50,7 +50,7 @@ const About = () => {
 
               router.push(shouldRedirect);
             } else {
-              cc?.setModalOpen(!cc?.modalOpen);
+              cc?.setModalOpen(true);
               cc?.setCurrentForm('register');
             }
           }}

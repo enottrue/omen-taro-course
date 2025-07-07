@@ -1,5 +1,4 @@
 import { CoursePdfItem } from '@/components/course_manual/courseManual';
-import CourseListItem from '@/components/course_list_item/courseListItem';
 import { Key } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_STAGE_STATUS } from '@/graphql/queries';
@@ -18,23 +17,9 @@ export const CourseLessons = (lessons: { [k: string]: any }, userId?: any) => {
   // );
 
   return (
-    <>
-      <section className="cource-lessons bg-white">
-        <CoursePdfItem />
-        {lessons?.lessons.map((lesson: any, i: Key) => {
-          return (
-            <CourseListItem
-              contentStages={lesson.lessonStages}
-              counter={lesson.lessonNumber}
-              title={lesson.lessonName}
-              lessonNumber={lesson.lessonNumber}
-              key={i}
-            />
-          );
-        })}
-      </section>
-      <div className="cource-bottom-bg"> </div>
-    </>
+    <div className="frame-parent4">
+      <CoursePdfItem lessons={lessons?.lessons} />
+    </div>
   );
 };
 

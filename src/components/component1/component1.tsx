@@ -5,14 +5,35 @@ import unsplashImage from "../../images/back@2x.png";
 import image3 from "../../images/image-3@2x.png";
 import group2 from "../../images/group-2@2x.png";
 import { Button } from "../ui";
+import Header from "./Header";
+import Title from "./Title";
+import { useContext } from "react";
+import { MainContext } from "@/contexts/MainContext";
 
 export type Component1Type = {
   className?: string;
   onOpenModal?: () => void;
   onOpenRegisterModal?: () => void;
+  hideLoginButton?: boolean;
+  onBurgerClick?: () => void;
+  isBurgerOpen?: boolean;
+  burgerRef?: React.RefObject<HTMLDivElement>;
+  showScreenImage?: boolean;
 };
 
-const Component1: NextPage<Component1Type> = ({ className = "", onOpenModal, onOpenRegisterModal }) => {
+const Component1: NextPage<Component1Type> = ({ className = "", onOpenModal, onOpenRegisterModal, hideLoginButton = false, onBurgerClick, isBurgerOpen = false, burgerRef, showScreenImage = false }) => {
+  const cc = useContext(MainContext);
+
+  const handleOpenModal = () => {
+    cc?.setModalOpen(true);
+    cc?.setCurrentForm('auth');
+  };
+
+  const handleOpenRegisterModal = () => {
+    cc?.setModalOpen(true);
+    cc?.setCurrentForm('register');
+  };
+
   return (
     <section className={[styles.section, className].join(" ")}>
       <div className={styles.wrapperImage3}>
@@ -47,50 +68,23 @@ const Component1: NextPage<Component1Type> = ({ className = "", onOpenModal, onO
           Learn to read your birth chart and unlock real opportunities.
         </p>
       </div>
-      <div className={styles.frameParent}>
-        <header className={styles.frameGroup}>
-          <div className={styles.frameWrapper}>
-            <div className={styles.cosmoParent}>
-              <h3 className={styles.cosmo}>Cosmo.</h3>
-              <b className={styles.irena}>Irena</b>
-            </div>
-          </div>
-          <div className={styles.frameContainer}>
-            <div 
-              className={styles.wrapper}
-              onClick={onOpenModal}
-              style={{ cursor: 'pointer' }}
-            >
-              <div className={styles.div}>Вход</div>
-            </div>
-            
-            <a 
-              className={styles.container}
-              href="https://t.me/salacoste"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <div className={styles.div1}>Задать вопрос</div>
-            </a>
-          </div>
-        </header>
-        <div className={styles.frameDiv}>
-          <div className={styles.yourMoneyIsInYourParent}>
-            <h1 className={styles.cosmo}>
-              <p className={styles.noMoreGuessing}>{`Your Money `}</p>
-              <p className={styles.noMoreGuessing}>{`Is in Your `}</p>
-            </h1>
-            <h2 className={styles.birthChart}>Birth Chart</h2>
-          </div>
+      {showScreenImage ? (
+        <div className={styles.frameParent}>
+         
         </div>
-      </div>
+      ) : (
+        <div className={styles.frameParent}>
+          <Header onOpenModal={handleOpenModal} hideLoginButton={hideLoginButton} onBurgerClick={onBurgerClick} isBurgerOpen={isBurgerOpen} burgerRef={burgerRef} />
+          <Title />
+        </div>
+      )}
       {/* <div className={styles.isAPersonalized}>
         is a personalized exploration of your birth chart, uncovering hidden
         potential and helping you overcome inner obstacles. You'll receive
         tailored guidance based on your unique astrological blueprint.
       </div> */}
       <div className={styles.frameDiv}>
-        <Button variant="enroll" onClick={onOpenRegisterModal}>
+        <Button variant="enroll" onClick={handleOpenRegisterModal}>
           Enroll Now - only $50
         </Button>
       </div>

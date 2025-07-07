@@ -74,5 +74,5 @@
     "tailwindcss": "^3.2.7",
     "ts-node": "^10.9.1"
   },
-  "packageManager": "yarn@4.0.2"
+  "packageManager": "yarn@4.9.2"
 }

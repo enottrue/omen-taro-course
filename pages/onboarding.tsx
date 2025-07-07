@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import Header from '@/components/header/Header';
 import { useContext } from 'react';
 import { MainContext } from '@/contexts/MainContext';
 import cookie from 'cookie';
@@ -9,6 +8,7 @@ import jwt from 'jsonwebtoken';
 import { GetServerSideProps } from 'next';
 import OnboardingStages from '@/components/onboarding/OnboardingStages';
 import { useGetLazyUserData } from '@/hooks/useGetUserData';
+
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const APP_SECRET = process.env.APP_SECRET;
   const cookies = context.req.headers.cookie
@@ -97,7 +97,6 @@ const Onboarding = ({
  
       </Head>
       <main>
-        <Header token={token} userId={userId} />
         <OnboardingStages />
 
         {/* <div>
