@@ -5,6 +5,7 @@ import unsplashImage3 from "../../images/unsplashutbx9x3y8ly-3@2x.png";
 import image7 from "../../images/image-7@2x.png";
 import frame2087325318 from "../../images/frame-2087325318@2x.png";
 import { Button } from "../ui";
+import { useStripePayment } from "@/hooks/useStripePayment";
 
 export type GraphicIndicatorsType = {
   className?: string;
@@ -15,6 +16,7 @@ const GraphicIndicators: NextPage<GraphicIndicatorsType> = ({
   className = "",
   onOpenAuthModal,
 }) => {
+  const { handlePayment } = useStripePayment();
   return (
     <section className={[styles.graphicIndicators, className].join(" ")}>
       <Image
@@ -73,7 +75,7 @@ const GraphicIndicators: NextPage<GraphicIndicatorsType> = ({
               <h2 className={styles.ready}>Ready</h2>
               <h2 className={styles.toLearn}>to Learn?</h2>
             </div>
-            <Button variant="primary" onClick={onOpenAuthModal}>
+            <Button variant="primary" onClick={handlePayment}>
               Enroll Now — Start Today
             </Button>
           </div>
@@ -96,7 +98,7 @@ const GraphicIndicators: NextPage<GraphicIndicatorsType> = ({
                 It's time for you to see it too.
               </div>
             </div>
-            <Button variant="secondary" onClick={onOpenAuthModal}>
+            <Button variant="secondary" onClick={handlePayment}>
               Start Today
             </Button>
           </div>

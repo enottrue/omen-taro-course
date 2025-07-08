@@ -24,6 +24,11 @@ model User {
   phone         String?
   city          String?
   password      String
+  isPaid        Boolean       @default(false)  // Флаг оплаты
+  paymentDate   DateTime?     // Дата оплаты
+  stripeSessionId String?     // ID сессии Stripe
+  bitrix24ContactId Int?      // ID контакта в Битрикс24
+  bitrix24DealId   Int?      // ID сделки в Битрикс24
   stageStatuses StageStatus[]
   onboarded     Boolean       @default(false)
   createdAt     DateTime      @default(now())

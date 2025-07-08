@@ -11,6 +11,7 @@ import { GraphQLError } from 'graphql';
 
 import { getUserId } from '@/utils/authUtils';
 import { ApolloError } from '@apollo/client';
+import { createDealOnRegistration, getUtmDataFromCookies } from '../utils/bitrix24';
 
 dotenv.config();
 
@@ -382,6 +383,38 @@ export const resolvers = {
 
         //@ts-expect-error
         const token = jwt.sign({ userId: user.id }, APP_SECRET);
+
+        // Создаем сделку в Битрикс24
+        try {
+          const utmData = getUtmDataFromCookies();
+          const bitrixResult = await createDealOnRegistration({
+            name: user.name,
+            email: user.email,
+            phone: user.phone || '',
+            city: user.city || undefined,
+            productId: '1777', // Добавляем товар 1777
+            utmData,
+            comments: `Регистрация пользователя ${user.name} из города ${user.city || 'не указан'}`,
+          });
+
+          if (bitrixResult.success) {
+            console.log('Сделка успешно создана в Битрикс24:', bitrixResult.dealId);
+            
+            // Обновляем пользователя с ID из Битрикс24
+            await context.prisma.user.update({
+              where: { id: user.id },
+              data: {
+                bitrix24ContactId: bitrixResult.contactId,
+                bitrix24DealId: bitrixResult.dealId,
+              },
+            });
+          } else {
+            console.error('Ошибка создания сделки в Битрикс24:', bitrixResult.error);
+          }
+        } catch (bitrixError) {
+          console.error('Ошибка интеграции с Битрикс24:', bitrixError);
+          // Не прерываем регистрацию пользователя, если Битрикс24 недоступен
+        }
 
         return {
           token,

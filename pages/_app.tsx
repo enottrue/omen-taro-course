@@ -6,12 +6,14 @@ import { MainContextProvider } from '@/contexts/MainContext';
 import { useContext } from 'react';
 import { MainContext } from '@/contexts/MainContext';
 import { YandexMetricaProvider } from 'next-yandex-metrica';
+import UtmInitializer from '@/components/UtmInitializer';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <ApolloProvider client={apolloClient}>
       <MainContextProvider>
         <>
+          <UtmInitializer />
           <YandexMetricaProvider
             tagID={96059996}
             initParameters={{

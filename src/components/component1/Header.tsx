@@ -27,7 +27,7 @@ const Header: NextPage<HeaderType> = ({ className = "", onOpenModal, hideLoginBu
             onClick={onOpenModal}
             style={{ cursor: 'pointer' }}
           >
-            <div className={styles.div}>Вход</div>
+            <div className={styles.div}>Sign In</div>
           </div>
         )}
         

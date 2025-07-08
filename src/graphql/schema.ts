@@ -38,6 +38,9 @@ export const typeDefs = gql`
     password: String!
     city: String
     phone: String
+    isPaid: Boolean
+    bitrix24ContactId: Int
+    bitrix24DealId: Int
     onboarded: Boolean
     updatedAt: String
     createdAt: String
