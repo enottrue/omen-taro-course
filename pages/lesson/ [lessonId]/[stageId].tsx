@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import Header from '@/components/header/Header';
 import { useContext } from 'react';
 import { MainContext } from '@/contexts/MainContext';
 import cookie from 'cookie';
@@ -139,9 +138,9 @@ const Lesson = ({
     const us = getUser({ variables: { userId } });
     // console.log('user', user, us, loadingLazy, errorLazy);
 
-    if (!userId || !token) {
-      router.push('/');
-    }
+    // if (!userId || !token) {
+    //   router.push('/');
+    // }
   }, [userId, token]);
 
   useEffect(() => {
@@ -160,14 +159,11 @@ const Lesson = ({
          <link rel="shortcut icon" href="/favicon/favicon.ico" />
  
       </Head>
-      <main>
-        <Header token={token} userId={userId} />
-        <CourseLessonHeader
-          lesson={lesson}
-          currentStageId={currentStageId}
-          currentLessonId={currentLessonId}
-        />
-      </main>
+      <CourseLessonHeader
+        lesson={lesson}
+        currentStageId={currentStageId}
+        currentLessonId={currentLessonId}
+      />
       <Footer />
     </>
   );

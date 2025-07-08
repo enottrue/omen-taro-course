@@ -30,7 +30,13 @@ export default function VideoPlayer({
         src={url ? url : ''}
         poster={preview ? preview : ''}
         onEnded={handleVideoEnd}
-        // type="video/mp4"
+        style={{
+          width: '100%',
+          height: 'auto',
+          maxWidth: '100%',
+          display: 'block',
+          borderRadius: '10px'
+        }}
       />
     </div>
     // <ReactPlayer url={[{ src: '/videos/1_2.mp4', type: 'video/mp4' }]} />

@@ -13,7 +13,7 @@ const BurgerMenu: NextPage<BurgerMenuType> = ({ isOpen, onClose }) => {
     <div className={styles.burgerDropdown}>
       <div className={styles.burgerDropdownContent}>
         <div className={styles.burgerMenuItem} onClick={onClose}>
-          <span>Вход</span>
+          <span>Sign In</span>
         </div>
         <div className={styles.burgerMenuItem} onClick={onClose}>
           <span>Регистрация</span>

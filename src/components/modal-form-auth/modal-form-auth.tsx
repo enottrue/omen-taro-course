@@ -125,10 +125,10 @@ const ModalFormAuth: NextPage<ModalFormAuthType> = ({
         >
           <CloseIcon />
         </button>
-        <h3 className={styles['modal-title']}>fill out</h3>
+        <h3 className={styles['modal-title']}>Sign in</h3>
         <h2 className={styles['modal-title-ru']}>
-          автори-<br />
-          зация
+          to access<br />
+          the course:
         </h2>
         <form className={styles['modal-fields']} onSubmit={handleSubmit}>
           <input
@@ -149,7 +149,7 @@ const ModalFormAuth: NextPage<ModalFormAuthType> = ({
           />
           {error && <div className={styles['modal-error']}>{error}</div>}
           <button className={styles['modal-submit']} type="submit" disabled={loading || cc?.submitting}>
-            {loading || cc?.submitting ? 'Вход...' : 'Войти'}
+            {loading || cc?.submitting ? 'Sign In...' : 'Sign In'}
           </button>
           <a 
             href="#"
@@ -160,7 +160,7 @@ const ModalFormAuth: NextPage<ModalFormAuthType> = ({
               cc?.setCurrentForm && cc.setCurrentForm('register');
             }}
           >
-            Нет аккаунта? Зарегистрироваться
+            No account? Register
           </a>
         </form>
       </div>

@@ -163,10 +163,10 @@ const ModalForm: NextPage<ModalFormType> = ({
         >
           <CloseIcon />
         </button>
-        <h3 className={styles['modal-title']}>fill out</h3>
+        <h3 className={styles['modal-title']}>Sign in</h3>
         <h2 className={styles['modal-title-ru']}>
-          Автори-<br />
-          зация
+          to access <br />
+          the course:
         </h2>
         <form className={styles['modal-fields']} onSubmit={handleSubmit}>
           <input

@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 import styles from "./discover.module.css";
+import { useStripePayment } from "@/hooks/useStripePayment";
 
 export type DiscoverType = {
   className?: string;
@@ -7,6 +8,7 @@ export type DiscoverType = {
 };
 
 const Discover: NextPage<DiscoverType> = ({ className = "", onOpenRegisterModal }) => {
+  const { handlePayment } = useStripePayment();
   return (
     <section className={[styles.section, className].join(" ")}>
       <div className={styles.frameParent}>
@@ -75,7 +77,7 @@ const Discover: NextPage<DiscoverType> = ({ className = "", onOpenRegisterModal 
       </div>
       <button 
         className={styles.enrollNowOnly50Wrapper}
-        onClick={onOpenRegisterModal}
+        onClick={handlePayment}
         style={{ cursor: 'pointer' }}
       >
         <b className={styles.enrollNow}>Enroll Now - only $50</b>

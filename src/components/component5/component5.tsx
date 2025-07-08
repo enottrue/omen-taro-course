@@ -5,6 +5,7 @@ import image31 from "../../images/image-3-1@2x.png";
 import image4 from "../../images/image-4@2x.png";
 import image5 from "../../images/image-5@2x.png";
 import { Button } from "../ui";
+import { useStripePayment } from "@/hooks/useStripePayment";
 
 export type Component5Type = {
   className?: string;
@@ -12,6 +13,7 @@ export type Component5Type = {
 };
 
 const Component5: NextPage<Component5Type> = ({ className = "", onOpenAuthModal }) => {
+  const { handlePayment } = useStripePayment();
   return (
     <section className={[styles.section, className].join(" ")}>
       <Image
@@ -105,7 +107,7 @@ const Component5: NextPage<Component5Type> = ({ className = "", onOpenAuthModal 
         This is a course that gives you tools — and the ability to use them on
         your own.
       </div>
-      <Button variant="enroll" onClick={onOpenAuthModal}>
+      <Button variant="enroll" onClick={handlePayment}>
         Enroll Now - only $50
       </Button>
     </section>

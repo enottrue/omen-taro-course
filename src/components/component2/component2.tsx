@@ -71,7 +71,7 @@ const Component2: NextPage<Component2Type> = ({ className = "" }) => {
       <VideoModal
         isOpen={isVideoModalOpen}
         onClose={handleCloseModal}
-        videoSrc="/videos/video1.mp4"
+        videoSrc="/videos/video.mp4"
       />
     </section>
   );

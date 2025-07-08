@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:14-alpine
+    container_name: omen-postgres-dev
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - omen-dev
+
+  redis:
+    image: redis:7-alpine
+    container_name: omen-redis-dev
+    ports:
+      - "6379:6379"
+    networks:
+      - omen-dev
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: omen-app-dev
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/mydb
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
+      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
+    volumes:
+      - .:/app
+      - /app/node_modules
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - omen-dev
+    command: yarn dev
+
+volumes:
+  postgres_data:
+
+networks:
+  omen-dev:
+    driver: bridge 
