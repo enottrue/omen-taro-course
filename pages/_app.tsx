@@ -7,6 +7,8 @@ import { useContext } from 'react';
 import { MainContext } from '@/contexts/MainContext';
 import { YandexMetricaProvider } from 'next-yandex-metrica';
 import UtmInitializer from '@/components/UtmInitializer';
+import AuthStatusTooltip from '@/components/AuthStatusTooltip';
+import LogoutButton from '@/components/LogoutButton';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -14,6 +16,8 @@ export default function App({ Component, pageProps }: AppProps) {
       <MainContextProvider>
         <>
           <UtmInitializer />
+          <AuthStatusTooltip />
+          <LogoutButton />
           <YandexMetricaProvider
             tagID={96059996}
             initParameters={{

@@ -82,7 +82,7 @@ BITRIX24_WEBHOOK_URL=https://omen-taro.bitrix24.ru/rest/1/your-webhook-key/
 
 ### Тестовая страница
 ```
-http://localhost:3000/bitrix24-test
+    http://localhost:3000/bitrix24-test
 ```
 
 Страница включает:

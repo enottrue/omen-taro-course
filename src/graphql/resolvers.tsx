@@ -348,6 +348,7 @@ export const resolvers = {
       context: IContext,
       info: {},
     ) => {
+      console.log('🔄 registerUser вызван с аргументами:', args);
       const { userId } = context;
 
       const password = await bcrypt.hash(args.password, 10);
@@ -363,8 +364,11 @@ export const resolvers = {
             error: true,
           };
         }
+        // Извлекаем utmData из args, чтобы не передавать его в Prisma
+        const { utmData, ...userData } = args;
+        
         const user = await context.prisma.user.create({
-          data: { ...args, password },
+          data: { ...userData, password },
         });
 
         for (let stageId = 1; stageId <= 44; stageId++) {
@@ -381,6 +385,16 @@ export const resolvers = {
         const token = jwt.sign({ userId: user.id }, APP_SECRET);
 
         // Создаем сделку в Битрикс24
+        console.log('🔄 Вызываем createDealOnRegistration для пользователя:', user.id);
+        console.log('📋 Данные для создания сделки:', {
+          name: user.name,
+          email: user.email,
+          phone: user.phone || '',
+          city: user.city || undefined,
+          productId: '1777',
+          comments: `Регистрация пользователя ${user.name} из города ${user.city || 'не указан'}`,
+          utmData: utmData,
+        });
         try {
           const bitrixResult = await createDealOnRegistration({
             name: user.name,
@@ -389,6 +403,7 @@ export const resolvers = {
             city: user.city || undefined,
             productId: '1777', // Добавляем товар 1777
             comments: `Регистрация пользователя ${user.name} из города ${user.city || 'не указан'}`,
+            utmData: utmData || undefined,
           });
 
           if (bitrixResult.success) {

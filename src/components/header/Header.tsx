@@ -67,7 +67,7 @@ const Header = ({
           </span>
         </Button>
 
-        {!token ? (
+        {!token && !cc?.token ? (
           <Button
             title="Войти"
             className="button_little js-modal-open"
@@ -153,7 +153,7 @@ const Header = ({
           </Button>
         )}
       </div>
-      {token && <AuthNav />}
+      {(token || cc?.token) && <AuthNav />}
     </header>
   );
 };

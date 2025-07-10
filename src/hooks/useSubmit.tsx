@@ -32,6 +32,8 @@ export const useSubmit = (formData: any) => {
     try {
       // Call the GraphQL mutation to create a user
       const utmData = getUtmForBitrix24();
+      console.log('📊 UTM данные для регистрации:', utmData);
+      
       const submitDataReturn: any = await createUserMutation({
         variables: {
           name: formData?.name,
@@ -39,18 +41,25 @@ export const useSubmit = (formData: any) => {
           phone: formData?.phone,
           password: formData?.password,
           city: formData?.city,
-          utmData,
+          utmData: Object.keys(utmData).length > 0 ? utmData : undefined,
         },
       });
 
       const result = submitDataReturn?.data?.registerUser;
+      console.log('📋 Результат регистрации:', result);
 
       // Сделка создается автоматически в GraphQL резолвере registerUser
       if (result && !result.error) {
-        console.log('Пользователь успешно зарегистрирован:', result.user?.id);
+        console.log('✅ Пользователь успешно зарегистрирован:', result.user?.id);
         if (result.user?.bitrix24DealId) {
-          console.log('Сделка создана в Битрикс24:', result.user.bitrix24DealId);
+          console.log('✅ Сделка создана в Битрикс24:', result.user.bitrix24DealId);
+        } else {
+          console.log('⚠️ Сделка НЕ создана в Битрикс24');
         }
+      } else if (result?.error === 'true') {
+        console.log('❌ Ошибка регистрации:', result?.message);
+      } else {
+        console.log('✅ Регистрация прошла успешно');
       }
 
       return result;

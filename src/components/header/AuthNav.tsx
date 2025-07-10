@@ -10,8 +10,15 @@ import { useState, useEffect } from 'react';
 
 const AuthNav: React.FC = () => {
   const router = useRouter();
-
+  const cc = useContext(MainContext);
   const [activePath, setActivePath] = useState('');
+  
+  // Отладочная информация
+  console.log('AuthNav rendered:', {
+    menuOpen: cc?.menuOpen,
+    token: cc?.token,
+    userId: cc?.userId
+  });
 
   useEffect(() => {
     setActivePath(router.asPath);
@@ -20,8 +27,6 @@ const AuthNav: React.FC = () => {
   const getActiveClass = (path: string) => {
     return activePath === path ? 'active' : '';
   };
-
-  const cc = useContext(MainContext);
 
   const handleClick = (e: React.MouseEvent, path: string) => {
     e.preventDefault();

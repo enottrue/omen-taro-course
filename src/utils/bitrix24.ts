@@ -48,7 +48,7 @@ interface UtmData {
 
 const BITRIX24_WEBHOOK_URL = process.env.BITRIX24_WEBHOOK_URL || 'https://crm.taroirena.com/rest/49468/d9cuna1b89mnipbq/';
 const BITRIX24_ASSIGNED_BY_ID = parseInt(process.env.BITRIX24_ASSIGNED_BY_ID || '30902');
-const BITRIX24_CATEGORY_ID = parseInt(process.env.BITRIX24_CATEGORY_ID || '16   ');
+const BITRIX24_CATEGORY_ID = parseInt(process.env.BITRIX24_CATEGORY_ID || '16');
 
 // Функция для выполнения cURL запросов к Битрикс24
 async function makeBitrix24Request(endpoint: string, data: any): Promise<any> {
@@ -303,6 +303,13 @@ export async function createDealOnRegistration(userData: {
   productPrice?: number;
   error?: string;
 }> {
+  console.log('🚀 Начинаем создание сделки в Битрикс24...');
+  console.log('📋 Данные пользователя:', userData);
+  console.log('🔧 Конфигурация Битрикс24:', {
+    webhookUrl: BITRIX24_WEBHOOK_URL,
+    assignedById: BITRIX24_ASSIGNED_BY_ID,
+    categoryId: BITRIX24_CATEGORY_ID
+  });
   try {
     // Проверяем существование контакта
     const existingContactId = await checkContactExists(userData.phone, userData.email);

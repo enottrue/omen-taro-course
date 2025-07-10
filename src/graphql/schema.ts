@@ -91,6 +91,14 @@ export const typeDefs = gql`
     updatedAt: String
   }
 
+  input UtmData {
+    UTM_CAMPAIGN: String
+    UTM_SOURCE: String
+    UTM_MEDIUM: String
+    UTM_CONTENT: String
+    UTM_TERM: String
+  }
+
   type AuthPayload {
     id: ID
     onboarded: Boolean
@@ -148,6 +156,7 @@ export const typeDefs = gql`
       name: String!
       phone: String
       city: String
+      utmData: UtmData
     ): AuthPayload
     loginUser(email: String!, password: String!): AuthPayload
     addStageStatus(stageId: Int!, userId: Int!, status: String!): StageStatus
