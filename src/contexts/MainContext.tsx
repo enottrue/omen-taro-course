@@ -19,15 +19,10 @@ export const MainContext = createContext<{
   userId: string | null;
   setUserId: React.Dispatch<React.SetStateAction<string | null>>;
   user: any;
-  setUser: React.Dispatch<React.SetStateAction<null>>;
+  setUser: React.Dispatch<React.SetStateAction<any>>;
   stageData: any;
   setStageData: React.Dispatch<React.SetStateAction<any>>;
 } | null>(null);
-
-let loading;
-let error;
-let data: any;
-let d;
 
 // Create the context provider
 export const MainContextProvider = ({
@@ -35,30 +30,38 @@ export const MainContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  let bearer;
-  let tuserId;
-  if (typeof window !== 'undefined') {
-    const cookies = cookie.parse(document.cookie);
-    bearer = cookies.Bearer;
-    tuserId = cookies.userId;
-
-    d = useQuery(GET_USER, {
-      variables: { id: tuserId },
-      skip: !tuserId,
-    });
-
-    loading = d.loading;
-    error = d.error;
-    data = d.data;
-  }
   const [modalOpen, setModalOpen] = useState(false);
   const [currentForm, setCurrentForm] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
-  const [token, setToken] = useState<string | null>(bearer || null);
-  const [userId, setUserId] = useState<string | null>(tuserId || null);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [user, setUser] = useState(data?.getUser || null);
   const [stageData, setStageData] = useState<any>(null);
+
+  // Получаем данные из cookies
+  let bearer: string | null = null;
+  let tuserId: string | null = null;
+  
+  if (typeof window !== 'undefined') {
+    const cookies = cookie.parse(document.cookie);
+    bearer = cookies.Bearer || null;
+    tuserId = cookies.userId || null;
+  }
+
+  const [token, setToken] = useState<string | null>(bearer);
+  const [userId, setUserId] = useState<string | null>(tuserId);
+  const [user, setUser] = useState<any>(null);
+
+  // Загружаем данные пользователя
+  const { data: userData, loading, error } = useQuery(GET_USER, {
+    variables: { id: userId },
+    skip: !userId,
+  });
+
+  // Обновляем пользователя когда данные загружаются
+  useEffect(() => {
+    if (userData?.getUser) {
+      setUser(userData.getUser);
+    }
+  }, [userData]);
 
   return (
     <MainContext.Provider

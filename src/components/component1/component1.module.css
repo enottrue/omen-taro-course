@@ -263,6 +263,22 @@
   color: var(--color-white);
 }
 
+.burgerMenuItem a {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  width: 100%;
+}
+
+.burgerMenuItem a.active {
+  color: var(--color-midnightblue-100);
+  font-weight: bold;
+}
+
+.burgerMenuItem:hover a {
+  color: var(--color-white);
+}
+
 .screenImageContainer {
   display: flex;
   justify-content: center;

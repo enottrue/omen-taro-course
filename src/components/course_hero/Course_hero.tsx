@@ -10,6 +10,7 @@ import styles from '@/components/component1/component1.module.css';
 import CourseLessons from '@/components/course_lessons/courseLessons';
 import Button from '../button/Button';
 import AuthNav from '../header/AuthNav';
+import { useStripePayment } from '@/hooks/useStripePayment';
 
 interface CourseHeroProps {
   lessons?: any[];
@@ -20,11 +21,20 @@ interface CourseHeroProps {
 const CourseHero = ({ lessons, token, userId }: CourseHeroProps) => {
   const cc = useContext(MainContext);
   const [activeAccordion, setActiveAccordion] = useState<number | null>(null);
+  const { handlePayment } = useStripePayment();
   
   // console.log('CourseHero lessons:', lessons);
 
   const toggleAccordion = (index: number) => {
     setActiveAccordion(activeAccordion === index ? null : index);
+  };
+
+  const handleEnrollClick = async () => {
+    try {
+      await handlePayment();
+    } catch (error) {
+      console.error('Payment error:', error);
+    }
   };
 
   return (
@@ -182,7 +192,11 @@ const CourseHero = ({ lessons, token, userId }: CourseHeroProps) => {
                 </div>
               </div>
               
-              <button className="enroll-now-only-50-wrapper">
+              <button 
+                className="enroll-now-only-50-wrapper"
+                onClick={handleEnrollClick}
+                style={{ cursor: 'pointer' }}
+              >
                 <b className="enroll-now-">Enroll Now - only $50</b>
               </button>
             </div>
