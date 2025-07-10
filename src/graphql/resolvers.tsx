@@ -474,6 +474,90 @@ export const resolvers = {
         user,
       };
     },
+    forgotPassword: async (
+      parent: unknown,
+      args: {
+        email: string;
+      },
+      context: IContext,
+      info: {},
+    ) => {
+      const { email } = args;
+
+      const user = await context.prisma.user.findUnique({
+        where: { email },
+      });
+
+      if (!user) {
+        // Не показываем, что пользователь не найден для безопасности
+        return {
+          message: 'Если пользователь с таким email существует, мы отправим инструкции для восстановления пароля',
+          error: false,
+        };
+      }
+
+      // Генерируем токен для сброса пароля
+      if (!APP_SECRET) {
+        throw new Error('APP_SECRET не настроен');
+      }
+      const resetToken = jwt.sign(
+        { userId: user.id, type: 'password-reset' },
+        APP_SECRET,
+        { expiresIn: '1h' }
+      );
+
+      // В реальном приложении здесь должна быть отправка email
+      // Пока что просто возвращаем сообщение об успехе
+      console.log('Reset token for user:', user.id, 'Token:', resetToken);
+
+      return {
+        message: 'Инструкции для восстановления пароля отправлены на ваш email',
+        error: false,
+      };
+    },
+    resetPassword: async (
+      parent: unknown,
+      args: {
+        token: string;
+        newPassword: string;
+      },
+      context: IContext,
+      info: {},
+    ) => {
+      const { token, newPassword } = args;
+
+      try {
+        // Проверяем токен
+        if (!APP_SECRET) {
+          throw new Error('APP_SECRET не настроен');
+        }
+        const decoded = jwt.verify(token, APP_SECRET) as any;
+        
+        if (decoded.type !== 'password-reset') {
+          throw new Error('Недействительный токен');
+        }
+
+        const userId = decoded.userId;
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+        // Обновляем пароль пользователя
+        const updatedUser = await context.prisma.user.update({
+          where: { id: userId },
+          data: { password: hashedPassword },
+        });
+
+        return {
+          message: 'Пароль успешно изменен',
+          error: false,
+          user: updatedUser,
+        };
+      } catch (error) {
+        return {
+          message: 'Недействительный или истекший токен',
+          error: true,
+        };
+      }
+    },
     addStageStatus: async (
       parent: unknown,
       args: {

@@ -172,7 +172,6 @@
   height: 78.5rem;
   width: 20rem;
   position: relative;
-  background-color: var(--color-gray-100);
 }
 .section {
   align-self: stretch;

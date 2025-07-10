@@ -159,6 +159,8 @@ export const typeDefs = gql`
       utmData: UtmData
     ): AuthPayload
     loginUser(email: String!, password: String!): AuthPayload
+    forgotPassword(email: String!): AuthPayload
+    resetPassword(token: String!, newPassword: String!): AuthPayload
     addStageStatus(stageId: Int!, userId: Int!, status: String!): StageStatus
     changeStageStatus(stageId: Int!, userId: Int!, status: String!): StageStatus
   }

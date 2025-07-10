@@ -3,27 +3,34 @@ import React, { useState, useEffect, useContext } from 'react';
 import styles from './modal-form-auth.module.css';
 import CloseIcon from '@/images/svg/close.svg';
 import { MainContext } from '@/contexts/MainContext';
-import useLogin from '@/hooks/useLogin';
-import Cookies from 'js-cookie';
-import { useRouter } from 'next/router';
+import { gql } from 'graphql-request';
+import { request } from 'graphql-request';
 
-export type ModalFormAuthType = {
+export type ModalForgotPasswordType = {
   className?: string;
   isOpen?: boolean;
   onClose?: () => void;
 };
 
-const ModalFormAuth: NextPage<ModalFormAuthType> = ({ 
+const FORGOT_PASSWORD_MUTATION = gql`
+  mutation ForgotPassword($email: String!) {
+    forgotPassword(email: $email) {
+      message
+      error
+    }
+  }
+`;
+
+const ModalForgotPassword: NextPage<ModalForgotPasswordType> = ({ 
   className = "", 
   isOpen = false, 
   onClose 
 }) => {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const { login, loading } = useLogin();
+  const [success, setSuccess] = useState('');
+  const [loading, setLoading] = useState(false);
   const cc = useContext(MainContext);
-  const router = useRouter();
 
   useEffect(() => {
     const handleEscKey = (event: KeyboardEvent) => {
@@ -34,7 +41,7 @@ const ModalFormAuth: NextPage<ModalFormAuthType> = ({
 
     if (isOpen) {
       document.addEventListener('keydown', handleEscKey);
-      document.body.style.overflow = 'hidden'; // Prevent background scrolling
+      document.body.style.overflow = 'hidden';
     }
 
     return () => {
@@ -68,45 +75,29 @@ const ModalFormAuth: NextPage<ModalFormAuthType> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    cc?.setSubmitting && cc.setSubmitting(true);
+    setSuccess('');
+    setLoading(true);
     
     if (!email || !validateEmail(email)) {
       setError('Укажите корректный email');
-      cc?.setSubmitting && cc.setSubmitting(false);
-      return;
-    }
-    
-    if (!password || password.length < 4) {
-      setError('Укажите пароль не менее 4 символов');
-      cc?.setSubmitting && cc.setSubmitting(false);
+      setLoading(false);
       return;
     }
     
     try {
-      const userData = await login(email, password);
-      if (userData.error) {
-        setError(userData.message);
-        cc?.setSubmitting && cc.setSubmitting(false);
-        return;
+      const response = await request('/api/graphql', FORGOT_PASSWORD_MUTATION, {
+        email
+      }) as any;
+
+      if (response.forgotPassword.error) {
+        setError(response.forgotPassword.message);
+      } else {
+        setSuccess(response.forgotPassword.message);
       }
-      cc?.setToken && cc.setToken(userData.token);
-      cc?.setUserId && cc.setUserId(userData.user.id);
-      cc?.setUser && cc.setUser(userData.user);
-      Cookies.set('Bearer', userData?.token, { expires: 180 });
-      Cookies.set('userId', userData?.user?.id, { expires: 180 });
-      cc?.setSubmitting && cc.setSubmitting(false);
-      handleClose();
-      cc?.setCurrentForm && cc.setCurrentForm(null);
-      let onboarding = localStorage.getItem('onboarded');
-      if (!onboarding) {
-        localStorage.setItem('onboarded', 'false');
-        onboarding = 'false';
-      }
-      const shouldRedirect = onboarding === 'true' ? '/courses' : '/onboarding';
-      router.push(shouldRedirect);
     } catch (err) {
-      setError((err as Error).message);
-      cc?.setSubmitting && cc.setSubmitting(false);
+      setError('Произошла ошибка. Попробуйте еще раз.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -125,10 +116,9 @@ const ModalFormAuth: NextPage<ModalFormAuthType> = ({
         >
           <CloseIcon />
         </button>
-        <h3 className={styles['modal-title']}>Sign in</h3>
+        <h3 className={styles['modal-title']}>Восстановление</h3>
         <h2 className={styles['modal-title-ru']}>
-          to access<br />
-          the course:
+          пароля
         </h2>
         <form className={styles['modal-fields']} onSubmit={handleSubmit}>
           <input
@@ -139,28 +129,10 @@ const ModalFormAuth: NextPage<ModalFormAuthType> = ({
             onChange={e => setEmail(e.target.value)}
             autoComplete="email"
           />
-          <input
-            type="password"
-            placeholder="Password*"
-            required
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            autoComplete="current-password"
-          />
-          <a 
-            href="#"
-            className={styles['modal-link-forgot']}
-            onClick={(e) => {
-              e.preventDefault();
-              handleClose();
-              cc?.setCurrentForm && cc.setCurrentForm('forgot-password');
-            }}
-          >
-            Забыли пароль?
-          </a>
           {error && <div className={styles['modal-error']}>{error}</div>}
-          <button className={styles['modal-submit']} type="submit" disabled={loading || cc?.submitting}>
-            {loading || cc?.submitting ? 'Sign In...' : 'Sign In'}
+          {success && <div className={styles['modal-success']}>{success}</div>}
+          <button className={styles['modal-submit']} type="submit" disabled={loading}>
+            {loading ? 'Отправка...' : 'Отправить'}
           </button>
           <a 
             href="#"
@@ -168,10 +140,10 @@ const ModalFormAuth: NextPage<ModalFormAuthType> = ({
             onClick={(e) => {
               e.preventDefault();
               handleClose();
-              cc?.setCurrentForm && cc.setCurrentForm('register');
+              cc?.setCurrentForm && cc.setCurrentForm('auth');
             }}
           >
-            No account? Register
+            Вернуться к входу
           </a>
         </form>
       </div>
@@ -179,4 +151,4 @@ const ModalFormAuth: NextPage<ModalFormAuthType> = ({
   );
 };
 
-export default ModalFormAuth;
+export default ModalForgotPassword; 

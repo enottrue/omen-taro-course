@@ -234,3 +234,35 @@
 .modal-link-simple:hover {
   color: #001a4d;
 }
+
+.modal-link-forgot {
+  color: var(--color-midnightblue);
+  font-family: var(--font-roboto);
+  font-size: 0.8rem;
+  text-decoration: underline;
+  text-align: center;
+  margin: 0.3rem auto;
+  cursor: pointer;
+  display: inline-block;
+  transition: color 0.2s ease;
+  opacity: 0.8;
+}
+
+.modal-link-forgot:hover {
+  color: #001a4d;
+  opacity: 1;
+}
+
+.modal-success {
+  color: #28a745;
+  font-size: 0.85rem;
+  font-family: var(--font-roboto);
+  text-align: center;
+  margin: 0.5rem auto;
+  padding: 0.5rem 1rem;
+  background: rgba(40, 167, 69, 0.1);
+  border-radius: 8px;
+  border: 1px solid rgba(40, 167, 69, 0.2);
+  width: 78%;
+  line-height: 1.3;
+}
