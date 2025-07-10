@@ -1,102 +1,14 @@
 @import '/scss/breakpoints';
 
-.button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  position: relative;
-  background: var(--color-button-bg);
-  color: var(--color-white);
-  text-decoration: none;
-  padding: calcSize(22) calcSize(18);
-  border-radius: calcSize(40);
-  min-height: calcSize(72);
-  text-align: center;
-  font-size: calcSize(22);
-  font-weight: 500;
-  border: none;
-  outline: none;
-  transition: var(--transition-base);
-  gap: calcSize(10);
-  box-shadow: 0px 0px 15px 0px #e9692c;
 
-  &:hover {
-    background: var(--color-button-bg_hover);
-
-    .button__text {
-      color: var(--color-button-text_hover);
-    }
-  }
-
-  &:disabled {
-    background: var(--color-button-bg_disabled);
-    .button__text {
-      color: var(--color-button-text_disabled);
-    }
-  }
-
-  &_secondary {
-    background: var(--color-button-bg_secondary);
-    box-shadow: 0px 0px 11px 0px #00a5ff;
-
-    .button__text {
-      color: var(--color-button-text_secodnary);
-    }
-
-    &:hover {
-      background: var(--color-button-bg_secondary_hover);
-    }
-  }
-
-  &_ternary {
-    background: #003f62;
-    box-shadow: 0px 4px 11.8px 0px rgba(19, 36, 46, 0.64);
-
-    &:hover {
-      background: #114f73;
-    }
-  }
-
-  &_smaller {
-    padding: calcSize(10) calcSize(18);
-    min-height: calcSize(48);
-
-    .button__text {
-      font-size: calcSize(18);
-    }
-  }
-
-  &_little {
-    padding: 10px;
-    min-height: 40px;
-
-    .button__text {
-      font-size: 18px;
-      font-weight: 400;
-    }
-  }
-
-  &.logout.button_little {
-    margin: auto;
-    display: flex;
-    margin-top: calcSize(20);
-    padding: calcSize(10) calcSize(18);
-    .header__icon {
-      svg {
-        filter: invert(1);
-      }
-    }
-  }
-}
 
 .button__text {
   position: relative;
-  color: var(--color-button-text);
-  font-size: calcSize(22);
-  font-style: normal;
-  font-weight: 500;
-  line-height: 100%;
+  font-size: var(--font-size-14);
+  line-height: 90%;
+  font-family: var(--font-roboto);
+  color: var(--color-midnightblue);
+  text-align: right;
 }
 
 .button__icon {

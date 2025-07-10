@@ -76,6 +76,7 @@ export const REGISTER_USER = gql`
     $password: String!
     $city: String
     $phone: String
+    $utmData: UtmData
   ) {
     registerUser(
       email: $email
@@ -83,6 +84,7 @@ export const REGISTER_USER = gql`
       password: $password
       city: $city
       phone: $phone
+      utmData: $utmData
     ) {
       token
       user {
@@ -92,6 +94,8 @@ export const REGISTER_USER = gql`
         city
         phone
         onboarded
+        bitrix24ContactId
+        bitrix24DealId
       }
       message
       error

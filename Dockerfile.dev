@@ -1,0 +1,26 @@
+FROM node:20.10.0-alpine
+
+WORKDIR /app
+
+# Установка зависимостей
+RUN apk add --no-cache libc6-compat
+
+# Копирование файлов зависимостей
+COPY package.json yarn.lock ./
+
+# Установка yarn и зависимостей
+RUN yarn set version stable && \
+    echo 'nodeLinker: node-modules' >> .yarnrc.yml && \
+    yarn install
+
+# Копирование исходного кода
+COPY . .
+
+# Генерация Prisma клиента
+RUN yarn prisma generate
+
+# Открытие порта
+EXPOSE 3000
+
+# Команда для запуска в режиме разработки
+CMD ["yarn", "dev"] 

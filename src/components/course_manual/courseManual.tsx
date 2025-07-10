@@ -10,6 +10,7 @@ interface CoursePdfItemProps {
 }
 
 export const CoursePdfItem = ({ lessons }: CoursePdfItemProps) => {
+  // console.log('CoursePdfItem lessons:', lessons);
   return (
     <>
       <div className="about-the-parent">
@@ -20,6 +21,7 @@ export const CoursePdfItem = ({ lessons }: CoursePdfItemProps) => {
       <div className="frame-parent5">
         {/* Убираем аккордеон "Электронная методичка" и оставляем только уроки */}
         {lessons?.map((lesson: any, i: Key) => {
+          console.log('Rendering lesson:', lesson);
           return (
             <CourseListItem
               contentStages={lesson.lessonStages}

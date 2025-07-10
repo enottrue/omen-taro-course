@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import VideoPlayer from '../video_player/videoPlayer';
 import LessonTimeline from '../lesson_timeline/lessonTimeline';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 
 import {
@@ -19,6 +19,7 @@ import { MainContext } from '@/contexts/MainContext';
 import { stageData } from '@/lib/dump-data/lessonsData';
 import styles from '@/components/component1/component1.module.css';
 import './lessonHeader.scss';
+import BurgerMenu from '../component1/BurgerMenu';
 
 export default function CourseLessonHeader({
   lesson,
@@ -34,6 +35,29 @@ export default function CourseLessonHeader({
   const [finishedStage, setFinishedStage] = useState(false);
   const [createStageStatus] = useMutation(ADD_STAGE_STATUS);
   const [changeStageStatus] = useMutation(CHANGE_STAGE_STATUS);
+  const [isBurgerOpen, setIsBurgerOpen] = useState(false);
+  const burgerRef = useRef<HTMLDivElement>(null);
+
+  const handleBurgerClick = () => {
+    setIsBurgerOpen(!isBurgerOpen);
+  };
+
+  // Close burger menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (burgerRef.current && !burgerRef.current.contains(event.target as Node)) {
+        setIsBurgerOpen(false);
+      }
+    };
+
+    if (isBurgerOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isBurgerOpen]);
 
   const {
     loading: stageStatusLoading,
@@ -137,12 +161,15 @@ export default function CourseLessonHeader({
                 <div className={styles.div1}>Задать вопрос</div>
               </a>
               <div 
+                ref={burgerRef}
                 className={styles.burgerMenu}
+                onClick={handleBurgerClick}
                 style={{ cursor: 'pointer', marginLeft: '10px', position: 'relative', minWidth: 'fit-content' }}
               >
                 <div className={styles.burgerLine}></div>
                 <div className={styles.burgerLine}></div>
                 <div className={styles.burgerLine}></div>
+                <BurgerMenu isOpen={isBurgerOpen} onClose={handleBurgerClick} />
               </div>
             </div>
           </header>

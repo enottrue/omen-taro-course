@@ -21,7 +21,8 @@ const defaultOptions: DefaultOptions = {
 console.log(process.env.APOLLO_DEV_ENVIRONTMENT);
 
 export const apolloClient = new ApolloClient({
-  uri: 'https://omen-taro.ru/api/graphql',
+  uri: 'http://localhost:3001/api/graphql', // Локальная разработка
+  // uri: 'https://omen-taro.ru/api/graphql', // Продакшн
   cache: new InMemoryCache(),
   defaultOptions: defaultOptions,
 });

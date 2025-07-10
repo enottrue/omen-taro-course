@@ -48,8 +48,10 @@
   background-repeat: no-repeat;
   margin: 0 auto;
   max-width: 320px;
+  .frame-wrapper2 {
+    margin:2rem 0;
+  }
 }
-
 // Background image (like CourseHero)
 .lesson-background {
   display: none;

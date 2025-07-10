@@ -1,5 +1,20 @@
 .cource-book {
   padding: calcSize(40) calcSize(40) calcSize(56);
+  background-color: var(--color-white);
+}
+.cource-lessons {
+  margin-top: 1rem;
+}
+.button_white {
+  background-color: #fff;
+  color: #002b80;
+  font-size: calcSize(12);
+  font-style: normal;
+  font-weight: 400;
+  line-height: 118.5%;
+  border-radius: calcSize(10);
+  border: 1px solid #002b80;
+  padding: calcSize(10) calcSize(20);
 }
 
 .cource-book__title {
@@ -9,17 +24,25 @@
   line-height: 110%;
 }
 
+// Стили для секции с изображением книги
 .cource-book__img {
-  aspect-ratio: 430 / 60;
-  position: relative;
-  margin-left: calcSize(-40);
-  margin-right: calcSize(-40);
+  width: 191px;
+  height: 198px;
+  position: absolute;
+  margin: calcSize(32) 0;
+  top: 4rem;
+  left: 8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 calcSize(40);
+  z-index: 10;
 
   img {
-    position: absolute;
-    width: calc(100% - calcSize(164));
-    top: calcSize(-148);
-    right: 0;
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--br-30);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   }
 }
 
@@ -37,7 +60,6 @@
 }
 
 .cource-book__icon-download {
-  // width="22" height="24"
   display: block;
   width: calcSize(22);
   height: calcSize(24);
@@ -45,6 +67,61 @@
 
 .cource-book__button {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  margin-top: calcSize(64);
+  margin:0 auto;
+}
+
+// Стили для кнопки "Назад к курсам"
+.cource-book__button .button_ternary {
+  margin-top: calcSize(16);
+}
+
+// Стили для кнопки в стиле "Enroll Now"
+.cource-book__button .enroll-now-only-50-wrapper {
+  cursor: pointer;
+  border: 0;
+  padding: var(--padding-14) var(--padding-20);
+  background-color: var(--color-white);
+  align-self: stretch;
+  border-radius: 964px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  margin: 0 auto;
+  margin-top: calcSize(16);
+
+  &:hover {
+    background-color: #f5f5f5;
+    transform: translateY(-2px);
+  }
+
+  .button__text {
+    position: relative;
+    font-size: var(--font-size-14);
+    line-height: 90%;
+    font-family: var(--font-roboto);
+    color: var(--color-midnightblue);
+    text-align: center;
+    font-weight: 700;
+  }
+}
+
+// Адаптивные стили для мобильных устройств
+@media (max-width: 768px) {
+  .cource-book {
+    padding: calcSize(20) calcSize(20) calcSize(40);
+  }
+  
+  .cource-book__img {
+    margin: calcSize(24) 0;
+    padding: 0 calcSize(20);
+  }
+  
+  .cource-book__button {
+    margin-top: calcSize(24);
+    gap: calcSize(12);
+    padding: 0 calcSize(20) calcSize(32);
+  }
 }

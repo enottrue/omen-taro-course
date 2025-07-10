@@ -125,7 +125,7 @@ export const resolvers = {
                     orderBy: {
                       id: 'asc',
                     },
-                    where: { userId: Number(userId) },
+                    where: userId && Number(userId) !== 0 && Number(userId) !== 1 ? { userId: Number(userId) } : {},
                   },
                 },
               },
@@ -136,17 +136,6 @@ export const resolvers = {
       if (!course) {
         throw new Error(`No course found for id: ${id}`);
       }
-
-      // Filter stageStatuses based on userId
-      // course.lessons.forEach((lesson) => {
-      //   lesson.lessonStages.forEach((stage) => {
-      //     stage.stageStatuses = stage.stageStatuses.filter((status) => {
-      //       console.log('000', status.userId, userId);
-      //       return status.userId == Number(userId);
-      //     });
-      //   });
-      // });
-      // console.log(678, '***********', course.lessons.lessonStages[0]);
 
       return course;
     },
@@ -348,6 +337,13 @@ export const resolvers = {
         phone?: string;
         password: string;
         city?: string;
+        utmData?: {
+          UTM_CAMPAIGN?: string;
+          UTM_SOURCE?: string;
+          UTM_MEDIUM?: string;
+          UTM_CONTENT?: string;
+          UTM_TERM?: string;
+        };
       },
       context: IContext,
       info: {},
@@ -386,14 +382,12 @@ export const resolvers = {
 
         // Создаем сделку в Битрикс24
         try {
-          const utmData = getUtmDataFromCookies();
           const bitrixResult = await createDealOnRegistration({
             name: user.name,
             email: user.email,
             phone: user.phone || '',
             city: user.city || undefined,
             productId: '1777', // Добавляем товар 1777
-            utmData,
             comments: `Регистрация пользователя ${user.name} из города ${user.city || 'не указан'}`,
           });
 
@@ -424,12 +418,13 @@ export const resolvers = {
         };
       } catch (error: unknown) {
         if (error instanceof ApolloError) {
+          console.error('ApolloError в registerUser:', error);
           return {
             message: error.message,
             error: true,
           };
         }
-        console.log('Что-то не так');
+        console.error('Неизвестная ошибка в registerUser:', error);
         return {
           message: 'Что-то пошло не так. Попробуй еще раз',
           error: true,

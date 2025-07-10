@@ -38,11 +38,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       query: GET_COURSE,
       variables: {
         id: 1,
-        userId: Number(userId),
+        userId: userId ? Number(userId) : 1, // Use number 1 for unauthenticated users
       },
     });
 
-    console.log('ddd', data);
+    // Data loaded successfully
+    
     const { data: stageData } = await apolloClient.query({
       query: GET_STAGE_STATUS,
       variables: {
@@ -54,12 +55,20 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       props: {
         userId,
         token,
-        courses: data.getCourse, // Pass the courses data to the component
-        stageData: stageData.getStageStatus,
+        courses: data?.getCourse || null, // Handle undefined data
+        stageData: stageData?.getStageStatus || [],
       },
     };
   } catch (error) {
     console.log('error', error);
+    return {
+      props: {
+        userId,
+        token,
+        courses: null,
+        stageData: [],
+      },
+    };
   }
   // Pass the cookies to the page as props
   return {
@@ -87,15 +96,8 @@ const Cources = ({
 }) => {
   const router = useRouter();
 
-  const { data: tt } = useQuery(GET_COURSE, {
-    variables: { id: 1, userId: Number(userId) }, // replace with your actual course ID
-  });
-
-  useEffect(() => {
-    courses = tt?.getCourse;
-  }, [tt]);
-
-  useEffect(() => {}, [courses]);
+  // Use the courses data from server-side props instead of making a client-side query
+  const tt = { getCourse: courses || null };
 
   const {
     getUser,
@@ -105,16 +107,16 @@ const Cources = ({
   } = useGetLazyUserData(Number(userId));
 
   const cc = useContext(MainContext);
-  // console.log(
-  //   'token',
-  //   token,
-  //   'userId',
-  //   userId,
-  //   'data',
-  //   courses,
-  //   'stageData',
-  //   stageData,
-  // );
+  console.log(
+    'token',
+    token,
+    'userId',
+    userId,
+    'data',
+    courses,
+    'stageData',
+    stageData,
+  );
   useEffect(() => {
     stageData && cc?.setStageData(stageData);
   }, [stageData]);
@@ -145,7 +147,7 @@ const Cources = ({
         <link rel="shortcut icon" href="/favicon/favicon.ico" />
       </Head>
       <main>
-        <CourseHero lessons={courses?.lessons} />
+        <CourseHero lessons={courses?.lessons} token={token} userId={userId} />
       </main>
       <Footer />
     </>

@@ -1,6 +1,6 @@
 import course_hero from '@/images/cource-hero.png';
 import Image from 'next/image';
-import { useContext, useState } from 'react';
+import { useContext, useState, useRef, useEffect } from 'react';
 import { MainContext } from '@/contexts/MainContext';
 import unsplashImage from '../../images/unsplashutbx9x3y8ly-2@2x.png';
 import image3 from '../../images/image-3@2x.png';
@@ -8,14 +8,20 @@ import group2 from '../../images/group-2@2x.png';
 import image4 from '../../images/image-4@2x.png';
 import styles from '@/components/component1/component1.module.css';
 import CourseLessons from '@/components/course_lessons/courseLessons';
+import Button from '../button/Button';
+import AuthNav from '../header/AuthNav';
 
 interface CourseHeroProps {
   lessons?: any[];
+  token?: string | null;
+  userId?: string | null;
 }
 
-const CourseHero = ({ lessons }: CourseHeroProps) => {
+const CourseHero = ({ lessons, token, userId }: CourseHeroProps) => {
   const cc = useContext(MainContext);
   const [activeAccordion, setActiveAccordion] = useState<number | null>(null);
+  
+  // console.log('CourseHero lessons:', lessons);
 
   const toggleAccordion = (index: number) => {
     setActiveAccordion(activeAccordion === index ? null : index);
@@ -23,7 +29,7 @@ const CourseHero = ({ lessons }: CourseHeroProps) => {
 
   return (
     <div className="root">
-      <main className="">
+      <div className="">
         <Image
           className="unsplashutbx9x3y8ly-icon"
           alt="Background"
@@ -31,10 +37,7 @@ const CourseHero = ({ lessons }: CourseHeroProps) => {
           width={484}
           height={1853}
           priority
-        />
-        
-        <section className="frame-child"></section>
-        
+        />        
         <Image
           className="image-3-icon"
           alt=""
@@ -53,7 +56,7 @@ const CourseHero = ({ lessons }: CourseHeroProps) => {
           width={401}
           height={321}
         /> */}
-      </main>
+      </div>
       
       <section className="root-inner">
         <div className="frame-parent">
@@ -68,22 +71,82 @@ const CourseHero = ({ lessons }: CourseHeroProps) => {
             <div className={styles.frameContainer}>
               <a 
                 className={styles.container}
-                href="mailto:support@astro-irena.com"
+                href="mailto:support@astro-irena.com?subject=Вопрос по курсу Таро&body=Здравствуйте! У меня есть вопрос по курсу Таро:"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <div className={styles.div1}>Задать вопрос</div>
               </a>
-              <div 
-                className={styles.burgerMenu}
-                style={{ cursor: 'pointer', marginLeft: '10px', position: 'relative', minWidth: 'fit-content' }}
-              >
-                <div className={styles.burgerLine}></div>
-                <div className={styles.burgerLine}></div>
-                <div className={styles.burgerLine}></div>
-              </div>
+              {!token ? (
+                <div 
+                  className={styles.wrapper}
+                  onClick={() => {
+                    cc?.setModalOpen(true);
+                    cc?.setCurrentForm('auth');
+                  }}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <div className={styles.div}>Sign In</div>
+                </div>
+              ) : (
+                <Button
+                  title="Меню"
+                  className="button_little js-header__menu-toggle"
+                  onClick={() => {
+                    cc?.setMenuOpen(!cc?.menuOpen);
+                  }}
+                >
+                  <span className="button__icon">
+                    <span className="header__icon">
+                      <span className="header__icon-open">
+                        <svg width="800" height="800" viewBox="0 0 20 20" fill="#FFF">
+                          <g
+                            id="Page-1"
+                            fillRule="evenodd"
+                            stroke="none"
+                            strokeWidth="1"
+                          >
+                            <g
+                              id="Dribbble-Light-Preview"
+                              transform="translate(-140 -2159)"
+                            >
+                              <g id="icons" transform="translate(56 160)">
+                                <path
+                                  id="profile_round-[#1342]"
+                                  d="M100.56 2017H87.44c-.7 0-1.23-.7-.96-1.34 1.23-2.96 4.14-4.66 7.52-4.66s6.29 1.7 7.52 4.66c.27.64-.25 1.34-.96 1.34m-10.64-12c0-2.2 1.83-4 4.08-4s4.08 1.8 4.08 4-1.83 4-4.08 4a4.05 4.05 0 0 1-4.08-4m14.04 11.64a9.52 9.52 0 0 0-6.12-6.97 5.93 5.93 0 0 0 2.21-5.6 6.1 6.1 0 0 0-5.32-5.03 6.08 6.08 0 0 0-6.85 5.96c0 1.89.89 3.57 2.28 4.67a9.52 9.52 0 0 0-6.12 6.97c-.27 1.22.74 2.36 2.01 2.36h15.9c1.27 0 2.28-1.14 2-2.36"
+                                />
+                              </g>
+                            </g>
+                          </g>
+                        </svg>
+                      </span>
+                      <span className="header__icon-close">
+                        <svg
+                          width="22"
+                          height="22"
+                          viewBox="0 0 22 22"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M16.2791 5.61243L5.50409 16.3874"
+                            stroke="#fff"
+                            strokeWidth="2"
+                          />
+                          <path
+                            d="M5.50427 5.61243L16.2792 16.3874"
+                            stroke="#fff"
+                            strokeWidth="2"
+                          />
+                        </svg>
+                      </span>
+                    </span>
+                  </span>
+                </Button>
+              )}
             </div>
           </header>
+          {token && <AuthNav />}
           
           <div className="frame-div">
             <div className="frame-parent1">
@@ -127,7 +190,23 @@ const CourseHero = ({ lessons }: CourseHeroProps) => {
         </div>
       </section>
       
-      <section className="frame-section">
+  
+      
+      {/* Секция cource-lessons bg-white внутри root */}
+      <section className="cource-lessons bg-white">
+      <Image
+          className={styles.wrapperGroup2Child}
+          width={401.1}
+          height={320.6}
+          sizes="100vw"
+          alt=""
+          src={group2}
+          priority
+        />
+        <CourseLessons lessons={lessons} />
+        <div className="cource-bottom-bg"> </div>
+      </section>
+
         <div className="frame-wrapper2">
           <div className="frame-wrapper3">
             <div className="cosmo-group">
@@ -136,13 +215,6 @@ const CourseHero = ({ lessons }: CourseHeroProps) => {
             </div>
           </div>
         </div>
-      </section>
-      
-      {/* Секция cource-lessons bg-white внутри root */}
-      <section className="cource-lessons bg-white">
-        <CourseLessons lessons={lessons} />
-        <div className="cource-bottom-bg"> </div>
-      </section>
     </div>
 );
 };

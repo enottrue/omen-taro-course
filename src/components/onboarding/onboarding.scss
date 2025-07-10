@@ -14,6 +14,7 @@
 }
 
 .onboarding__content {
+  margin: 0 auto;
   &--blurred {
     filter: blur(4px);
     pointer-events: none;
@@ -29,6 +30,7 @@
 }
 
 .onboarding__buttons {
+  margin-top: 2rem;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: calcSize(18);
@@ -36,6 +38,133 @@
 
   &_last {
     grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+// Стили для кнопок онбординга
+.onboarding__buttons .button {
+  cursor: pointer;
+  border: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  font-family: var(--font-roboto);
+  transition: all 0.3s ease;
+  border-radius: 964px;
+  padding: var(--padding-14) var(--padding-20);
+  height: 2.563rem;
+  text-decoration: none;
+  font-size: var(--font-size-14);
+  line-height: 90%;
+  font-weight: 700;
+  position: relative;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+  
+  // Состояние загрузки
+  &:disabled.loading {
+    cursor: wait;
+    
+    .button__text {
+      opacity: 0.7;
+    }
+    
+    &::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border: 2px solid transparent;
+      border-top: 2px solid currentColor;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      right: var(--padding-20);
+    }
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// Кнопка "Пропустить" (вторичная)
+.onboarding__buttons .button_ternary {
+  background-color: transparent;
+  color: var(--color-midnightblue);
+  border: 1px solid var(--color-white);
+  
+  &:hover {
+    background-color: rgba(0, 43, 128, 0.05);
+  }
+  
+  .button__text {
+    color: var(--color-white);
+  }
+}
+
+// Кнопка "Далее" и "Перейти к обучению" (основная)
+.onboarding__buttons .js-onboarding-next {
+  background-color: var(--color-white);
+  color: var(--color-white);
+  
+  
+  .onboarding__button-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: var(--gap-10);
+    color: var(--color-midnightblue);
+    
+    svg {
+      width: 16px;
+      height: 16px;
+      transition: transform 0.3s ease;
+    }
+  }
+  
+  &:hover .onboarding__button-icon svg {
+    transform: translateX(2px);
+  }
+}
+
+// Кнопка "Перейти к обучению" (финальная)
+.onboarding__buttons .js-onboarding-next:last-child {
+  background: linear-gradient(135deg, var(--color-white) 0%, #f8f9fa 100%);
+  box-shadow: 0 2px 8px rgba(0, 43, 128, 0.1);
+  
+  &:hover {
+    background: linear-gradient(135deg, #f8f9fa 0%, var(--color-white) 100%);
+    box-shadow: 0 4px 16px rgba(0, 43, 128, 0.2);
+  }
+}
+
+// Адаптивность для мобильных устройств
+@media (max-width: 768px) {
+  .onboarding__buttons {
+    gap: calcSize(12);
+    margin-top: calcSize(20);
+  }
+  
+  .onboarding__buttons .button {
+    padding: var(--padding-12) var(--padding-16);
+    height: 2.25rem;
+    font-size: var(--font-size-12);
   }
 }
 

@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import Header from '@/components/header/Header';
 import { useContext } from 'react';
 import { MainContext } from '@/contexts/MainContext';
 import cookie from 'cookie';
@@ -10,13 +9,11 @@ import { GetServerSideProps } from 'next';
 import OnboardingStages from '@/components/onboarding/OnboardingStages';
 
 import { useGetLazyUserData } from '@/hooks/useGetUserData';
-import CourseHero from '@/components/course_hero/Course_hero';
-import CourseLessons from '@/components/course_lessons/courseLessons';
 import Footer from '@/components/footer/Footer';
-import CourseBook from '@/components/course_book/courseBook';
+import CourseBookHero from '@/components/course_book/courseBook';
 
 import { apolloClient } from '@/lib/apollo/apollo';
-import { GET_COURSES, GET_COURSE } from '@/graphql/queries';
+import { GET_COURSES, GET_COURSE, GET_STAGE_STATUS } from '@/graphql/queries';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const APP_SECRET = process.env.APP_SECRET;
@@ -38,6 +35,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       query: GET_COURSE,
       variables: {
         id: 1,
+        userId: userId ? Number(userId) : 1, // Use number 1 for unauthenticated users
+      },
+    });
+
+    // Data loaded successfully
+    
+    const { data: stageData } = await apolloClient.query({
+      query: GET_STAGE_STATUS,
+      variables: {
         userId: Number(userId),
       },
     });
@@ -46,25 +52,28 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       props: {
         userId,
         token,
-        courses: data.getCourse, // Pass the courses data to the component
+        courses: data?.getCourse || null, // Handle undefined data
+        stageData: stageData?.getStageStatus || [],
       },
     };
   } catch (error) {
     console.log('error', error);
+    return {
+      props: {
+        userId,
+        token,
+        courses: null,
+        stageData: [],
+      },
+    };
   }
-  // Pass the cookies to the page as props
-  return {
-    props: {
-      userId,
-      token,
-    },
-  };
 };
 
 const Book = ({
   userId,
   token,
   courses,
+  stageData,
 }: {
   userId: string | null;
   token: string | null;
@@ -73,6 +82,7 @@ const Book = ({
         [k: string]: any;
       }
     | undefined;
+  stageData: { [k: string]: any };
 }) => {
   const router = useRouter();
 
@@ -84,6 +94,10 @@ const Book = ({
   } = useGetLazyUserData(Number(userId));
 
   const cc = useContext(MainContext);
+
+  useEffect(() => {
+    stageData && cc?.setStageData(stageData);
+  }, [stageData]);
 
   useEffect(() => {
     cc?.setUserId(userId);
@@ -111,8 +125,7 @@ const Book = ({
         <link rel="shortcut icon" href="/favicon/favicon.ico" />
       </Head>
       <main>
-        <Header token={token} userId={userId} />
-        <CourseBook />
+        <CourseBookHero token={token} userId={userId} />
       </main>
       <Footer />
     </>

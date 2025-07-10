@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './component1.module.css';
+import BurgerMenu from './BurgerMenu';
 
 export type OnboardingMenuShellProps = {
   children: React.ReactNode;
@@ -35,14 +36,19 @@ const OnboardingMenuShell: React.FC<OnboardingMenuShellProps> = ({
             >
               <div className={styles.div1}>Задать вопрос</div>
             </a>
-            <div 
-              className={styles.burgerMenu}
-              style={{ cursor: 'pointer', marginLeft: '10px', position: 'relative', minWidth: 'fit-content' }}
-            >
-              <div className={styles.burgerLine}></div>
-              <div className={styles.burgerLine}></div>
-              <div className={styles.burgerLine}></div>
-            </div>
+            {onBurgerClick && (
+              <div 
+                ref={burgerRef}
+                className={styles.burgerMenu}
+                onClick={onBurgerClick}
+                style={{ cursor: 'pointer', marginLeft: '10px', position: 'relative', minWidth: 'fit-content' }}
+              >
+                <div className={styles.burgerLine}></div>
+                <div className={styles.burgerLine}></div>
+                <div className={styles.burgerLine}></div>
+                <BurgerMenu isOpen={isBurgerOpen} onClose={onBurgerClick} />
+              </div>
+            )}
           </div>
         </header>
         {children}
