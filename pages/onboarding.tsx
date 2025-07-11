@@ -44,11 +44,11 @@ const Onboarding = ({
   const router = useRouter();
 
   const {
-    getUser,
+    fetchUser,
     loading: loadingLazy,
     error: errorLazy,
     user,
-  } = useGetLazyUserData(Number(userId));
+  } = useGetLazyUserData();
 
   const cc = useContext(MainContext);
  
@@ -56,8 +56,10 @@ const Onboarding = ({
   useEffect(() => {
     cc?.setUserId(userId);
     cc?.setToken(token);
-    const us = getUser({ variables: { userId } });
- 
+    
+    if (userId) {
+      fetchUser(Number(userId));
+    }
 
     if (!userId || !token) {
       router.push('/');

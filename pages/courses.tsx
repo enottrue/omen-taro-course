@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { useContext } from 'react';
@@ -7,6 +7,7 @@ import cookie from 'cookie';
 import jwt from 'jsonwebtoken';
 import { GetServerSideProps } from 'next';
 import OnboardingStages from '@/components/onboarding/OnboardingStages';
+import PaymentRequired from '@/components/PaymentRequired';
 
 import { useGetLazyUserData } from '@/hooks/useGetUserData';
 import CourseHero from '@/components/course_hero/Course_hero';
@@ -24,15 +25,32 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     : {};
   context.res.setHeader('Cache-Control', 'no-store');
 
+  let userId = null;
+  let token = null;
+  let userData = null;
+
   try {
     //@ts-expect-error
     jwt.verify(cookies.Bearer, APP_SECRET);
-    var userId = cookies?.userId ? cookies.userId : null;
-    var token = cookies?.Bearer ? cookies.Bearer : null;
+    userId = cookies?.userId ? cookies.userId : null;
+    token = cookies?.Bearer ? cookies.Bearer : null;
+
+    // Получаем данные пользователя для проверки статуса оплаты
+    if (userId) {
+      try {
+        const response = await fetch(`${context.req.headers.host ? `http://${context.req.headers.host}` : 'http://localhost:3000'}/api/users/${userId}`);
+        if (response.ok) {
+          userData = await response.json();
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    }
   } catch (error) {
     userId = null;
     token = null;
   }
+
   try {
     const { data } = await apolloClient.query({
       query: GET_COURSE,
@@ -55,6 +73,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       props: {
         userId,
         token,
+        userData: userData?.user || null,
         courses: data?.getCourse || null, // Handle undefined data
         stageData: stageData?.getStageStatus || [],
       },
@@ -65,28 +84,24 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       props: {
         userId,
         token,
+        userData: userData?.user || null,
         courses: null,
         stageData: [],
       },
     };
   }
-  // Pass the cookies to the page as props
-  return {
-    props: {
-      userId,
-      token,
-    },
-  };
 };
 
 const Cources = ({
   userId,
   token,
+  userData,
   courses,
   stageData,
 }: {
   userId: string | null;
   token: string | null;
+  userData: any;
   courses:
     | {
         [k: string]: any;
@@ -95,16 +110,17 @@ const Cources = ({
   stageData: { [k: string]: any };
 }) => {
   const router = useRouter();
+  const [showPaymentRequired, setShowPaymentRequired] = useState(false);
 
   // Use the courses data from server-side props instead of making a client-side query
   const tt = { getCourse: courses || null };
 
   const {
-    getUser,
+    fetchUser,
     loading: loadingLazy,
     error: errorLazy,
     user,
-  } = useGetLazyUserData(Number(userId));
+  } = useGetLazyUserData();
 
   const cc = useContext(MainContext);
   console.log(
@@ -116,7 +132,10 @@ const Cources = ({
     courses,
     'stageData',
     stageData,
+    'userData',
+    userData,
   );
+  
   useEffect(() => {
     stageData && cc?.setStageData(stageData);
   }, [stageData]);
@@ -124,7 +143,10 @@ const Cources = ({
   useEffect(() => {
     cc?.setUserId(userId);
     cc?.setToken(token);
-    const us = getUser({ variables: { userId } });
+    
+    if (userId) {
+      fetchUser(Number(userId));
+    }
 
     if (!userId || !token) {
       router.push('/');
@@ -137,6 +159,32 @@ const Cources = ({
       cc?.setUser(user);
     }
   }, [user]);
+
+  // Проверяем статус оплаты
+  useEffect(() => {
+    if (userData && !userData.isPaid) {
+      setShowPaymentRequired(true);
+    } else {
+      setShowPaymentRequired(false);
+    }
+  }, [userData]);
+
+  // Если пользователь не оплатил, показываем компонент PaymentRequired
+  if (showPaymentRequired) {
+    return (
+      <>
+        <Head>
+          <title>Доступ ограничен - Обучающий курс по Таро</title>
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <link rel="shortcut icon" href="/favicon/favicon.ico" />
+        </Head>
+        <main>
+          <PaymentRequired />
+        </main>
+        <Footer />
+      </>
+    );
+  }
 
   return (
     <>

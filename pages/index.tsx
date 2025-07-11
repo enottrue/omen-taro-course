@@ -11,7 +11,7 @@ import Component9 from "../src/components/component9/component9";
 import SmartInvestment from "../src/components/smart-investment/smart-investment";
 import Discover from "../src/components/discover/discover";
 import Image from 'next/image';
-import { useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { Inter } from 'next/font/google';
 
 import Header from '@/components/header/Header';
@@ -25,7 +25,6 @@ import Modal from '@/components/modal/Modal';
 import { MainContext } from '@/contexts/MainContext';
 import cookie from 'cookie';
 import jwt from 'jsonwebtoken';
-import { useEffect } from 'react';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -37,11 +36,27 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     ? cookie.parse(context.req.headers.cookie)
     : {};
 
+  let userId = null;
+  let token = null;
+  let userData = null;
+
   try {
     //@ts-expect-error
     jwt.verify(cookies.Bearer, APP_SECRET);
-    var userId = cookies?.userId ? cookies.userId : null;
-    var token = cookies?.Bearer ? cookies.Bearer : null;
+    userId = cookies?.userId ? cookies.userId : null;
+    token = cookies?.Bearer ? cookies.Bearer : null;
+
+    // Если пользователь авторизован, получаем его данные
+    if (userId) {
+      try {
+        const response = await fetch(`${context.req.headers.host ? `http://${context.req.headers.host}` : 'http://localhost:3000'}/api/users/${userId}`);
+        if (response.ok) {
+          userData = await response.json();
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    }
   } catch (error) {
     userId = null;
     token = null;
@@ -52,6 +67,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     props: {
       userId,
       token,
+      userData: userData?.user || null,
     },
   };
 };
@@ -59,9 +75,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 export default function Home({
   userId,
   token,
+  userData,
 }: {
   userId: string | null;
   token: string | null;
+  userData: any;
 }) {
   const cc = useContext(MainContext);
 
@@ -69,7 +87,7 @@ export default function Home({
     // GOOD: This state update is now in a useEffect and won't cause a warning
     cc?.setUserId(userId);
     cc?.setToken(token);
-  }, [userId, token]);
+  }, [userId, token, userData]);
 
   return (
     <>

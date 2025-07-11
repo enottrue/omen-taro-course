@@ -2,12 +2,12 @@ import nodemailer from 'nodemailer';
 
 // Email configuration
 const emailConfig = {
-  host: process.env.SMTP_HOST || 'smtp.spaceweb.ru',
-  port: parseInt(process.env.SMTP_PORT || '465'),
-  secure: process.env.SMTP_SECURE === 'true' || true, // true for 465, false for other ports
+  host: process.env.SMTP_HOST || 'smtp.gmail.com',
+  port: parseInt(process.env.SMTP_PORT || '587'),
+  secure: process.env.SMTP_SECURE === 'true' || false, // true for 465, false for other ports
   auth: {
-    user: process.env.SMTP_USER || 'support@astro-irena.com',
-    pass: process.env.SMTP_PASS || 'ZEHMQ39KF1#Y3p3G',
+    user: process.env.SMTP_USER || 'your-email@gmail.com',
+    pass: process.env.SMTP_PASS || 'your-app-password',
   },
 };
 
@@ -151,8 +151,8 @@ export const emailService = {
 
   // Check if SMTP is configured
   isSmtpConfigured() {
-    return emailConfig.auth.user !== 'support@astro-irena.com' || 
-           emailConfig.auth.pass !== 'ZEHMQ39KF1#Y3p3G';
+    return emailConfig.auth.user !== 'your-email@gmail.com' && 
+           emailConfig.auth.pass !== 'your-app-password';
   }
 };
 

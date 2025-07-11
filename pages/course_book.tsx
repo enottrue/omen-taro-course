@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { useContext } from 'react';
@@ -7,6 +7,7 @@ import cookie from 'cookie';
 import jwt from 'jsonwebtoken';
 import { GetServerSideProps } from 'next';
 import OnboardingStages from '@/components/onboarding/OnboardingStages';
+import PaymentRequired from '@/components/PaymentRequired';
 
 import { useGetLazyUserData } from '@/hooks/useGetUserData';
 import Footer from '@/components/footer/Footer';
@@ -21,15 +22,32 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     ? cookie.parse(context.req.headers.cookie)
     : {};
 
+  let userId = null;
+  let token = null;
+  let userData = null;
+
   try {
     //@ts-expect-error
     jwt.verify(cookies.Bearer, APP_SECRET);
-    var userId = cookies?.userId ? cookies.userId : null;
-    var token = cookies?.Bearer ? cookies.Bearer : null;
+    userId = cookies?.userId ? cookies.userId : null;
+    token = cookies?.Bearer ? cookies.Bearer : null;
+
+    // Получаем данные пользователя для проверки статуса оплаты
+    if (userId) {
+      try {
+        const response = await fetch(`${context.req.headers.host ? `http://${context.req.headers.host}` : 'http://localhost:3000'}/api/users/${userId}`);
+        if (response.ok) {
+          userData = await response.json();
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    }
   } catch (error) {
     userId = null;
     token = null;
   }
+
   try {
     const { data } = await apolloClient.query({
       query: GET_COURSE,
@@ -52,6 +70,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       props: {
         userId,
         token,
+        userData: userData?.user || null,
         courses: data?.getCourse || null, // Handle undefined data
         stageData: stageData?.getStageStatus || [],
       },
@@ -62,6 +81,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       props: {
         userId,
         token,
+        userData: userData?.user || null,
         courses: null,
         stageData: [],
       },
@@ -69,40 +89,47 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 };
 
-const Book = ({
+export default function CourseBook({
   userId,
   token,
+  userData,
   courses,
   stageData,
 }: {
   userId: string | null;
   token: string | null;
+  userData: any;
   courses:
     | {
         [k: string]: any;
       }
     | undefined;
   stageData: { [k: string]: any };
-}) => {
+}) {
   const router = useRouter();
+  const [showPaymentRequired, setShowPaymentRequired] = useState(false);
 
   const {
-    getUser,
+    fetchUser,
     loading: loadingLazy,
     error: errorLazy,
     user,
-  } = useGetLazyUserData(Number(userId));
+  } = useGetLazyUserData();
 
   const cc = useContext(MainContext);
-
+  
   useEffect(() => {
     stageData && cc?.setStageData(stageData);
   }, [stageData]);
 
   useEffect(() => {
+    // GOOD: This state update is now in a useEffect and won't cause a warning
     cc?.setUserId(userId);
     cc?.setToken(token);
-    const us = getUser({ variables: { userId } });
+    
+    if (userId) {
+      fetchUser(Number(userId));
+    }
 
     if (!userId || !token) {
       router.push('/');
@@ -116,20 +143,44 @@ const Book = ({
     }
   }, [user]);
 
+  // Проверяем статус оплаты
+  useEffect(() => {
+    if (userData && !userData.isPaid) {
+      setShowPaymentRequired(true);
+    } else {
+      setShowPaymentRequired(false);
+    }
+  }, [userData]);
+
+  // Если пользователь не оплатил, показываем компонент PaymentRequired
+  if (showPaymentRequired) {
+    return (
+      <>
+        <Head>
+          <title>Доступ ограничен - Книга курса</title>
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <link rel="shortcut icon" href="/favicon/favicon.ico" />
+        </Head>
+        <main>
+          <PaymentRequired />
+        </main>
+        <Footer />
+      </>
+    );
+  }
+
   return (
     <>
       <Head>
-        <title>Методичка обучающего курса по Таро Omen</title>
-        <meta name="Методичка обучающего курса по Таро Omen | Курс Таро" />
+        <title>Книга курса - Обучающий курс по Таро</title>
+        <meta name="Книга курса - Omen | Курс Таро" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="shortcut icon" href="/favicon/favicon.ico" />
       </Head>
       <main>
-        <CourseBookHero token={token} userId={userId} />
+        <CourseBookHero />
       </main>
       <Footer />
     </>
   );
-};
-
-export default Book;
+}

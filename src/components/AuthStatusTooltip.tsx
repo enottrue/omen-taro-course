@@ -6,18 +6,12 @@ const AuthStatusTooltip: React.FC = () => {
   const cc = useContext(MainContext);
   const [isVisible, setIsVisible] = useState(false);
   const [isClient, setIsClient] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState<{ isPaid?: boolean; loading: boolean }>({ loading: false });
   
   // Обработка гидратации
   useEffect(() => {
     setIsClient(true);
   }, []);
-  
-  // Скрываем в продакшене
-  const isDevelopment = process.env.NODE_ENV === 'development';
-  if (!isDevelopment) return null;
-  
-  // Не рендерим на сервере
-  if (!isClient) return null;
 
   // Получаем данные из контекста и cookies
   const contextToken = cc?.token;
@@ -50,9 +44,58 @@ const AuthStatusTooltip: React.FC = () => {
   const tokenExpiry = cookieToken ? getTokenExpiry(cookieToken) : null;
   const isTokenExpired = tokenExpiry ? tokenExpiry < new Date() : false;
 
+  // Получаем статус оплаты пользователя
+  useEffect(() => {
+    const fetchPaymentStatus = async () => {
+      if (!userId) {
+        setPaymentStatus({ loading: false });
+        return;
+      }
+
+      setPaymentStatus({ loading: true });
+      try {
+        const response = await fetch(`/api/users/${userId}`);
+        if (response.ok) {
+          const userData = await response.json();
+          setPaymentStatus({ isPaid: userData.user.isPaid, loading: false });
+        } else {
+          setPaymentStatus({ loading: false });
+        }
+      } catch (error) {
+        console.error('Error fetching payment status:', error);
+        setPaymentStatus({ loading: false });
+      }
+    };
+
+    fetchPaymentStatus();
+  }, [userId]);
+
   const toggleVisibility = () => {
     setIsVisible(!isVisible);
   };
+
+  // Определяем цвет и иконку для статуса оплаты
+  const getPaymentStatusDisplay = () => {
+    if (paymentStatus.loading) {
+      return { icon: '⏳', text: 'Loading...', color: '#f39c12' };
+    }
+    if (paymentStatus.isPaid === undefined) {
+      return { icon: '❓', text: 'Unknown', color: '#95a5a6' };
+    }
+    if (paymentStatus.isPaid) {
+      return { icon: '💳', text: 'Paid', color: '#27ae60' };
+    }
+    return { icon: '🔒', text: 'Not Paid', color: '#e74c3c' };
+  };
+
+  const paymentDisplay = getPaymentStatusDisplay();
+
+  // Скрываем в продакшене
+  const isDevelopment = process.env.NODE_ENV === 'development';
+  if (!isDevelopment) return null;
+  
+  // Не рендерим на сервере
+  if (!isClient) return null;
 
   return (
     <div style={{
@@ -66,7 +109,7 @@ const AuthStatusTooltip: React.FC = () => {
       borderRadius: '5px',
       fontSize: '12px',
       fontFamily: 'monospace',
-      maxWidth: '300px',
+      maxWidth: '350px',
       boxShadow: '0 2px 10px rgba(0,0,0,0.3)',
       cursor: 'pointer',
       userSelect: 'none'
@@ -79,6 +122,13 @@ const AuthStatusTooltip: React.FC = () => {
         <div style={{ marginTop: '10px' }}>
           <div style={{ marginBottom: '5px' }}>
             <strong>Status:</strong> {isAuthenticated ? '✅ Authenticated' : '❌ Not Authenticated'}
+          </div>
+          
+          <div style={{ marginBottom: '5px' }}>
+            <strong>Payment:</strong> 
+            <span style={{ color: paymentDisplay.color, marginLeft: '5px' }}>
+              {paymentDisplay.icon} {paymentDisplay.text}
+            </span>
           </div>
           
           <div style={{ marginBottom: '5px' }}>
@@ -115,6 +165,7 @@ const AuthStatusTooltip: React.FC = () => {
                 <div>Name: {contextUser.name}</div>
                 <div>Email: {contextUser.email}</div>
                 <div>Onboarded: {contextUser.onboarded ? '✅ Yes' : '❌ No'}</div>
+                <div>Payment Status: {contextUser.isPaid ? '💳 Paid' : '🔒 Not Paid'}</div>
               </div>
             </div>
           )}
@@ -127,7 +178,11 @@ const AuthStatusTooltip: React.FC = () => {
       
       {!isVisible && (
         <div style={{ fontSize: '11px', opacity: 0.8 }}>
-          {isAuthenticated ? '✅ Auth' : '❌ No Auth'} - Click for details
+          <div>{isAuthenticated ? '✅ Auth' : '❌ No Auth'}</div>
+          <div style={{ color: paymentDisplay.color }}>
+            {paymentDisplay.icon} {paymentDisplay.text}
+          </div>
+          <div>Click for details</div>
         </div>
       )}
     </div>
