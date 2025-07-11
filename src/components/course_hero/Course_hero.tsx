@@ -171,14 +171,6 @@ const CourseHero = ({ lessons, token, userId }: CourseHeroProps) => {
                   <p className="p">Желаем вам успехов!</p>
                 </div>
               </div>
-              
-              <button 
-                className="enroll-now-only-50-wrapper"
-                onClick={handleEnrollClick}
-                style={{ cursor: 'pointer' }}
-              >
-                <b className="enroll-now-">Enroll Now - only $50</b>
-              </button>
             </div>
           </div>
         </div>
