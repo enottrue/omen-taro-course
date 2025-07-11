@@ -12,7 +12,7 @@ import { GraphQLError } from 'graphql';
 import { getUserId } from '@/utils/authUtils';
 import { ApolloError } from '@apollo/client';
 import { createDealOnRegistration, getUtmDataFromCookies } from '../utils/bitrix24';
-import { sendPasswordResetEmail } from '../utils/emailService';
+import { emailService } from '@/utils/emailService';
 
 dotenv.config();
 
@@ -477,60 +477,88 @@ export const resolvers = {
     },
     forgotPassword: async (
       parent: unknown,
-      args: {
-        email: string;
-      },
+      args: { email: string },
       context: IContext,
-      info: {},
+      info: {}
     ) => {
-      const { email } = args;
+      try {
+        const { email } = args;
+        console.log('=== FORGOT PASSWORD RESOLVER START ===');
+        console.log('Email received:', email);
+        
+        // Проверяем, существует ли пользователь с таким email
+        const user = await context.prisma.user.findUnique({
+          where: { email },
+        });
 
-      const user = await context.prisma.user.findUnique({
-        where: { email },
-      });
+        console.log('User found:', !!user);
+        if (user) {
+          console.log('User ID:', user.id);
+          console.log('User name:', user.name);
+        }
 
-      if (!user) {
-        // Не показываем, что пользователь не найден для безопасности
+        if (!user) {
+          console.log('No user found, returning success message');
+          return {
+            message: 'Если пользователь с таким email существует, инструкции отправлены',
+            error: false,
+          };
+        }
+
+        // Проверяем наличие APP_SECRET
+        if (!APP_SECRET) {
+          console.error('APP_SECRET not configured');
+          throw new Error('APP_SECRET не настроен');
+        }
+
+        console.log('APP_SECRET is configured');
+
+        // Генерируем токен для сброса пароля
+        const resetToken = jwt.sign(
+          { userId: user.id, type: 'password-reset' },
+          APP_SECRET,
+          { expiresIn: '1h' }
+        );
+
+        console.log('Reset token generated');
+
+        // Создаем URL для сброса пароля
+        const resetUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3001'}/reset-password?token=${resetToken}`;
+        console.log('Reset URL created:', resetUrl);
+
+        console.log('Calling email service...');
+        // Отправляем email с ссылкой для сброса пароля
+        const emailResult = await emailService.sendPasswordResetEmail(
+          user.email,
+          resetUrl,
+          user.name || 'Пользователь'
+        );
+
+        console.log('Email service result:', emailResult);
+
+        if (emailResult.success) {
+          console.log('Password reset email sent successfully');
+          return {
+            message: 'Инструкции для восстановления пароля отправлены на ваш email',
+            error: false,
+            resetUrl: resetUrl, // Добавляем URL для отладки
+          };
+        } else {
+          console.error('Failed to send password reset email:', emailResult.error);
+          return {
+            message: 'Ошибка при отправке email. Попробуйте позже.',
+            error: true,
+          };
+        }
+      } catch (error) {
+        console.error('Error in forgotPassword:', error);
         return {
-          message: 'Если пользователь с таким email существует, мы отправим инструкции для восстановления пароля',
-          error: false,
-        };
-      }
-
-      // Генерируем токен для сброса пароля
-      if (!APP_SECRET) {
-        throw new Error('APP_SECRET не настроен');
-      }
-      const resetToken = jwt.sign(
-        { userId: user.id, type: 'password-reset' },
-        APP_SECRET,
-        { expiresIn: '1h' }
-      );
-
-      // Отправляем email с ссылкой для сброса пароля
-      const resetUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3001'}/reset-password?token=${resetToken}`;
-      console.log('Reset token for user:', user.id, 'Token:', resetToken);
-      console.log('Reset URL:', resetUrl);
-
-      const emailSent = await sendPasswordResetEmail(
-        user.email,
-        resetUrl,
-        user.name || 'Пользователь'
-      );
-
-      if (!emailSent) {
-        console.error('Failed to send password reset email to:', user.email);
-        return {
-          message: 'Ошибка отправки email. Попробуйте еще раз.',
+          message: 'Произошла ошибка. Попробуйте позже.',
           error: true,
         };
+      } finally {
+        console.log('=== FORGOT PASSWORD RESOLVER END ===');
       }
-
-      return {
-        message: 'Инструкции для восстановления пароля отправлены на ваш email',
-        error: false,
-        resetUrl: resetUrl, // Добавляем URL для отладки
-      };
     },
     resetPassword: async (
       parent: unknown,
