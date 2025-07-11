@@ -12,6 +12,7 @@ import { GraphQLError } from 'graphql';
 import { getUserId } from '@/utils/authUtils';
 import { ApolloError } from '@apollo/client';
 import { createDealOnRegistration, getUtmDataFromCookies } from '../utils/bitrix24';
+import { sendPasswordResetEmail } from '../utils/emailService';
 
 dotenv.config();
 
@@ -506,13 +507,29 @@ export const resolvers = {
         { expiresIn: '1h' }
       );
 
-      // В реальном приложении здесь должна быть отправка email
-      // Пока что просто возвращаем сообщение об успехе
+      // Отправляем email с ссылкой для сброса пароля
+      const resetUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3001'}/reset-password?token=${resetToken}`;
       console.log('Reset token for user:', user.id, 'Token:', resetToken);
+      console.log('Reset URL:', resetUrl);
+
+      const emailSent = await sendPasswordResetEmail(
+        user.email,
+        resetUrl,
+        user.name || 'Пользователь'
+      );
+
+      if (!emailSent) {
+        console.error('Failed to send password reset email to:', user.email);
+        return {
+          message: 'Ошибка отправки email. Попробуйте еще раз.',
+          error: true,
+        };
+      }
 
       return {
         message: 'Инструкции для восстановления пароля отправлены на ваш email',
         error: false,
+        resetUrl: resetUrl, // Добавляем URL для отладки
       };
     },
     resetPassword: async (
@@ -546,10 +563,14 @@ export const resolvers = {
           data: { password: hashedPassword },
         });
 
+        // Генерируем новый токен авторизации
+        const authToken = jwt.sign({ userId: updatedUser.id }, APP_SECRET);
+
         return {
           message: 'Пароль успешно изменен',
           error: false,
           user: updatedUser,
+          token: authToken,
         };
       } catch (error) {
         return {

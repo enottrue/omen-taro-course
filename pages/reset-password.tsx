@@ -1,8 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useRouter } from 'next/router';
 import { gql } from 'graphql-request';
 import { request } from 'graphql-request';
+import { MainContext } from '@/contexts/MainContext';
+import Cookies from 'js-cookie';
 
+// Add server-side logging
+if (typeof window !== 'undefined') {
+  console.log('Client-side: Current URL:', window.location.href);
+  console.log('Client-side: Search params:', window.location.search);
+}
 
 const RESET_PASSWORD_MUTATION = gql`
   mutation ResetPassword($token: String!, $newPassword: String!) {
@@ -14,6 +21,7 @@ const RESET_PASSWORD_MUTATION = gql`
         email
         name
       }
+      token
     }
   }
 `;
@@ -25,13 +33,36 @@ const ResetPassword = () => {
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const { token } = router.query;
+  const cc = useContext(MainContext);
+  
+  // Extract token from URL manually since router.query might not work properly
+  const [token, setToken] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!token) {
+    console.log('Reset password page loaded');
+    console.log('Router asPath:', router.asPath);
+    console.log('Router query:', router.query);
+    console.log('MainContext available:', !!cc);
+    console.log('MainContext value:', cc);
+    
+    // Extract token from URL manually
+    const urlParams = new URLSearchParams(window.location.search);
+    const tokenFromUrl = urlParams.get('token');
+    console.log('Token from URL params:', tokenFromUrl);
+    
+    setToken(tokenFromUrl);
+    
+    if (!tokenFromUrl) {
+      console.log('No token found, setting error');
       setError('Недействительная ссылка для сброса пароля');
+    } else {
+      console.log('Token found:', tokenFromUrl);
     }
-  }, [token]);
+  }, [router.asPath, router.query, cc]);
+
+  const validatePassword = (password: string) => {
+    return password.length >= 6;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,8 +76,8 @@ const ResetPassword = () => {
       return;
     }
 
-    if (password.length < 4) {
-      setError('Пароль должен содержать не менее 4 символов');
+    if (!password || !validatePassword(password)) {
+      setError('Пароль должен содержать минимум 6 символов');
       setLoading(false);
       return;
     }
@@ -58,22 +89,86 @@ const ResetPassword = () => {
     }
 
     try {
+      console.log('Submitting reset password form');
+      console.log('Token:', token);
+      console.log('Password:', password);
+      
       const response = await request('/api/graphql', RESET_PASSWORD_MUTATION, {
         token: token as string,
         newPassword: password
       }) as any;
 
-      if (response.resetPassword.error) {
+      console.log('Full GraphQL response:', response);
+      console.log('Reset password response:', response.resetPassword);
+      console.log('Error field:', response.resetPassword.error);
+      console.log('Error field type:', typeof response.resetPassword.error);
+
+      if (response.resetPassword.error === 'true' || response.resetPassword.error === true) {
+        console.log('Error detected, setting error message');
         setError(response.resetPassword.message);
       } else {
-        setSuccess(response.resetPassword.message);
-        // Перенаправляем на страницу входа через 2 секунды
-        setTimeout(() => {
-          router.push('/');
-        }, 2000);
+        console.log('No error detected, proceeding with success flow');
+        console.log('Reset password response:', response.resetPassword);
+        setSuccess('Пароль успешно изменен! Выполняется автоматический вход...');
+        
+        // Automatically log in the user
+        if (response.resetPassword.user) {
+          const user = response.resetPassword.user;
+          const authToken = response.resetPassword.token;
+          console.log('User data:', user);
+          console.log('Token:', authToken);
+          console.log('User onboarded:', user.onboarded);
+          
+          // Set cookies first (this always works)
+          if (authToken) {
+            Cookies.set('Bearer', authToken, { expires: 180 });
+            Cookies.set('userId', user.id, { expires: 180 });
+            console.log('Cookies set successfully');
+            
+            // Verify authentication was set correctly
+            const storedToken = Cookies.get('Bearer');
+            const storedUserId = Cookies.get('userId');
+            console.log('Stored token:', storedToken);
+            console.log('Stored userId:', storedUserId);
+            
+            // Check if cookies were actually set
+            if (storedToken && storedUserId) {
+              console.log('✅ Cookies verified successfully');
+            } else {
+              console.log('❌ Cookies not set properly');
+            }
+          } else {
+            console.log('❌ No auth token received');
+          }
+          
+          // Try to set context if available
+          if (cc) {
+            console.log('Context available, updating...');
+            cc.setToken && cc.setToken(authToken || '');
+            cc.setUserId && cc.setUserId(user.id);
+            cc.setUser && cc.setUser(user);
+            console.log('Context updated successfully');
+          } else {
+            console.log('Context not available, using cookies only');
+          }
+          
+          // Redirect based on onboarding status
+          const redirectPath = user.onboarded ? '/courses' : '/onboarding';
+          console.log('Planning redirect to:', redirectPath);
+          console.log('User onboarded status:', user.onboarded);
+          
+          setTimeout(() => {
+            console.log('Executing redirect to:', redirectPath);
+            router.push(redirectPath);
+          }, 2000);
+        } else {
+          console.log('No user data in response');
+          setError('Ошибка: данные пользователя не получены');
+        }
       }
-    } catch (err) {
-      setError('Произошла ошибка. Попробуйте еще раз.');
+    } catch (error) {
+      console.error('Reset password error:', error);
+      setError('Произошла ошибка при сбросе пароля');
     } finally {
       setLoading(false);
     }
@@ -86,29 +181,33 @@ const ResetPassword = () => {
         display: 'flex', 
         alignItems: 'center', 
         justifyContent: 'center',
-        backgroundColor: '#f5f5f5',
-        fontFamily: 'Roboto, sans-serif'
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
       }}>
-        <div style={{
-          background: 'white',
-          padding: '2rem',
-          borderRadius: '8px',
-          boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+        <div style={{ 
+          background: 'white', 
+          padding: '40px', 
+          borderRadius: '10px', 
+          boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
           maxWidth: '400px',
-          width: '90%'
+          width: '100%'
         }}>
-          <h1 style={{ color: '#dc3545', marginBottom: '1rem' }}>Ошибка</h1>
-          <p>{error}</p>
+          <h2 style={{ color: '#e74c3c', marginBottom: '20px', textAlign: 'center' }}>
+            Ошибка
+          </h2>
+          <p style={{ color: '#666', textAlign: 'center' }}>
+            {error || 'Недействительная ссылка для сброса пароля'}
+          </p>
           <button 
             onClick={() => router.push('/')}
             style={{
-              background: '#002B80',
+              width: '100%',
+              padding: '12px',
+              background: '#3498db',
               color: 'white',
               border: 'none',
-              padding: '0.5rem 1rem',
-              borderRadius: '4px',
+              borderRadius: '5px',
               cursor: 'pointer',
-              marginTop: '1rem'
+              marginTop: '20px'
             }}
           >
             Вернуться на главную
@@ -124,104 +223,94 @@ const ResetPassword = () => {
       display: 'flex', 
       alignItems: 'center', 
       justifyContent: 'center',
-      backgroundColor: '#f5f5f5',
-      fontFamily: 'Roboto, sans-serif'
+      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
     }}>
-      <div style={{
-        background: 'white',
-        padding: '2rem',
-        borderRadius: '8px',
-        boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+      <div style={{ 
+        background: 'white', 
+        padding: '40px', 
+        borderRadius: '10px', 
+        boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
         maxWidth: '400px',
-        width: '90%'
+        width: '100%'
       }}>
-        <h1 style={{ color: '#002B80', marginBottom: '1rem', textAlign: 'center' }}>
+        <h2 style={{ marginBottom: '30px', textAlign: 'center', color: '#2c3e50' }}>
           Сброс пароля
-        </h1>
+        </h2>
         
         {error && (
-          <div style={{
-            color: '#dc3545',
-            background: 'rgba(220, 53, 69, 0.1)',
-            border: '1px solid rgba(220, 53, 69, 0.2)',
-            borderRadius: '4px',
-            padding: '0.75rem',
-            marginBottom: '1rem'
+          <div style={{ 
+            background: '#f8d7da', 
+            color: '#721c24', 
+            padding: '10px', 
+            borderRadius: '5px', 
+            marginBottom: '20px' 
           }}>
             {error}
           </div>
         )}
-
+        
         {success && (
-          <div style={{
-            color: '#28a745',
-            background: 'rgba(40, 167, 69, 0.1)',
-            border: '1px solid rgba(40, 167, 69, 0.2)',
-            borderRadius: '4px',
-            padding: '0.75rem',
-            marginBottom: '1rem'
+          <div style={{ 
+            background: '#d4edda', 
+            color: '#155724', 
+            padding: '10px', 
+            borderRadius: '5px', 
+            marginBottom: '20px' 
           }}>
             {success}
           </div>
         )}
-
+        
         <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: '1rem' }}>
-            <label style={{ display: 'block', marginBottom: '0.5rem', color: '#333' }}>
-              Новый пароль
-            </label>
+          <div style={{ marginBottom: '20px' }}>
             <input
               type="password"
+              placeholder="Новый пароль"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               style={{
                 width: '100%',
-                padding: '0.75rem',
+                padding: '12px',
                 border: '1px solid #ddd',
-                borderRadius: '4px',
-                fontSize: '1rem'
+                borderRadius: '5px',
+                fontSize: '16px'
               }}
-              placeholder="Введите новый пароль"
               required
             />
           </div>
-
-          <div style={{ marginBottom: '1rem' }}>
-            <label style={{ display: 'block', marginBottom: '0.5rem', color: '#333' }}>
-              Подтвердите пароль
-            </label>
+          
+          <div style={{ marginBottom: '20px' }}>
             <input
               type="password"
+              placeholder="Подтвердите пароль"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               style={{
                 width: '100%',
-                padding: '0.75rem',
+                padding: '12px',
                 border: '1px solid #ddd',
-                borderRadius: '4px',
-                fontSize: '1rem'
+                borderRadius: '5px',
+                fontSize: '16px'
               }}
-              placeholder="Повторите новый пароль"
               required
             />
           </div>
-
+          
           <button
             type="submit"
             disabled={loading}
             style={{
               width: '100%',
-              background: loading ? '#6c757d' : '#002B80',
+              padding: '12px',
+              background: loading ? '#95a5a6' : '#3498db',
               color: 'white',
               border: 'none',
-              padding: '0.75rem',
-              borderRadius: '4px',
-              fontSize: '1rem',
+              borderRadius: '5px',
               cursor: loading ? 'not-allowed' : 'pointer',
-              opacity: loading ? 0.7 : 1
+              fontSize: '16px'
             }}
           >
-            {loading ? 'Сохранение...' : 'Сохранить новый пароль'}
+            {loading ? 'Изменение пароля...' : 'Изменить пароль'}
           </button>
         </form>
       </div>

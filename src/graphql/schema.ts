@@ -106,6 +106,7 @@ export const typeDefs = gql`
     user: User
     message: String
     error: String
+    resetUrl: String
   }
 
   type StageStatus {

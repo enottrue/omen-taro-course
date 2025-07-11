@@ -17,6 +17,7 @@ const FORGOT_PASSWORD_MUTATION = gql`
     forgotPassword(email: $email) {
       message
       error
+      resetUrl
     }
   }
 `;
@@ -78,6 +79,8 @@ const ModalForgotPassword: NextPage<ModalForgotPasswordType> = ({
     setSuccess('');
     setLoading(true);
     
+    console.log('Submitting forgot password form with email:', email);
+    
     if (!email || !validateEmail(email)) {
       setError('Укажите корректный email');
       setLoading(false);
@@ -85,16 +88,26 @@ const ModalForgotPassword: NextPage<ModalForgotPasswordType> = ({
     }
     
     try {
+      console.log('Making GraphQL request to /api/graphql');
       const response = await request('/api/graphql', FORGOT_PASSWORD_MUTATION, {
         email
       }) as any;
+
+      console.log('GraphQL response:', response);
 
       if (response.forgotPassword.error) {
         setError(response.forgotPassword.message);
       } else {
         setSuccess(response.forgotPassword.message);
+        // Add browser console log to show reset URL
+        console.log('=== PASSWORD RESET INFO ===');
+        console.log('Email submitted:', email);
+        console.log('Reset URL:', response.forgotPassword.resetUrl);
+        console.log('Copy this URL to test the password reset functionality');
+        console.log('=== END PASSWORD RESET INFO ===');
       }
     } catch (err) {
+      console.error('GraphQL request error:', err);
       setError('Произошла ошибка. Попробуйте еще раз.');
     } finally {
       setLoading(false);
