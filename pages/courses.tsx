@@ -126,9 +126,9 @@ const Cources = ({
     cc?.setToken(token);
     const us = getUser({ variables: { userId } });
 
-    // if (!userId || !token) {
-    //   router.push('/');
-    // }
+    if (!userId || !token) {
+      router.push('/');
+    }
   }, [userId, token]);
 
   useEffect(() => {

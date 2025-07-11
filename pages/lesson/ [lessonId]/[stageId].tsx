@@ -138,9 +138,9 @@ const Lesson = ({
     const us = getUser({ variables: { userId } });
     // console.log('user', user, us, loadingLazy, errorLazy);
 
-    // if (!userId || !token) {
-    //   router.push('/');
-    // }
+    if (!userId || !token) {
+      router.push('/');
+    }
   }, [userId, token]);
 
   useEffect(() => {
