@@ -58,8 +58,15 @@ export async function middleware(req: NextRequest) {
             if (userResponse.ok) {
               const userData = await userResponse.json();
               
+              console.log('🔍 Middleware: User data:', {
+                email: userData.user.email,
+                isPaid: userData.user.isPaid,
+                currentPath: req.nextUrl.pathname
+              });
+              
               // Если пользователь оплатил и находится на главной странице, перенаправляем на onboarding
               if (userData.user.isPaid && req.nextUrl.pathname === '/') {
+                console.log('🔄 Redirecting paid user from / to /onboarding');
                 const url = req.nextUrl.clone();
                 url.pathname = '/onboarding';
                 return NextResponse.redirect(url, { status: 302 });
@@ -67,6 +74,7 @@ export async function middleware(req: NextRequest) {
               
               // Если пользователь не оплатил и пытается получить доступ к защищенной странице
               if (!userData.user.isPaid && isPaidOnlyPage) {
+                console.log('🔄 Redirecting unpaid user from protected page to /');
                 const url = req.nextUrl.clone();
                 url.pathname = '/';
                 return NextResponse.redirect(url, { status: 302 });
