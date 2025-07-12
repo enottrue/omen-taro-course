@@ -1,6 +1,4 @@
-import { User } from './types';
-
-export const userData: User[] = [
+[
   {
     "id": 2,
     "name": "Sergey Platonov1",
@@ -97,6 +95,4 @@ export const userData: User[] = [
     "createdAt": "2025-07-08T16:52:16.871Z",
     "updatedAt": "2025-07-11T09:54:17.497Z"
   }
-];
-
-export default userData;
+]

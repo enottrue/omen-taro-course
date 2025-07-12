@@ -1,6 +1,4 @@
-import { Tool } from './types';
-
-const data: Tool[] = [
+[
   {
     "id": 1,
     "name": "TypeScript",
@@ -100,6 +98,4 @@ const data: Tool[] = [
     "createdAt": "2025-07-10T06:08:55.304Z",
     "updatedAt": "2025-07-10T06:08:55.304Z"
   }
-];
-
-export default data;
+]

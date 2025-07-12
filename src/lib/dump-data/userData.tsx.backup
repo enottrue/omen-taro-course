@@ -1,0 +1,48 @@
+import { User } from './types';
+
+export const userData: User[] = [
+  {
+    id: 1,
+    name: 'John Doe',
+    email: 'johndoe@example.com',
+    password: 'password123',
+    phone: '1234567890',
+    city: 'New York',
+    isPaid: false,
+    paymentDate: null,
+    stripeSessionId: null,
+    bitrix24ContactId: null,
+    bitrix24DealId: null,
+    onboarded: false,
+  },
+  {
+    id: 2,
+    name: 'Jane Smith',
+    email: 'janesmith@example.com',
+    password: 'password456',
+    phone: '9876543210',
+    city: 'San Francisco',
+    isPaid: false,
+    paymentDate: null,
+    stripeSessionId: null,
+    bitrix24ContactId: null,
+    bitrix24DealId: null,
+    onboarded: false,
+  },
+  {
+    id: 3,
+    name: 'asd asd',
+    email: 'asd@asd.com',
+    password: '$2b$10$YU0bn3gQkN0Cy3Ic85uiXug/Tq1ENo/KG5q..aAOV6ZbnxSHJuYyK',
+    phone: '9876543210',
+    city: 'San Francisco',
+    isPaid: false,
+    paymentDate: null,
+    stripeSessionId: null,
+    bitrix24ContactId: null,
+    bitrix24DealId: null,
+    onboarded: false,
+  },
+];
+
+export default userData;

@@ -1,91 +1,4 @@
-export const coursesData = [
-  {
-    "id": 1,
-    "name": "Обучающий курс по Таро для колоды карт таро Omen",
-    "createdAt": "2025-07-10T06:08:55.305Z",
-    "updatedAt": "2025-07-10T06:08:55.305Z"
-  }
-];
-
-export const lessonsData = [
-  {
-    "id": 1,
-    "lessonNumber": 1,
-    "lessonName": "История создания колоды",
-    "lessonDescription": "This is the description for Lesson 1",
-    "lessonTimecodes": [
-      "00:00",
-      "01:00",
-      "02:00"
-    ],
-    "lessonStatus": "new",
-    "courseId": 1,
-    "createdAt": "2025-07-10T06:08:55.455Z",
-    "updatedAt": "2025-07-10T06:08:55.455Z"
-  },
-  {
-    "id": 2,
-    "lessonNumber": 2,
-    "lessonName": "Ритуальная подготовка к работе с Таро",
-    "lessonDescription": "This is the description for Lesson 2",
-    "lessonTimecodes": [
-      "00:00",
-      "01:00",
-      "02:00"
-    ],
-    "lessonStatus": "new",
-    "courseId": 1,
-    "createdAt": "2025-07-10T06:08:55.469Z",
-    "updatedAt": "2025-07-10T06:08:55.469Z"
-  },
-  {
-    "id": 3,
-    "lessonNumber": 3,
-    "lessonName": "Значения Арканов. Старшие Арканы",
-    "lessonDescription": "This is the description for Lesson 3",
-    "lessonTimecodes": [
-      "00:00",
-      "01:00",
-      "02:00"
-    ],
-    "lessonStatus": "new",
-    "courseId": 1,
-    "createdAt": "2025-07-10T06:08:55.474Z",
-    "updatedAt": "2025-07-10T06:08:55.474Z"
-  },
-  {
-    "id": 4,
-    "lessonNumber": 4,
-    "lessonName": "Значения Арканов. Младшие Арканы",
-    "lessonDescription": "This is the description for Lesson 4",
-    "lessonTimecodes": [
-      "00:00",
-      "01:00",
-      "02:00"
-    ],
-    "lessonStatus": "new",
-    "courseId": 1,
-    "createdAt": "2025-07-10T06:08:55.479Z",
-    "updatedAt": "2025-07-10T06:08:55.479Z"
-  },
-  {
-    "id": 5,
-    "lessonNumber": 5,
-    "lessonName": "Коллекция раскладов",
-    "lessonDescription": "This is the description for Lesson 5",
-    "lessonTimecodes": [
-      "00:00",
-      "01:00",
-      "02:00"
-    ],
-    "lessonStatus": "new",
-    "courseId": 1,
-    "createdAt": "2025-07-10T06:08:55.482Z",
-    "updatedAt": "2025-07-10T06:08:55.482Z"
-  }
-];
-
-export const stageData = [
+[
   {
     "id": 1,
     "stageNumber": 1,
@@ -2723,4 +2636,4 @@ export const stageData = [
       }
     ]
   }
-];
+]
