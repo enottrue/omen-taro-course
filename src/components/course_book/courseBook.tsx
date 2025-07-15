@@ -5,7 +5,7 @@ import Button from '../button/Button';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import { MainContext } from '@/contexts/MainContext';
-import styles from '@/components/component1/component1.module.css';
+import styles from '@/components/component1/component1.module.scss';
 import unsplashImage from '../../images/unsplashutbx9x3y8ly-2@2x.png';
 import image3 from '../../images/image-3@2x.png';
 

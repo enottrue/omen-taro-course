@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import Image from "next/image";
-import styles from "./component1.module.css";
+import styles from "./component1.module.scss";
 import unsplashImage from "../../images/back@2x.png";
 import image3 from "../../images/image-3@2x.png";
 import group2 from "../../images/group-2@2x.png";

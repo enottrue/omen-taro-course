@@ -48,19 +48,31 @@ export async function middleware(req: NextRequest) {
         // Если токен валидный и есть userId, проверяем статус оплаты
         if (cookies.userId) {
           try {
-            // Получаем информацию о пользователе из API
-            const userResponse = await fetch(`${req.nextUrl.origin}/api/users/${cookies.userId}`, {
+            // Строим правильный URL используя протокол из запроса
+            const protocol = req.nextUrl.protocol || 'http:';
+            const host = req.headers.get('Host') || 'localhost:3000';
+            const apiUrl = `${protocol}//${host}/api/users/${cookies.userId}`;
+            
+            console.log('🔍 Middleware: Fetching user data from:', apiUrl);
+            console.log('🔍 Middleware: User ID from cookie:', cookies.userId);
+            
+            const userResponse = await fetch(apiUrl, {
               headers: {
                 'Cookie': req.headers.get('Cookie') || '',
               },
             });
 
+            console.log('🔍 Middleware: Response status:', userResponse.status);
+
             if (userResponse.ok) {
               const userData = await userResponse.json();
               
+              console.log('🔍 Middleware: Raw user data:', userData);
               console.log('🔍 Middleware: User data:', {
+                id: userData.user.id,
                 email: userData.user.email,
                 isPaid: userData.user.isPaid,
+                updatedAt: userData.user.updatedAt,
                 currentPath: req.nextUrl.pathname
               });
               
@@ -79,6 +91,10 @@ export async function middleware(req: NextRequest) {
                 url.pathname = '/';
                 return NextResponse.redirect(url, { status: 302 });
               }
+            } else {
+              console.error('❌ Middleware: Failed to fetch user data. Status:', userResponse.status);
+              const errorText = await userResponse.text();
+              console.error('❌ Middleware: Error response:', errorText);
             }
           } catch (error) {
             console.error('Error checking user payment status:', error);

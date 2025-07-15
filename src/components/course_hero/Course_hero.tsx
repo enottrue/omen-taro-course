@@ -6,7 +6,7 @@ import unsplashImage from '../../images/unsplashutbx9x3y8ly-2@2x.png';
 import image3 from '../../images/image-3@2x.png';
 import group2 from '../../images/group-2@2x.png';
 import image4 from '../../images/image-4@2x.png';
-import styles from '@/components/component1/component1.module.css';
+import styles from '@/components/component1/component1.module.scss';
 import CourseLessons from '@/components/course_lessons/courseLessons';
 import Button from '../button/Button';
 

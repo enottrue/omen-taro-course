@@ -1,5 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { prisma } from '../../../src/lib/prisma/prismaClient';
+import { PrismaClient } from '@prisma/client';
+import Stripe from 'stripe';
+
+const prisma = new PrismaClient();
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: '2025-06-30.basil',
+});
 
 export default async function handler(
   req: NextApiRequest,
@@ -10,37 +16,63 @@ export default async function handler(
   }
 
   try {
-    const { userId, isPaid } = req.body;
+    const { sessionId, userId } = req.body;
 
-    // Валидация обязательных полей
-    if (!userId || typeof isPaid !== 'boolean') {
-      return res.status(400).json({
-        error: 'Missing required fields: userId, isPaid',
-      });
+    if (!sessionId) {
+      return res.status(400).json({ error: 'Session ID is required' });
     }
 
-    // Обновляем статус оплаты пользователя
-    const updatedUser = await prisma.user.update({
-      where: { id: parseInt(userId) },
-      data: { isPaid },
-    });
+    console.log('🔄 Processing payment update for session:', sessionId);
 
-    return res.status(200).json({
-      success: true,
-      user: {
-        id: updatedUser.id,
-        name: updatedUser.name,
-        email: updatedUser.email,
-        isPaid: updatedUser.isPaid,
-        bitrix24ContactId: updatedUser.bitrix24ContactId,
-        bitrix24DealId: updatedUser.bitrix24DealId,
-      },
-    });
+    // Verify the session with Stripe
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
+    
+    console.log('📊 Stripe session status:', session.payment_status);
+    console.log('📊 Stripe session mode:', session.mode);
+
+    if (session.payment_status === 'paid') {
+      // Find user by email from session metadata
+      const userEmail = session.customer_email || session.metadata?.email;
+      
+      if (!userEmail) {
+        return res.status(400).json({ error: 'No email found in session' });
+      }
+
+      console.log('👤 Updating payment status for user:', userEmail);
+
+      // Update user payment status
+      const updatedUser = await prisma.user.update({
+        where: { email: userEmail },
+        data: {
+          isPaid: true,
+          paymentDate: new Date(),
+          stripeSessionId: sessionId,
+        },
+      });
+
+      console.log('✅ User payment status updated successfully:', updatedUser.email);
+
+      res.status(200).json({ 
+        success: true, 
+        message: 'Payment status updated successfully',
+        user: {
+          email: updatedUser.email,
+          isPaid: updatedUser.isPaid,
+          paymentDate: updatedUser.paymentDate
+        }
+      });
+    } else {
+      console.log('❌ Payment not completed. Status:', session.payment_status);
+      res.status(400).json({ 
+        error: 'Payment not completed', 
+        status: session.payment_status 
+      });
+    }
   } catch (error) {
-    console.error('Error updating payment status:', error);
-    return res.status(500).json({
-      success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
+    console.error('❌ Error updating payment status:', error);
+    res.status(500).json({ 
+      error: 'Error updating payment status',
+      details: (error as any).message 
     });
   }
 } 

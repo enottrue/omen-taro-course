@@ -21,7 +21,7 @@ const defaultOptions: DefaultOptions = {
 console.log(process.env.APOLLO_DEV_ENVIRONTMENT);
 
 export const apolloClient = new ApolloClient({
-  uri: 'http://localhost:3001/api/graphql', // Локальная разработка
+  uri: '/api/graphql', // Локальная разработка через Next.js API routes
   // uri: 'https://omen-taro.ru/api/graphql', // Продакшн
   cache: new InMemoryCache(),
   defaultOptions: defaultOptions,

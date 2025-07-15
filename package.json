@@ -41,6 +41,7 @@
     "@types/react": "18.0.37",
     "@types/react-dom": "18.0.11",
     "bcrypt": "^5.1.1",
+    "caniuse-lite": "^1.0.30001727",
     "cookie": "^0.6.0",
     "eslint": "8.38.0",
     "eslint-config-next": "13.3.0",

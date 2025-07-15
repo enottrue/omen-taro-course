@@ -50,15 +50,15 @@ const ModalSignIn = () => {
     };
     cc?.setSubmitting(true);
     if (!email || !validateEmail()) {
-      console.error('Укажите корректный email');
-      setError('Укажите корректный email');
+      console.error('Please enter a valid email');
+      setError('Please enter a valid email');
       cc?.setSubmitting(false);
       return;
     }
 
     if (!password || password.length < 4) {
-      console.error('Укажите пароль не менее 4 символов');
-      setError('Укажите пароль не менее 4 символов');
+      console.error('Password must be at least 4 characters long');
+      setError('Password must be at least 4 characters long');
       cc?.setSubmitting(false);
       return;
     }
@@ -100,7 +100,7 @@ const ModalSignIn = () => {
     <div className={cc?.modalOpen ? 'modal active' : 'modal'} id="register">
       <div className="modal__backing" />
       <div className="modal__content modal__content_small">
-        <div className="modal__title">Заполните данные для авторизации</div>
+        <div className="modal__title">Sign in to your account</div>
         <button
           className="modal__close"
           type="button"
@@ -118,7 +118,8 @@ const ModalSignIn = () => {
                 placeholder="Email"
                 required
                 autoComplete="email"
-                type="text"
+                name="email"
+                type="email"
                 onChange={(e) => {
                   setEmail(e.target.value);
                 }}
@@ -128,16 +129,14 @@ const ModalSignIn = () => {
             <label className="custom-input">
               <input
                 className="custom-input__element focus-within:border-sky-500 focus-within:border-1"
-                placeholder="Пароль"
+                placeholder="Password"
                 type="password"
-                //autocomplete "current-password"
                 autoComplete="current-password"
+                name="password"
                 required
                 onChange={(e) => {
                   setPassword(e.target.value);
                 }}
-                // value={phoneNumber}
-                // onChange={handlePhoneInputChange}
               />
             </label>
             {error && (
@@ -148,26 +147,22 @@ const ModalSignIn = () => {
 
             <div className="modal__login-form-button">
               <Button
-                title="Войти"
+                title="Sign In"
                 type="button"
                 className="button_little button_secondary"
                 onClick={(e) => {
                   handleSubmitClick(e);
                 }}
-                aria-label="Войти"
+                aria-label="Sign In"
                 aria-disabled={cc?.submitting}
                 disabled={cc?.submitting}
-                // onClick={() => window.activateStep2()}
               >
                 <span className="modal__login-form-button-icon">
-                  {/* <Image
-                  src="/svg/button-arrow.svg"
-                  alt="Button Arrow"
-                  width={20}
-                  height={20}
-                />{' '} */}
-                  <Arrow />
-                  {/* Adjust width and height as per your needs */}
+                  {/* Inline SVG for arrow icon */}
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5 10H15" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M10 5L15 10L10 15" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
                 </span>
               </Button>
             </div>

@@ -17,7 +17,7 @@ import {
 import { useContext } from 'react';
 import { MainContext } from '@/contexts/MainContext';
 import { stageData } from '@/lib/dump-data/lessonsData';
-import styles from '@/components/component1/component1.module.css';
+import styles from '@/components/component1/component1.module.scss';
 import './lessonHeader.scss';
 import BurgerMenu from '../component1/BurgerMenu';
 

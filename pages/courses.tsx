@@ -16,7 +16,7 @@ import Footer from '@/components/footer/Footer';
 import { apolloClient } from '@/lib/apollo/apollo';
 import { GET_COURSES, GET_COURSE, GET_STAGE_STATUS } from '@/graphql/queries';
 import { useLazyQuery, useQuery } from '@apollo/client';
-import styles from '@/components/component1/component1.module.css';
+import styles from '@/components/component1/component1.module.scss';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const APP_SECRET = process.env.APP_SECRET;

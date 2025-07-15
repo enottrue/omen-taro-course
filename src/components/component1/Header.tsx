@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import styles from "./component1.module.css";
+import styles from "./component1.module.scss";
 import BurgerMenu from "./BurgerMenu";
 
 export type HeaderType = {

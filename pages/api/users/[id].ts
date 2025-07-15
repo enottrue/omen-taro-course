@@ -36,6 +36,11 @@ export default async function handler(
         return res.status(404).json({ error: 'User not found' });
       }
 
+      // Add cache control headers to prevent caching
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
+
       return res.status(200).json({ user });
     } catch (error) {
       console.error('Error fetching user:', error);

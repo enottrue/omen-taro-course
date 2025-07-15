@@ -17,6 +17,19 @@ const nextConfig = {
     return config;
   },
   output: 'standalone',
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'Content-Security-Policy',
+            value: "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; script-src * 'unsafe-inline' 'unsafe-eval' data: blob:; style-src * 'unsafe-inline' data:; font-src * data:; img-src * data: blob:; connect-src *; worker-src * blob:; frame-src *; object-src 'none'; base-uri 'self'; form-action 'self';",
+          },
+        ],
+      },
+    ];
+  },
   // experimental: {
   //   appDir: true,
   // },

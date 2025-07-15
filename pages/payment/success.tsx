@@ -4,7 +4,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { useContext } from 'react';
 import { MainContext } from '@/contexts/MainContext';
-import styles from '@/components/component1/component1.module.css';
+import styles from '@/components/component1/component1.module.scss';
 import unsplashImage from '@/images/unsplashutbx9x3y8ly-2@2x.png';
 import image3 from '@/images/image-3@2x.png';
 import BurgerMenu from '@/components/component1/BurgerMenu';
@@ -14,14 +14,58 @@ const PaymentSuccessPage: React.FC = () => {
   const router = useRouter();
   const [sessionId, setSessionId] = useState<string>('');
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState<'processing' | 'success' | 'error'>('processing');
+  const [paymentMessage, setPaymentMessage] = useState<string>('Processing your payment...');
   const burgerRef = useRef<HTMLDivElement>(null);
   const cc = useContext(MainContext);
 
   useEffect(() => {
     if (router.query.session_id) {
-      setSessionId(router.query.session_id as string);
+      const session = router.query.session_id as string;
+      setSessionId(session);
+      
+      // Process the payment verification
+      processPaymentVerification(session);
     }
   }, [router.query]);
+
+  const processPaymentVerification = async (sessionId: string) => {
+    try {
+      console.log('🔄 Verifying payment for session:', sessionId);
+      
+      const response = await fetch('/api/users/update-payment', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ sessionId }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        console.log('✅ Payment verified successfully');
+        setPaymentStatus('success');
+        setPaymentMessage('Payment verified successfully! You now have full access to the course.');
+        
+        // Update context if user is logged in
+        if (cc?.user) {
+          cc.setUser({
+            ...cc.user,
+            isPaid: true
+          });
+        }
+      } else {
+        console.error('❌ Payment verification failed:', data.error);
+        setPaymentStatus('error');
+        setPaymentMessage(data.error || 'Payment verification failed. Please contact support.');
+      }
+    } catch (error) {
+      console.error('❌ Error verifying payment:', error);
+      setPaymentStatus('error');
+      setPaymentMessage('Error verifying payment. Please contact support.');
+    }
+  };
 
   const handleBurgerClick = () => {
     setIsBurgerOpen(!isBurgerOpen);
@@ -43,6 +87,32 @@ const PaymentSuccessPage: React.FC = () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isBurgerOpen]);
+
+  const getStatusIcon = () => {
+    switch (paymentStatus) {
+      case 'processing':
+        return '⏳';
+      case 'success':
+        return '✅';
+      case 'error':
+        return '❌';
+      default:
+        return '⏳';
+    }
+  };
+
+  const getStatusColor = () => {
+    switch (paymentStatus) {
+      case 'processing':
+        return 'var(--color-white)';
+      case 'success':
+        return '#4CAF50';
+      case 'error':
+        return '#f44336';
+      default:
+        return 'var(--color-white)';
+    }
+  };
 
   return (
     <>
@@ -121,6 +191,26 @@ const PaymentSuccessPage: React.FC = () => {
                     </div>
                     
                     <div className="div1">
+                      {/* Payment Status Display */}
+                      <div style={{ 
+                        backgroundColor: 'rgba(255, 255, 255, 0.1)', 
+                        padding: '1rem', 
+                        borderRadius: '8px',
+                        border: '1px solid rgba(255, 255, 255, 0.2)',
+                        marginBottom: '1rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem'
+                      }}>
+                        <span style={{ fontSize: '1.5rem' }}>{getStatusIcon()}</span>
+                        <span style={{ 
+                          color: getStatusColor(),
+                          fontWeight: '600'
+                        }}>
+                          {paymentMessage}
+                        </span>
+                      </div>
+
                       <p className="p">
                         Your payment has been processed successfully. You now have full access to the Cosmo Course.
                       </p>

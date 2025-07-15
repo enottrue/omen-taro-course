@@ -1,7 +1,8 @@
 import type { NextPage } from "next";
 import React, { useState, useEffect, useContext } from 'react';
-import styles from './modal-form-auth.module.css';
-import CloseIcon from '@/images/svg/close.svg';
+import styles from './modal-form-auth.module.scss';
+import Image from 'next/image';
+import closeIcon from '@/images/svg/close.svg';
 import { MainContext } from '@/contexts/MainContext';
 import { gql } from 'graphql-request';
 import { request } from 'graphql-request';
@@ -82,7 +83,7 @@ const ModalForgotPassword: NextPage<ModalForgotPasswordType> = ({
     console.log('Submitting forgot password form with email:', email);
     
     if (!email || !validateEmail(email)) {
-      setError('Укажите корректный email');
+      setError('Please enter a valid email');
       setLoading(false);
       return;
     }
@@ -108,7 +109,7 @@ const ModalForgotPassword: NextPage<ModalForgotPasswordType> = ({
       }
     } catch (err) {
       console.error('GraphQL request error:', err);
-      setError('Произошла ошибка. Попробуйте еще раз.');
+      setError('An error occurred. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -126,12 +127,25 @@ const ModalForgotPassword: NextPage<ModalForgotPasswordType> = ({
           className={styles['modal-close']} 
           type="button"
           onClick={handleClose}
+          aria-label="Close"
         >
-          <CloseIcon />
+          <svg
+            width="32"
+            height="32"
+            viewBox="0 0 32 32"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <circle cx="16" cy="16" r="16" fill="#001a4d"/>
+            <path d="M10 10L22 22" stroke="#fff" strokeWidth="2" strokeLinecap="round"/>
+            <path d="M22 10L10 22" stroke="#fff" strokeWidth="2" strokeLinecap="round"/>
+          </svg>
         </button>
-        <h3 className={styles['modal-title']}>Восстановление</h3>
+        <h3 className={styles['modal-title']}>Password</h3>
         <h2 className={styles['modal-title-ru']}>
-          пароля
+          recovery
         </h2>
         <form className={styles['modal-fields']} onSubmit={handleSubmit}>
           <input
@@ -141,11 +155,12 @@ const ModalForgotPassword: NextPage<ModalForgotPasswordType> = ({
             value={email}
             onChange={e => setEmail(e.target.value)}
             autoComplete="email"
+            name="email"
           />
           {error && <div className={styles['modal-error']}>{error}</div>}
           {success && <div className={styles['modal-success']}>{success}</div>}
           <button className={styles['modal-submit']} type="submit" disabled={loading}>
-            {loading ? 'Отправка...' : 'Отправить'}
+            {loading ? 'Sending...' : 'Send'}
           </button>
           <a 
             href="#"
@@ -156,7 +171,7 @@ const ModalForgotPassword: NextPage<ModalForgotPasswordType> = ({
               cc?.setCurrentForm && cc.setCurrentForm('auth');
             }}
           >
-            Вернуться к входу
+            Back to sign in
           </a>
         </form>
       </div>

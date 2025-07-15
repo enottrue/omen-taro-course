@@ -1,7 +1,8 @@
 import type { NextPage } from "next";
 import React, { useState, useEffect, useContext } from 'react';
-import styles from './modal-form-auth.module.css';
-import CloseIcon from '@/images/svg/close.svg';
+import styles from './modal-form-auth.module.scss';
+import Image from 'next/image';
+import closeIcon from '@/images/svg/close.svg';
 import { MainContext } from '@/contexts/MainContext';
 import useLogin from '@/hooks/useLogin';
 import Cookies from 'js-cookie';
@@ -71,13 +72,13 @@ const ModalFormAuth: NextPage<ModalFormAuthType> = ({
     cc?.setSubmitting && cc.setSubmitting(true);
     
     if (!email || !validateEmail(email)) {
-      setError('Укажите корректный email');
+      setError('Please enter a valid email');
       cc?.setSubmitting && cc.setSubmitting(false);
       return;
     }
     
     if (!password || password.length < 4) {
-      setError('Укажите пароль не менее 4 символов');
+      setError('Password must be at least 4 characters');
       cc?.setSubmitting && cc.setSubmitting(false);
       return;
     }
@@ -122,8 +123,21 @@ const ModalFormAuth: NextPage<ModalFormAuthType> = ({
           className={styles['modal-close']} 
           type="button"
           onClick={handleClose}
+          aria-label="Close"
         >
-          <CloseIcon />
+          <svg
+            width="32"
+            height="32"
+            viewBox="0 0 32 32"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <circle cx="16" cy="16" r="16" fill="#001a4d"/>
+            <path d="M10 10L22 22" stroke="#fff" strokeWidth="2" strokeLinecap="round"/>
+            <path d="M22 10L10 22" stroke="#fff" strokeWidth="2" strokeLinecap="round"/>
+          </svg>
         </button>
         <h3 className={styles['modal-title']}>Sign in</h3>
         <h2 className={styles['modal-title-ru']}>
@@ -138,6 +152,7 @@ const ModalFormAuth: NextPage<ModalFormAuthType> = ({
             value={email}
             onChange={e => setEmail(e.target.value)}
             autoComplete="email"
+            name="email"
           />
           <input
             type="password"
@@ -146,6 +161,7 @@ const ModalFormAuth: NextPage<ModalFormAuthType> = ({
             value={password}
             onChange={e => setPassword(e.target.value)}
             autoComplete="current-password"
+            name="password"
           />
           <a 
             href="#"
@@ -156,11 +172,15 @@ const ModalFormAuth: NextPage<ModalFormAuthType> = ({
               cc?.setCurrentForm && cc.setCurrentForm('forgot-password');
             }}
           >
-            Забыли пароль?
+            Forgot password?
           </a>
-          {error && <div className={styles['modal-error']}>{error}</div>}
+          {error && <div className={styles['modal-error']}>{
+            error === 'Please enter a valid email' ? 'Please enter a valid email' :
+            error === 'Password must be at least 4 characters' ? 'Password must be at least 4 characters' :
+            error
+          }</div>}
           <button className={styles['modal-submit']} type="submit" disabled={loading || cc?.submitting}>
-            {loading || cc?.submitting ? 'Sign In...' : 'Sign In'}
+            {loading || cc?.submitting ? 'Signing in...' : 'Sign In'}
           </button>
           <a 
             href="#"

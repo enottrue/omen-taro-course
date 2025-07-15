@@ -9,6 +9,7 @@ import Cookies from 'js-cookie';
 import { useLazyQuery } from '@apollo/client';
 import { GET_USER } from '@/graphql/queries';
 import { useMetrica } from 'next-yandex-metrica';
+import { createCheckoutSession, redirectToCheckout } from '@/utils/stripeCheckout';
 
 export type ModalFormRegisterType = {
   className?: string;
@@ -23,9 +24,7 @@ const ModalFormRegister: NextPage<ModalFormRegisterType> = ({
 }) => {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
-  const [city, setCity] = useState('');
   const [error, setError] = useState('');
   const { handleSubmit, loading } = useSubmit({});
   const cc = useContext(MainContext);
@@ -62,26 +61,9 @@ const ModalFormRegister: NextPage<ModalFormRegisterType> = ({
     }
   };
 
-  const handlePhoneInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    const isValidPhoneNumber = /^[\d-+()]+$/.test(value);
-    if (isValidPhoneNumber || value === '') {
-      setPhone(value);
-    }
-  };
-
   const handleEmailInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setEmail(value);
-  };
-
-  const handleCityInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    const re = /^[a-zA-Zа-яА-Я\s-]+$/;
-    const isValid = re.test(value);
-    if (isValid || value === '') {
-      setCity(value);
-    }
   };
 
   const validateEmail = (email: string) => {
@@ -101,31 +83,19 @@ const ModalFormRegister: NextPage<ModalFormRegisterType> = ({
     cc?.setSubmitting && cc.setSubmitting(true);
     
     if (!fullName || fullName.length < 2) {
-      setError('Не указано Имя или его длина менее 2 символов');
+      setError('Name is required and must be at least 2 characters long');
       cc?.setSubmitting && cc.setSubmitting(false);
       return;
     }
     
     if (!email || !validateEmail(email)) {
-      setError('Укажите корректный email');
-      cc?.setSubmitting && cc.setSubmitting(false);
-      return;
-    }
-    
-    if (!phone || phone.length < 5) {
-      setError('Не указан телефон или его длина менее 5 символов');
+      setError('Please enter a valid email address');
       cc?.setSubmitting && cc.setSubmitting(false);
       return;
     }
     
     if (!password || password.length < 4) {
-      setError('Укажите пароль не менее 4 символов');
-      cc?.setSubmitting && cc.setSubmitting(false);
-      return;
-    }
-    
-    if (!city || city.trim().length < 2) {
-      setError('Укажите город');
+      setError('Password must be at least 4 characters long');
       cc?.setSubmitting && cc.setSubmitting(false);
       return;
     }
@@ -134,9 +104,7 @@ const ModalFormRegister: NextPage<ModalFormRegisterType> = ({
       const registerUser = await handleSubmit({
         name: fullName,
         email,
-        phone,
         password,
-        city,
       });
 
       if (registerUser?.error === 'true') {
@@ -148,24 +116,38 @@ const ModalFormRegister: NextPage<ModalFormRegisterType> = ({
       reachGoal('form_register');
       cc?.setSubmitting && cc.setSubmitting(false);
 
-      const onboarding = localStorage.getItem('onboarded');
-      !onboarding && localStorage.setItem('onboarded', 'false');
-      const shouldRedirect = onboarding === 'true' ? '/courses' : '/onboarding';
-      
+      // Set cookies and context for the newly registered user
       Cookies.set('Bearer', registerUser?.token, { expires: 180 });
       Cookies.set('userId', registerUser?.user?.id, { expires: 180 });
       cc?.setToken && cc.setToken(registerUser?.token);
       cc?.setUserId && cc.setUserId(registerUser?.user?.id);
       
-      handleClose();
-      cc?.setCurrentForm && cc.setCurrentForm(null);
-      
+      // Get user data and update context
       const userData = await getUser({
         variables: { id: registerUser?.user?.id },
       });
       cc?.setUser && cc.setUser(userData?.data?.getUser);
       
-      router.push(shouldRedirect);
+      // Close modal
+      handleClose();
+      cc?.setCurrentForm && cc.setCurrentForm(null);
+      
+      console.log('✅ User registered successfully, redirecting to Stripe checkout...');
+      
+      // Redirect to Stripe checkout for payment
+      try {
+        console.log('🔄 Creating Stripe checkout session for email:', email);
+        const sessionId = await createCheckoutSession(email);
+        console.log('✅ Stripe session created:', sessionId);
+        console.log('🔄 Redirecting to Stripe checkout...');
+        await redirectToCheckout(sessionId);
+      } catch (stripeError) {
+        console.error('❌ Stripe checkout error:', stripeError);
+        // If Stripe fails, fallback to homepage
+        console.log('⚠️ Stripe checkout failed, redirecting to homepage');
+        router.push('/');
+      }
+      
     } catch (err) {
       setError((err as Error).message);
       cc?.setSubmitting && cc.setSubmitting(false);
@@ -184,22 +166,35 @@ const ModalFormRegister: NextPage<ModalFormRegisterType> = ({
           className={styles['modal-close']} 
           type="button"
           onClick={handleClose}
+          aria-label="Close"
         >
-          <CloseIcon />
+          <svg
+            width="32"
+            height="32"
+            viewBox="0 0 32 32"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <circle cx="16" cy="16" r="16" fill="#001a4d"/>
+            <path d="M10 10L22 22" stroke="#fff" strokeWidth="2" strokeLinecap="round"/>
+            <path d="M22 10L10 22" stroke="#fff" strokeWidth="2" strokeLinecap="round"/>
+          </svg>
         </button>
         <h3 className={styles['modal-title']}>fill out</h3>
         <h2 className={styles['modal-title-ru']}>
-          регис-<br />
-          трация
+          Registration
         </h2>
         <form className={styles['modal-fields']} onSubmit={handleSubmitForm}>
           <input
             type="text"
-            placeholder="Фамилия Имя*"
+            placeholder="Full Name"
             required
             value={fullName}
             onChange={e => setFullName(e.target.value)}
             autoComplete="name"
+            name="name"
           />
           <input
             type="email"
@@ -208,34 +203,20 @@ const ModalFormRegister: NextPage<ModalFormRegisterType> = ({
             value={email}
             onChange={handleEmailInputChange}
             autoComplete="email"
-          />
-          <input
-            type="tel"
-            placeholder="Номер телефона*"
-            required
-            value={phone}
-            onChange={handlePhoneInputChange}
-            autoComplete="tel"
+            name="email"
           />
           <input
             type="password"
-            placeholder="Пароль*"
+            placeholder="Password*"
             required
             value={password}
             onChange={e => setPassword(e.target.value)}
             autoComplete="new-password"
-          />
-          <input
-            type="text"
-            placeholder="Город*"
-            required
-            value={city}
-            onChange={handleCityInputChange}
-            autoComplete="address-level2"
+            name="password"
           />
           {error && <div className={styles['modal-error']}>{error}</div>}
           <button className={styles['modal-submit']} type="submit" disabled={loading || cc?.submitting}>
-            {loading || cc?.submitting ? 'Регистрация...' : 'Зарегистрироваться'}
+            {loading || cc?.submitting ? 'Registering...' : 'Register'}
           </button>
           <a 
             href="#"
@@ -246,7 +227,7 @@ const ModalFormRegister: NextPage<ModalFormRegisterType> = ({
               cc?.setCurrentForm && cc.setCurrentForm('auth');
             }}
           >
-            У вас уже есть аккаунт?
+            Already have an account?
           </a>
         </form>
       </div>

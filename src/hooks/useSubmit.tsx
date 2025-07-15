@@ -22,17 +22,16 @@ export const useSubmit = (formData: any) => {
     if (
       !formData.name ||
       !formData.email ||
-      !formData.phone ||
-      !formData.password ||
-      !formData.city
+      !formData.password
     ) {
-      throw new Error('Все поля обязательны для заполнения');
+      throw new Error('All fields are required');
     }
 
     try {
       // Call the GraphQL mutation to create a user
       const utmData = getUtmForBitrix24();
       console.log('📊 UTM данные для регистрации:', utmData);
+      console.log('📝 Данные для регистрации:', { name: formData.name, email: formData.email });
       
       const submitDataReturn: any = await createUserMutation({
         variables: {
@@ -56,8 +55,11 @@ export const useSubmit = (formData: any) => {
         } else {
           console.log('⚠️ Сделка НЕ создана в Битрикс24');
         }
+        console.log('🔑 Токен получен:', result.token ? 'Да' : 'Нет');
+        console.log('📧 Email пользователя:', result.user?.email);
       } else if (result?.error === 'true') {
         console.log('❌ Ошибка регистрации:', result?.message);
+        throw new Error(result?.message || 'Registration failed');
       } else {
         console.log('✅ Регистрация прошла успешно');
       }
@@ -68,8 +70,12 @@ export const useSubmit = (formData: any) => {
     } catch (error) {
       if (error instanceof ApolloError) {
         setErrorSubmit(error.message);
-        console.log('error23', error);
+        console.log('❌ Apollo error:', error);
+      } else {
+        console.log('❌ General error:', error);
+        setErrorSubmit((error as Error).message);
       }
+      throw error;
     }
   };
   return { handleSubmit, loading, errorSubmit: error };

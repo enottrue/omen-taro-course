@@ -55,6 +55,11 @@ const main = async () => {
   }
   console.log(`✅ Пользователи добавлены: ${users.length}`);
 
+  // Сбрасываем sequence для User, чтобы автоинкремент работал корректно
+  console.log(`🔄 Сбрасываем sequence для User...`);
+  await prisma.$executeRaw`SELECT setval('"User_id_seq"', (SELECT MAX(id) FROM "User"))`;
+  console.log(`✅ Sequence для User сброшен`);
+
   // Сидим курсы
   console.log(`📚 Сидим курсы...`);
   for (const course of Object.values(coursesData)) {
