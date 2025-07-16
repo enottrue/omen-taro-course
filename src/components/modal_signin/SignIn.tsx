@@ -8,6 +8,7 @@ import { MainContext } from '@/contexts/MainContext';
 import useLogin from '@/hooks/useLogin';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
+import { getOnboardingRedirectPath, getOnboardingStatus } from '@/utils/onboardingUtils';
 
 const ModalSignIn = () => {
   const router = useRouter();
@@ -79,12 +80,8 @@ const ModalSignIn = () => {
       cc?.setSubmitting(false);
       cc?.setModalOpen(!cc?.modalOpen);
       cc?.setCurrentForm(null);
-      let onboarding = localStorage.getItem('onboarded');
-      if (!onboarding) {
-        localStorage.setItem('onboarded', 'false');
-        onboarding = 'false';
-      }
-      const shouldRedirect = onboarding === 'true' ? '/courses' : '/onboarding';
+      const onboardingStatus = getOnboardingStatus();
+      const shouldRedirect = getOnboardingRedirectPath(onboardingStatus === 'true');
       router.push(shouldRedirect);
     } catch (err) {
       setError((err as Error).message);

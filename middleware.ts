@@ -48,9 +48,10 @@ export async function middleware(req: NextRequest) {
         // Если токен валидный и есть userId, проверяем статус оплаты
         if (cookies.userId) {
           try {
-            // Строим правильный URL используя протокол из запроса
-            const protocol = req.nextUrl.protocol || 'http:';
+            // Строим правильный URL, используя HTTP для localhost и HTTPS для production
             const host = req.headers.get('Host') || 'localhost:3000';
+            const isLocalhost = host.includes('localhost') || host.includes('127.0.0.1');
+            const protocol = isLocalhost ? 'http:' : 'https:';
             const apiUrl = `${protocol}//${host}/api/users/${cookies.userId}`;
             
             console.log('🔍 Middleware: Fetching user data from:', apiUrl);

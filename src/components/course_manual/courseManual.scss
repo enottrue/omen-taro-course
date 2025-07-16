@@ -62,9 +62,12 @@
 
 .content-wrapper-inner {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   width: 100%;
-  margin-top: 0.8rem;
+  gap: 16px;
+  padding: 0 0 30px 10px;
+  box-sizing: border-box;
 }
 
 // Instructor section styles
@@ -169,6 +172,7 @@
   gap: var(--gap-12);
   font-size: var(--font-size-14);
   font-family: var(--font-roboto);
+  width: 100%;
 }
 
 .frame-parent4 {
@@ -214,4 +218,71 @@
   .group {
     justify-content: center;
   }
+} 
+
+.frame-parent5 {
+  width: 100%;
+}
+
+.frame-parent6,
+.accordion {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.accordion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 20px 0;
+  gap: 24px;
+}
+
+.empty-elements-parent {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.content-wrapper {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.btn-wrapper {
+  flex-shrink: 0;
+  margin-left: 16px;
+  display: flex;
+  align-items: center;
+} 
+
+.frame-parent6.accordion {
+  border-top: 2px solid rgba(236, 236, 236, 0.93);
+}
+.frame-parent6.accordion:first-child {
+  border-top: none;
+}
+
+.cource-lessons__item-content-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 16px;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  box-sizing: border-box;
+} 
+
+
+.content-wrapper-inner:not(:last-child) {
+  border-bottom: 1px solid #ececec;
 } 

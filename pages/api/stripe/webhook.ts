@@ -39,8 +39,8 @@ export default async function handler(
   console.log('📦 Received Stripe webhook event:', event.type);
 
   try {
-    switch (event.type) {
-      case 'checkout.session.completed':
+  switch (event.type) {
+    case 'checkout.session.completed':
         await handleCheckoutSessionCompleted(event.data.object as Stripe.Checkout.Session);
         break;
       
@@ -79,20 +79,20 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
     try {
       const updatedUser = await prisma.user.update({
         where: { email: userEmail },
-        data: {
-          isPaid: true,
-          paymentDate: new Date(),
-          stripeSessionId: session.id,
-        },
-      });
-
+            data: {
+              isPaid: true,
+              paymentDate: new Date(),
+              stripeSessionId: session.id,
+            },
+          });
+          
       console.log('✅ User payment status updated via webhook:', updatedUser.email);
-    } catch (error) {
-      console.error('❌ Error updating user payment status:', error);
-    }
+      } catch (error) {
+        console.error('❌ Error updating user payment status:', error);
+      }
   } else {
     console.log('⚠️ Session not paid. Status:', session.payment_status);
-  }
+        }
 }
 
 async function handlePaymentIntentSucceeded(paymentIntent: Stripe.PaymentIntent) {

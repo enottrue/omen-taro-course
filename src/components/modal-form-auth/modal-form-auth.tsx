@@ -7,6 +7,7 @@ import { MainContext } from '@/contexts/MainContext';
 import useLogin from '@/hooks/useLogin';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
+import { getOnboardingRedirectPath, getOnboardingStatus } from '@/utils/onboardingUtils';
 
 export type ModalFormAuthType = {
   className?: string;
@@ -98,12 +99,8 @@ const ModalFormAuth: NextPage<ModalFormAuthType> = ({
       cc?.setSubmitting && cc.setSubmitting(false);
       handleClose();
       cc?.setCurrentForm && cc.setCurrentForm(null);
-      let onboarding = localStorage.getItem('onboarded');
-      if (!onboarding) {
-        localStorage.setItem('onboarded', 'false');
-        onboarding = 'false';
-      }
-      const shouldRedirect = onboarding === 'true' ? '/courses' : '/onboarding';
+      const onboardingStatus = getOnboardingStatus();
+      const shouldRedirect = getOnboardingRedirectPath(onboardingStatus === 'true');
       router.push(shouldRedirect);
     } catch (err) {
       setError((err as Error).message);

@@ -11,6 +11,7 @@ import { MainContext } from '@/contexts/MainContext';
 
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { getOnboardingRedirectPath, getOnboardingStatus } from '@/utils/onboardingUtils';
 
 const Way = () => {
   const router = useRouter();
@@ -129,10 +130,8 @@ const Way = () => {
             data-modal="register"
             onClick={() => {
               if (cc?.token) {
-                const onboarding = localStorage.getItem('onboarded');
-                !onboarding && localStorage.setItem('onboarded', 'false');
-                const shouldRedirect =
-                  onboarding === 'true' ? '/courses' : '/onboarding';
+                    const onboardingStatus = getOnboardingStatus();
+    const shouldRedirect = getOnboardingRedirectPath(onboardingStatus === 'true');
                 router.push(shouldRedirect);
               } else {
                 cc?.setModalOpen(true);

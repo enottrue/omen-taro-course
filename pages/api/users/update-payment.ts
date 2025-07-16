@@ -41,23 +41,23 @@ export default async function handler(
       console.log('👤 Updating payment status for user:', userEmail);
 
       // Update user payment status
-      const updatedUser = await prisma.user.update({
+    const updatedUser = await prisma.user.update({
         where: { email: userEmail },
         data: {
           isPaid: true,
           paymentDate: new Date(),
           stripeSessionId: sessionId,
         },
-      });
+    });
 
       console.log('✅ User payment status updated successfully:', updatedUser.email);
 
       res.status(200).json({ 
-        success: true, 
+      success: true,
         message: 'Payment status updated successfully',
-        user: {
-          email: updatedUser.email,
-          isPaid: updatedUser.isPaid,
+      user: {
+        email: updatedUser.email,
+        isPaid: updatedUser.isPaid,
           paymentDate: updatedUser.paymentDate
         }
       });

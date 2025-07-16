@@ -10,6 +10,7 @@ import { useLazyQuery } from '@apollo/client';
 import { GET_USER } from '@/graphql/queries';
 import { useMetrica } from 'next-yandex-metrica';
 import { createCheckoutSession, redirectToCheckout } from '@/utils/stripeCheckout';
+import { getOnboardingRedirectPath } from '@/utils/onboardingUtils';
 
 export type ModalFormRegisterType = {
   className?: string;
@@ -143,9 +144,10 @@ const ModalFormRegister: NextPage<ModalFormRegisterType> = ({
         await redirectToCheckout(sessionId);
       } catch (stripeError) {
         console.error('❌ Stripe checkout error:', stripeError);
-        // If Stripe fails, fallback to homepage
-        console.log('⚠️ Stripe checkout failed, redirecting to homepage');
-        router.push('/');
+        // If Stripe fails, fallback to appropriate page based on onboarding status
+        const fallbackPath = getOnboardingRedirectPath(false);
+        console.log('⚠️ Stripe checkout failed, redirecting to:', fallbackPath);
+        router.push(fallbackPath);
       }
       
     } catch (err) {

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useRouter } from 'next/router';
+import { getOnboardingRedirectPath } from '@/utils/onboardingUtils';
 import { gql } from 'graphql-request';
 import { request } from 'graphql-request';
 import { MainContext } from '@/contexts/MainContext';
@@ -153,7 +154,7 @@ const ResetPassword = () => {
           }
           
           // Redirect based on onboarding status
-          const redirectPath = user.onboarded ? '/courses' : '/onboarding';
+          const redirectPath = getOnboardingRedirectPath(user.onboarded);
           console.log('Planning redirect to:', redirectPath);
           console.log('User onboarded status:', user.onboarded);
           

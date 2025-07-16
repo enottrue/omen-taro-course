@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useRef } from 'react';
 import Button from '@/components/button/Button';
 import OnboardingButton from './OnboardingButton';
 import { useRouter } from 'next/router';
+import { setOnboardingStatus } from '@/utils/onboardingUtils';
 import { MainContext } from '@/contexts/MainContext';
 import courseFinishHeader from '@/images/cource-finish-header.png';
 import Image from 'next/image';
@@ -38,7 +39,7 @@ const OnboardingStages = () => {
   ];
 
   const skipButtonHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
-    localStorage.setItem('onboarded', 'true');
+    setOnboardingStatus('true');
     router.push('/courses');
   };
 
@@ -46,7 +47,7 @@ const OnboardingStages = () => {
     setStage(stage + 1);
 
     if (stage === descriptions.length) {
-      localStorage.setItem('onboarded', 'true');
+      setOnboardingStatus('true');
       router.push('/courses');
     }
   };
@@ -58,7 +59,7 @@ const OnboardingStages = () => {
         onboarded: true,
       });
     }
-    localStorage.setItem('onboarded', 'true');
+    setOnboardingStatus('true');
     router.push('/courses');
   };
 

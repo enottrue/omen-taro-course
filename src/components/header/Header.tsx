@@ -48,7 +48,7 @@ const Header = ({
         <Logo />
 
         <Button
-          title="Задать вопрос"
+          title="Ask a Question"
           isLink={true}
           className="button_little button_secondary"
           attributes="button_little button_secondary"

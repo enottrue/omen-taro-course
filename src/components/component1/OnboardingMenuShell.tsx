@@ -34,7 +34,7 @@ const OnboardingMenuShell: React.FC<OnboardingMenuShellProps> = ({
               target="_blank"
               rel="noopener noreferrer"
             >
-              <div className={styles.div1}>Задать вопрос</div>
+              <div className={styles.div1}>Ask a Question</div>
             </a>
             {onBurgerClick && (
               <div 

@@ -16,7 +16,7 @@ function Header() {
       <div className="header__wrapper">
         <Logo /> {/* Замените на ваш компонент Logo */}
         <Button
-          title="Задать вопрос"
+          title="Ask a Question"
           isLink={true}
           href="#"
           className="button_little button_secondary"

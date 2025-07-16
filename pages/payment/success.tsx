@@ -159,7 +159,7 @@ const PaymentSuccessPage: React.FC = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <div className={styles.div1}>Задать вопрос</div>
+                    <div className={styles.div1}>Ask a Question</div>
                   </a>
                   <div 
                     ref={burgerRef}
@@ -220,25 +220,6 @@ const PaymentSuccessPage: React.FC = () => {
                         Access to the course will be available immediately.
                       </p>
                       <p className="p">&nbsp;</p>
-                      {sessionId && (
-                        <div style={{ 
-                          backgroundColor: 'rgba(255, 255, 255, 0.1)', 
-                          padding: '1rem', 
-                          borderRadius: '8px',
-                          border: '1px solid rgba(255, 255, 255, 0.2)',
-                          marginTop: '1rem',
-                        }}>
-                          <strong style={{ color: 'var(--color-white)' }}>Session ID:</strong>
-                          <p style={{ 
-                            color: 'var(--color-white)', 
-                            fontSize: '0.875rem',
-                            marginTop: '0.5rem',
-                            wordBreak: 'break-all'
-                          }}>
-                            {sessionId}
-                          </p>
-                        </div>
-                      )}
                     </div>
                   </div>
                 </div>
@@ -273,7 +254,7 @@ const PaymentSuccessPage: React.FC = () => {
                   color: 'var(--color-midnightblue)'
                 }}
               >
-                Return to Courses
+                Start Cosmo Course
               </button>
             </div>
           </section>

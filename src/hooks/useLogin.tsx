@@ -1,4 +1,5 @@
 import { useMutation } from '@apollo/client';
+import { setOnboardingStatus } from '@/utils/onboardingUtils';
 import { LOGIN_USER } from '@/graphql/queries';
 
 export const useLoginUser = () => {
@@ -10,7 +11,7 @@ export const useLoginUser = () => {
       const response = await loginUser({ variables: { email: em, password } });
 
       if (response.data?.loginUser?.user?.onboarded) {
-        localStorage.setItem('onboarded', 'true');
+        setOnboardingStatus('true');
       }
 
       return {

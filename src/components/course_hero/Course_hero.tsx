@@ -109,7 +109,7 @@ const CourseHero = ({ lessons, token, userId }: CourseHeroProps) => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <div className={styles.div1}>Задать вопрос</div>
+                <div className={styles.div1}>Ask a Question</div>
               </a>
               {!token ? (
                 <div 
@@ -143,32 +143,33 @@ const CourseHero = ({ lessons, token, userId }: CourseHeroProps) => {
               <div className="frame-parent2">
                 <div className="parent">
                   <h3 className="cosmo">
-                    <p className="p">Мы приветствуем</p>
-                    <p className="p">вас на обучающем</p>
-                    <p className="p">курсе, который</p>
+                    <p className="p">We welcome you to the course that</p>
                   </h3>
                   <h3 className="h31">
-                    <p className="p">позволит</p>
-                    <p className="p">вам изучить</p>
-                    <p className="p">колоду</p>
-                    <p className="p">А.Э.Уэйта.</p>
+                    <p className="p">will allow you to study the A.E. Waite deck</p>
                   </h3>
                 </div>
                 
                 <div className="div1">
                   <p className="p">
-                    Здесь вы найдете информацию от истории таро до подробного
-                    изучения Старших, Младших арканов и раскладов.
+                    Here you will find information from the history of tarot to a detailed study of the Major, Minor Arcana and spreads.
                   </p>
                   <p className="p">&nbsp;</p>
                   <p className="p">
-                    Курс даст вам крепкую базу, основываясь на которой вы
-                    сможете делать расклады себе и другим. По желанию вы можете
-                    повторить обучение и закрепить знания. Либо воспользоваться
-                    электронным пособием. Доступ к урокам остается на 6 месяцев.
+                    The course will give you a solid foundation, based on which you will be able to do readings for yourself and others. If you wish, you can repeat the training and consolidate your knowledge. Or use the electronic manual. Access to the lessons remains for 6 months.
                   </p>
                   <p className="p">&nbsp;</p>
-                  <p className="p">Желаем вам успехов!</p>
+                  <p className="p">We wish you success!</p>
+                </div>
+                {/* Figma-style button below description */}
+                <div style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
+                  <a
+                    href="#course-program"
+                    className="enroll-now-only-50-wrapper enroll-now-"
+                    style={{ textDecoration: 'none' }}
+                  >
+                    Watch Course Program
+                  </a>
                 </div>
               </div>
             </div>
@@ -179,7 +180,7 @@ const CourseHero = ({ lessons, token, userId }: CourseHeroProps) => {
   
       
       {/* Секция cource-lessons bg-white внутри root */}
-      <section className="cource-lessons bg-white">
+      {/* <section className="cource-lessons bg-white">
       <Image
           className={styles.wrapperGroup2Child}
           width={401.1}
@@ -191,7 +192,7 @@ const CourseHero = ({ lessons, token, userId }: CourseHeroProps) => {
         />
         <CourseLessons lessons={lessons} />
         <div className="cource-bottom-bg"> </div>
-      </section>
+      </section> */}
 
         <div className="frame-wrapper2">
           <div className="frame-wrapper3">

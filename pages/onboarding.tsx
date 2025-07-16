@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { isOnboardingEnabled, setOnboardingStatus } from '@/utils/onboardingUtils';
 import Head from 'next/head';
 import { useContext } from 'react';
 import { MainContext } from '@/contexts/MainContext';
@@ -74,6 +75,13 @@ const Onboarding = ({
   }, [user]);
 
   useEffect(() => {
+    // Check if onboarding is enabled via environment variable
+    if (!isOnboardingEnabled()) {
+      console.log('🚫 Onboarding disabled via environment variable, redirecting to courses');
+      router.push('/courses');
+      return;
+    }
+
     const isOnboarded = localStorage.getItem('onboarded');
 
     if (isOnboarded === 'true') {
@@ -83,7 +91,7 @@ const Onboarding = ({
 
   const handleOnboardingComplete = () => {
     // Set onboarding flag in local storage
-    localStorage.setItem('onboarded', 'true');
+    setOnboardingStatus('true');
 
     // Redirect to home page
     router.push('/courses');

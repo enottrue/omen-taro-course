@@ -7,6 +7,7 @@
 @import '../components/course_manual/courseManual.scss';
 @import '../components/course_book/courseBook.scss';
 @import '../components/button/button.scss';
+@import '../components/course_lessons/course_lessons.scss';
 
 body {
   margin: 0;
@@ -78,6 +79,23 @@ body {
   --font-size-40: 2.5rem;
 }
 main {
+  overflow: hidden;
   max-width: 320px;
   margin: 0 auto;
+  /* Background from CourseHero images */
+  background-image: url('/images/image-3@2x.png'), url('/images/unsplashutbx9x3y8ly-2@2x.png');
+  background-position: left top, left top;
+  background-size: contain, cover;
+  background-repeat: no-repeat, no-repeat;
+  background-color: #1c0076;
+  /* Make sure content is readable over background */
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 480px) {
+  main {
+    background-size: 120%, cover;
+    background-position: left 40px, left top;
+  }
 }

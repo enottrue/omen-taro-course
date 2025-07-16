@@ -22,6 +22,10 @@ export const MainContext = createContext<{
   setUser: React.Dispatch<React.SetStateAction<any>>;
   stageData: any;
   setStageData: React.Dispatch<React.SetStateAction<any>>;
+  courses: any;
+  setCourses: React.Dispatch<React.SetStateAction<any>>;
+  lessons: any;
+  setLessons: React.Dispatch<React.SetStateAction<any>>;
 } | null>(null);
 
 // Create the context provider
@@ -35,6 +39,8 @@ export const MainContextProvider = ({
   const [submitting, setSubmitting] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [stageData, setStageData] = useState<any>(null);
+  const [courses, setCourses] = useState<any>(null);
+  const [lessons, setLessons] = useState<any>(null);
 
   // Получаем данные из cookies
   let bearer: string | null = null;
@@ -82,6 +88,10 @@ export const MainContextProvider = ({
         setUser,
         stageData,
         setStageData,
+        courses,
+        setCourses,
+        lessons,
+        setLessons,
       }}
     >
       {children}

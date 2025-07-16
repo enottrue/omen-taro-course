@@ -80,19 +80,11 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
             
             return (
               <React.Fragment key={i}>
-                <Image
-                  className="frame-child3"
-                  loading="lazy"
-                  alt=""
-                  src="/svg/vector-9.svg"
-                  width={100}
-                  height={1}
-                />
                 <div className="content-wrapper-inner">
                   <div className="content-wrapper">
                     <Link
                       href={`/lesson/${lessonNumber}/${item.stageNumber}`}
-                      className={`cource-lessons__item-content-list-item ${
+                      className={`  ${
                         isFinished
                           ? 'cource-lessons__item-content-list-item_compleeted'
                           : isPaused

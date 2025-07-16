@@ -18,11 +18,15 @@ const defaultOptions: DefaultOptions = {
   },
 };
 
-console.log(process.env.APOLLO_DEV_ENVIRONTMENT);
+// Используем абсолютный URL на сервере и относительный в браузере
+const uri = typeof window === 'undefined'
+  ? process.env.NEXT_PUBLIC_GRAPHQL_API_URL
+  : '/api/graphql';
+
+console.log('Apollo GraphQL endpoint:', uri);
 
 export const apolloClient = new ApolloClient({
-  uri: '/api/graphql', // Локальная разработка через Next.js API routes
-  // uri: 'https://omen-taro.ru/api/graphql', // Продакшн
+  uri,
   cache: new InMemoryCache(),
   defaultOptions: defaultOptions,
 });

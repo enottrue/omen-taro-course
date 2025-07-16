@@ -5,6 +5,7 @@ import Fire from '@/images/svg/about-fire.svg';
 import { useContext } from 'react';
 import { MainContext } from '@/contexts/MainContext';
 import { useRouter } from 'next/router';
+import { getOnboardingRedirectPath, getOnboardingStatus } from '@/utils/onboardingUtils';
 
 const About = () => {
   const cc = useContext(MainContext);
@@ -43,10 +44,8 @@ const About = () => {
           data-modal="register"
           onClick={() => {
             if (cc?.token) {
-              const onboarding = localStorage.getItem('onboarded');
-              !onboarding && localStorage.setItem('onboarded', 'false');
-              const shouldRedirect =
-                onboarding === 'true' ? '/courses' : '/onboarding';
+                  const onboardingStatus = getOnboardingStatus();
+    const shouldRedirect = getOnboardingRedirectPath(onboardingStatus === 'true');
 
               router.push(shouldRedirect);
             } else {

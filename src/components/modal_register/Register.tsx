@@ -147,7 +147,7 @@ const ModalRegister = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: registerUser?.user?.email }),
-      });
+    });
       const stripeData = await stripeRes.json();
       console.log('[Register] Stripe response:', stripeData);
       if (stripeRes.ok && stripeData.sessionId) {

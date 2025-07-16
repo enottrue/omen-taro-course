@@ -99,7 +99,8 @@
 .section {
   width: 20rem;
   height: auto;
-  background-color: var(--color-midnightblue-100);
+  background-color: rgba(0,43,128,0.8);
+  backdrop-filter: blur(8px);
   overflow: hidden;
   flex-shrink: 0;
   flex-direction: row;

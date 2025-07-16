@@ -42,21 +42,21 @@ const BurgerMenu: NextPage<BurgerMenuType> = ({ isOpen, onClose }) => {
         <div className={styles.burgerDropdownContent}>
           <div className={styles.burgerMenuItem}>
             <Link href="/" legacyBehavior>
-              <a className={getActiveClass('/')} onClick={onClose}>Главная</a>
+              <a className={getActiveClass('/')} onClick={onClose}>Home</a>
             </Link>
           </div>
           <div className={styles.burgerMenuItem}>
             <Link href="/course_book" legacyBehavior>
-              <a className={getActiveClass('/course_book')} onClick={onClose}>Методичка</a>
+              <a className={getActiveClass('/course_book')} onClick={onClose}>Course Book</a>
             </Link>
           </div>
           <div className={styles.burgerMenuItem}>
             <Link href="/courses" legacyBehavior>
-              <a className={getActiveClass('/courses')} onClick={onClose}>Обучающий курс</a>
+              <a className={getActiveClass('/courses')} onClick={onClose}>Learning Course</a>
             </Link>
           </div>
           <div className={styles.burgerMenuItem} onClick={handleLogout}>
-            <span>Выйти</span>
+            <span>Logout</span>
           </div>
         </div>
       </div>
@@ -71,13 +71,13 @@ const BurgerMenu: NextPage<BurgerMenuType> = ({ isOpen, onClose }) => {
           <span>Sign In</span>
         </div>
         <div className={styles.burgerMenuItem} onClick={onClose}>
-          <span>Регистрация</span>
+          <span>Register</span>
         </div>
         <div className={styles.burgerMenuItem} onClick={onClose}>
-          <span>О нас</span>
+          <span>About Us</span>
         </div>
         <div className={styles.burgerMenuItem} onClick={onClose}>
-          <span>Контакты</span>
+          <span>Contact</span>
         </div>
       </div>
     </div>

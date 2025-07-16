@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
+import { setOnboardingStatus } from '@/utils/onboardingUtils';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { MainContext } from '@/contexts/MainContext';
@@ -24,7 +25,7 @@ const LogoutButton: React.FC = () => {
     // Очищаем localStorage
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
-    localStorage.removeItem('onboarded');
+    setOnboardingStatus('false');
     
     // Очищаем контекст
     cc?.setToken(null);

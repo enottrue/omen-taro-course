@@ -37,7 +37,7 @@ const Header: NextPage<HeaderType> = ({ className = "", onOpenModal, hideLoginBu
           target="_blank"
           rel="noopener noreferrer"
         >
-          <div className={styles.div1}>Задать вопрос</div>
+          <div className={styles.div1}>Ask a Question</div>
         </a>
 
         {hideLoginButton && onBurgerClick && (
