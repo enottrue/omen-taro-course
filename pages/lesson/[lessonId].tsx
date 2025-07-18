@@ -17,6 +17,8 @@ import Footer from '@/components/footer/Footer';
 
 import { apolloClient } from '@/lib/apollo/apollo';
 import { GET_LESSON, GET_LESSONS } from '@/graphql/queries';
+import FooterInside from '@/components/footerInside/Footer';
+
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const APP_SECRET = process.env.APP_SECRET;
@@ -173,8 +175,9 @@ const Lesson = ({
       </Head>
       <main>
         <Header token={token} userId={userId} />
+        <FooterInside />
       </main>
-      <Footer />
+     
     </>
   );
 };

@@ -143,23 +143,23 @@ const CourseHero = ({ lessons, token, userId }: CourseHeroProps) => {
               <div className="frame-parent2">
                 <div className="parent">
                   <h3 className="cosmo">
-                    <p className="p">We welcome you to the course that</p>
+                    <p className="p">Welcome to the “Money Compass” course on</p>
                   </h3>
                   <h3 className="h31">
-                    <p className="p">will allow you to study the A.E. Waite deck</p>
+                    <p className="p">finances in your natal chart!</p>
                   </h3>
                 </div>
                 
                 <div className="div1">
                   <p className="p">
-                    Here you will find information from the history of tarot to a detailed study of the Major, Minor Arcana and spreads.
+                  I'm <b>Cosmo.Irena</b>, and I'm delighted to welcome you on this exciting journey through the world of stars and planets. Over eight lessons, we'll explore together how astrology can help unlock your financial potential and career prospects. In addition to the lessons, you'll receive a workbook that will serve as your trusted guide.
                   </p>
                   <p className="p">&nbsp;</p>
                   <p className="p">
-                    The course will give you a solid foundation, based on which you will be able to do readings for yourself and others. If you wish, you can repeat the training and consolidate your knowledge. Or use the electronic manual. Access to the lessons remains for 6 months.
+                  Each lesson includes practical homework assignments so you can immediately apply what you've learned.
                   </p>
                   <p className="p">&nbsp;</p>
-                  <p className="p">We wish you success!</p>
+                  <p className="p">Get ready to dive into a fascinating process of self-discovery. Let's explore how astrological wisdom can help you achieve success and harmony in life!</p>
                 </div>
                 {/* Figma-style button below description */}
                 <div style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
@@ -168,7 +168,7 @@ const CourseHero = ({ lessons, token, userId }: CourseHeroProps) => {
                     className="enroll-now-only-50-wrapper enroll-now-"
                     style={{ textDecoration: 'none' }}
                   >
-                    Watch Course Program
+                    Explore the Course
                   </a>
                 </div>
               </div>

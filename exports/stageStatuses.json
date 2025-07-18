@@ -1,0 +1,58 @@
+[
+  {
+    "id": 353,
+    "stageId": 1,
+    "userId": 15,
+    "status": "new",
+    "createdAt": "2025-07-15T15:17:33.053Z",
+    "updatedAt": "2025-07-15T15:17:33.053Z"
+  },
+  {
+    "id": 356,
+    "stageId": 4,
+    "userId": 15,
+    "status": "new",
+    "createdAt": "2025-07-15T15:17:33.064Z",
+    "updatedAt": "2025-07-15T15:17:33.064Z"
+  },
+  {
+    "id": 357,
+    "stageId": 5,
+    "userId": 15,
+    "status": "new",
+    "createdAt": "2025-07-15T15:17:33.066Z",
+    "updatedAt": "2025-07-15T15:17:33.066Z"
+  },
+  {
+    "id": 360,
+    "stageId": 8,
+    "userId": 15,
+    "status": "new",
+    "createdAt": "2025-07-15T15:17:33.075Z",
+    "updatedAt": "2025-07-15T15:17:33.075Z"
+  },
+  {
+    "id": 361,
+    "stageId": 9,
+    "userId": 15,
+    "status": "new",
+    "createdAt": "2025-07-15T15:17:33.077Z",
+    "updatedAt": "2025-07-15T15:17:33.077Z"
+  },
+  {
+    "id": 382,
+    "stageId": 30,
+    "userId": 15,
+    "status": "new",
+    "createdAt": "2025-07-15T15:17:33.106Z",
+    "updatedAt": "2025-07-15T15:17:33.106Z"
+  },
+  {
+    "id": 386,
+    "stageId": 34,
+    "userId": 15,
+    "status": "new",
+    "createdAt": "2025-07-15T15:17:33.111Z",
+    "updatedAt": "2025-07-15T15:17:33.111Z"
+  }
+]

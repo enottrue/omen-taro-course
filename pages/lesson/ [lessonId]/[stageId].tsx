@@ -73,8 +73,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       currentLessonId,
       'currentStageId',
       currentStageId,
+      'Full lesson data:',
       lesson.data.getLesson,
     );
+    
+    // Log specific stage data
+    const currentStage = lesson.data.getLesson?.lessonStages?.find(
+      (stage: any) => Number(stage.stageNumber) === Number(currentStageId)
+    );
+    console.log('Current stage data:', currentStage);
+    console.log('Current stage description:', currentStage?.stageDescription);
     const stageExists = lesson?.data?.getLesson?.lessonStages.some(
       (stage: any) => Number(stage.stageNumber) === Number(currentStageId),
     );

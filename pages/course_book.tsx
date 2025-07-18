@@ -15,6 +15,7 @@ import CourseBookHero from '@/components/course_book/courseBook';
 
 import { apolloClient } from '@/lib/apollo/apollo';
 import { GET_COURSES, GET_COURSE, GET_STAGE_STATUS } from '@/graphql/queries';
+import { getDefaultCourseIdString } from '@/utils/courseUtils';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const APP_SECRET = process.env.APP_SECRET;
@@ -52,7 +53,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const { data } = await apolloClient.query({
       query: GET_COURSE,
       variables: {
-        id: 1,
+        id: getDefaultCourseIdString(), // Use environment variable for course ID
         userId: userId ? Number(userId) : 1, // Use number 1 for unauthenticated users
       },
     });

@@ -1,0 +1,407 @@
+[
+  {
+    "id": 1,
+    "name": "Заставка",
+    "timeCodeStart": "0:00",
+    "timeCodeEnd": "0:08",
+    "stageId": 1,
+    "createdAt": "2025-07-10T06:08:55.494Z",
+    "updatedAt": "2025-07-10T06:08:55.494Z"
+  },
+  {
+    "id": 2,
+    "name": "Первое в мире оккультное Таро. Колода Уэйта-Смит",
+    "timeCodeStart": "0:08",
+    "timeCodeEnd": "1:48",
+    "stageId": 1,
+    "createdAt": "2025-07-10T06:08:55.501Z",
+    "updatedAt": "2025-07-10T06:08:55.501Z"
+  },
+  {
+    "id": 3,
+    "name": "Почему колода попала в массовую печать?",
+    "timeCodeStart": "1:48",
+    "timeCodeEnd": "3:19",
+    "stageId": 1,
+    "createdAt": "2025-07-10T06:08:55.504Z",
+    "updatedAt": "2025-07-10T06:08:55.504Z"
+  },
+  {
+    "id": 4,
+    "name": "Оригинал и последующие копии: в чем отличия?",
+    "timeCodeStart": "3:19",
+    "timeCodeEnd": "5:41",
+    "stageId": 1,
+    "createdAt": "2025-07-10T06:08:55.507Z",
+    "updatedAt": "2025-07-10T06:08:55.507Z"
+  },
+  {
+    "id": 5,
+    "name": "Как родилось магическое Таро",
+    "timeCodeStart": "5:41",
+    "timeCodeEnd": "8:11",
+    "stageId": 1,
+    "createdAt": "2025-07-10T06:08:55.510Z",
+    "updatedAt": "2025-07-10T06:08:55.510Z"
+  },
+  {
+    "id": 6,
+    "name": "Ключевой Аркан. Космическое женское начало",
+    "timeCodeStart": "8:11",
+    "timeCodeEnd": "11:06",
+    "stageId": 1,
+    "createdAt": "2025-07-10T06:08:55.515Z",
+    "updatedAt": "2025-07-10T06:08:55.515Z"
+  },
+  {
+    "id": 7,
+    "name": "Куда «пропала» оригинальная колода?",
+    "timeCodeStart": "11:06",
+    "timeCodeEnd": "13:46",
+    "stageId": 1,
+    "createdAt": "2025-07-10T06:08:55.520Z",
+    "updatedAt": "2025-07-10T06:08:55.520Z"
+  },
+  {
+    "id": 8,
+    "name": "Магическое семя Таро",
+    "timeCodeStart": "13:46",
+    "timeCodeEnd": "15:36",
+    "stageId": 1,
+    "createdAt": "2025-07-10T06:08:55.525Z",
+    "updatedAt": "2025-07-10T06:08:55.525Z"
+  },
+  {
+    "id": 9,
+    "name": "Алхимия — единение противоположностей",
+    "timeCodeStart": "15:36",
+    "timeCodeEnd": "19:12",
+    "stageId": 1,
+    "createdAt": "2025-07-10T06:08:55.529Z",
+    "updatedAt": "2025-07-10T06:08:55.529Z"
+  },
+  {
+    "id": 18,
+    "name": "Заставка",
+    "timeCodeStart": "0:00",
+    "timeCodeEnd": "0:08",
+    "stageId": 4,
+    "createdAt": "2025-07-10T06:08:55.572Z",
+    "updatedAt": "2025-07-10T06:08:55.572Z"
+  },
+  {
+    "id": 19,
+    "name": "Ритуальная подготовка к работе с Таро. Зачем она нужна?",
+    "timeCodeStart": "0:08",
+    "timeCodeEnd": "2:56",
+    "stageId": 4,
+    "createdAt": "2025-07-10T06:08:55.575Z",
+    "updatedAt": "2025-07-10T06:08:55.575Z"
+  },
+  {
+    "id": 20,
+    "name": "Как создать свой собственный ритуал",
+    "timeCodeStart": "2:56",
+    "timeCodeEnd": "3:54",
+    "stageId": 4,
+    "createdAt": "2025-07-10T06:08:55.578Z",
+    "updatedAt": "2025-07-10T06:08:55.578Z"
+  },
+  {
+    "id": 21,
+    "name": "Сценарии ритуалов магических, религиозных и мистических традиций",
+    "timeCodeStart": "3:54",
+    "timeCodeEnd": "4:51",
+    "stageId": 4,
+    "createdAt": "2025-07-10T06:08:55.580Z",
+    "updatedAt": "2025-07-10T06:08:55.580Z"
+  },
+  {
+    "id": 22,
+    "name": "Заставка",
+    "timeCodeStart": "0:00",
+    "timeCodeEnd": "0:08",
+    "stageId": 5,
+    "createdAt": "2025-07-10T06:08:55.585Z",
+    "updatedAt": "2025-07-10T06:08:55.585Z"
+  },
+  {
+    "id": 23,
+    "name": "Ритуал настройки на колоду",
+    "timeCodeStart": "0:08",
+    "timeCodeEnd": "0:26",
+    "stageId": 5,
+    "createdAt": "2025-07-10T06:08:55.587Z",
+    "updatedAt": "2025-07-10T06:08:55.587Z"
+  },
+  {
+    "id": 24,
+    "name": "Описание ритуала",
+    "timeCodeStart": "0:26",
+    "timeCodeEnd": "2:26",
+    "stageId": 5,
+    "createdAt": "2025-07-10T06:08:55.590Z",
+    "updatedAt": "2025-07-10T06:08:55.590Z"
+  },
+  {
+    "id": 33,
+    "name": "Заставка",
+    "timeCodeStart": "0:00",
+    "timeCodeEnd": "0:08",
+    "stageId": 8,
+    "createdAt": "2025-07-10T06:08:55.621Z",
+    "updatedAt": "2025-07-10T06:08:55.621Z"
+  },
+  {
+    "id": 34,
+    "name": "Дурак (Шут)",
+    "timeCodeStart": "0:08",
+    "timeCodeEnd": "1:25",
+    "stageId": 8,
+    "createdAt": "2025-07-10T06:08:55.626Z",
+    "updatedAt": "2025-07-10T06:08:55.626Z"
+  },
+  {
+    "id": 35,
+    "name": "Позитивное значение",
+    "timeCodeStart": "1:25",
+    "timeCodeEnd": "2:14",
+    "stageId": 8,
+    "createdAt": "2025-07-10T06:08:55.630Z",
+    "updatedAt": "2025-07-10T06:08:55.630Z"
+  },
+  {
+    "id": 36,
+    "name": "Негативное значение",
+    "timeCodeStart": "2:14",
+    "timeCodeEnd": "3:01",
+    "stageId": 8,
+    "createdAt": "2025-07-10T06:08:55.634Z",
+    "updatedAt": "2025-07-10T06:08:55.634Z"
+  },
+  {
+    "id": 37,
+    "name": "Предупреждение",
+    "timeCodeStart": "3:01",
+    "timeCodeEnd": "3:31",
+    "stageId": 8,
+    "createdAt": "2025-07-10T06:08:55.637Z",
+    "updatedAt": "2025-07-10T06:08:55.637Z"
+  },
+  {
+    "id": 38,
+    "name": "Заставка",
+    "timeCodeStart": "0:00",
+    "timeCodeEnd": "0:08",
+    "stageId": 9,
+    "createdAt": "2025-07-10T06:08:55.654Z",
+    "updatedAt": "2025-07-10T06:08:55.654Z"
+  },
+  {
+    "id": 39,
+    "name": "Маг. Общее значение",
+    "timeCodeStart": "0:08",
+    "timeCodeEnd": "1:12",
+    "stageId": 9,
+    "createdAt": "2025-07-10T06:08:55.655Z",
+    "updatedAt": "2025-07-10T06:08:55.655Z"
+  },
+  {
+    "id": 40,
+    "name": "Позитивное значение",
+    "timeCodeStart": "1:12",
+    "timeCodeEnd": "1:57",
+    "stageId": 9,
+    "createdAt": "2025-07-10T06:08:55.658Z",
+    "updatedAt": "2025-07-10T06:08:55.658Z"
+  },
+  {
+    "id": 41,
+    "name": "Негативное значение",
+    "timeCodeStart": "1:57",
+    "timeCodeEnd": "2:41",
+    "stageId": 9,
+    "createdAt": "2025-07-10T06:08:55.662Z",
+    "updatedAt": "2025-07-10T06:08:55.662Z"
+  },
+  {
+    "id": 42,
+    "name": "Предупреждение",
+    "timeCodeStart": "2:41",
+    "timeCodeEnd": "2:59",
+    "stageId": 9,
+    "createdAt": "2025-07-10T06:08:55.665Z",
+    "updatedAt": "2025-07-10T06:08:55.665Z"
+  },
+  {
+    "id": 143,
+    "name": "Заставка",
+    "timeCodeStart": "0:00",
+    "timeCodeEnd": "0:08",
+    "stageId": 30,
+    "createdAt": "2025-07-10T06:08:56.318Z",
+    "updatedAt": "2025-07-10T06:08:56.318Z"
+  },
+  {
+    "id": 144,
+    "name": "Младшие Арканы. Мечи",
+    "timeCodeStart": "0:08",
+    "timeCodeEnd": "0:37",
+    "stageId": 30,
+    "createdAt": "2025-07-10T06:08:56.323Z",
+    "updatedAt": "2025-07-10T06:08:56.323Z"
+  },
+  {
+    "id": 145,
+    "name": "Туз Мечей",
+    "timeCodeStart": "0:37",
+    "timeCodeEnd": "1:30",
+    "stageId": 30,
+    "createdAt": "2025-07-10T06:08:56.328Z",
+    "updatedAt": "2025-07-10T06:08:56.328Z"
+  },
+  {
+    "id": 146,
+    "name": "Двойка Мечей",
+    "timeCodeStart": "1:30",
+    "timeCodeEnd": "2:05",
+    "stageId": 30,
+    "createdAt": "2025-07-10T06:08:56.333Z",
+    "updatedAt": "2025-07-10T06:08:56.333Z"
+  },
+  {
+    "id": 147,
+    "name": "Тройка Мечей",
+    "timeCodeStart": "2:05",
+    "timeCodeEnd": "2:38",
+    "stageId": 30,
+    "createdAt": "2025-07-10T06:08:56.340Z",
+    "updatedAt": "2025-07-10T06:08:56.340Z"
+  },
+  {
+    "id": 148,
+    "name": "Четверка Мечей",
+    "timeCodeStart": "2:38",
+    "timeCodeEnd": "3:33",
+    "stageId": 30,
+    "createdAt": "2025-07-10T06:08:56.345Z",
+    "updatedAt": "2025-07-10T06:08:56.345Z"
+  },
+  {
+    "id": 149,
+    "name": "Пятерка Мечей",
+    "timeCodeStart": "3:33",
+    "timeCodeEnd": "4:12",
+    "stageId": 30,
+    "createdAt": "2025-07-10T06:08:56.350Z",
+    "updatedAt": "2025-07-10T06:08:56.350Z"
+  },
+  {
+    "id": 150,
+    "name": "Шестерка Мечей",
+    "timeCodeStart": "4:12",
+    "timeCodeEnd": "4:56",
+    "stageId": 30,
+    "createdAt": "2025-07-10T06:08:56.353Z",
+    "updatedAt": "2025-07-10T06:08:56.353Z"
+  },
+  {
+    "id": 151,
+    "name": "Семерка Мечей",
+    "timeCodeStart": "4:56",
+    "timeCodeEnd": "5:31",
+    "stageId": 30,
+    "createdAt": "2025-07-10T06:08:56.357Z",
+    "updatedAt": "2025-07-10T06:08:56.357Z"
+  },
+  {
+    "id": 152,
+    "name": "Восьмерка Мечей",
+    "timeCodeStart": "5:31",
+    "timeCodeEnd": "6:30",
+    "stageId": 30,
+    "createdAt": "2025-07-10T06:08:56.362Z",
+    "updatedAt": "2025-07-10T06:08:56.362Z"
+  },
+  {
+    "id": 153,
+    "name": "Девятка Мечей",
+    "timeCodeStart": "6:30",
+    "timeCodeEnd": "6:55",
+    "stageId": 30,
+    "createdAt": "2025-07-10T06:08:56.367Z",
+    "updatedAt": "2025-07-10T06:08:56.367Z"
+  },
+  {
+    "id": 154,
+    "name": "Десятка Мечей",
+    "timeCodeStart": "6:55",
+    "timeCodeEnd": "7:41",
+    "stageId": 30,
+    "createdAt": "2025-07-10T06:08:56.371Z",
+    "updatedAt": "2025-07-10T06:08:56.371Z"
+  },
+  {
+    "id": 155,
+    "name": "Паж Мечей",
+    "timeCodeStart": "7:41",
+    "timeCodeEnd": "8:09",
+    "stageId": 30,
+    "createdAt": "2025-07-10T06:08:56.375Z",
+    "updatedAt": "2025-07-10T06:08:56.375Z"
+  },
+  {
+    "id": 156,
+    "name": "Рыцарь Мечей",
+    "timeCodeStart": "8:09",
+    "timeCodeEnd": "8:46",
+    "stageId": 30,
+    "createdAt": "2025-07-10T06:08:56.380Z",
+    "updatedAt": "2025-07-10T06:08:56.380Z"
+  },
+  {
+    "id": 157,
+    "name": "Королева Мечей",
+    "timeCodeStart": "8:46",
+    "timeCodeEnd": "9:30",
+    "stageId": 30,
+    "createdAt": "2025-07-10T06:08:56.384Z",
+    "updatedAt": "2025-07-10T06:08:56.384Z"
+  },
+  {
+    "id": 158,
+    "name": "Король Мечей",
+    "timeCodeStart": "9:30",
+    "timeCodeEnd": "10:13",
+    "stageId": 30,
+    "createdAt": "2025-07-10T06:08:56.388Z",
+    "updatedAt": "2025-07-10T06:08:56.388Z"
+  },
+  {
+    "id": 207,
+    "name": "Заставка",
+    "timeCodeStart": "0:00",
+    "timeCodeEnd": "0:08",
+    "stageId": 34,
+    "createdAt": "2025-07-10T06:08:56.535Z",
+    "updatedAt": "2025-07-10T06:08:56.535Z"
+  },
+  {
+    "id": 208,
+    "name": "Расклад на конкретную ситуацию",
+    "timeCodeStart": "0:08",
+    "timeCodeEnd": "0:36",
+    "stageId": 34,
+    "createdAt": "2025-07-10T06:08:56.536Z",
+    "updatedAt": "2025-07-10T06:08:56.536Z"
+  },
+  {
+    "id": 209,
+    "name": "Как выполнить расклад",
+    "timeCodeStart": "0:36",
+    "timeCodeEnd": "1:06",
+    "stageId": 34,
+    "createdAt": "2025-07-10T06:08:56.538Z",
+    "updatedAt": "2025-07-10T06:08:56.538Z"
+  }
+]

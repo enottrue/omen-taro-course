@@ -2,6 +2,8 @@ import type { NextPage } from "next";
 import Image from "next/image";
 import styles from "./component2.module.css";
 import group4 from "../../images/group-4@2x.png";
+import intro_lesson from "../../../public/preview/00.png";
+
 import { Button } from "../ui";
 import { useState } from "react";
 import VideoModal from "../video_modal/VideoModal";
@@ -26,13 +28,15 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
   };
 
   // Determine heading text based on typePage
-  let headingH1 = 'Watch the';
-  let headingH2 = 'Video';
+  let headingH1 = 'Welcome Video from';
+  let headingH2 = 'Cosmo.Irena';
   if (typePage === 'mainPage') {
+    headingH1 = 'Watch the';
     headingH2 = 'Intro Video';
   }
 
   return (
+    <div>
     <section className={[styles.section, className].join(" ")}>
       <div className={styles.frameParent}>
         <div className={styles.frameGroup}>
@@ -58,34 +62,36 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
           height={146}
           sizes="100vw"
           alt=""
-          src={group4}
+          src={intro_lesson}
           onClick={handleVideoClick}
           style={{ cursor: 'pointer' }}
         />
         {textShown && (
-          <Button 
-            variant="video" 
-            icon={
-              <img
-                width={11.3}
-                height={11.3}
-                alt=""
-                src="/images/group-3.svg"
-              />
-            }
-            onClick={handleVideoClick}
-          >
-            Watch the Video
-          </Button>
+        <Button 
+          variant="video" 
+          icon={
+            <img
+              width={11.3}
+              height={11.3}
+              alt=""
+              src="/images/group-3.svg"
+            />
+          }
+          onClick={handleVideoClick}
+        >
+          Watch the Video
+        </Button>
         )}
       </div>
 
-      <VideoModal
-        isOpen={isVideoModalOpen}
-        onClose={handleCloseModal}
-        videoSrc={videoSource}
-      />
+
     </section>
+          <VideoModal
+          isOpen={isVideoModalOpen}
+          onClose={handleCloseModal}
+          videoSrc={videoSource}
+        />
+    </div>
   );
 };
 

@@ -1,0 +1,77 @@
+[
+  {
+    "id": 1,
+    "lessonNumber": 1,
+    "lessonName": "Module 1: Introduction to the Birth Chart",
+    "lessonDescription": "This is the description for Lesson 1",
+    "lessonTimecodes": [
+      "00:00",
+      "01:00",
+      "02:00"
+    ],
+    "lessonStatus": "new",
+    "courseId": 1,
+    "createdAt": "2025-07-10T06:08:55.455Z",
+    "updatedAt": "2025-07-17T23:52:37.038Z"
+  },
+  {
+    "id": 2,
+    "lessonNumber": 2,
+    "lessonName": "Module 2: Dream Job & High-Income Careers",
+    "lessonDescription": "This is the description for Lesson 2",
+    "lessonTimecodes": [
+      "00:00",
+      "01:00",
+      "02:00"
+    ],
+    "lessonStatus": "new",
+    "courseId": 1,
+    "createdAt": "2025-07-10T06:08:55.469Z",
+    "updatedAt": "2025-07-18T00:17:21.002Z"
+  },
+  {
+    "id": 3,
+    "lessonNumber": 3,
+    "lessonName": "Module 3: Money Energy",
+    "lessonDescription": "This is the description for Lesson 3",
+    "lessonTimecodes": [
+      "00:00",
+      "01:00",
+      "02:00"
+    ],
+    "lessonStatus": "new",
+    "courseId": 1,
+    "createdAt": "2025-07-10T06:08:55.474Z",
+    "updatedAt": "2025-07-18T00:18:35.178Z"
+  },
+  {
+    "id": 4,
+    "lessonNumber": 4,
+    "lessonName": "Module 4: Quick Cash Strategies",
+    "lessonDescription": "This is the description for Lesson 4",
+    "lessonTimecodes": [
+      "00:00",
+      "01:00",
+      "02:00"
+    ],
+    "lessonStatus": "new",
+    "courseId": 1,
+    "createdAt": "2025-07-10T06:08:55.479Z",
+    "updatedAt": "2025-07-18T00:19:56.110Z"
+  },
+  {
+    "id": 5,
+    "lessonNumber": 5,
+    "lessonName": "Module 5: Avoiding Burnout & Loving What You Do",
+    "lessonDescription": "This is the description for Lesson 5",
+    "lessonTimecodes": [
+      "00:00",
+      "01:00",
+      "02:00"
+    ],
+    "lessonStatus": "new",
+    "courseId": 1,
+    "createdAt": "2025-07-10T06:08:55.482Z",
+    "updatedAt": "2025-07-18T00:22:02.251Z"
+  }
+]

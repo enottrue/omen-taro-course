@@ -13,6 +13,8 @@ import { getUserId } from '@/utils/authUtils';
 import { ApolloError } from '@apollo/client';
 import { createDealOnRegistration, getUtmDataFromCookies } from '../utils/bitrix24';
 import { emailService } from '@/utils/emailService';
+import { getDefaultCourseIdString } from '@/utils/courseUtils';
+import { STAGE_STATUSES } from '@/utils/stageStatusUtils';
 
 dotenv.config();
 
@@ -103,14 +105,17 @@ export const resolvers = {
     },
     getCourse: async (
       parent: unknown,
-      args: { id: string; userId: string },
+      args: { id?: string; userId: string },
       context: IContext,
       info: {},
     ) => {
       const { id, userId } = args;
+      const courseId = id || getDefaultCourseIdString();
+      
+      console.log('🔍 getCourse resolver called with:', { id, userId, courseId });
 
       const course = await prisma.course.findUnique({
-        where: { id: Number(id) },
+        where: { id: Number(courseId) },
         include: {
           lessons: {
             orderBy: {
@@ -134,8 +139,17 @@ export const resolvers = {
           },
         },
       });
+      
+      console.log('🔍 getCourse result:', {
+        courseFound: !!course,
+        courseId: course?.id,
+        courseName: course?.name,
+        lessonsCount: course?.lessons?.length || 0,
+        lessons: course?.lessons?.map(l => ({ id: l.id, name: l.lessonName, stagesCount: l.lessonStages?.length || 0 }))
+      });
+      
       if (!course) {
-        throw new Error(`No course found for id: ${id}`);
+        throw new Error(`No course found for id: ${courseId}`);
       }
 
       return course;
@@ -227,7 +241,13 @@ export const resolvers = {
         image: args.image,
       };
       const obj = await prisma.tool.create({ data: newTool });
-      return obj;
+      
+      // Convert Date objects to ISO strings to match Tool interface
+      return {
+        ...obj,
+        createdAt: obj.createdAt.toISOString(),
+        updatedAt: obj.updatedAt.toISOString(),
+      };
     },
     deleteTool: async (
       parent: unknown,
@@ -238,9 +258,14 @@ export const resolvers = {
       if (typeof args.id === 'string') {
         args.id = Number(args.id);
       }
-      let tool: Tool | null | { message: string };
-      tool = await prisma.tool.delete({ where: { id: args.id } });
-      return tool;
+      const tool = await prisma.tool.delete({ where: { id: args.id } });
+      
+      // Convert Date objects to ISO strings to match Tool interface
+      return {
+        ...tool,
+        createdAt: tool.createdAt.toISOString(),
+        updatedAt: tool.updatedAt.toISOString(),
+      };
     },
     updateTool: async (
       parent: unknown,
@@ -258,8 +283,7 @@ export const resolvers = {
         args.id = Number(args.id);
       }
 
-      let tool: Tool;
-      tool = await prisma.tool.update({
+      const tool = await prisma.tool.update({
         where: { id: args.id },
         data: {
           name: args.name,
@@ -268,7 +292,13 @@ export const resolvers = {
           image: args.image,
         },
       });
-      return tool;
+      
+      // Convert Date objects to ISO strings to match Tool interface
+      return {
+        ...tool,
+        createdAt: tool.createdAt.toISOString(),
+        updatedAt: tool.updatedAt.toISOString(),
+      };
     },
     addUser: async (
       parent: unknown,
@@ -372,14 +402,33 @@ export const resolvers = {
           data: { ...userData, password },
         });
 
-        for (let stageId = 1; stageId <= 44; stageId++) {
-          await context.prisma.stageStatus.create({
-            data: {
-              stageId,
-              userId: user.id,
-              status: 'new',
-            },
-          });
+        // Get all existing stages to create StageStatus records only for them
+        const existingStages = await context.prisma.stage.findMany({
+          select: { id: true }
+        });
+        
+        console.log(`📊 Creating StageStatus records for ${existingStages.length} existing stages`);
+        
+        // Check if user already has StageStatus records to avoid duplicates
+        const existingStageStatuses = await context.prisma.stageStatus.findMany({
+          where: { userId: user.id },
+          select: { stageId: true }
+        });
+        
+        if (existingStageStatuses.length === 0) {
+          // Create all StageStatus records in one batch operation for better performance
+          if (existingStages.length > 0) {
+            await context.prisma.stageStatus.createMany({
+              data: existingStages.map(stage => ({
+                stageId: stage.id,
+                userId: user.id,
+                status: STAGE_STATUSES.NEW,
+              })),
+            });
+            console.log(`✅ Created ${existingStages.length} StageStatus records for user ${user.id}`);
+          }
+        } else {
+          console.log(`ℹ️ User ${user.id} already has ${existingStageStatuses.length} StageStatus records`);
         }
 
         //@ts-expect-error
@@ -635,7 +684,7 @@ export const resolvers = {
         data: {
           stageId: Number(stageId),
           userId: Number(userId),
-          status: 'new',
+          status: STAGE_STATUSES.NEW,
         },
       });
 

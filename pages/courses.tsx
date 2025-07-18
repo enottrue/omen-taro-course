@@ -11,7 +11,7 @@ import PaymentRequired from '@/components/PaymentRequired';
 
 import { useGetLazyUserData } from '@/hooks/useGetUserData';
 import CourseHero from '@/components/course_hero/Course_hero';
-import Footer from '@/components/footer/Footer';
+import FooterInside from '@/components/footerInside/Footer';
 
 import { apolloClient } from '@/lib/apollo/apollo';
 import { GET_COURSES, GET_COURSE, GET_STAGE_STATUS } from '@/graphql/queries';
@@ -19,6 +19,7 @@ import { useLazyQuery, useQuery } from '@apollo/client';
 import styles from '@/components/component1/component1.module.scss';
 import Component2 from '@/components/component2/component2';
 import CourseLessons from '@/components/course_lessons/courseLessons';
+import { getDefaultCourseIdString } from '@/utils/courseUtils';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const APP_SECRET = process.env.APP_SECRET;
@@ -38,7 +39,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     token = cookies?.Bearer ? cookies.Bearer : null;
 
     // Получаем данные пользователя для проверки статуса оплаты
-    if (userId) {
+    if (userId && token) {
       try {
         const response = await fetch(`${context.req.headers.host ? `http://${context.req.headers.host}` : 'http://localhost:3000'}/api/users/${userId}`);
         if (response.ok) {
@@ -57,19 +58,34 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const { data } = await apolloClient.query({
       query: GET_COURSE,
       variables: {
-        id: 1,
+        id: getDefaultCourseIdString(), // Use environment variable for course ID
         userId: userId ? Number(userId) : 1, // Use number 1 for unauthenticated users
       },
     });
 
     // Data loaded successfully
-    
-    const { data: stageData } = await apolloClient.query({
-      query: GET_STAGE_STATUS,
-      variables: {
-        userId: Number(userId),
-      },
+    console.log('courses.tsx getServerSideProps - lessons loaded:', data?.getCourse?.lessons?.length || 0);
+    console.log('courses.tsx getServerSideProps - full course data:', {
+      courseId: data?.getCourse?.id,
+      courseName: data?.getCourse?.name,
+      lessonsCount: data?.getCourse?.lessons?.length || 0,
+      lessons: data?.getCourse?.lessons?.map((l: any) => ({ 
+        id: l.id, 
+        name: l.lessonName, 
+        stagesCount: l.lessonStages?.length || 0 
+      }))
     });
+    
+    let stageData = null;
+    if (userId && token) {
+      const { data } = await apolloClient.query({
+        query: GET_STAGE_STATUS,
+        variables: {
+          userId: Number(userId),
+        },
+      });
+      stageData = data;
+    }
 
     return {
       props: {
@@ -125,18 +141,8 @@ const Cources = ({
   } = useGetLazyUserData();
 
   const cc = useContext(MainContext);
-  console.log(
-    'token',
-    token,
-    'userId',
-    userId,
-    'data',
-    courses,
-    'stageData',
-    stageData,
-    'userData',
-    userData,
-  );
+  console.log('courses.tsx component - lessons from props:', courses?.lessons?.length || 0);
+  console.log('courses.tsx component - user auth status:', { userId, token, hasUserData: !!userData });
   
   useEffect(() => {
     stageData && cc?.setStageData(stageData);
@@ -150,9 +156,10 @@ const Cources = ({
       fetchUser(Number(userId));
     }
 
-    if (!userId || !token) {
-      router.push('/');
-    }
+    // Убираем принудительное перенаправление - пусть пользователи видят страницу
+    // if (!userId || !token) {
+    //   router.push('/');
+    // }
   }, [userId, token]);
 
   useEffect(() => {
@@ -164,6 +171,12 @@ const Cources = ({
 
   useEffect(() => {
     if (cc && userId && courses) {
+      console.log('Setting courses and lessons in context:', {
+        userId,
+        courses,
+        lessonsCount: courses.lessons?.length || 0,
+        firstLesson: courses.lessons?.[0]
+      });
       cc.setCourses(courses);
       cc.setLessons(courses.lessons || []);
     }
@@ -189,8 +202,9 @@ const Cources = ({
         </Head>
         <main>
           <PaymentRequired />
+          <FooterInside />
         </main>
-        <Footer />
+
       </>
     );
   }
@@ -205,10 +219,10 @@ const Cources = ({
       </Head>
       <main>
         <CourseHero lessons={courses?.lessons} token={token} userId={userId} />
-        <Component2 textShown={false} typePage="courses"/>
+        <Component2 textShown={false} typePage="courses" videoSource="/videos/intro_course.mp4" />
         <CourseLessons lessons={courses?.lessons} />
       </main>
-      <Footer />
+      <FooterInside />
     </>
   );
 };

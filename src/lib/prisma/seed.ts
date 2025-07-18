@@ -1,7 +1,8 @@
-import tools from '../dump-data/toolsData';
+import tools from '../dump-data/newToolsData';
 import { prisma } from './prismaClient';
-import users from '../dump-data/userData';
-import { lessonsData, coursesData, stageData } from '../dump-data/lessonsData';
+import users from '../dump-data/newUserData';
+import { lessonsData, coursesData, stageData } from '../dump-data/newLessonsData';
+import { STAGE_STATUSES } from '../../utils/stageStatusUtils';
 
 const main = async () => {
   console.log(`🌱 Начинаем сидинг базы данных...`);
@@ -16,6 +17,7 @@ const main = async () => {
   await prisma.tool.deleteMany({});
 
   console.log(`🗑️ База данных очищена. Начинаем заполнение...`);
+  console.log(`ℹ️  StageStatus записи создаются динамически при регистрации пользователей с статусом: ${STAGE_STATUSES.NEW}`);
 
   // Сидим инструменты
   console.log(`🛠️ Сидим инструменты...`);

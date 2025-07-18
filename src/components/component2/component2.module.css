@@ -48,6 +48,8 @@
   object-fit: cover;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 6px; /* Minimal smooth border radius for subtle rounding */
+  overflow: hidden;
 }
 
 .frameChild:hover {

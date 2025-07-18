@@ -1,0 +1,114 @@
+.footer-inside {
+  position: relative;
+  width: 100%;
+  max-width: 320px; /* Restrict width as in design */
+  min-height: 119px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin: 0 auto;
+  /* Figma background image as bottom-most layer */
+  background: url('/images/bg_footer.png') center/cover no-repeat;
+  
+  // Bottom shadow/gradient overlay
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 40%;
+    z-index: 2;
+    pointer-events: none;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 0%, #001a35 100%);
+    /* Adjust color/opacity as needed for your design */
+  }
+}
+
+// Ellipse background
+.footer-inside__ellipse {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 944px;
+  height: 587px;
+  background: #001a35;
+  opacity: 0.9;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+// Decorative images
+.footer-inside__image {
+  position: absolute;
+  opacity: 0.5;
+  object-fit: cover;
+  z-index: 2;
+  pointer-events: none;
+}
+.footer-inside__image--one {
+  left: 60%;
+  top: 10%;
+  width: 161px;
+  height: 187px;
+}
+.footer-inside__image--two {
+  left: 0;
+  top: 0;
+  width: 225px;
+  height: 256px;
+}
+
+// Content block
+.footer-inside__content {
+  position: relative;
+  z-index: 3;
+  display: block;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 12px;
+}
+.footer-inside__cosmo {
+  font-family: 'Wittgenstein', serif;
+  font-size: 20px;
+  font-style: italic;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -1px;
+  line-height: 18px;
+}
+.footer-inside__irena {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.8px;
+  line-height: 14.4px;
+}
+
+@media (max-width: 600px) {
+  .footer-inside__ellipse {
+    width: 600px;
+    height: 400px;
+  }
+  .footer-inside__image--one {
+    width: 100px;
+    height: 120px;
+    left: 70%;
+    top: 20%;
+  }
+  .footer-inside__image--two {
+    width: 120px;
+    height: 140px;
+    left: 0;
+    top: 0;
+  }
+  .footer-inside__cosmo {
+    font-size: 16px;
+  }
+  .footer-inside__irena {
+    font-size: 12px;
+  }
+}

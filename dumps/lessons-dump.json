@@ -2,11 +2,11 @@
   {
     "id": 1,
     "lessonNumber": 1,
-    "lessonName": "История создания колоды",
-    "lessonDescription": "This is the description for Lesson 1",
+    "lessonName": "Module 1 - Introduction to the Birth Chart",
+    "lessonDescription": "Learn the fundamentals of building and reading your birth chart to understand your astrological blueprint.",
     "lessonTimecodes": [
       "00:00",
-      "01:00",
+      "01:00", 
       "02:00"
     ],
     "lessonStatus": "new",
@@ -17,8 +17,8 @@
   {
     "id": 2,
     "lessonNumber": 2,
-    "lessonName": "Ритуальная подготовка к работе с Таро",
-    "lessonDescription": "This is the description for Lesson 2",
+    "lessonName": "Module 2 - Dream Job & High-Income Careers",
+    "lessonDescription": "Discover your most lucrative career paths and learn how to land high-paying jobs based on your astrological profile.",
     "lessonTimecodes": [
       "00:00",
       "01:00",
@@ -32,8 +32,8 @@
   {
     "id": 3,
     "lessonNumber": 3,
-    "lessonName": "Значения Арканов. Старшие Арканы",
-    "lessonDescription": "This is the description for Lesson 3",
+    "lessonName": "Module 3 - Money Energy",
+    "lessonDescription": "Activate your wealth flow and master smart money management techniques to grow your capital.",
     "lessonTimecodes": [
       "00:00",
       "01:00",
@@ -47,8 +47,8 @@
   {
     "id": 4,
     "lessonNumber": 4,
-    "lessonName": "Значения Арканов. Младшие Арканы",
-    "lessonDescription": "This is the description for Lesson 4",
+    "lessonName": "Module 4 - Quick Cash Strategies",
+    "lessonDescription": "Pinpoint quick-income opportunities in your chart and learn strategies for fast financial gains.",
     "lessonTimecodes": [
       "00:00",
       "01:00",
@@ -62,8 +62,8 @@
   {
     "id": 5,
     "lessonNumber": 5,
-    "lessonName": "Коллекция раскладов",
-    "lessonDescription": "This is the description for Lesson 5",
+    "lessonName": "Module 5 - Avoiding Burnout & Loving What You Do",
+    "lessonDescription": "Create a work environment that keeps you energized and aligned with your true purpose.",
     "lessonTimecodes": [
       "00:00",
       "01:00",

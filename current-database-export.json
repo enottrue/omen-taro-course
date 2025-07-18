@@ -1,0 +1,822 @@
+{
+  "exportDate": "2025-07-18T01:23:10.522Z",
+  "version": "1.0.0",
+  "tables": {
+    "users": [
+      {
+        "id": 1,
+        "name": "Sergey Platonov",
+        "email": "enottrue@gmail.com",
+        "phone": "+79851416758",
+        "city": "г Москва",
+        "password": "$2b$10$yrvNh8BPUsBHWKJlyKwoaOnxhbiRXHGDBQI0fq/wFJdeOUBGSQUKe",
+        "isPaid": true,
+        "paymentDate": "2025-07-11T09:54:17.339Z",
+        "stripeSessionId": "cs_test_a1hDQM36WhNwFKHvEk27wn75FQz8ceeeMqZvrEoMJVLKiogH50s7S4gw2j",
+        "bitrix24ContactId": null,
+        "bitrix24DealId": null,
+        "onboarded": true,
+        "createdAt": "2025-07-08T16:52:16.871Z",
+        "updatedAt": "2025-07-11T09:54:17.497Z"
+      },
+      {
+        "id": 2,
+        "name": "Sergey Platonov1",
+        "email": "enottrue1@gmail.com",
+        "phone": "+79851416758",
+        "city": "г Москва",
+        "password": "$2b$10$m4OmsxANDEO0TStrw7MU6OATsheJwS9zU6eEeke8r1bmzuWBKl4Y.",
+        "isPaid": false,
+        "paymentDate": null,
+        "stripeSessionId": null,
+        "bitrix24ContactId": null,
+        "bitrix24DealId": null,
+        "onboarded": false,
+        "createdAt": "2025-07-08T16:52:52.820Z",
+        "updatedAt": "2025-07-11T09:16:03.741Z"
+      },
+      {
+        "id": 3,
+        "name": "Тестовый GraphQL Пользователь Новый",
+        "email": "test.graphql.new@example.com",
+        "phone": "+7 (999) 222-33-44",
+        "city": "Санкт-Петербург",
+        "password": "$2b$10$7mxz7CxxiuhJ.Yk3/R5cL.m4uDiIC1o0ZME1cv0DxZAac90xW.kKW",
+        "isPaid": false,
+        "paymentDate": null,
+        "stripeSessionId": null,
+        "bitrix24ContactId": null,
+        "bitrix24DealId": null,
+        "onboarded": false,
+        "createdAt": "2025-07-09T15:17:37.918Z",
+        "updatedAt": "2025-07-11T09:16:03.741Z"
+      },
+      {
+        "id": 4,
+        "name": "Sergey Platonov",
+        "email": "enottrue0001@gmail.com",
+        "phone": "+79851416758",
+        "city": "г Москва",
+        "password": "$2b$10$2HHSNaDaMOZ9kjukfWS7oe.h7DXXoIT9QmyDmWXK8o2XQFlP1QAuG",
+        "isPaid": false,
+        "paymentDate": null,
+        "stripeSessionId": null,
+        "bitrix24ContactId": 58250,
+        "bitrix24DealId": 84918,
+        "onboarded": false,
+        "createdAt": "2025-07-10T11:45:06.235Z",
+        "updatedAt": "2025-07-11T09:16:03.741Z"
+      },
+      {
+        "id": 5,
+        "name": "Sergey Platonov",
+        "email": "enottrue1221@gmail.com",
+        "phone": "+79851416758",
+        "city": "г Москва",
+        "password": "$2b$10$A/Tuw8kZx8RCtvIqDezd5eim7FcWRstTnLKTxKkeX4Oej1bZ1Ysb6",
+        "isPaid": false,
+        "paymentDate": null,
+        "stripeSessionId": null,
+        "bitrix24ContactId": 58256,
+        "bitrix24DealId": 84925,
+        "onboarded": false,
+        "createdAt": "2025-07-10T13:00:47.844Z",
+        "updatedAt": "2025-07-11T09:16:03.741Z"
+      },
+      {
+        "id": 6,
+        "name": "Sergey Platonov",
+        "email": "test@gmail.com",
+        "phone": "+79851416758",
+        "city": "г Москва",
+        "password": "$2b$10$VDYEZTyqRkiQY9tBqP9bEe87EEDAdiCQDPAPuptJRL8uMi2DwRxQK",
+        "isPaid": false,
+        "paymentDate": null,
+        "stripeSessionId": null,
+        "bitrix24ContactId": 58271,
+        "bitrix24DealId": 84954,
+        "onboarded": false,
+        "createdAt": "2025-07-11T07:18:40.178Z",
+        "updatedAt": "2025-07-11T09:16:03.741Z"
+      },
+      {
+        "id": 15,
+        "name": "qweqw",
+        "email": "qwe@awd.co",
+        "phone": null,
+        "city": null,
+        "password": "$2b$10$p25tpIuJSLwdeGnpsApXp.iCpXg9EjE6214DpFI3xInIp54nJOcHK",
+        "isPaid": true,
+        "paymentDate": "2025-07-15T15:52:52.997Z",
+        "stripeSessionId": "cs_test_a1x2AhM1stP4a8ZqsdyNvgtfhl3WtTSKm4xZB3YRCvdw29WjAc1IkKycGi",
+        "bitrix24ContactId": 58408,
+        "bitrix24DealId": 85149,
+        "onboarded": false,
+        "createdAt": "2025-07-15T15:17:33.049Z",
+        "updatedAt": "2025-07-15T15:52:53.029Z"
+      }
+    ],
+    "courses": [
+      {
+        "id": 1,
+        "name": "Cosmo.Irena - Money Compass",
+        "createdAt": "2025-07-10T06:08:55.305Z",
+        "updatedAt": "2025-07-17T23:52:17.353Z"
+      }
+    ],
+    "lessons": [
+      {
+        "id": 1,
+        "lessonNumber": 1,
+        "lessonName": "Module 1: Introduction to the Birth Chart",
+        "lessonDescription": "This is the description for Lesson 1",
+        "lessonTimecodes": [
+          "00:00",
+          "01:00",
+          "02:00"
+        ],
+        "lessonStatus": "new",
+        "courseId": 1,
+        "createdAt": "2025-07-10T06:08:55.455Z",
+        "updatedAt": "2025-07-17T23:52:37.038Z"
+      },
+      {
+        "id": 2,
+        "lessonNumber": 2,
+        "lessonName": "Module 2: Dream Job & High-Income Careers",
+        "lessonDescription": "This is the description for Lesson 2",
+        "lessonTimecodes": [
+          "00:00",
+          "01:00",
+          "02:00"
+        ],
+        "lessonStatus": "new",
+        "courseId": 1,
+        "createdAt": "2025-07-10T06:08:55.469Z",
+        "updatedAt": "2025-07-18T00:17:21.002Z"
+      },
+      {
+        "id": 3,
+        "lessonNumber": 3,
+        "lessonName": "Module 3: Money Energy",
+        "lessonDescription": "This is the description for Lesson 3",
+        "lessonTimecodes": [
+          "00:00",
+          "01:00",
+          "02:00"
+        ],
+        "lessonStatus": "new",
+        "courseId": 1,
+        "createdAt": "2025-07-10T06:08:55.474Z",
+        "updatedAt": "2025-07-18T00:18:35.178Z"
+      },
+      {
+        "id": 4,
+        "lessonNumber": 4,
+        "lessonName": "Module 4: Quick Cash Strategies",
+        "lessonDescription": "This is the description for Lesson 4",
+        "lessonTimecodes": [
+          "00:00",
+          "01:00",
+          "02:00"
+        ],
+        "lessonStatus": "new",
+        "courseId": 1,
+        "createdAt": "2025-07-10T06:08:55.479Z",
+        "updatedAt": "2025-07-18T00:19:56.110Z"
+      },
+      {
+        "id": 5,
+        "lessonNumber": 5,
+        "lessonName": "Module 5: Avoiding Burnout & Loving What You Do",
+        "lessonDescription": "This is the description for Lesson 5",
+        "lessonTimecodes": [
+          "00:00",
+          "01:00",
+          "02:00"
+        ],
+        "lessonStatus": "new",
+        "courseId": 1,
+        "createdAt": "2025-07-10T06:08:55.482Z",
+        "updatedAt": "2025-07-18T00:22:02.251Z"
+      }
+    ],
+    "stages": [
+      {
+        "id": 1,
+        "stageNumber": 1,
+        "stageName": "The Basics — How to Build and Read Your Birth Chart",
+        "stageDescription": "<p>\n  У вас в руках копия легендарных карт Таро Уэйта, созданных в 1910 году Памелой Смит и Артуром Уэйтом. Пожалуй, это самая известная колода в мире. Она не перестает удивлять своей многогранностью, глубиной и в то же время простотой. Эзотерики по всему миру ценят те магические знания, которые в ней заложены.\n</p>\n<p>\n  Необходимый этап для знакомства с системой Таро и колоды Уэйта в частности – изучение истории ее создания.\n</p>\n<p>\n  Приятного просмотра!\n</p>",
+        "lessonId": 1
+      },
+      {
+        "id": 4,
+        "stageNumber": 1,
+        "stageName": "Discover Your Most Lucrative Career Paths",
+        "stageDescription": "<p>\n      В колоду Таро Уэйт заложил основы ритуальной магии. Совершая ритуал, маги настраивают Вселенную на нужный лад. При помощи ритуалов можно настроить все, что угодно.\n    </p>\n    <p>\n      Поэтому ритуальная подготовка является обязательным элементом при работе с колодой Таро Уэйта.\n    </p>\n    <p>\n      Приятного просмотра!\n    </p>",
+        "lessonId": 2
+      },
+      {
+        "id": 5,
+        "stageNumber": 2,
+        "stageName": "How to Land a High-Paying Job",
+        "stageDescription": "<p>\n      В колоду Таро Уэйт заложил основы ритуальной магии. Совершая ритуал, маги настраивают Вселенную на нужный лад. При помощи ритуалов можно настроить все, что угодно.\n    </p>\n    <p>\n      Поэтому ритуальная подготовка является обязательным элементом при работе с колодой Таро Уэйта.\n    </p>\n    <p>\n      Приятного просмотра!\n    </p>",
+        "lessonId": 2
+      },
+      {
+        "id": 8,
+        "stageNumber": 1,
+        "stageName": "Practical Steps to Activate Wealth Flow",
+        "stageDescription": "<p>Старшие Арканы имеют глубинную символику и серьезное значение. Они олицетворяют внутреннее состояние и ключевые моменты жизни человека, в то время как Младшие рассказывают о внешних и не столь значительных событиях.</p>\n\n<p>Каждый из Старших Арканов имеет индивидуальный номер – от I до XXI. Карта Шут обозначается нулем. Таким образом, Старшие Арканы идут в определенной последовательности, отображая путь, который должен проделать человек в своем развитии.</p>\n\n<p>Цель человеческой жизни – путь к себе, достижение целостности, что является залогом гармонии с собой и миром. Последний Аркан так и называется – Мир. Это окончательный итог, соединение со своим Высшим Я и миром вокруг себя.</p>\n\n<p>Последовательность Старших Арканов символизирует человеческую жизнь. Каждый этап жизни – встреча с тем или иным архетипом и связанный с ним урок, который человек должен усвоить, чтобы двигаться дальше.</p>\n\n<p>Приятного просмотра!</p>",
+        "lessonId": 3
+      },
+      {
+        "id": 9,
+        "stageNumber": 2,
+        "stageName": "Smart Money Management & Growing Your Capital",
+        "stageDescription": "<p>Старшие Арканы имеют глубинную символику и серьезное значение. Они олицетворяют внутреннее состояние и ключевые моменты жизни человека, в то время как Младшие рассказывают о внешних и не столь значительных событиях.</p>\n\n<p>Каждый из Старших Арканов имеет индивидуальный номер – от I до XXI. Карта Шут обозначается нулем. Таким образом, Старшие Арканы идут в определенной последовательности, отображая путь, который должен проделать человек в своем развитии.</p>\n\n<p>Цель человеческой жизни – путь к себе, достижение целостности, что является залогом гармонии с собой и миром. Последний Аркан так и называется – Мир. Это окончательный итог, соединение со своим Высшим Я и миром вокруг себя.</p>\n\n<p>Последовательность Старших Арканов символизирует человеческую жизнь. Каждый этап жизни – встреча с тем или иным архетипом и связанный с ним урок, который человек должен усвоить, чтобы двигаться дальше.</p>\n\n<p>Приятного просмотра!</p>",
+        "lessonId": 3
+      },
+      {
+        "id": 30,
+        "stageNumber": 1,
+        "stageName": "Pinpointing Quick-Income Opportunities in Your Chart",
+        "stageDescription": "<p>Младшие Арканы относятся к земному, материальному миру. Очень редко они означают конкретного человека. Пятьдесят шесть младших карт составляют контекст жизни, в котором разворачивается та или иная ситуация.</p>\n\n<p>Младшие Арканы включают знакомые нам по игральным картам четыре масти – Жезлы, Кубки, Мечи и Пентакли. В Таро они называются стихиями. Каждая из них соответствует природной стихии (Огонь, Вода, Воздух, Земля) и несет определенную эмоциональную и энергетическую окраску.</p>\n\n<p>Огонь – наше настоящее.<br>\nЗемля – также настоящее, это информация и различные структуры.<br>\nВода – прошлое.<br>\nВоздух – будущее, хаос и многовариантность.</p>\n\n<p>Приятного просмотра!</p>",
+        "lessonId": 4
+      },
+      {
+        "id": 34,
+        "stageNumber": 1,
+        "stageName": "Creating a Work Environment That Keeps You Energized and Aligned",
+        "stageDescription": "<p>Самые популярные гадания с помощью колоды Таро Уэйта – это, конечно же, прогнозы будущего, вопросы финансов и отношений.</p>\n\n<p>Далее вы узнаете, как делаются расклады на различные ситуации, на ожидаемые через заданный промежуток времени события, как выявить трудности и перспективы в работе и отношениях.</p>\n\n<p>Приятного просмотра!</p>",
+        "lessonId": 5
+      }
+    ],
+    "stageTimecodes": [
+      {
+        "id": 1,
+        "name": "Заставка",
+        "timeCodeStart": "0:00",
+        "timeCodeEnd": "0:08",
+        "stageId": 1,
+        "createdAt": "2025-07-10T06:08:55.494Z",
+        "updatedAt": "2025-07-10T06:08:55.494Z"
+      },
+      {
+        "id": 2,
+        "name": "Первое в мире оккультное Таро. Колода Уэйта-Смит",
+        "timeCodeStart": "0:08",
+        "timeCodeEnd": "1:48",
+        "stageId": 1,
+        "createdAt": "2025-07-10T06:08:55.501Z",
+        "updatedAt": "2025-07-10T06:08:55.501Z"
+      },
+      {
+        "id": 3,
+        "name": "Почему колода попала в массовую печать?",
+        "timeCodeStart": "1:48",
+        "timeCodeEnd": "3:19",
+        "stageId": 1,
+        "createdAt": "2025-07-10T06:08:55.504Z",
+        "updatedAt": "2025-07-10T06:08:55.504Z"
+      },
+      {
+        "id": 4,
+        "name": "Оригинал и последующие копии: в чем отличия?",
+        "timeCodeStart": "3:19",
+        "timeCodeEnd": "5:41",
+        "stageId": 1,
+        "createdAt": "2025-07-10T06:08:55.507Z",
+        "updatedAt": "2025-07-10T06:08:55.507Z"
+      },
+      {
+        "id": 5,
+        "name": "Как родилось магическое Таро",
+        "timeCodeStart": "5:41",
+        "timeCodeEnd": "8:11",
+        "stageId": 1,
+        "createdAt": "2025-07-10T06:08:55.510Z",
+        "updatedAt": "2025-07-10T06:08:55.510Z"
+      },
+      {
+        "id": 6,
+        "name": "Ключевой Аркан. Космическое женское начало",
+        "timeCodeStart": "8:11",
+        "timeCodeEnd": "11:06",
+        "stageId": 1,
+        "createdAt": "2025-07-10T06:08:55.515Z",
+        "updatedAt": "2025-07-10T06:08:55.515Z"
+      },
+      {
+        "id": 7,
+        "name": "Куда «пропала» оригинальная колода?",
+        "timeCodeStart": "11:06",
+        "timeCodeEnd": "13:46",
+        "stageId": 1,
+        "createdAt": "2025-07-10T06:08:55.520Z",
+        "updatedAt": "2025-07-10T06:08:55.520Z"
+      },
+      {
+        "id": 8,
+        "name": "Магическое семя Таро",
+        "timeCodeStart": "13:46",
+        "timeCodeEnd": "15:36",
+        "stageId": 1,
+        "createdAt": "2025-07-10T06:08:55.525Z",
+        "updatedAt": "2025-07-10T06:08:55.525Z"
+      },
+      {
+        "id": 9,
+        "name": "Алхимия — единение противоположностей",
+        "timeCodeStart": "15:36",
+        "timeCodeEnd": "19:12",
+        "stageId": 1,
+        "createdAt": "2025-07-10T06:08:55.529Z",
+        "updatedAt": "2025-07-10T06:08:55.529Z"
+      },
+      {
+        "id": 18,
+        "name": "Заставка",
+        "timeCodeStart": "0:00",
+        "timeCodeEnd": "0:08",
+        "stageId": 4,
+        "createdAt": "2025-07-10T06:08:55.572Z",
+        "updatedAt": "2025-07-10T06:08:55.572Z"
+      },
+      {
+        "id": 19,
+        "name": "Ритуальная подготовка к работе с Таро. Зачем она нужна?",
+        "timeCodeStart": "0:08",
+        "timeCodeEnd": "2:56",
+        "stageId": 4,
+        "createdAt": "2025-07-10T06:08:55.575Z",
+        "updatedAt": "2025-07-10T06:08:55.575Z"
+      },
+      {
+        "id": 20,
+        "name": "Как создать свой собственный ритуал",
+        "timeCodeStart": "2:56",
+        "timeCodeEnd": "3:54",
+        "stageId": 4,
+        "createdAt": "2025-07-10T06:08:55.578Z",
+        "updatedAt": "2025-07-10T06:08:55.578Z"
+      },
+      {
+        "id": 21,
+        "name": "Сценарии ритуалов магических, религиозных и мистических традиций",
+        "timeCodeStart": "3:54",
+        "timeCodeEnd": "4:51",
+        "stageId": 4,
+        "createdAt": "2025-07-10T06:08:55.580Z",
+        "updatedAt": "2025-07-10T06:08:55.580Z"
+      },
+      {
+        "id": 22,
+        "name": "Заставка",
+        "timeCodeStart": "0:00",
+        "timeCodeEnd": "0:08",
+        "stageId": 5,
+        "createdAt": "2025-07-10T06:08:55.585Z",
+        "updatedAt": "2025-07-10T06:08:55.585Z"
+      },
+      {
+        "id": 23,
+        "name": "Ритуал настройки на колоду",
+        "timeCodeStart": "0:08",
+        "timeCodeEnd": "0:26",
+        "stageId": 5,
+        "createdAt": "2025-07-10T06:08:55.587Z",
+        "updatedAt": "2025-07-10T06:08:55.587Z"
+      },
+      {
+        "id": 24,
+        "name": "Описание ритуала",
+        "timeCodeStart": "0:26",
+        "timeCodeEnd": "2:26",
+        "stageId": 5,
+        "createdAt": "2025-07-10T06:08:55.590Z",
+        "updatedAt": "2025-07-10T06:08:55.590Z"
+      },
+      {
+        "id": 33,
+        "name": "Заставка",
+        "timeCodeStart": "0:00",
+        "timeCodeEnd": "0:08",
+        "stageId": 8,
+        "createdAt": "2025-07-10T06:08:55.621Z",
+        "updatedAt": "2025-07-10T06:08:55.621Z"
+      },
+      {
+        "id": 34,
+        "name": "Дурак (Шут)",
+        "timeCodeStart": "0:08",
+        "timeCodeEnd": "1:25",
+        "stageId": 8,
+        "createdAt": "2025-07-10T06:08:55.626Z",
+        "updatedAt": "2025-07-10T06:08:55.626Z"
+      },
+      {
+        "id": 35,
+        "name": "Позитивное значение",
+        "timeCodeStart": "1:25",
+        "timeCodeEnd": "2:14",
+        "stageId": 8,
+        "createdAt": "2025-07-10T06:08:55.630Z",
+        "updatedAt": "2025-07-10T06:08:55.630Z"
+      },
+      {
+        "id": 36,
+        "name": "Негативное значение",
+        "timeCodeStart": "2:14",
+        "timeCodeEnd": "3:01",
+        "stageId": 8,
+        "createdAt": "2025-07-10T06:08:55.634Z",
+        "updatedAt": "2025-07-10T06:08:55.634Z"
+      },
+      {
+        "id": 37,
+        "name": "Предупреждение",
+        "timeCodeStart": "3:01",
+        "timeCodeEnd": "3:31",
+        "stageId": 8,
+        "createdAt": "2025-07-10T06:08:55.637Z",
+        "updatedAt": "2025-07-10T06:08:55.637Z"
+      },
+      {
+        "id": 38,
+        "name": "Заставка",
+        "timeCodeStart": "0:00",
+        "timeCodeEnd": "0:08",
+        "stageId": 9,
+        "createdAt": "2025-07-10T06:08:55.654Z",
+        "updatedAt": "2025-07-10T06:08:55.654Z"
+      },
+      {
+        "id": 39,
+        "name": "Маг. Общее значение",
+        "timeCodeStart": "0:08",
+        "timeCodeEnd": "1:12",
+        "stageId": 9,
+        "createdAt": "2025-07-10T06:08:55.655Z",
+        "updatedAt": "2025-07-10T06:08:55.655Z"
+      },
+      {
+        "id": 40,
+        "name": "Позитивное значение",
+        "timeCodeStart": "1:12",
+        "timeCodeEnd": "1:57",
+        "stageId": 9,
+        "createdAt": "2025-07-10T06:08:55.658Z",
+        "updatedAt": "2025-07-10T06:08:55.658Z"
+      },
+      {
+        "id": 41,
+        "name": "Негативное значение",
+        "timeCodeStart": "1:57",
+        "timeCodeEnd": "2:41",
+        "stageId": 9,
+        "createdAt": "2025-07-10T06:08:55.662Z",
+        "updatedAt": "2025-07-10T06:08:55.662Z"
+      },
+      {
+        "id": 42,
+        "name": "Предупреждение",
+        "timeCodeStart": "2:41",
+        "timeCodeEnd": "2:59",
+        "stageId": 9,
+        "createdAt": "2025-07-10T06:08:55.665Z",
+        "updatedAt": "2025-07-10T06:08:55.665Z"
+      },
+      {
+        "id": 143,
+        "name": "Заставка",
+        "timeCodeStart": "0:00",
+        "timeCodeEnd": "0:08",
+        "stageId": 30,
+        "createdAt": "2025-07-10T06:08:56.318Z",
+        "updatedAt": "2025-07-10T06:08:56.318Z"
+      },
+      {
+        "id": 144,
+        "name": "Младшие Арканы. Мечи",
+        "timeCodeStart": "0:08",
+        "timeCodeEnd": "0:37",
+        "stageId": 30,
+        "createdAt": "2025-07-10T06:08:56.323Z",
+        "updatedAt": "2025-07-10T06:08:56.323Z"
+      },
+      {
+        "id": 145,
+        "name": "Туз Мечей",
+        "timeCodeStart": "0:37",
+        "timeCodeEnd": "1:30",
+        "stageId": 30,
+        "createdAt": "2025-07-10T06:08:56.328Z",
+        "updatedAt": "2025-07-10T06:08:56.328Z"
+      },
+      {
+        "id": 146,
+        "name": "Двойка Мечей",
+        "timeCodeStart": "1:30",
+        "timeCodeEnd": "2:05",
+        "stageId": 30,
+        "createdAt": "2025-07-10T06:08:56.333Z",
+        "updatedAt": "2025-07-10T06:08:56.333Z"
+      },
+      {
+        "id": 147,
+        "name": "Тройка Мечей",
+        "timeCodeStart": "2:05",
+        "timeCodeEnd": "2:38",
+        "stageId": 30,
+        "createdAt": "2025-07-10T06:08:56.340Z",
+        "updatedAt": "2025-07-10T06:08:56.340Z"
+      },
+      {
+        "id": 148,
+        "name": "Четверка Мечей",
+        "timeCodeStart": "2:38",
+        "timeCodeEnd": "3:33",
+        "stageId": 30,
+        "createdAt": "2025-07-10T06:08:56.345Z",
+        "updatedAt": "2025-07-10T06:08:56.345Z"
+      },
+      {
+        "id": 149,
+        "name": "Пятерка Мечей",
+        "timeCodeStart": "3:33",
+        "timeCodeEnd": "4:12",
+        "stageId": 30,
+        "createdAt": "2025-07-10T06:08:56.350Z",
+        "updatedAt": "2025-07-10T06:08:56.350Z"
+      },
+      {
+        "id": 150,
+        "name": "Шестерка Мечей",
+        "timeCodeStart": "4:12",
+        "timeCodeEnd": "4:56",
+        "stageId": 30,
+        "createdAt": "2025-07-10T06:08:56.353Z",
+        "updatedAt": "2025-07-10T06:08:56.353Z"
+      },
+      {
+        "id": 151,
+        "name": "Семерка Мечей",
+        "timeCodeStart": "4:56",
+        "timeCodeEnd": "5:31",
+        "stageId": 30,
+        "createdAt": "2025-07-10T06:08:56.357Z",
+        "updatedAt": "2025-07-10T06:08:56.357Z"
+      },
+      {
+        "id": 152,
+        "name": "Восьмерка Мечей",
+        "timeCodeStart": "5:31",
+        "timeCodeEnd": "6:30",
+        "stageId": 30,
+        "createdAt": "2025-07-10T06:08:56.362Z",
+        "updatedAt": "2025-07-10T06:08:56.362Z"
+      },
+      {
+        "id": 153,
+        "name": "Девятка Мечей",
+        "timeCodeStart": "6:30",
+        "timeCodeEnd": "6:55",
+        "stageId": 30,
+        "createdAt": "2025-07-10T06:08:56.367Z",
+        "updatedAt": "2025-07-10T06:08:56.367Z"
+      },
+      {
+        "id": 154,
+        "name": "Десятка Мечей",
+        "timeCodeStart": "6:55",
+        "timeCodeEnd": "7:41",
+        "stageId": 30,
+        "createdAt": "2025-07-10T06:08:56.371Z",
+        "updatedAt": "2025-07-10T06:08:56.371Z"
+      },
+      {
+        "id": 155,
+        "name": "Паж Мечей",
+        "timeCodeStart": "7:41",
+        "timeCodeEnd": "8:09",
+        "stageId": 30,
+        "createdAt": "2025-07-10T06:08:56.375Z",
+        "updatedAt": "2025-07-10T06:08:56.375Z"
+      },
+      {
+        "id": 156,
+        "name": "Рыцарь Мечей",
+        "timeCodeStart": "8:09",
+        "timeCodeEnd": "8:46",
+        "stageId": 30,
+        "createdAt": "2025-07-10T06:08:56.380Z",
+        "updatedAt": "2025-07-10T06:08:56.380Z"
+      },
+      {
+        "id": 157,
+        "name": "Королева Мечей",
+        "timeCodeStart": "8:46",
+        "timeCodeEnd": "9:30",
+        "stageId": 30,
+        "createdAt": "2025-07-10T06:08:56.384Z",
+        "updatedAt": "2025-07-10T06:08:56.384Z"
+      },
+      {
+        "id": 158,
+        "name": "Король Мечей",
+        "timeCodeStart": "9:30",
+        "timeCodeEnd": "10:13",
+        "stageId": 30,
+        "createdAt": "2025-07-10T06:08:56.388Z",
+        "updatedAt": "2025-07-10T06:08:56.388Z"
+      },
+      {
+        "id": 207,
+        "name": "Заставка",
+        "timeCodeStart": "0:00",
+        "timeCodeEnd": "0:08",
+        "stageId": 34,
+        "createdAt": "2025-07-10T06:08:56.535Z",
+        "updatedAt": "2025-07-10T06:08:56.535Z"
+      },
+      {
+        "id": 208,
+        "name": "Расклад на конкретную ситуацию",
+        "timeCodeStart": "0:08",
+        "timeCodeEnd": "0:36",
+        "stageId": 34,
+        "createdAt": "2025-07-10T06:08:56.536Z",
+        "updatedAt": "2025-07-10T06:08:56.536Z"
+      },
+      {
+        "id": 209,
+        "name": "Как выполнить расклад",
+        "timeCodeStart": "0:36",
+        "timeCodeEnd": "1:06",
+        "stageId": 34,
+        "createdAt": "2025-07-10T06:08:56.538Z",
+        "updatedAt": "2025-07-10T06:08:56.538Z"
+      }
+    ],
+    "stageStatuses": [
+      {
+        "id": 353,
+        "stageId": 1,
+        "userId": 15,
+        "status": "new",
+        "createdAt": "2025-07-15T15:17:33.053Z",
+        "updatedAt": "2025-07-15T15:17:33.053Z"
+      },
+      {
+        "id": 356,
+        "stageId": 4,
+        "userId": 15,
+        "status": "new",
+        "createdAt": "2025-07-15T15:17:33.064Z",
+        "updatedAt": "2025-07-15T15:17:33.064Z"
+      },
+      {
+        "id": 357,
+        "stageId": 5,
+        "userId": 15,
+        "status": "new",
+        "createdAt": "2025-07-15T15:17:33.066Z",
+        "updatedAt": "2025-07-15T15:17:33.066Z"
+      },
+      {
+        "id": 360,
+        "stageId": 8,
+        "userId": 15,
+        "status": "new",
+        "createdAt": "2025-07-15T15:17:33.075Z",
+        "updatedAt": "2025-07-15T15:17:33.075Z"
+      },
+      {
+        "id": 361,
+        "stageId": 9,
+        "userId": 15,
+        "status": "new",
+        "createdAt": "2025-07-15T15:17:33.077Z",
+        "updatedAt": "2025-07-15T15:17:33.077Z"
+      },
+      {
+        "id": 382,
+        "stageId": 30,
+        "userId": 15,
+        "status": "new",
+        "createdAt": "2025-07-15T15:17:33.106Z",
+        "updatedAt": "2025-07-15T15:17:33.106Z"
+      },
+      {
+        "id": 386,
+        "stageId": 34,
+        "userId": 15,
+        "status": "new",
+        "createdAt": "2025-07-15T15:17:33.111Z",
+        "updatedAt": "2025-07-15T15:17:33.111Z"
+      }
+    ],
+    "tools": [
+      {
+        "id": 1,
+        "name": "TypeScript",
+        "description": "TypeScript extends JavaScript by adding types. By understanding JavaScript, TypeScript saves you time catching errors and providing fixes before you run code. Any browser, any OS, anywhere JavaScript runs. Entirely Open Source.",
+        "link": "https://www.typescriptlang.org/",
+        "image": "/typescript.svg",
+        "createdAt": "2025-07-10T06:08:55.304Z",
+        "updatedAt": "2025-07-10T06:08:55.304Z"
+      },
+      {
+        "id": 2,
+        "name": "Prisma",
+        "description": "Prisma helps app developers build faster and make fewer errors with an open source ORM for PostgreSQL, MySQL and SQLite.",
+        "link": "https://www.prisma.io/",
+        "image": "/prisma.svg",
+        "createdAt": "2025-07-10T06:08:55.304Z",
+        "updatedAt": "2025-07-10T06:08:55.304Z"
+      },
+      {
+        "id": 3,
+        "name": "Material UI",
+        "description": "React components for faster and easier web development. Build your own design system, or start with Material Design.",
+        "link": "https://material-ui.com/",
+        "image": "/material-ui.svg",
+        "createdAt": "2025-07-10T06:08:55.304Z",
+        "updatedAt": "2025-07-10T06:08:55.304Z"
+      },
+      {
+        "id": 4,
+        "name": "Apollo Client React",
+        "description": "Manage the entirety of your React app's state and seamlessly execute GraphQL operations.",
+        "link": "https://www.apollographql.com/docs/react/",
+        "image": "/apollo.svg",
+        "createdAt": "2025-07-10T06:08:55.304Z",
+        "updatedAt": "2025-07-10T06:08:55.304Z"
+      },
+      {
+        "id": 5,
+        "name": "GraphQL",
+        "description": "GraphQL is a query language for APIs and a runtime for fulfilling those queries with your existing data. GraphQL provides a complete and understandable description of the data in your API, gives clients the power to ask for exactly what they need and nothing more, makes it easier to evolve APIs over time, and enables powerful developer tools.",
+        "link": "https://graphql.org/",
+        "image": "/apollo.svg",
+        "createdAt": "2025-07-10T06:08:55.304Z",
+        "updatedAt": "2025-07-10T06:08:55.304Z"
+      },
+      {
+        "id": 6,
+        "name": "React Hook Forms",
+        "description": "Performant, flexible and extensible forms with easy-to-use validation.",
+        "link": "https://react-hook-form.com/",
+        "image": "/react-hook-form.jpeg",
+        "createdAt": "2025-07-10T06:08:55.304Z",
+        "updatedAt": "2025-07-10T06:08:55.304Z"
+      },
+      {
+        "id": 7,
+        "name": "Jest",
+        "description": "Jest is a delightful JavaScript Testing Framework with a focus on simplicity. It works with projects using: Babel, TypeScript, Node, React, Angular, Vue and more!",
+        "link": "https://jestjs.io/",
+        "image": "/jest.svg",
+        "createdAt": "2025-07-10T06:08:55.304Z",
+        "updatedAt": "2025-07-10T06:08:55.304Z"
+      },
+      {
+        "id": 8,
+        "name": "Testing Library",
+        "description": "Simple and complete testing utilities that encourage good testing practices",
+        "link": "https://testing-library.com/",
+        "image": "/testing-library.png",
+        "createdAt": "2025-07-10T06:08:55.304Z",
+        "updatedAt": "2025-07-10T06:08:55.304Z"
+      },
+      {
+        "id": 9,
+        "name": "ESLint",
+        "description": "ESLint statically analyzes your code to quickly find problems. ESLint is built into most text editors and you can run ESLint as part of your continuous integration pipeline. Many problems ESLint finds can be automatically fixed. ESLint fixes are syntax-aware so you won't experience errors introduced by traditional find-and-replace algorithms. Preprocess code, use custom parsers, and write your own rules that work alongside ESLint's built-in rules. You can customize ESLint to work exactly the way you need it for your project.",
+        "link": "https://eslint.org/",
+        "image": "/eslint.svg",
+        "createdAt": "2025-07-10T06:08:55.304Z",
+        "updatedAt": "2025-07-10T06:08:55.304Z"
+      },
+      {
+        "id": 10,
+        "name": "Prettier",
+        "description": "An opinionated code formatter. Supports many languages. Integrates with most editors. Has few options",
+        "link": "https://prettier.io/",
+        "image": "/prettier.png",
+        "createdAt": "2025-07-10T06:08:55.304Z",
+        "updatedAt": "2025-07-10T06:08:55.304Z"
+      },
+      {
+        "id": 11,
+        "name": "Deque Axe",
+        "description": "Test your React application with the axe-core accessibility testing library. Results will show in the Chrome DevTools console.",
+        "link": "https://github.com/dequelabs/axe-core-npm/blob/develop/packages/react/README.md",
+        "image": "/axe.svg",
+        "createdAt": "2025-07-10T06:08:55.305Z",
+        "updatedAt": "2025-07-10T06:08:55.305Z"
+      }
+    ]
+  }
+}

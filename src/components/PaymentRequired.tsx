@@ -10,7 +10,7 @@ const PaymentRequired: React.FC = () => {
     try {
       await handlePayment();
     } catch (error) {
-      console.error('Ошибка при обработке оплаты:', error);
+      console.error('Payment processing error:', error);
     }
   };
 
@@ -43,7 +43,7 @@ const PaymentRequired: React.FC = () => {
           fontSize: '2rem',
           fontWeight: 'bold'
         }}>
-          Доступ ограничен
+          Access Restricted
         </h1>
         
         <p style={{
@@ -52,8 +52,8 @@ const PaymentRequired: React.FC = () => {
           fontSize: '1.1rem',
           lineHeight: '1.6'
         }}>
-          Для доступа к этому разделу необходимо произвести оплату курса. 
-          После оплаты вы получите полный доступ ко всем материалам.
+          Payment is required to access this section. 
+          After payment, you will receive full access to all materials.
         </p>
         
         {isAuthenticated ? (
@@ -80,7 +80,7 @@ const PaymentRequired: React.FC = () => {
               e.currentTarget.style.transform = 'translateY(0)';
             }}
           >
-            💳 Оплатить курс
+            💳 Pay for Course
           </button>
         ) : (
           <div>
@@ -89,7 +89,7 @@ const PaymentRequired: React.FC = () => {
               marginBottom: '1.5rem',
               fontSize: '1rem'
             }}>
-              Для оплаты необходимо войти в систему
+              You need to sign in to make a payment
             </p>
             <button
               onClick={() => {
@@ -108,7 +108,7 @@ const PaymentRequired: React.FC = () => {
                 transition: 'all 0.3s ease'
               }}
             >
-              🔐 Войти в систему
+              🔐 Sign In
             </button>
           </div>
         )}
@@ -125,17 +125,17 @@ const PaymentRequired: React.FC = () => {
             marginBottom: '0.5rem',
             fontSize: '1.1rem'
           }}>
-            Что включено в курс:
+            What's included in the course:
           </h3>
           <ul style={{
             textAlign: 'left',
             color: '#0c5460',
             lineHeight: '1.5'
           }}>
-            <li>Полный доступ ко всем урокам</li>
-            <li>Видео материалы и практические задания</li>
-            <li>Персональная поддержка</li>
-            <li>Сертификат по окончании курса</li>
+            <li>Full access to all lessons</li>
+            <li>Video materials and practical assignments</li>
+            <li>Personal support</li>
+            <li>Certificate upon course completion</li>
           </ul>
         </div>
       </div>

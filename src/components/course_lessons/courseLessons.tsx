@@ -6,10 +6,19 @@ import { useContext } from 'react';
 import { MainContext } from '@/contexts/MainContext';
 import Image from 'next/image';
 import laptopCourses from '../../images/laptop-courses.png';
+import { getDefaultCourseIdString } from '@/utils/courseUtils';
 
 
 export const CourseLessons = ({ lessons }: { lessons?: any[] }) => {
   const cc = useContext(MainContext);
+  
+  // Проверяем авторизацию пользователя
+  const userId = cc?.userId;
+  const user = cc?.user;
+  const isUserAuthorized = userId && user && user.id;
+  
+  console.log('CourseLessons received lessons:', lessons?.length || 0);
+  console.log('User authorized:', isUserAuthorized);
 
   return (
     <div className="course-lessons-outer-wrapper" style={{ position: 'relative', width: '100%', maxWidth: 370, margin: '0 auto' }}>
@@ -26,7 +35,7 @@ export const CourseLessons = ({ lessons }: { lessons?: any[] }) => {
       </div>
      
        <div className="frame-parent4">
-        <CoursePdfItem lessons={lessons} />
+        <CoursePdfItem lessons={isUserAuthorized ? lessons : undefined} />
       </div> 
     </div>
   );

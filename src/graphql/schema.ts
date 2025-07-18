@@ -24,7 +24,7 @@ export const typeDefs = gql`
     getUser(id: ID!): User
     getUsers: [User!]!
     getCourses: [Course]
-    getCourse(id: ID!, userId: Int): Course
+    getCourse(id: ID, userId: Int): Course
     getLesson(id: ID!): Lesson
     getLessons: [Lesson]
     getStageStatus(userId: Int!): [StageStatus]

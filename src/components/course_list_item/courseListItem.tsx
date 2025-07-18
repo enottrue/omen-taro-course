@@ -4,6 +4,8 @@ import { Key } from 'react';
 import { useContext } from 'react';
 import { MainContext } from '@/contexts/MainContext';
 import Image from 'next/image';
+import { isStageFinished, getStageStatusClass } from '@/utils/stageStatusUtils';
+import { StatusIcon } from '@/components/ui';
 
 interface CourseListItemProps {
   counter: number;
@@ -24,17 +26,49 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
 }) => {
   const [isActive, setIsActive] = useState(false);
    const cc = useContext(MainContext);
+   
+  //  console.log('CourseListItem rendered:', {
+  //    counter,
+  //    title,
+  //    lessonNumber,
+  //    contentStagesCount: contentStages?.length || 0
+  //  });
 
  
 
   const toggleActive = () => {
     setIsActive(!isActive);
   };
-   const isAllFinished = contentStages.every((stage) => {
-    if (!stage.stageStatuses[0]) {
-    }
-    return stage.stageStatuses[0]?.status === 'finished';
+  // Check if all stages in this lesson are finished
+  const isAllFinished = contentStages.every((stage) => {
+    return isStageFinished(stage.stageStatuses);
   });
+
+  // Get overall lesson status based on stages
+  const getLessonStatus = () => {
+    if (contentStages.length === 0) return [];
+    
+    const allStageStatuses = contentStages.map(stage => stage.stageStatuses).flat();
+    if (allStageStatuses.length === 0) return [];
+    
+    // If all stages are finished, return finished status
+    if (isAllFinished) {
+      return [{ status: 'finished' }];
+    }
+    
+    // If any stage is in progress, return in_progress status
+    const hasInProgress = contentStages.some(stage => 
+      stage.stageStatuses && stage.stageStatuses.length > 0 && 
+      stage.stageStatuses[0]?.status === 'in_progress'
+    );
+    
+    if (hasInProgress) {
+      return [{ status: 'in_progress' }];
+    }
+    
+    // Default to new status
+    return [{ status: 'new' }];
+  };
 
   return (
     <>
@@ -49,19 +83,16 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
           onClick={toggleActive}
         >
           <div className="empty-elements-parent">
-            <b className="empty-elements">{counter}.</b>
+            {/* <b className="empty-elements">{counter}.</b> */}
             <div className="container">
               <b className="b">{title}</b>
             </div>
           </div>
           <div className="group">
-            <Image
+            <StatusIcon 
+              stageStatuses={getLessonStatus()} 
+              size={26} 
               className="icon"
-              loading="lazy"
-              alt=""
-              src="/svg/pause.svg"
-              width={26}
-              height={26}
             />
             <Image
               className={`frame-icon ${isActive ? 'rotated' : ''}`}
@@ -75,31 +106,22 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
         </div>
         <div className="accordion-content">
           {contentStages.map((item, i: Key) => {
-            const isFinished = item.stageStatuses[0]?.status === 'finished';
-            const isPaused = item.stageStatuses[0]?.status === 'paused';
-            
             return (
               <React.Fragment key={i}>
                 <div className="content-wrapper-inner">
                   <div className="content-wrapper">
                     <Link
                       href={`/lesson/${lessonNumber}/${item.stageNumber}`}
-                      className={`  ${
-                        isFinished
-                          ? 'cource-lessons__item-content-list-item_compleeted'
-                          : isPaused
-                          ? 'cource-lessons__item-content-list-item_paused'
-                          : ''
-                      }`}
+                      className={`${getStageStatusClass(item.stageStatuses)}`}
                       style={{ textDecoration: 'none', color: 'inherit' }}
                     >
                       <p style={{ margin: 0 }}>
-                        {lessonNumber + '.' + item.stageNumber} {item.stageName}
+                         {item.stageName}
                       </p>
                     </Link>
                   </div>
                   <div className="btn-wrapper">
-                    <Image src="/svg/pause.svg" alt="arrow-down" width={26} height={26} />
+                    <StatusIcon stageStatuses={item.stageStatuses} size={26} />
                   </div>
                 </div>
               </React.Fragment>

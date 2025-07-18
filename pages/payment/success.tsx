@@ -9,6 +9,7 @@ import unsplashImage from '@/images/unsplashutbx9x3y8ly-2@2x.png';
 import image3 from '@/images/image-3@2x.png';
 import BurgerMenu from '@/components/component1/BurgerMenu';
 import Footer from '@/components/footer/Footer';
+import FooterInside from '@/components/footerInside/Footer';
 
 const PaymentSuccessPage: React.FC = () => {
   const router = useRouter();
@@ -228,7 +229,8 @@ const PaymentSuccessPage: React.FC = () => {
           </section>
           
           {/* Секция с кнопкой возврата */}
-          <section className="cource-lessons bg-white">
+          <section className="cource-lessons bg-white margin-top-20 margin-left-20 margin-right-20 radius-10"  
+          style={{backgroundColor: 'var(--color-navy)', borderRadius: '20px', margin: '20px 20px'}}>
             <div className="cource-book__button">
               <button
                 onClick={() => router.push('/courses')}
@@ -268,8 +270,8 @@ const PaymentSuccessPage: React.FC = () => {
             </div>
           </div>
         </div>
-      </main>
       <Footer />
+      </main>
     </>
   );
 };

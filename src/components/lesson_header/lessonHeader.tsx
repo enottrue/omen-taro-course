@@ -20,6 +20,7 @@ import { stageData } from '@/lib/dump-data/lessonsData';
 import styles from '@/components/component1/component1.module.scss';
 import './lessonHeader.scss';
 import BurgerMenu from '../component1/BurgerMenu';
+import { STAGE_STATUSES } from '@/utils/stageStatusUtils';
 
 export default function CourseLessonHeader({
   lesson,
@@ -31,6 +32,8 @@ export default function CourseLessonHeader({
   currentStageId: string | undefined;
 }) {
   const cc = useContext(MainContext);
+  
+
 
   const [finishedStage, setFinishedStage] = useState(false);
   const [createStageStatus] = useMutation(ADD_STAGE_STATUS);
@@ -80,7 +83,7 @@ export default function CourseLessonHeader({
         variables: {
           stageId: Number(currentStageId),
           userId: Number(cc?.userId),
-          status: 'new',
+          status: STAGE_STATUSES.NEW,
         },
       });
     }
@@ -93,22 +96,40 @@ export default function CourseLessonHeader({
       currentStageId,
       'lessons',
       lesson,
-      lesson.lessonStages[Number(currentStageId) - 1].id,
+      'currentStage:',
+      lesson?.lessonStages?.find((s: any) => s.stageNumber === Number(currentStageId)),
     );
-    if (finishedStage) {
+    if (finishedStage && lesson?.lessonStages) {
       const currentStage = lesson.lessonStages.find(
         (stage: any) => stage.stageNumber == currentStageId,
       );
 
+      if (!currentStage?.id) {
+        console.error('Current stage not found');
+        setFinishedStage(false);
+        return;
+      }
+
       const a = changeStageStatus({
         variables: {
-          stageId: Number(currentStage?.id),
+          stageId: Number(currentStage.id),
           userId: Number(cc?.userId),
-          status: 'finished',
+          status: STAGE_STATUSES.FINISHED,
         },
       }).then((res) => {
         console.log('res', res, lesson);
         setFinishedStage(false);
+        
+        // Update stage data in context to reflect the change
+        if (cc?.stageData) {
+          const updatedStageData = cc.stageData.map((stageStatus: any) => {
+            if (stageStatus.stageId === Number(currentStage.id)) {
+              return { ...stageStatus, status: STAGE_STATUSES.FINISHED };
+            }
+            return stageStatus;
+          });
+          cc.setStageData(updatedStageData);
+        }
       });
     }
   }, [finishedStage]);
@@ -179,21 +200,20 @@ export default function CourseLessonHeader({
                 <div className="lesson-parent">
                   <h1 className="lesson-title">
                     <span className="lesson-title-counter">
-                      {lesson.lessonNumber + '.'}
+                      {lesson?.lessonNumber + '.'}
                     </span>
                     <span className="lesson-title-text">
-                      {lesson.lessonName}
+                      {lesson?.lessonName}
                     </span>
                   </h1>
                   <span className="lesson-subtitle-divider"></span>
                   <div className="lesson-subtitle">
                     <span className="lesson-subtitle-counter">
-                      {lesson.lessonNumber + '.' + currentStageId}
+                      {lesson?.lessonNumber + '.' + currentStageId}
                     </span>
                     <span className="lesson-subtitle-text">
                       {currentStageId &&
-                        lesson.lessonStages[Number(currentStageId) - 1] &&
-                        lesson.lessonStages[Number(currentStageId) - 1].stageName}
+                        lesson?.lessonStages?.find((s: any) => s.stageNumber === Number(currentStageId))?.stageName}
                     </span>
                   </div>
                 </div>
@@ -204,7 +224,7 @@ export default function CourseLessonHeader({
                   preview={`/preview/${currentLessonId}_${currentStageId}.png`}
                   finished={finishedStage}
                   setFinished={setFinishedStage}
-                  stageId={lesson.lessonStages[Number(currentStageId) - 1]}
+                  stageId={lesson?.lessonStages?.find((s: any) => s.stageNumber === Number(currentStageId))}
                 />
                 
                 <div className="lesson-navigation">
@@ -286,16 +306,25 @@ export default function CourseLessonHeader({
             <div className="lesson-frame-parent1">
               <div className="lesson-frame-parent2">
                 <div className="lesson-div1">
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html:
-                        lesson.lessonStages[Number(currentStageId) - 1]
-                          .stageDescription,
-                    }}
-                  />
+
+                  
+                  {/* Stage Description */}
+                  {(() => {
+                    const currentStage = lesson?.lessonStages?.find((s: any) => s.stageNumber === Number(currentStageId));
+                    return currentStage?.stageDescription ? (
+                      <div
+                        className="lesson-div1"
+                        dangerouslySetInnerHTML={{
+                          __html: currentStage.stageDescription,
+                        }}
+                      />
+                    ) : (
+                      <div className="lesson-div1">
+                        <p><strong>Описание урока:</strong> Описание для этого урока пока не добавлено.</p>
+                      </div>
+                    );
+                  })()}
                 </div>
-
-
               </div>
             </div>
           </div>

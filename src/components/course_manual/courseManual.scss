@@ -286,3 +286,52 @@
 .content-wrapper-inner:not(:last-child) {
   border-bottom: 1px solid #ececec;
 } 
+
+// PDF Item styles for accordion content
+.pdf-lesson-text {
+  color: #002b80;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16.8px;
+}
+
+.pause-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+}
+
+.pdf-download-section {
+  width: 100%;
+  padding: 16px 0 0 0;
+  display: flex;
+  justify-content: center;
+}
+
+.pdf-download-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 260px;
+  height: 41px;
+  background: #002b80;
+  color: #fff;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  border: none;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: background 0.2s;
+  cursor: pointer;
+  gap: 8px;
+}
+
+.pdf-download-btn:hover {
+  background: #003399;
+}
+
+// PDF Item now uses existing accordion styles - no custom styles needed 
