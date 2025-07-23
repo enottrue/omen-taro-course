@@ -26,7 +26,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     ? cookie.parse(context.req.headers.cookie)
     : {};
 
-  if (!context.query.lessonId || !context.query.stageId) {
+  if (!context.query.lessonId) {
     return {
       redirect: {
         destination: '/courses',
@@ -158,8 +158,8 @@ const Lesson = ({
         </Head>
         <main>
           <PaymentRequired />
+        <FooterInside />
         </main>
-        <Footer />
       </>
     );
   }

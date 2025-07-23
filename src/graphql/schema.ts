@@ -73,6 +73,7 @@ export const typeDefs = gql`
     stageNumber: Int!
     stageName: String!
     stageDescription: String
+    homework: String
     lessonId: Int
     lesson: Lesson
      stageStatuses: [StageStatus]

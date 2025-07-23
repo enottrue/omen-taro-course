@@ -175,7 +175,7 @@ export default function CourseLessonHeader({
             <div className={styles.frameContainer}>
               <a 
                 className={styles.container}
-                href="mailto:support@astro-irena.com?subject=Вопрос по курсу Таро&body=Здравствуйте! У меня есть вопрос по курсу Таро:"
+                href="mailto:support@astro-irena.com?subject=Question Astro-Irena&body=Hello, I have a question about the Astro-Irena course."
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -194,6 +194,33 @@ export default function CourseLessonHeader({
               </div>
             </div>
           </header>
+          <div className="lesson-frame-div">
+            <div className="lesson-frame-parent1">
+              <div className="lesson-frame-parent2">
+                <div className="lesson-div1">
+
+                  
+                  {/* Stage Description */}
+                  {(() => {
+                    const currentStage = lesson?.lessonStages?.find((s: any) => s.stageNumber === Number(currentStageId));
+                    return currentStage?.stageDescription ? (
+                      <div
+                        className="lesson-div1"
+                        dangerouslySetInnerHTML={{
+                          __html: currentStage.stageDescription,
+                        }}
+                      />
+                    ) : (
+                      <div className="lesson-div1">
+                        <p><strong>Lesson Description:</strong> Description for this lesson has not been added yet.</p>
+                      </div>
+                    );
+                  })()}
+                </div>
+              </div>
+            </div>
+          </div>
+          
           <div className="lesson-frame-div">
             <div className="lesson-frame-parent1">
               <div className="lesson-frame-parent2">
@@ -220,7 +247,7 @@ export default function CourseLessonHeader({
                 
                 
                 <VideoPlayer
-                  url={`https://storage.yandexcloud.net/omen-course/${currentLessonId}_${currentStageId}.mp4`}
+                  url={`${process.env.NEXT_PUBLIC_VIDEO_URL + `/videos/` || 'https://storage.yandexcloud.net/omen-course/'}/${currentLessonId}_${currentStageId}.mp4`}
                   preview={`/preview/${currentLessonId}_${currentStageId}.png`}
                   finished={finishedStage}
                   setFinished={setFinishedStage}
@@ -253,7 +280,7 @@ export default function CourseLessonHeader({
                             />
                           </svg>
                         </span>
-                        <span className="lesson-navigation-item-text">Назад</span>
+                        <span className="lesson-navigation-item-text">Back</span>
                       </Button>
                     )}
                     
@@ -266,7 +293,7 @@ export default function CourseLessonHeader({
                       onClick={nextButtonClickHandler}
                     >
                       <span className="lesson-navigation-item-text">
-                        {nextStageExists ? 'Вперед' : 'К курсам'}
+                        {nextStageExists ? 'Next' : 'To Courses'}
                       </span>
                       <span className="lesson-navigation-item-icon">
                         <svg
@@ -295,39 +322,50 @@ export default function CourseLessonHeader({
                     onClick={() => router.push('/courses')}
                   >
                     <span className="lesson-navigation-item-text">
-                      Вернуться к списку уроков
+                      Return to Lesson List
                     </span>
                   </Button>
                 </div>
               </div>
             </div>
           </div>
+
+          {/* Homework Section */}
+          {(() => {
+            const currentStage = lesson?.lessonStages?.find((s: any) => s.stageNumber === Number(currentStageId));
+            return currentStage?.homework ? (
+              <div className="lesson-frame-div">
+                <div className="lesson-frame-parent1">
+                  <div className="lesson-frame-parent2">
+                    <div className="lesson-homework">
+                      <h3 className="lesson-homework-title">Homework</h3>
+                      <div
+                        className="lesson-homework-content"
+                        dangerouslySetInnerHTML={{
+                          __html: currentStage.homework,
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : null;
+          })()}
+
+          {/* Timeline Section */}
           <div className="lesson-frame-div">
             <div className="lesson-frame-parent1">
               <div className="lesson-frame-parent2">
-                <div className="lesson-div1">
-
-                  
-                  {/* Stage Description */}
-                  {(() => {
-                    const currentStage = lesson?.lessonStages?.find((s: any) => s.stageNumber === Number(currentStageId));
-                    return currentStage?.stageDescription ? (
-                      <div
-                        className="lesson-div1"
-                        dangerouslySetInnerHTML={{
-                          __html: currentStage.stageDescription,
-                        }}
-                      />
-                    ) : (
-                      <div className="lesson-div1">
-                        <p><strong>Описание урока:</strong> Описание для этого урока пока не добавлено.</p>
-                      </div>
-                    );
-                  })()}
-                </div>
+                {(() => {
+                  const currentStage = lesson?.lessonStages?.find((s: any) => s.stageNumber === Number(currentStageId));
+                  return currentStage ? (
+                    <LessonTimeline stage={currentStage} />
+                  ) : null;
+                })()}
               </div>
             </div>
           </div>
+
         </div>
       </section>
       <div className="frame-wrapper2">

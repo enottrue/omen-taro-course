@@ -17,6 +17,7 @@ import Footer from '@/components/footer/Footer';
 import { apolloClient } from '@/lib/apollo/apollo';
 import { GET_LESSON, GET_LESSONS } from '@/graphql/queries';
 import CourseLessonHeader from '@/components/lesson_header/lessonHeader';
+import FooterInside from '@/components/footerInside/Footer';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const APP_SECRET = process.env.APP_SECRET;
@@ -182,6 +183,59 @@ const Lesson = ({
     }
   }, [user]);
 
+  // Global protection against video downloading
+  useEffect(() => {
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      // Prevent common keyboard shortcuts for saving/downloading
+      if (
+        (e.ctrlKey || e.metaKey) && 
+        (e.key === 's' || e.key === 'S' || e.key === 'c' || e.key === 'C')
+      ) {
+        e.preventDefault();
+        return false;
+      }
+      
+      // Prevent F12, Ctrl+Shift+I, Ctrl+U (developer tools)
+      if (
+        e.key === 'F12' ||
+        ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'I') ||
+        ((e.ctrlKey || e.metaKey) && e.key === 'u')
+      ) {
+        e.preventDefault();
+        return false;
+      }
+    };
+
+    const handleGlobalContextMenu = (e: MouseEvent) => {
+      // Allow context menu only for specific elements
+      const target = e.target as HTMLElement;
+      if (target.closest('.cource-lesson-header__media')) {
+        e.preventDefault();
+        return false;
+      }
+    };
+
+    const handleGlobalDragStart = (e: DragEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('.cource-lesson-header__media')) {
+        e.preventDefault();
+        return false;
+      }
+    };
+
+    // Add global event listeners
+    document.addEventListener('keydown', handleGlobalKeyDown);
+    document.addEventListener('contextmenu', handleGlobalContextMenu);
+    document.addEventListener('dragstart', handleGlobalDragStart);
+
+    // Cleanup
+    return () => {
+      document.removeEventListener('keydown', handleGlobalKeyDown);
+      document.removeEventListener('contextmenu', handleGlobalContextMenu);
+      document.removeEventListener('dragstart', handleGlobalDragStart);
+    };
+  }, []);
+
   // Проверяем статус оплаты
   useEffect(() => {
     if (userData && !userData.isPaid) {
@@ -217,12 +271,14 @@ const Lesson = ({
          <link rel="shortcut icon" href="/favicon/favicon.ico" />
  
       </Head>
+      <main>
       <CourseLessonHeader
         lesson={lesson}
         currentStageId={currentStageId}
         currentLessonId={currentLessonId}
       />
-      <Footer />
+      <FooterInside />
+      </main>
     </>
   );
 };

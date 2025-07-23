@@ -1,0 +1,69 @@
+/* Timeline Styles - компактный дизайн */
+
+.lesson-timeline-wrapper {
+  margin: 0;
+  padding: 0;
+}
+
+.lesson-timeline-title {
+  margin: 0 0 8px 10px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+.lesson-timeline-content {
+  margin: 0;
+  padding: 0;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.lesson-timeline-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.lesson-timeline-item:last-child {
+  margin-bottom: 0;
+}
+
+.lesson-timeline-time {
+  font-weight: 600;
+  color: #007bff;
+  margin-right: 8px;
+}
+
+.lesson-timeline-text {
+  color: #333;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+  .lesson-timeline-content {
+    padding: 0;
+    margin-top: 15px;
+  }
+  
+  .lesson-timeline-item {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 8px;
+  }
+  
+  .lesson-timeline-time {
+    min-width: auto;
+    margin-right: 0;
+    margin-bottom: 5px;
+    font-size: 13px;
+  }
+  
+  .lesson-timeline-text {
+    font-size: 13px;
+  }
+} 

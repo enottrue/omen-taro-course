@@ -73,6 +73,7 @@ model Stage {
   stageNumber      Int
   stageName        String
   stageDescription String?
+  homework         String?
   lessonId         Int
   stageStatuses    StageStatus[]
   stageTimecodes   StageTimecode[]

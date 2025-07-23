@@ -216,6 +216,7 @@ export const GET_COURSE = gql`
           stageName
           lessonId
            stageDescription
+           homework
           stageStatuses {
             id
             status
@@ -249,6 +250,7 @@ export const GET_LESSON = gql`
         stageNumber
         stageName
         stageDescription
+        homework
         stageTimecodes {
           id
           name
@@ -285,6 +287,7 @@ export const GET_LESSONS = gql`
         stageNumber
         stageName
         stageDescription
+        homework
         stageTimecodes {
           id
           name
@@ -314,6 +317,7 @@ export const GET_LESSONS = gql`
         stageNumber
         stageName
         stageDescription
+        homework
         lessonId
       }
       updatedAt
@@ -335,6 +339,7 @@ export const CHANGE_STAGE_STATUS = gql`
         stageNumber
         stageName
         stageDescription
+        homework
         stageStatuses {
           id
           status
