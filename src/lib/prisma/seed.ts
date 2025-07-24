@@ -1,8 +1,12 @@
-import tools from '../dump-data/newToolsData';
 import { prisma } from './prismaClient';
-import users from '../dump-data/newUserData';
-import { lessonsData, coursesData, stageData } from '../dump-data/newLessonsData';
 import { STAGE_STATUSES } from '../../utils/stageStatusUtils';
+import { 
+  currentToolsData, 
+  currentUsersData, 
+  currentLessonsData, 
+  currentCoursesData, 
+  currentStageData 
+} from '../dump-data/currentDatabaseData';
 
 const main = async () => {
   console.log(`🌱 Начинаем сидинг базы данных...`);
@@ -21,18 +25,18 @@ const main = async () => {
 
   // Сидим инструменты
   console.log(`🛠️ Сидим инструменты...`);
-  for (const tool of tools) {
+  for (const tool of currentToolsData) {
     await prisma.tool.upsert({
       where: { id: tool.id },
       create: tool,
       update: tool,
     });
   }
-  console.log(`✅ Инструменты добавлены: ${tools.length}`);
+  console.log(`✅ Инструменты добавлены: ${currentToolsData.length}`);
 
   // Сидим пользователей
   console.log(`👥 Сидим пользователей...`);
-  for (const user of users) {
+  for (const user of currentUsersData) {
     await prisma.user.upsert({
       where: { id: user.id },
       create: {
@@ -55,7 +59,7 @@ const main = async () => {
       },
     });
   }
-  console.log(`✅ Пользователи добавлены: ${users.length}`);
+  console.log(`✅ Пользователи добавлены: ${currentUsersData.length}`);
 
   // Сбрасываем sequence для User, чтобы автоинкремент работал корректно
   console.log(`🔄 Сбрасываем sequence для User...`);
@@ -64,29 +68,29 @@ const main = async () => {
 
   // Сидим курсы
   console.log(`📚 Сидим курсы...`);
-  for (const course of Object.values(coursesData)) {
+  for (const course of Object.values(currentCoursesData)) {
     await prisma.course.upsert({
       where: { id: course.id },
       create: course,
       update: course,
     });
   }
-  console.log(`✅ Курсы добавлены: ${Object.keys(coursesData).length}`);
+  console.log(`✅ Курсы добавлены: ${Object.keys(currentCoursesData).length}`);
 
   // Сидим уроки
   console.log(`📖 Сидим уроки...`);
-  for (const lesson of Object.values(lessonsData)) {
+  for (const lesson of Object.values(currentLessonsData)) {
     await prisma.lesson.upsert({
       where: { id: lesson.id },
       create: lesson,
       update: lesson,
     });
   }
-  console.log(`✅ Уроки добавлены: ${Object.keys(lessonsData).length}`);
+  console.log(`✅ Уроки добавлены: ${Object.keys(currentLessonsData).length}`);
 
   // Сидим этапы и таймкоды
   console.log(`🎯 Сидим этапы и таймкоды...`);
-  for (const stage of stageData) {
+  for (const stage of currentStageData) {
     const { stageTimecodes, ...stageInfo } = stage;
     
     const createdStage = await prisma.stage.upsert({
@@ -110,7 +114,7 @@ const main = async () => {
       });
     }
   }
-  console.log(`✅ Этапы и таймкоды добавлены: ${stageData.length} этапов`);
+  console.log(`✅ Этапы и таймкоды добавлены: ${currentStageData.length} этапов`);
 
   console.log(`🎉 Сидинг базы данных завершен успешно!`);
 };

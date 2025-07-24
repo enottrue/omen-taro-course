@@ -15,14 +15,6 @@ services:
     networks:
       - omen-dev
 
-  redis:
-    image: redis:7-alpine
-    container_name: omen-redis-dev
-    ports:
-      - "6379:6379"
-    networks:
-      - omen-dev
-
   app:
     build:
       context: .
