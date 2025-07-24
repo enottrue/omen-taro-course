@@ -113,7 +113,22 @@ export default function VideoPlayer({
     // Автоматически запускаем видео после небольшой задержки
     setTimeout(() => {
       if (videoRef.current) {
-        videoRef.current.play();
+        // Сначала запускаем с muted для обхода ограничений браузера
+        videoRef.current.muted = true;
+        videoRef.current.play().then(() => {
+          // После успешного запуска включаем звук
+          setTimeout(() => {
+            if (videoRef.current) {
+              videoRef.current.muted = false;
+            }
+          }, 200);
+        }).catch(error => {
+          console.log('Auto-play was prevented:', error);
+          // Если автозапуск не удался, просто включаем звук
+          if (videoRef.current) {
+            videoRef.current.muted = false;
+          }
+        });
       }
     }, 100);
   };
@@ -191,6 +206,7 @@ export default function VideoPlayer({
           controlsList="nodownload noremoteplayback"
           disablePictureInPicture
           disableRemotePlayback
+          muted
           src={url ? url : ''}
           poster={preview ? preview : ''}
           onPlay={handleVideoStart}

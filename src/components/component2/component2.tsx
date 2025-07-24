@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Image from "next/image";
 import styles from "./component2.module.css";
 import group4 from "../../images/group-4@2x.png";
-import intro_lesson from "../../../public/preview/00.png";
+import intro_lesson from "../../../public/preview/main_page.png";
 
 import { Button } from "../ui";
 import { useState } from "react";

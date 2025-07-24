@@ -23,6 +23,27 @@ const PUBLIC_PAGES = [
 ];
 
 export async function middleware(req: NextRequest) {
+  // Skip middleware for static files
+  const pathname = req.nextUrl.pathname;
+  if (
+    pathname.startsWith('/videos/') ||
+    pathname.startsWith('/images/') ||
+    pathname.startsWith('/public/') ||
+    pathname.startsWith('/svg/') ||
+    pathname.startsWith('/preview/') ||
+    pathname.startsWith('/favicon/') ||
+    pathname.includes('.mp4') ||
+    pathname.includes('.png') ||
+    pathname.includes('.jpg') ||
+    pathname.includes('.jpeg') ||
+    pathname.includes('.gif') ||
+    pathname.includes('.svg') ||
+    pathname.includes('.ico') ||
+    pathname.includes('.pdf')
+  ) {
+    return NextResponse.next();
+  }
+
   const APP_SECRET = process.env.APP_SECRET;
   const cookies = req.headers.get('Cookie')
     ? cookie.parse(req.headers.get('Cookie')!)
@@ -142,7 +163,12 @@ export const config = {
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
+     * - videos (video files)
+     * - images (image files)
+     * - public (public files)
+     * - svg (svg files)
+     * - preview (preview images)
      */
-    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico|videos|images|public|svg|preview).*)',
   ],
 };

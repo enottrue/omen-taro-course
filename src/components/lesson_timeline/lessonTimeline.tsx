@@ -5,7 +5,7 @@ function LessonTimeline(stage: any) {
   const sections = stage.stage.stageTimecodes 
     ? [...stage.stage.stageTimecodes].sort((a: any, b: any) => a.id - b.id)
     : Array.from({ length: 11 }, (_, i) => i + 1);
-  console.log(stage.stage.stageTimecodes, 11);
+  
   return (
     <div className="lesson-timeline-wrapper">
       <h3 className="lesson-timeline-title">Timeline</h3>

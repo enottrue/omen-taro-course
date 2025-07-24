@@ -98,7 +98,7 @@ export const CoursePdfItem = ({ lessons }: CoursePdfItemProps) => {
               contentStages={lesson.lessonStages}
               counter={lesson.lessonNumber}
               title={lesson.lessonName}
-              lessonNumber={lesson.lessonNumber}
+              lessonNumber={lesson.id}
               key={i}
             />
           );

@@ -15,10 +15,22 @@ const VideoModal: React.FC<VideoModalProps> = ({ isOpen, onClose, videoSrc }) =>
   const videoRef = useRef<HTMLVideoElement>(null);
   const [loading, setLoading] = useState(true);
 
-  // Focus trap for accessibility
+  // Focus trap for accessibility and auto-play video
   useEffect(() => {
     if (isOpen && modalRef.current) {
       modalRef.current.focus();
+    }
+    
+    // Auto-play video when modal opens
+    if (isOpen && videoRef.current) {
+      const playVideo = async () => {
+        try {
+          await videoRef.current!.play();
+        } catch (error) {
+          console.log('Auto-play was prevented:', error);
+        }
+      };
+      playVideo();
     }
   }, [isOpen]);
 
@@ -38,6 +50,19 @@ const VideoModal: React.FC<VideoModalProps> = ({ isOpen, onClose, videoSrc }) =>
 
   const handleCanPlay = () => {
     setLoading(false);
+    // Ensure video starts playing when it's ready
+    if (videoRef.current) {
+      videoRef.current.play().catch(error => {
+        console.log('Auto-play was prevented:', error);
+      });
+      
+      // Unmute video after a short delay to allow autoplay
+      setTimeout(() => {
+        if (videoRef.current) {
+          videoRef.current.muted = false;
+        }
+      }, 100);
+    }
   };
 
   return (
@@ -67,6 +92,7 @@ const VideoModal: React.FC<VideoModalProps> = ({ isOpen, onClose, videoSrc }) =>
           className={styles.video}
           controls
           autoPlay
+          muted
           preload="auto"
           poster={VIDEO_POSTER}
           aria-label="Video player"

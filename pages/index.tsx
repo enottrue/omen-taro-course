@@ -99,7 +99,7 @@ export default function Home({
       </Head>
       <main>
         <Component1 />
-        <Component2 />
+        <Component2 videoSource="/videos/main_page.mp4" />
         <Discover />
         <Component3 />
         <Component4 />

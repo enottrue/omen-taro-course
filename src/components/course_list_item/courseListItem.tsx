@@ -10,7 +10,7 @@ import { StatusIcon } from '@/components/ui';
 interface CourseListItemProps {
   counter: number;
   title: string;
-  lessonNumber: number;
+  lessonNumber: number | string;
   contentStages: {
     stageNumber: number;
     stageName: string;
