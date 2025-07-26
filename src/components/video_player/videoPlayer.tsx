@@ -127,8 +127,7 @@ export default function VideoPlayer({
               videoRef.current.muted = false;
             }
           }, 200);
-        }).catch(error => {
-          console.log('Auto-play was prevented:', error);
+        }).catch(() => {
           // Если автозапуск не удался, просто включаем звук
           if (videoRef.current) {
             videoRef.current.muted = false;
