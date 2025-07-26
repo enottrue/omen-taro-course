@@ -1,0 +1,102 @@
+services:
+  # ---- статический сайт ----------------------------------------------------
+  site1:
+    image: nginx:1.26-alpine
+    container_name: site1
+    restart: unless-stopped
+
+    volumes:
+      - /home/app/sites-storage/site1/html:/usr/share/nginx/html:ro
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.site1.rule=Host(`site1.example.com`)"
+      - "traefik.http.routers.site1.entrypoints=https"
+      - "traefik.http.routers.site1.tls.certresolver=default"
+      - "traefik.http.services.site1-svc.loadbalancer.server.port=80"
+
+    networks:
+      public:
+        aliases: [site1]
+
+  # ---- n8n ---------------------------------------------------------------
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: n8n
+    restart: unless-stopped
+    user: "1000:1000"
+
+    volumes:
+      - /home/app/sites-storage/n8n/.n8n:/home/node/.n8n
+      - /home/app/sites-storage/n8n/files:/files
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+    environment:
+      - N8N_HOST=auto.thepeace.ru
+      - N8N_PROTOCOL=https
+      - N8N_PORT=5678
+      - WEBHOOK_TUNNEL_URL=https://auto.thepeace.ru
+      - N8N_EDITOR_BASE_URL=https://auto.thepeace.ru
+      - DB_TYPE=postgresdb
+      - DB_POSTGRESDB_HOST=db
+      - DB_POSTGRESDB_PORT=5432
+      - DB_POSTGRESDB_DATABASE=appdb
+      - DB_POSTGRESDB_USER=appuser
+      - DB_POSTGRESDB_PASSWORD_FILE=/run/secrets/pg_password
+      - N8N_RUNNERS_ENABLED=true
+      - N8N_RUNNERS_MODE=internal
+      - N8N_RUNNERS_WORKER_COUNT=4
+
+    secrets:
+      - pg_password
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.auto.rule=Host(`auto.thepeace.ru`)"
+      - "traefik.http.routers.auto.entrypoints=https"
+      - "traefik.http.routers.auto.tls.certresolver=default"
+      - "traefik.http.services.auto-svc.loadbalancer.server.port=5678"
+
+    networks:
+      public:
+        aliases: [auto]
+
+  omen-taro-course:
+    container_name: omen-taro-course
+    build:
+      context: /home/app/omen-taro-course
+      dockerfile: Dockerfile
+    env_file:
+      - /home/app/omen-taro-course/.env
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.omen.rule=Host(`astro-irena.com`)"
+      - "traefik.http.routers.omen.entrypoints=https"
+      - "traefik.http.routers.omen.tls.certresolver=default"
+      - "traefik.http.services.omen-svc.loadbalancer.server.port=3000"
+    networks:
+      public:
+        aliases: [astro-irena]
+
+
+
+# ---- сеть и определение секрета -------------------------------------------
+networks:
+  public:
+    external: true
+
+secrets:
+  pg_password:
+    file: /home/app/.pg_password
