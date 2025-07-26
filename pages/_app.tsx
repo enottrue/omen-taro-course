@@ -12,8 +12,6 @@ import AuthStatusTooltip from '@/components/AuthStatusTooltip';
 import LogoutButton from '@/components/LogoutButton';
 
 export default function App({ Component, pageProps }: AppProps) {
-  const router = useRouter();
-  
   return (
     <ApolloProvider client={apolloClient}>
       <MainContextProvider>
@@ -22,7 +20,6 @@ export default function App({ Component, pageProps }: AppProps) {
           {/* <AuthStatusTooltip /> */}
           {/* <LogoutButton /> */}
           <YandexMetricaProvider
-            router={router as any}
             tagID={100786060}
             initParameters={{
               clickmap: true,
