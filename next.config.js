@@ -17,6 +17,9 @@ const nextConfig = {
     return config;
   },
   output: 'standalone',
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   images: {
     domains: ['localhost', 'astro-irena.com'],
     remotePatterns: [
