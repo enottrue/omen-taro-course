@@ -87,37 +87,26 @@ export default function CourseLessonHeader({
         },
       });
     }
-  }, [stageStatusError, stageStatusLoading, stageStatusData]);
+  }, [stageStatusError, stageStatusLoading, stageStatusData, cc?.userId, createStageStatus, currentStageId]);
 
-  // addStageStatus({ variables: { stageId: 1, userId: 1, status: 'new' } });
   useEffect(() => {
-    console.log(
-      'currentStageId',
-      currentStageId,
-      'lessons',
-      lesson,
-      'currentStage:',
-      lesson?.lessonStages?.find((s: any) => s.stageNumber === Number(currentStageId)),
-    );
     if (finishedStage && lesson?.lessonStages) {
       const currentStage = lesson.lessonStages.find(
         (stage: any) => stage.stageNumber == currentStageId,
       );
 
       if (!currentStage?.id) {
-        console.error('Current stage not found');
         setFinishedStage(false);
         return;
       }
 
-      const a = changeStageStatus({
+      changeStageStatus({
         variables: {
           stageId: Number(currentStage.id),
           userId: Number(cc?.userId),
           status: STAGE_STATUSES.FINISHED,
         },
-      }).then((res) => {
-        console.log('res', res, lesson);
+      }).then(() => {
         setFinishedStage(false);
         
         // Update stage data in context to reflect the change
@@ -132,7 +121,7 @@ export default function CourseLessonHeader({
         }
       });
     }
-  }, [finishedStage]);
+  }, [finishedStage, cc, changeStageStatus, currentStageId, lesson]);
 
   const nextStageExists = lesson?.lessonStages?.some((stage: any) => {
     return Number(stage.stageNumber) === Number(currentStageId) + 1;
@@ -334,9 +323,9 @@ export default function CourseLessonHeader({
           {(() => {
             const currentStage = lesson?.lessonStages?.find((s: any) => s.stageNumber === Number(currentStageId));
             return currentStage?.homework ? (
-              <div className="lesson-frame-div">
-                <div className="lesson-frame-parent1">
-                  <div className="lesson-frame-parent2">
+          <div className="lesson-frame-div">
+            <div className="lesson-frame-parent1">
+              <div className="lesson-frame-parent2">
                     <div className="lesson-homework">
                       <h3 className="lesson-homework-title">Homework</h3>
                       <div
@@ -346,7 +335,7 @@ export default function CourseLessonHeader({
                         }}
                       />
                     </div>
-                  </div>
+                      </div>
                 </div>
               </div>
             ) : null;

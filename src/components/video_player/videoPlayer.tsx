@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
 import { ReactEventHandler } from 'react';
 import { useMutation } from '@apollo/client';
 import { CHANGE_STAGE_STATUS } from '@/graphql/queries';
@@ -31,7 +32,6 @@ export default function VideoPlayer({
   const { reachGoal } = useMetrica();
 
   const handleVideoStart: ReactEventHandler<HTMLVideoElement> = (e) => {
-    console.log('video started', e);
     setHasVideoStarted(true);
     
     // Send Yandex Metrica event for video start
@@ -42,24 +42,19 @@ export default function VideoPlayer({
     
     // Check if we have valid stage data
     if (!stageId?.id || !cc?.userId) {
-      console.log('Missing stageId or userId, skipping status change');
       return;
     }
     
     // Check if stage is not already finished
     const currentStatus = stageId?.stageStatuses?.[0]?.status;
     if (currentStatus !== STAGE_STATUSES.FINISHED) {
-      console.log('Setting stage status to in_progress');
-      
       changeStageStatus({
         variables: {
           stageId: Number(stageId.id),
           userId: Number(cc.userId),
           status: STAGE_STATUSES.IN_PROGRESS,
         },
-      }).then((res) => {
-        console.log('Stage status changed to in_progress:', res);
-        
+      }).then(() => {
         // Update stage data in context to reflect the change
         if (cc?.stageData) {
           const updatedStageData = cc.stageData.map((stageStatus: any) => {
@@ -71,17 +66,12 @@ export default function VideoPlayer({
           cc.setStageData(updatedStageData);
         }
       }).catch((error) => {
-        console.error('Error changing stage status to in_progress:', error);
+        // Silent error handling for production
       });
-    } else {
-      console.log('Stage is already finished, skipping status change');
     }
   };
 
   const handleVideoEnd: ReactEventHandler<HTMLVideoElement> = (e) => {
-    console.log('video ended', e);
-    console.log('before finished status', finished);
-    
     // Send Yandex Metrica event for video completion
     reachGoal('video_completed', { 
       stageId: stageId?.id, 
@@ -148,7 +138,7 @@ export default function VideoPlayer({
     }, 100);
   };
 
-    return (
+  return (
     <div 
       className="cource-lesson-header__media"
       onContextMenu={handleContextMenu}
@@ -176,9 +166,11 @@ export default function VideoPlayer({
             position: 'relative'
           }}
         >
-          <img
+          <Image
             src={preview}
             alt="Video preview"
+            width={800}
+            height={450}
             style={{
               width: '100%',
               height: 'auto',
@@ -215,28 +207,28 @@ export default function VideoPlayer({
           </div>
         </div>
       ) : (
-        <video
+      <video
           ref={videoRef}
-          controls
+        controls
           controlsList="nodownload noremoteplayback"
           disablePictureInPicture
           disableRemotePlayback
           muted
-          src={url ? url : ''}
-          poster={preview ? preview : ''}
-          onPlay={handleVideoStart}
-          onEnded={handleVideoEnd}
+        src={url ? url : ''}
+        poster={preview ? preview : ''}
+        onPlay={handleVideoStart}
+        onEnded={handleVideoEnd}
           onContextMenu={handleContextMenu}
           onDragStart={handleDragStart}
-          style={{
-            width: '100%',
-            height: 'auto',
-            maxWidth: '100%',
-            display: 'block',
+        style={{
+          width: '100%',
+          height: 'auto',
+          maxWidth: '100%',
+          display: 'block',
             borderRadius: '10px',
             pointerEvents: 'auto'
-          }}
-        />
+        }}
+      />
       )}
     </div>
     // <ReactPlayer url={[{ src: '/videos/1_2.mp4', type: 'video/mp4' }]} />
