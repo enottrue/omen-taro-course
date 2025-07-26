@@ -125,7 +125,7 @@ const ModalRegister = () => {
       console.error('[Register] Registration error:', registerUser?.message);
       return;
     }
-    reachGoal('form_register');
+    reachGoal('user_registered');
     cc?.setSubmitting(false);
 
     // Сохраняем токен и пользователя в куки и контекст
@@ -182,8 +182,9 @@ const ModalRegister = () => {
 
         <form className="modal__login-form" action="">
           <div className="modal__login-form-grid active" id="step-1">
-            <label className="custom-input" id="name">
+            <label className="custom-input" htmlFor="name">
               <input
+                id="name"
                 className="custom-input__element  focus-within:border-sky-500 focus-within:border-1"
                 placeholder="Full Name"
                 type="text"
@@ -194,8 +195,9 @@ const ModalRegister = () => {
                 }}
               />
             </label>
-            <label className="custom-input" id="password">
+            <label className="custom-input" htmlFor="password">
               <input
+                id="password"
                 className="custom-input__element  focus-within:border-sky-500 focus-within:border-1"
                 placeholder="Password"
                 type="password"
@@ -207,8 +209,9 @@ const ModalRegister = () => {
               />
             </label>
 
-            <label className="custom-input" id="email">
+            <label className="custom-input" htmlFor="email">
               <input
+                id="email"
                 className="custom-input__element focus-within:border-sky-500 focus-within:border-1"
                 placeholder="E-mail"
                 type="email"
@@ -221,8 +224,9 @@ const ModalRegister = () => {
               />
             </label>
 
-            <label className="custom-input" id="phone">
+            <label className="custom-input" htmlFor="phone">
               <input
+                id="phone"
                 className="custom-input__element focus-within:border-sky-500 focus-within:border-1"
                 placeholder="Phone number"
                 type="tel"
@@ -235,8 +239,9 @@ const ModalRegister = () => {
           </div>
 
           <div className="modal__login-form-grid active" id="step-2">
-            <label className="custom-input">
+            <label className="custom-input" htmlFor="city">
               <input
+                id="city"
                 className="custom-input__element focus-within:border-sky-500 focus-within:border-1"
                 placeholder="City"
                 autoComplete="address-level2"

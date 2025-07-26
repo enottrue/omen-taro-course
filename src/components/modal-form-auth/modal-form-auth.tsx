@@ -8,6 +8,7 @@ import useLogin from '@/hooks/useLogin';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { getOnboardingRedirectPath, getOnboardingStatus } from '@/utils/onboardingUtils';
+import { useMetrica } from 'next-yandex-metrica';
 
 export type ModalFormAuthType = {
   className?: string;
@@ -26,6 +27,7 @@ const ModalFormAuth: NextPage<ModalFormAuthType> = ({
   const { login, loading } = useLogin();
   const cc = useContext(MainContext);
   const router = useRouter();
+  const { reachGoal } = useMetrica();
 
   useEffect(() => {
     const handleEscKey = (event: KeyboardEvent) => {
@@ -96,6 +98,10 @@ const ModalFormAuth: NextPage<ModalFormAuthType> = ({
       cc?.setUser && cc.setUser(userData.user);
       Cookies.set('Bearer', userData?.token, { expires: 180 });
       Cookies.set('userId', userData?.user?.id, { expires: 180 });
+      
+      // Send Yandex Metrica event for successful login
+      reachGoal('user_login');
+      
       cc?.setSubmitting && cc.setSubmitting(false);
       handleClose();
       cc?.setCurrentForm && cc.setCurrentForm(null);

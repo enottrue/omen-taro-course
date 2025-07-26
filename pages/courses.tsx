@@ -8,6 +8,7 @@ import jwt from 'jsonwebtoken';
 import { GetServerSideProps } from 'next';
 import OnboardingStages from '@/components/onboarding/OnboardingStages';
 import PaymentRequired from '@/components/PaymentRequired';
+import { useMetrica } from 'next-yandex-metrica';
 
 import { useGetLazyUserData } from '@/hooks/useGetUserData';
 import CourseHero from '@/components/course_hero/Course_hero';
@@ -129,6 +130,7 @@ const Cources = ({
 }) => {
   const router = useRouter();
   const [showPaymentRequired, setShowPaymentRequired] = useState(false);
+  const { reachGoal } = useMetrica();
 
   // Use the courses data from server-side props instead of making a client-side query
   const tt = { getCourse: courses || null };
@@ -147,6 +149,11 @@ const Cources = ({
   useEffect(() => {
     stageData && cc?.setStageData(stageData);
   }, [stageData]);
+
+  useEffect(() => {
+    // Send Yandex Metrica event for courses page view
+    reachGoal('courses_page_viewed');
+  }, [reachGoal]);
 
   useEffect(() => {
     cc?.setUserId(userId);

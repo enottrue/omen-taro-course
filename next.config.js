@@ -17,6 +17,31 @@ const nextConfig = {
     return config;
   },
   output: 'standalone',
+  images: {
+    domains: ['localhost', 'astro-irena.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+      {
+        protocol: 'http',
+        hostname: '**',
+      },
+    ],
+    // Настройки для Docker
+    loader: 'default',
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+  },
+  
+  // Настройки для статических файлов
+  trailingSlash: false,
+  
+  // Экспериментальные настройки для лучшей работы с Prisma
+  experimental: {
+    serverComponentsExternalPackages: ['prisma'],
+  },
   async headers() {
     return [
       {
@@ -30,6 +55,9 @@ const nextConfig = {
       },
     ];
   },
+  telemetry: {
+    disabled: true
+  }
   // experimental: {
   //   appDir: true,
   // },

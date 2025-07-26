@@ -1,9 +1,18 @@
 import Image from 'next/image';
+import { useEffect } from 'react';
+import { useMetrica } from 'next-yandex-metrica';
 import HeroArrow from '@/images/svg/hero-arrow.svg';
 import BigPlayBtn from '@/images/svg/big-play-btn.svg';
 import HeroI from '@/images/hero.png';
 
 export default function Hero() {
+  const { reachGoal } = useMetrica();
+
+  useEffect(() => {
+    // Send Yandex Metrica event for homepage view
+    reachGoal('homepage_viewed');
+  }, [reachGoal]);
+
   return (
     <section className="hero">
       <div className="hero__grid">

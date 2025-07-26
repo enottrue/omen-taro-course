@@ -6,6 +6,7 @@ import { MainContext } from '@/contexts/MainContext';
 import Image from 'next/image';
 import { isStageFinished, getStageStatusClass } from '@/utils/stageStatusUtils';
 import { StatusIcon } from '@/components/ui';
+import { useMetrica } from 'next-yandex-metrica';
 
 interface CourseListItemProps {
   counter: number;
@@ -26,6 +27,7 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
 }) => {
   const [isActive, setIsActive] = useState(false);
    const cc = useContext(MainContext);
+   const { reachGoal } = useMetrica();
    
   //  console.log('CourseListItem rendered:', {
   //    counter,
@@ -38,6 +40,8 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
 
   const toggleActive = () => {
     setIsActive(!isActive);
+    // Send Yandex Metrica event for course view
+    reachGoal('course_viewed', { lessonId: lessonNumber, lessonTitle: title });
   };
   // Check if all stages in this lesson are finished
   const isAllFinished = contentStages.every((stage) => {

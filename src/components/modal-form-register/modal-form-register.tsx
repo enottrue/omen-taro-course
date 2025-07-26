@@ -114,7 +114,7 @@ const ModalFormRegister: NextPage<ModalFormRegisterType> = ({
         return;
       }
 
-      reachGoal('form_register');
+      reachGoal('user_registered');
       cc?.setSubmitting && cc.setSubmitting(false);
 
       // Set cookies and context for the newly registered user

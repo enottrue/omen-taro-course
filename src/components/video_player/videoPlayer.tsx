@@ -6,6 +6,7 @@ import { CHANGE_STAGE_STATUS } from '@/graphql/queries';
 import { STAGE_STATUSES } from '@/utils/stageStatusUtils';
 import { useContext } from 'react';
 import { MainContext } from '@/contexts/MainContext';
+import { useMetrica } from 'next-yandex-metrica';
 import './videoPlayer.css';
 
 const ReactPlayer = dynamic(() => import('react-player'), { ssr: false });
@@ -27,10 +28,17 @@ export default function VideoPlayer({
   const [changeStageStatus] = useMutation(CHANGE_STAGE_STATUS);
   const [hasVideoStarted, setHasVideoStarted] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const { reachGoal } = useMetrica();
 
   const handleVideoStart: ReactEventHandler<HTMLVideoElement> = (e) => {
     console.log('video started', e);
     setHasVideoStarted(true);
+    
+    // Send Yandex Metrica event for video start
+    reachGoal('video_started', { 
+      stageId: stageId?.id, 
+      stageName: stageId?.stageName 
+    });
     
     // Check if we have valid stage data
     if (!stageId?.id || !cc?.userId) {
@@ -73,6 +81,13 @@ export default function VideoPlayer({
   const handleVideoEnd: ReactEventHandler<HTMLVideoElement> = (e) => {
     console.log('video ended', e);
     console.log('before finished status', finished);
+    
+    // Send Yandex Metrica event for video completion
+    reachGoal('video_completed', { 
+      stageId: stageId?.id, 
+      stageName: stageId?.stageName 
+    });
+    
     setFinished && setFinished(true);
   };
 

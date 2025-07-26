@@ -8,6 +8,20 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-06-30.basil',
 });
 
+// Function to send Yandex Metrica event
+const sendYandexMetricaEvent = async (eventName: string, userId?: string) => {
+  try {
+    // This would typically be sent to your analytics endpoint
+    // For now, we'll just log it
+    console.log(`📊 Yandex Metrica Event: ${eventName}`, userId ? `for user: ${userId}` : '');
+    
+    // In a real implementation, you might send this to your frontend
+    // or use a server-side analytics service
+  } catch (error) {
+    console.error('Error sending Yandex Metrica event:', error);
+  }
+};
+
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
 export const config = {
@@ -87,6 +101,10 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
           });
           
       console.log('✅ User payment status updated via webhook:', updatedUser.email);
+      
+      // Send Yandex Metrica event for successful payment
+      await sendYandexMetricaEvent('payment_successful', updatedUser.id.toString());
+      
       } catch (error) {
         console.error('❌ Error updating user payment status:', error);
       }
