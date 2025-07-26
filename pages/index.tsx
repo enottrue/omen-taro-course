@@ -23,6 +23,8 @@ import Footer from '@/components/footer/Footer';
 import Modal from '@/components/modal/Modal';
 
 import { MainContext } from '@/contexts/MainContext';
+import { YandexMetricaProvider } from 'next-yandex-metrica';
+import { useRouter } from 'next/router';
 import cookie from 'cookie';
 import jwt from 'jsonwebtoken';
 
@@ -82,6 +84,7 @@ export default function Home({
   userData: any;
 }) {
   const cc = useContext(MainContext);
+  const router = useRouter();
 
   useEffect(() => {
     // GOOD: This state update is now in a useEffect and won't cause a warning
@@ -90,28 +93,38 @@ export default function Home({
   }, [userId, token, userData]);
 
   return (
-    <>
-      <Head>
-        <title>Колода карт таро Omen с обучающим курсом по Таро</title>
-        <meta name="Колода карт таро Omen с обучающим курсом по Таро" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="shortcut icon" href="/favicon/favicon.ico" />
-      </Head>
-      <main>
-        <Component1 />
-        <Component2 videoSource="/videos/main_page.mp4" />
-        <Discover />
-        <Component3 />
-        <Component4 />
-        <Component5 />
-        <Component6 />
-        <SmartInvestment />
-        <Component7 />
-        <Component8 />
-        <Component9 />
-        <Modal />
-        <Footer />
-      </main>
-    </>
+    <YandexMetricaProvider
+      router={router as any}
+      tagID={100786060}
+      initParameters={{
+        clickmap: true,
+        trackLinks: true,
+        accurateTrackBounce: true,
+      }}
+    >
+      <>
+        <Head>
+          <title>Колода карт таро Omen с обучающим курсом по Таро</title>
+          <meta name="Колода карт таро Omen с обучающим курсом по Таро" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <link rel="shortcut icon" href="/favicon/favicon.ico" />
+        </Head>
+        <main>
+          <Component1 />
+          <Component2 videoSource="/videos/main_page.mp4" />
+          <Discover />
+          <Component3 />
+          <Component4 />
+          <Component5 />
+          <Component6 />
+          <SmartInvestment />
+          <Component7 />
+          <Component8 />
+          <Component9 />
+          <Modal />
+          <Footer />
+        </main>
+      </>
+    </YandexMetricaProvider>
   );
 }
