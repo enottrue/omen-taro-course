@@ -32,11 +32,11 @@ async function testRegistration() {
     const result = await response.json();
     
     if (result.success) {
-      console.log('✅ Сделка успешно создана в Битрикс24:');
-      console.log(`   - ID сделки: ${result.dealId}`);
-      console.log(`   - ID контакта: ${result.contactId}`);
-      console.log(`   - Продукт: ${result.productName}`);
-      console.log(`   - Цена: $${result.productPrice}`);
+      // console.log('✅ Сделка успешно создана в Битрикс24:');
+      // console.log(`   - ID сделки: ${result.dealId}`);
+      // console.log(`   - ID контакта: ${result.contactId}`);
+      // console.log(`   - Продукт: ${result.productName}`);
+      // console.log(`   - Цена: $${result.productPrice}`);
     } else {
       console.log('❌ Ошибка создания сделки:', result.error);
     }

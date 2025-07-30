@@ -184,9 +184,9 @@ const ModalFormRegister: NextPage<ModalFormRegisterType> = ({
             <path d="M22 10L10 22" stroke="#fff" strokeWidth="2" strokeLinecap="round"/>
           </svg>
         </button>
-        <h3 className={styles['modal-title']}>fill out</h3>
+        <h3 className={styles['modal-title']}>Create an account</h3>
         <h2 className={styles['modal-title-ru']}>
-          Registration
+         to access the course:
         </h2>
         <form className={styles['modal-fields']} onSubmit={handleSubmitForm}>
           <input

@@ -92,31 +92,31 @@ const ModalForm: NextPage<ModalFormType> = ({
     cc?.setSubmitting && cc.setSubmitting(true);
     
     if (!fullName || !validateFullName(fullName)) {
-      setError('Укажите Фамилию и Имя (минимум 2 слова)');
+      setError('Please provide your Last Name and First Name (minimum 2 words)');
       cc?.setSubmitting && cc.setSubmitting(false);
       return;
     }
     
     if (!email || !validateEmail(email)) {
-      setError('Укажите корректный email');
+      setError('Please enter a valid email address');
       cc?.setSubmitting && cc.setSubmitting(false);
       return;
     }
     
     if (!phone || !validatePhone(phone)) {
-      setError('Укажите корректный номер телефона');
+      setError('Please enter a valid phone number');
       cc?.setSubmitting && cc.setSubmitting(false);
       return;
     }
     
     if (!password || password.length < 4) {
-      setError('Укажите пароль не менее 4 символов');
+      setError('Please enter a password of at least 4 characters');
       cc?.setSubmitting && cc.setSubmitting(false);
       return;
     }
     
     if (!city || city.trim().length < 2) {
-      setError('Укажите город');
+      setError('Specify the city');
       cc?.setSubmitting && cc.setSubmitting(false);
       return;
     }
@@ -168,7 +168,7 @@ const ModalForm: NextPage<ModalFormType> = ({
         <form className={styles['modal-fields']} onSubmit={handleSubmit}>
           <input
             type="text"
-            placeholder="Фамилия Имя*"
+            placeholder="First Name Last Name*"
             required
             value={fullName}
             onChange={e => setFullName(e.target.value)}
@@ -200,7 +200,7 @@ const ModalForm: NextPage<ModalFormType> = ({
           />
           <input
             type="text"
-            placeholder="Город*"
+            placeholder="City*"
             required
             value={city}
             onChange={e => setCity(e.target.value)}
@@ -208,7 +208,7 @@ const ModalForm: NextPage<ModalFormType> = ({
           />
           {error && <div className={styles['modal-error']}>{error}</div>}
           <button className={styles['modal-submit']} type="submit" disabled={loading || cc?.submitting}>
-            {loading || cc?.submitting ? 'Регистрация...' : 'Зарегистрироваться'}
+            {loading || cc?.submitting ? 'Registration...' : 'Register'}
           </button>
         </form>
       </div>

@@ -457,7 +457,7 @@ export const resolvers = {
           });
 
           if (bitrixResult.success) {
-            console.log('Сделка успешно создана в Битрикс24:', bitrixResult.dealId);
+         //   console.log('Сделка успешно создана в Битрикс24:', bitrixResult.dealId);
             
             // Обновляем пользователя с ID из Битрикс24
             await context.prisma.user.update({
@@ -468,10 +468,10 @@ export const resolvers = {
               },
             });
           } else {
-            console.error('Ошибка создания сделки в Битрикс24:', bitrixResult.error);
+           // console.error('Ошибка создания сделки в Битрикс24:', bitrixResult.error);
           }
         } catch (bitrixError) {
-          console.error('Ошибка интеграции с Битрикс24:', bitrixError);
+         // console.error('Ошибка интеграции с Битрикс24:', bitrixError);
           // Не прерываем регистрацию пользователя, если Битрикс24 недоступен
         }
 

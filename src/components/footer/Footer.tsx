@@ -20,10 +20,10 @@ const Footer = () => (
       <div className="footer__copyright">2025 All rights are protected</div>
       
       {/* Authors */}
-      <div className="footer__authors">
+      {/* <div className="footer__authors">
         Елена и Виктор Воробьевы<br />
         Ноябрь, 2022 — Февраль, 2023
-      </div>
+      </div> */}
     </div>
   </footer>
 );

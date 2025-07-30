@@ -19,19 +19,19 @@ const OnboardingButton: React.FC<OnboardingButtonProps> = ({
     switch (type) {
       case 'skip':
         return {
-          title: 'Пропустить',
+          title: 'Skip',
           className: 'button_ternary',
           showIcon: false
         };
       case 'next':
         return {
-          title: 'Далее',
+          title: 'Next',
           className: 'js-onboarding-next',
           showIcon: true
         };
       case 'finish':
         return {
-          title: 'Перейти к обучению',
+          title: 'Go to training',
           className: 'js-onboarding-next',
           showIcon: true
         };
