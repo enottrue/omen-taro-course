@@ -391,7 +391,7 @@ export const resolvers = {
         if (userPresence?.id) {
           // throw new Error('Пользователь уже зарегистрирован');
           return {
-            message: 'Пользователь уже зарегистрирован',
+            message: 'The user is already registered',
             error: true,
           };
         }

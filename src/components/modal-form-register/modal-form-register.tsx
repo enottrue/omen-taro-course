@@ -191,7 +191,7 @@ const ModalFormRegister: NextPage<ModalFormRegisterType> = ({
         <form className={styles['modal-fields']} onSubmit={handleSubmitForm}>
           <input
             type="text"
-            placeholder="Full Name"
+            placeholder="First Name*"
             required
             value={fullName}
             onChange={e => setFullName(e.target.value)}
@@ -209,7 +209,7 @@ const ModalFormRegister: NextPage<ModalFormRegisterType> = ({
           />
           <input
             type="password"
-            placeholder="Password*"
+            placeholder="Create Password*"
             required
             value={password}
             onChange={e => setPassword(e.target.value)}
