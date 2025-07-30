@@ -489,9 +489,9 @@ export const resolvers = {
             error: true,
           };
         }
-        console.error('Неизвестная ошибка в registerUser:', error);
+        console.error('Unknown error in registerUser:', error);
         return {
-          message: 'Что-то пошло не так. Попробуй еще раз',
+          message: 'Something went wrong. Try again.',
           error: true,
         };
       }
@@ -511,11 +511,11 @@ export const resolvers = {
         where: { email: args.email },
       });
       if (!user) {
-        throw new Error('Неправильный пароль или email');
+        throw new Error('Incorrect password or email');
       }
       const valid = await bcrypt.compare(args.password, user.password);
       if (!valid) {
-        throw new Error('Неправильный пароль или email');
+        throw new Error('Incorrect password or email');
       }
       //@ts-expect-error
       const token = jwt.sign({ userId: user.id }, APP_SECRET);
@@ -549,7 +549,7 @@ export const resolvers = {
         if (!user) {
           console.log('No user found, returning success message');
           return {
-            message: 'Если пользователь с таким email существует, инструкции отправлены',
+            message: 'If a user with such email exists, instructions have been sent.',
             error: false,
           };
         }
@@ -588,21 +588,21 @@ export const resolvers = {
         if (emailResult.success) {
           console.log('Password reset email sent successfully');
           return {
-            message: 'Инструкции для восстановления пароля отправлены на ваш email',
+            message: 'Password recovery instructions have been sent to your email.',
             error: false,
             resetUrl: resetUrl, // Добавляем URL для отладки
           };
         } else {
           console.error('Failed to send password reset email:', emailResult.error);
           return {
-            message: 'Ошибка при отправке email. Попробуйте позже.',
+            message: 'Error sending email. Try again later.',
             error: true,
           };
         }
       } catch (error) {
         console.error('Error in forgotPassword:', error);
         return {
-          message: 'Произошла ошибка. Попробуйте позже.',
+          message: 'An error has occurred. Please try again later.',
           error: true,
         };
       } finally {
@@ -644,14 +644,14 @@ export const resolvers = {
         const authToken = jwt.sign({ userId: updatedUser.id }, APP_SECRET);
 
         return {
-          message: 'Пароль успешно изменен',
+          message: 'Password changed successfully',
           error: false,
           user: updatedUser,
           token: authToken,
         };
       } catch (error) {
         return {
-          message: 'Недействительный или истекший токен',
+          message: 'Invalid or expired token',
           error: true,
         };
       }

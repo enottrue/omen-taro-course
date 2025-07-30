@@ -1,6 +1,10 @@
 import type { NextPage } from "next";
 import styles from "./component1.module.scss";
 import BurgerMenu from "./BurgerMenu";
+import { useContext } from "react";
+import { MainContext } from "@/contexts/MainContext";
+import { useRouter } from "next/router";
+import Cookies from 'js-cookie';
 
 export type HeaderType = {
   className?: string;
@@ -12,6 +16,22 @@ export type HeaderType = {
 };
 
 const Header: NextPage<HeaderType> = ({ className = "", onOpenModal, hideLoginButton = false, onBurgerClick, isBurgerOpen = false, burgerRef }) => {
+  const cc = useContext(MainContext);
+  const router = useRouter();
+  const isAuthenticated = !!(cc?.token && cc?.user);
+
+  const handleLogout = () => {
+    Cookies.remove('Bearer');
+    Cookies.remove('userId');
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    cc?.setToken(null);
+    cc?.setUserId(null);
+    cc?.setUser(null);
+    cc?.setMenuOpen(false);
+    router.push('/');
+  };
+
   return (
     <header className={styles.frameGroup}>
       <div className={styles.frameWrapper}>
@@ -24,10 +44,12 @@ const Header: NextPage<HeaderType> = ({ className = "", onOpenModal, hideLoginBu
         {!hideLoginButton && (
           <div 
             className={styles.wrapper}
-            onClick={onOpenModal}
+            onClick={isAuthenticated ? handleLogout : onOpenModal}
             style={{ cursor: 'pointer' }}
           >
-            <div className={styles.div}>Sign In</div>
+            <div className={styles.div}>
+              {isAuthenticated ? 'Sign Out' : 'Sign In'}
+            </div>
           </div>
         )}
         
