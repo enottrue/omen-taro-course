@@ -10,10 +10,10 @@ const Title: NextPage<TitleType> = ({ className = "" }) => {
     <div className={styles.frameDiv}>
       <div className={styles.yourMoneyIsInYourParent}>
         <h1 className={styles.cosmo}>
-          <p className={styles.noMoreGuessing}>{`Your Money `}</p>
-          <p className={styles.noMoreGuessing}>{`Is in Your `}</p>
+          <p className={styles.noMoreGuessing}>{`Money `}</p>
+          {/* <p className={styles.noMoreGuessing}>{`Is in Your `}</p> */}
         </h1>
-        <h2 className={styles.birthChart}>Birth Chart</h2>
+        <h2 className={styles.birthChart}>Compass</h2>
       </div>
     </div>
   );
