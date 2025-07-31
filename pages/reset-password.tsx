@@ -55,7 +55,7 @@ const ResetPassword = () => {
     
     if (!tokenFromUrl) {
       console.log('No token found, setting error');
-      setError('Недействительная ссылка для сброса пароля');
+      setError('Invalid password reset link');
     } else {
       console.log('Token found:', tokenFromUrl);
     }
@@ -72,19 +72,19 @@ const ResetPassword = () => {
     setLoading(true);
 
     if (!token) {
-      setError('Недействительная ссылка для сброса пароля');
+      setError('Invalid password reset link');
       setLoading(false);
       return;
     }
 
     if (!password || !validatePassword(password)) {
-      setError('Пароль должен содержать минимум 6 символов');
+      setError('Password must contain at least 6 characters');
       setLoading(false);
       return;
     }
 
     if (password !== confirmPassword) {
-      setError('Пароли не совпадают');
+      setError('Passwords do not match');
       setLoading(false);
       return;
     }
@@ -110,7 +110,7 @@ const ResetPassword = () => {
       } else {
         console.log('No error detected, proceeding with success flow');
         console.log('Reset password response:', response.resetPassword);
-        setSuccess('Пароль успешно изменен! Выполняется автоматический вход...');
+        setSuccess('Password changed successfully! Logging you in automatically...');
         
         // Automatically log in the user
         if (response.resetPassword.user) {
@@ -164,12 +164,12 @@ const ResetPassword = () => {
           }, 2000);
         } else {
           console.log('No user data in response');
-          setError('Ошибка: данные пользователя не получены');
+          setError('Error: User data not received');
         }
       }
     } catch (error) {
       console.error('Reset password error:', error);
-      setError('Произошла ошибка при сбросе пароля');
+      setError('An error occurred while resetting the password');
     } finally {
       setLoading(false);
     }
@@ -193,10 +193,10 @@ const ResetPassword = () => {
           width: '100%'
         }}>
           <h2 style={{ color: '#e74c3c', marginBottom: '20px', textAlign: 'center' }}>
-            Ошибка
+            Error
           </h2>
           <p style={{ color: '#666', textAlign: 'center' }}>
-            {error || 'Недействительная ссылка для сброса пароля'}
+            {error || 'Invalid password reset link'}
           </p>
           <button 
             onClick={() => router.push('/')}
@@ -211,7 +211,7 @@ const ResetPassword = () => {
               marginTop: '20px'
             }}
           >
-            Вернуться на главную
+            Return to Home
           </button>
         </div>
       </div>
@@ -235,7 +235,7 @@ const ResetPassword = () => {
         width: '100%'
       }}>
         <h2 style={{ marginBottom: '30px', textAlign: 'center', color: '#2c3e50' }}>
-          Сброс пароля
+          Reset Password
         </h2>
         
         {error && (
@@ -266,7 +266,7 @@ const ResetPassword = () => {
           <div style={{ marginBottom: '20px' }}>
             <input
               type="password"
-              placeholder="Новый пароль"
+              placeholder="New Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               style={{
@@ -283,7 +283,7 @@ const ResetPassword = () => {
           <div style={{ marginBottom: '20px' }}>
             <input
               type="password"
-              placeholder="Подтвердите пароль"
+              placeholder="Confirm Password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               style={{
@@ -311,7 +311,7 @@ const ResetPassword = () => {
               fontSize: '16px'
             }}
           >
-            {loading ? 'Изменение пароля...' : 'Изменить пароль'}
+            {loading ? 'Changing Password...' : 'Change Password'}
           </button>
         </form>
       </div>
