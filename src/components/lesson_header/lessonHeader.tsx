@@ -233,7 +233,26 @@ export default function CourseLessonHeader({
                     </span>
                   </div>
                 </div>
-                
+                <div className="lesson-div1">
+
+                  
+                  {/* Stage Description */}
+                  {(() => {
+                    const currentStage = lesson?.lessonStages?.find((s: any) => s.stageNumber === Number(currentStageId));
+                    return currentStage?.stageDescription ? (
+                      <div
+                        className="lesson-div1"
+                        dangerouslySetInnerHTML={{
+                          __html: currentStage.stageDescription,
+                        }}
+                      />
+                    ) : (
+                      <div className="lesson-div1">
+                        <p><strong>Lesson Description:</strong> Description for this lesson has not been added yet.</p>
+                      </div>
+                    );
+                  })()}
+                </div>
                 
                 <VideoPlayer
                   url={`${process.env.NEXT_PUBLIC_VIDEO_URL + `/videos/` || 'https://storage.yandexcloud.net/omen-course/'}/${currentLessonId}_${currentStageId}.mp4`}

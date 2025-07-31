@@ -219,8 +219,8 @@ const Cources = ({
   return (
     <>
       <Head>
-        <title>Обучающий курс по Таро</title>
-        <meta name="Обучающий курс по Таро - Omen | Курс Таро" />
+        <title>Tarot training course</title>
+        <meta name="Tarot training course - Omen | Tarot Course" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="shortcut icon" href="/favicon/favicon.ico" />
       </Head>
@@ -229,7 +229,7 @@ const Cources = ({
         <Component2 textShown={false} typePage="courses" videoSource="/videos/intro_course.mp4" />
         <CourseLessons lessons={courses?.lessons} />
       </main>
-      <FooterInside />
+      {/* <FooterInside /> */}
     </>
   );
 };
