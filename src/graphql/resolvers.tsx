@@ -475,6 +475,27 @@ export const resolvers = {
           // Не прерываем регистрацию пользователя, если Битрикс24 недоступен
         }
 
+        // Send welcome email after successful registration
+        console.log('🔄 Sending welcome email to:', user.email);
+        try {
+          const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://astro-irena.com';
+          const welcomeEmailResult = await emailService.sendWelcomeEmail(
+            user.email,
+            user.name,
+            args.password, // Use the original password before hashing
+            siteUrl
+          );
+          
+          if (welcomeEmailResult.success) {
+            console.log('✅ Welcome email sent successfully');
+          } else {
+            console.log('⚠️ Welcome email failed to send:', welcomeEmailResult.error);
+          }
+        } catch (emailError) {
+          console.log('⚠️ Error sending welcome email:', emailError);
+          // Don't fail registration if email fails
+        }
+
         return {
           token,
           user,
