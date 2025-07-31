@@ -26,11 +26,11 @@ const transporter = nodemailer.createTransport(emailConfig);
 // Email templates
 const emailTemplates = {
   passwordReset: (resetUrl: string, userName: string = 'User') => ({
-    subject: 'Password Recovery - Omen Tarot',
+    subject: 'Password Recovery - Cosmo Irena',
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
         <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 10px; text-align: center;">
-          <h1 style="color: white; margin: 0; font-size: 24px;">Omen Tarot</h1>
+          <h1 style="color: white; margin: 0; font-size: 24px;">Cosmo Irena</h1>
           <p style="color: white; margin: 10px 0 0 0; font-size: 16px;">Password Recovery</p>
         </div>
         
@@ -65,7 +65,7 @@ const emailTemplates = {
       </div>
     `,
     text: `
-      Password Recovery - Omen Tarot
+      Password Recovery - Cosmo Irena
       
       Hello, ${userName}!
       
@@ -76,7 +76,7 @@ const emailTemplates = {
       ${resetUrl}
       
       Best regards,
-      Omen Tarot Team
+      Cosmo Irena Team
     `
   })
 };
@@ -102,7 +102,7 @@ export const emailService = {
           const template = emailTemplates.passwordReset(resetUrl, userName);
           
           const mailOptions = {
-            from: `"Omen Tarot" <${emailConfig.auth.user}>`,
+            from: `"Cosmo Irena" <${emailConfig.auth.user}>`,
             to: email,
             subject: template.subject,
             html: template.html,
@@ -118,7 +118,7 @@ export const emailService = {
           // Log email to console if no SMTP config
           console.log('=== EMAIL SEND (DEVELOPMENT MODE - CONSOLE ONLY) ===');
           console.log('To:', email);
-          console.log('Subject: Восстановление пароля - Omen Tarot');
+          console.log('Subject: Восстановление пароля - Cosmo Irena');
           console.log('Reset URL:', resetUrl);
           console.log('Note: To send real emails in development, configure SMTP credentials');
           console.log('=== END EMAIL ===');
@@ -130,7 +130,7 @@ export const emailService = {
       const template = emailTemplates.passwordReset(resetUrl, userName);
       
       const mailOptions = {
-        from: `"Omen Tarot" <${emailConfig.auth.user}>`,
+        from: `"Cosmo Irena" <${emailConfig.auth.user}>`,
         to: email,
         subject: template.subject,
         html: template.html,
