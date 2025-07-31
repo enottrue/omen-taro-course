@@ -218,7 +218,7 @@ const ModalFormRegister: NextPage<ModalFormRegisterType> = ({
           />
           {error && <div className={styles['modal-error']}>{error}</div>}
           <button className={styles['modal-submit']} type="submit" disabled={loading || cc?.submitting}>
-            {loading || cc?.submitting ? 'Registering...' : 'Register'}
+            {loading || cc?.submitting ? 'Sign Up ...' : 'Sign Up '}
           </button>
           <a 
             href="#"

@@ -90,9 +90,9 @@ const ResetPassword = () => {
     }
 
     try {
-      console.log('Submitting reset password form');
-      console.log('Token:', token);
-      console.log('Password:', password);
+      // console.log('Submitting reset password form');
+      // console.log('Token:', token);
+      // console.log('Password:', password);
       
       const response = await request('/api/graphql', RESET_PASSWORD_MUTATION, {
         token: token as string,
