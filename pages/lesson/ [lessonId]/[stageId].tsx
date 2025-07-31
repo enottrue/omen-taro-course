@@ -266,7 +266,7 @@ const Lesson = ({
     <>
       <Head>
         <title>Обучающий курс по Таро</title>
-        <meta name="Обучающий курс по Таро - Omen | Курс Таро" />
+        <meta name="Tarot Learning Course - Omen | Tarot Course" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
          <link rel="shortcut icon" href="/favicon/favicon.ico" />
  
