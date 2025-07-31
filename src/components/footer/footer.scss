@@ -17,7 +17,7 @@
 }
 
 // Privacy Policy
-.footer__policy {
+.footer__policy, .footer__policy a {
   font-family: 'Inter', sans-serif;
   font-size: 14px;
   font-weight: 700;
@@ -25,6 +25,10 @@
   text-align: center;
   cursor: pointer;
   margin-bottom: 8px;
+  text-decoration: none;
+  &:hover {
+    color: #585858;
+  } 
 }
 
 // Social icons

@@ -5,8 +5,7 @@ const Footer = () => (
   <footer className="footer">
     <div className="footer__wrapper">
       {/* Privacy Policy */}
-      <div className="footer__policy">Privacy Policy</div>
-      
+      <div className="footer__policy"><a href="/privacy-policy.html">Privacy Policy</a></div>
       {/* Social Icons */}
       <div className="footer__socials">
         <a href="https://www.instagram.com/cosmo.irena" className="footer__social-icon" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
