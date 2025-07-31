@@ -11,37 +11,46 @@ const emailConfig = {
   },
 };
 
+// Log email configuration (without password)
+console.log('Email configuration:', {
+  host: emailConfig.host,
+  port: emailConfig.port,
+  secure: emailConfig.secure,
+  user: emailConfig.auth.user,
+  hasPassword: !!emailConfig.auth.pass && emailConfig.auth.pass !== 'your-app-password'
+});
+
 // Create transporter
 const transporter = nodemailer.createTransport(emailConfig);
 
 // Email templates
 const emailTemplates = {
-  passwordReset: (resetUrl: string, userName: string = 'Пользователь') => ({
-    subject: 'Восстановление пароля - Omen Tarot',
+  passwordReset: (resetUrl: string, userName: string = 'User') => ({
+    subject: 'Password Recovery - Omen Tarot',
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
         <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 10px; text-align: center;">
           <h1 style="color: white; margin: 0; font-size: 24px;">Omen Tarot</h1>
-          <p style="color: white; margin: 10px 0 0 0; font-size: 16px;">Восстановление пароля</p>
+          <p style="color: white; margin: 10px 0 0 0; font-size: 16px;">Password Recovery</p>
         </div>
         
         <div style="background: white; padding: 30px; border-radius: 0 0 10px 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-          <h2 style="color: #2c3e50; margin-bottom: 20px;">Здравствуйте, ${userName}!</h2>
+          <h2 style="color: #2c3e50; margin-bottom: 20px;">Hello, ${userName}!</h2>
           
           <p style="color: #666; line-height: 1.6; margin-bottom: 20px;">
-            Мы получили запрос на восстановление пароля для вашего аккаунта. 
-            Если вы не делали этот запрос, просто проигнорируйте это письмо.
+            We received a request to reset the password for your account. 
+            If you did not make this request, please ignore this email.
           </p>
           
           <div style="text-align: center; margin: 30px 0;">
             <a href="${resetUrl}" 
                style="background: #3498db; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">
-              Восстановить пароль
+              Reset Password
             </a>
           </div>
           
           <p style="color: #666; font-size: 14px; margin-top: 30px;">
-            Если кнопка не работает, скопируйте и вставьте эту ссылку в браузер:
+            If the button doesn't work, copy and paste this link into your browser:
           </p>
           <p style="color: #3498db; font-size: 14px; word-break: break-all;">
             ${resetUrl}
@@ -50,24 +59,24 @@ const emailTemplates = {
           <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
           
           <p style="color: #999; font-size: 12px; text-align: center;">
-            Это письмо отправлено автоматически. Пожалуйста, не отвечайте на него.
+            This email was sent automatically. Please do not reply to it.
           </p>
         </div>
       </div>
     `,
     text: `
-      Восстановление пароля - Omen Tarot
+      Password Recovery - Omen Tarot
       
-      Здравствуйте, ${userName}!
+      Hello, ${userName}!
       
-      Мы получили запрос на восстановление пароля для вашего аккаунта. 
-      Если вы не делали этот запрос, просто проигнорируйте это письмо.
+      We received a request to reset the password for your account. 
+      If you did not make this request, please ignore this email.
       
-      Для восстановления пароля перейдите по ссылке:
+      To reset your password, please visit this link:
       ${resetUrl}
       
-      С уважением,
-      Команда Omen Tarot
+      Best regards,
+      Omen Tarot Team
     `
   })
 };
@@ -79,7 +88,9 @@ export const emailService = {
     try {
       // Check if SMTP credentials are configured
       const hasSmtpConfig = emailConfig.auth.user !== 'your-email@gmail.com' && 
-                           emailConfig.auth.pass !== 'your-app-password';
+                           emailConfig.auth.pass !== 'your-app-password' &&
+                           emailConfig.auth.user !== 'support@astro-irena.com' &&
+                           emailConfig.auth.pass !== 'your-password-here';
 
       // In development, check if we should send real emails
       if (process.env.NODE_ENV === 'development') {
@@ -152,7 +163,9 @@ export const emailService = {
   // Check if SMTP is configured
   isSmtpConfigured() {
     return emailConfig.auth.user !== 'your-email@gmail.com' && 
-           emailConfig.auth.pass !== 'your-app-password';
+           emailConfig.auth.pass !== 'your-app-password' &&
+           emailConfig.auth.user !== 'support@astro-irena.com' &&
+           emailConfig.auth.pass !== 'your-password-here';
   }
 };
 
