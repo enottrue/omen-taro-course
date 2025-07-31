@@ -84,9 +84,9 @@ export const CoursePdfItem = ({ lessons }: CoursePdfItemProps) => {
 
   return (
     <>
-      <div className="about-the-parent">
-        <h1 className="cosmo">About the</h1>
-        <h2 className="instructor">Instructor:</h2>
+      <div className="about-the-parent" id="course-program">
+        <h1 className="cosmo">Course</h1>
+        <h2 className="instructor">Outline</h2>
       </div>
       <div className="frame-parent5">
         {/* PDF Item as accordion with card design inside */}
