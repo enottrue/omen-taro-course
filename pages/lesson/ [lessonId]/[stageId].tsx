@@ -250,7 +250,7 @@ const Lesson = ({
     return (
       <>
         <Head>
-          <title>Доступ ограничен - Урок</title>
+          <title>Access Restricted - Lesson</title>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="shortcut icon" href="/favicon/favicon.ico" />
         </Head>
@@ -265,7 +265,7 @@ const Lesson = ({
   return (
     <>
       <Head>
-        <title>Обучающий курс по Таро</title>
+        <title>Tarot Learning Course</title>
         <meta name="Tarot Learning Course - Omen | Tarot Course" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
          <link rel="shortcut icon" href="/favicon/favicon.ico" />

@@ -47,7 +47,7 @@ const Bitrix24TestPage: React.FC = () => {
   return (
     <>
       <Head>
-        <title>Тест интеграции с Битрикс24</title>
+        <title>Bitrix24 Integration Test</title>
       </Head>
       
       <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>

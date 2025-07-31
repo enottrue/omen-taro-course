@@ -100,7 +100,7 @@ const Onboarding = ({
   return (
     <>
       <Head>
-        <title>Колода карт таро Omen с обучающим курсом по Таро</title>
+        <title>Omen Tarot Deck with Tarot Learning Course</title>
         <meta name="Tarot Learning Course - Omen | Introduction" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
          <link rel="shortcut icon" href="/favicon/favicon.ico" />

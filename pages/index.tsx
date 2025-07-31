@@ -104,8 +104,8 @@ export default function Home({
     >
       <>
         <Head>
-          <title>Колода карт таро Omen с обучающим курсом по Таро</title>
-          <meta name="Колода карт таро Omen с обучающим курсом по Таро" />
+          <title>Omen Tarot Deck with Tarot Learning Course</title>
+          <meta name="Omen Tarot Deck with Tarot Learning Course" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="shortcut icon" href="/favicon/favicon.ico" />
         </Head>

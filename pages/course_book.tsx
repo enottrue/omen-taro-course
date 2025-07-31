@@ -158,7 +158,7 @@ export default function CourseBook({
     return (
       <>
         <Head>
-          <title>Доступ ограничен - Книга курса</title>
+          <title>Access Restricted - Course Book</title>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="shortcut icon" href="/favicon/favicon.ico" />
         </Head>
@@ -173,8 +173,8 @@ export default function CourseBook({
   return (
     <>
       <Head>
-        <title>Книга курса - Обучающий курс по Таро</title>
-        <meta name="Книга курса - Omen | Курс Таро" />
+        <title>Course Book - Tarot Learning Course</title>
+        <meta name="Course Book - Omen | Tarot Course" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="shortcut icon" href="/favicon/favicon.ico" />
       </Head>

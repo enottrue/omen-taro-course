@@ -203,7 +203,7 @@ const Cources = ({
     return (
       <>
         <Head>
-          <title>Доступ ограничен - Обучающий курс по Таро</title>
+          <title>Access Restricted - Tarot Learning Course</title>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="shortcut icon" href="/favicon/favicon.ico" />
         </Head>
