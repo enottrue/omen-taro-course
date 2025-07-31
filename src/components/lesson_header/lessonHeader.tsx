@@ -183,14 +183,14 @@ export default function CourseLessonHeader({
               </div>
             </div>
           </header>
-          <div className="lesson-frame-div">
+          {/* <div className="lesson-frame-div">
             <div className="lesson-frame-parent1">
               <div className="lesson-frame-parent2">
                 <div className="lesson-div1">
 
                   
                   {/* Stage Description */}
-                  {(() => {
+                  {/* {(() => {
                     const currentStage = lesson?.lessonStages?.find((s: any) => s.stageNumber === Number(currentStageId));
                     return currentStage?.stageDescription ? (
                       <div
@@ -207,8 +207,8 @@ export default function CourseLessonHeader({
                   })()}
                 </div>
               </div>
-            </div>
-          </div>
+            </div> 
+          </div> */}
           
           <div className="lesson-frame-div">
             <div className="lesson-frame-parent1">

@@ -175,7 +175,7 @@ const Lesson = ({
       </Head>
       <main>
         <Header token={token} userId={userId} />
-        <FooterInside />
+        {/* <FooterInside /> */}
       </main>
      
     </>

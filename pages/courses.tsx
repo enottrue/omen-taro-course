@@ -229,7 +229,7 @@ const Cources = ({
         <Component2 textShown={false} typePage="courses" videoSource="/videos/intro_course.mp4" />
         <CourseLessons lessons={courses?.lessons} />
       </main>
-      {/* <FooterInside /> */}
+      <FooterInside />
     </>
   );
 };
