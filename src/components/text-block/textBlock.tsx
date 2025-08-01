@@ -78,30 +78,17 @@ const TextBlock = () => {
               >
                 <div className={styles.div1}>Ask a Question</div>
               </a>
-              {!isAuthenticated ? (
-                <div 
-                  className={styles.wrapper}
-                  onClick={() => {
-                    cc?.setModalOpen(true);
-                    cc?.setCurrentForm('auth');
-                  }}
-                  style={{ cursor: 'pointer' }}
-                >
-                  <div className={styles.div}>Sign In</div>
-                </div>
-              ) : (
-                <div 
-                  ref={burgerRef}
-                  className={styles.burgerMenu}
-                  onClick={handleBurgerClick}
-                  style={{ cursor: 'pointer', marginLeft: '10px', position: 'relative', minWidth: 'fit-content' }}
-                >
-                  <div className={styles.burgerLine}></div>
-                  <div className={styles.burgerLine}></div>
-                  <div className={styles.burgerLine}></div>
-                  <BurgerMenu isOpen={isBurgerOpen} onClose={handleBurgerClick} />
-                </div>
-              )}
+              <div 
+                ref={burgerRef}
+                className={styles.burgerMenu}
+                onClick={handleBurgerClick}
+                style={{ cursor: 'pointer', marginLeft: '10px', position: 'relative', minWidth: 'fit-content' }}
+              >
+                <div className={styles.burgerLine}></div>
+                <div className={styles.burgerLine}></div>
+                <div className={styles.burgerLine}></div>
+                <BurgerMenu isOpen={isBurgerOpen} onClose={handleBurgerClick} />
+              </div>
             </div>
           </header>
       

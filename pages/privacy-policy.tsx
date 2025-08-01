@@ -11,6 +11,7 @@ import { GetServerSideProps } from 'next';
 import { useGetLazyUserData } from '@/hooks/useGetUserData';
 import Footer from '@/components/footer/Footer';
 import TextBlock from '@/components/text-block/textBlock';
+import Modal from '@/components/modal/Modal';
 
 import { apolloClient } from '@/lib/apollo/apollo';
 import { GET_COURSES, GET_COURSE, GET_STAGE_STATUS } from '@/graphql/queries';
@@ -150,6 +151,7 @@ export default function CourseBook({
       </Head>
       <main>
         <TextBlock />
+        <Modal />
         <Footer />
       </main>
      

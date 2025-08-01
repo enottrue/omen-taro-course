@@ -7,6 +7,7 @@ function LessonTimeline(stage: any) {
     : Array.from({ length: 11 }, (_, i) => i + 1);
   
   return (
+    
     <div className="lesson-timeline-wrapper">
       <h3 className="lesson-timeline-title">Timestamps</h3>
       

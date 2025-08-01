@@ -66,14 +66,33 @@ const BurgerMenu: NextPage<BurgerMenuType> = ({ isOpen, onClose }) => {
     );
   }
 
-  // Меню для неавторизованных пользователей (оставляем как есть)
+  // Меню для неавторизованных пользователей
   return (
     <div className={styles.burgerDropdown}>
       <div className={styles.burgerDropdownContent}>
-        <div className={styles.burgerMenuItem} onClick={onClose}>
+        <div className={styles.burgerMenuItem}>
+          <Link href="/" legacyBehavior>
+            <a className={getActiveClass('/')} onClick={onClose}>Home</a>
+          </Link>
+        </div>
+        <div 
+          className={styles.burgerMenuItem} 
+          onClick={() => {
+            cc?.setModalOpen(true);
+            cc?.setCurrentForm('auth');
+            onClose();
+          }}
+        >
           <span>Sign In</span>
         </div>
-        <div className={styles.burgerMenuItem} onClick={onClose}>
+        <div 
+          className={styles.burgerMenuItem} 
+          onClick={() => {
+            cc?.setModalOpen(true);
+            cc?.setCurrentForm('register');
+            onClose();
+          }}
+        >
           <span>Register</span>
         </div>
         {/* <div className={styles.burgerMenuItem} onClick={onClose}>
