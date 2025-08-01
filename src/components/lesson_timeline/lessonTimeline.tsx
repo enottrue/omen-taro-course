@@ -8,7 +8,7 @@ function LessonTimeline(stage: any) {
   
   return (
     <div className="lesson-timeline-wrapper">
-      <h3 className="lesson-timeline-title">Timeline</h3>
+      <h3 className="lesson-timeline-title">Timestamps</h3>
       
       <div className="lesson-timeline-content">
         {sections.map((section: any, i: number) => {

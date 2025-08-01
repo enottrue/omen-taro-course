@@ -15,6 +15,7 @@ const TextBlock = () => {
   const cc = useContext(MainContext);
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
   const burgerRef = useRef<HTMLDivElement>(null);
+  const isAuthenticated = !!(cc?.token && cc?.user);
 
   const handleBurgerClick = () => {
     setIsBurgerOpen(!isBurgerOpen);
@@ -77,17 +78,30 @@ const TextBlock = () => {
               >
                 <div className={styles.div1}>Ask a Question</div>
               </a>
-              <div 
-                ref={burgerRef}
-                className={styles.burgerMenu}
-                onClick={handleBurgerClick}
-                style={{ cursor: 'pointer', marginLeft: '10px', position: 'relative', minWidth: 'fit-content' }}
-              >
-                <div className={styles.burgerLine}></div>
-                <div className={styles.burgerLine}></div>
-                <div className={styles.burgerLine}></div>
-                <BurgerMenu isOpen={isBurgerOpen} onClose={handleBurgerClick} />
-              </div>
+              {!isAuthenticated ? (
+                <div 
+                  className={styles.wrapper}
+                  onClick={() => {
+                    cc?.setModalOpen(true);
+                    cc?.setCurrentForm('auth');
+                  }}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <div className={styles.div}>Sign In</div>
+                </div>
+              ) : (
+                <div 
+                  ref={burgerRef}
+                  className={styles.burgerMenu}
+                  onClick={handleBurgerClick}
+                  style={{ cursor: 'pointer', marginLeft: '10px', position: 'relative', minWidth: 'fit-content' }}
+                >
+                  <div className={styles.burgerLine}></div>
+                  <div className={styles.burgerLine}></div>
+                  <div className={styles.burgerLine}></div>
+                  <BurgerMenu isOpen={isBurgerOpen} onClose={handleBurgerClick} />
+                </div>
+              )}
             </div>
           </header>
       
@@ -97,28 +111,51 @@ const TextBlock = () => {
               <div className="frame-parent2">
                 <div className="parent">
                   <h3 className="cosmo">
-                    <p className="p">Политика конфиденциальности</p>
-               
+                    <p className="p">Privacy Policy</p>
                   </h3>
-             
                 </div>
                 
                 <div className="div1">
                   <p className="p">
-                    В этом электронном методическом пособии вы найдете значения арканов, 
-                    историю возникновения колоды Таро А. Уэйта и расклады.
+                    This Privacy Policy describes how we collect, use, and protect your personal information when you use our website and services.
                   </p>
                   <p className="p">&nbsp;</p>
                   <p className="p">
-                    Если в процессе работы с картами вам понадобится определенная информация, 
-                    вы можете не пересматривать заново курс, а воспользоваться электронным
-                    пособием, максимально приближенным к курсу. Это позволит вам
-                    быстрее ориентироваться в раскладах.
+                    By using our Site and services, you agree to this Privacy Policy. We take necessary measures to protect your personal data from unauthorized access, alteration, disclosure, or destruction.
+                  </p>
+                  <p className="p">&nbsp;</p>
+                  <p className="p">
+                    We collect information such as your name, email address, phone number, and usage data to provide you with access to courses and materials, improve our services, process payments, and communicate with you.
+                  </p>
+                  <p className="p">&nbsp;</p>
+                  <p className="p">
+                    We do not sell, exchange, or transfer your personal data to third parties except when necessary to provide services, required by law, or with your explicit consent.
+                  </p>
+                  <p className="p">&nbsp;</p>
+                  <p className="p">
+                    You have the right to access, correct, delete your personal data, restrict processing, and withdraw consent. For questions about data processing, contact us at support@astro-irena.com
                   </p>
                 </div>
               </div>
-
-      
+{/* 
+              <div className="cource-book__button">
+                <Button
+                  title="Download Policy"
+                  isLink
+                  href="/privacy-policy.pdf"
+                  target="_blank"
+                  className="enroll-now-only-50-wrapper"
+                >
+                  <span className="cource-book__icon-download">
+                    <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M8.09466 1.48537L8 11.4849" stroke="#002B80" strokeWidth="2" strokeLinecap="round"/>
+                      <path d="M15 16.0668H1" stroke="#002B80" strokeWidth="2" strokeLinecap="round"/>
+                      <path d="M2.29676 6.59003L7.24651 11.5398C7.63703 11.9303 8.2702 11.9303 8.66072 11.5398L13.6105 6.59003" stroke="#002B80" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M2.29676 6.59003L7.24651 11.5398C7.63703 11.9303 8.2702 11.9303 8.66072 11.5398L13.6105 6.59003" stroke="#002B80" strokeOpacity="0.2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </span>
+                </Button>
+              </div> */}
             </div>
           </div>
         </div>

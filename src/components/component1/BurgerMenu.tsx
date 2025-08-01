@@ -76,12 +76,12 @@ const BurgerMenu: NextPage<BurgerMenuType> = ({ isOpen, onClose }) => {
         <div className={styles.burgerMenuItem} onClick={onClose}>
           <span>Register</span>
         </div>
-        <div className={styles.burgerMenuItem} onClick={onClose}>
+        {/* <div className={styles.burgerMenuItem} onClick={onClose}>
           <span>About Us</span>
         </div>
         <div className={styles.burgerMenuItem} onClick={onClose}>
           <span>Contact</span>
-        </div>
+        </div> */}
       </div>
     </div>
   );
