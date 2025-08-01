@@ -9,41 +9,31 @@
 @import '../components/button/button.scss';
 @import '../components/course_lessons/course_lessons.scss';
 
-// Privacy Policy Page Styles
-.privacy-policy {
-  background: linear-gradient(135deg, #1c0076 0%, #001a4d 100%);
-  min-height: 100vh;
-  padding: 60px 20px 60px;
+// Privacy Policy Page Styles (using lesson design)
+.lesson-content {
+  width: 100%;
+  padding: 20px;
   
-  &__container {
+  .lesson-main-content {
     max-width: 800px;
     margin: 0 auto;
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
+    padding: 40px 20px;
+    background: rgba(255, 255, 255, 0.95);
     border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    overflow: hidden;
-  }
-  
-  &__content {
-    padding: 40px;
-    color: #fff;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     
     @media (max-width: 768px) {
-      padding: 30px 20px;
+      padding: 30px 15px;
     }
   }
   
-  &__title {
+  .lesson-title {
     font-family: var(--font-unbounded);
     font-size: 2.5rem;
     font-weight: 700;
     text-align: center;
     margin-bottom: 40px;
-    background: linear-gradient(45deg, #fff, #e0e0e0);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--color-blue);
     
     @media (max-width: 768px) {
       font-size: 2rem;
@@ -51,16 +41,16 @@
     }
   }
   
-  &__section {
+  .lesson-section {
     margin-bottom: 30px;
     
     h2 {
       font-family: var(--font-unbounded);
       font-size: 1.5rem;
       font-weight: 700;
-      color: #fff;
+      color: var(--color-blue);
       margin-bottom: 15px;
-      border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+      border-bottom: 2px solid var(--color-navy);
       padding-bottom: 10px;
       
       @media (max-width: 768px) {
@@ -72,7 +62,7 @@
       font-family: var(--font-roboto);
       font-size: 1rem;
       line-height: 1.6;
-      color: rgba(255, 255, 255, 0.9);
+      color: var(--color-blue);
       margin-bottom: 15px;
       
       @media (max-width: 768px) {
@@ -88,13 +78,13 @@
         font-family: var(--font-roboto);
         font-size: 1rem;
         line-height: 1.6;
-        color: rgba(255, 255, 255, 0.9);
+        color: var(--color-blue);
         margin-bottom: 8px;
         position: relative;
         
         &::before {
           content: "•";
-          color: #0044cc;
+          color: var(--color-navy);
           font-weight: bold;
           position: absolute;
           left: -15px;
@@ -107,24 +97,24 @@
     }
     
     a {
-      color: #0044cc;
+      color: var(--color-navy);
       text-decoration: none;
       transition: color 0.3s ease;
       
       &:hover {
-        color: #0066ff;
+        color: var(--color-orange);
         text-decoration: underline;
       }
     }
   }
   
-  &__date {
+  .lesson-date {
     text-align: center;
     font-style: italic;
-    color: rgba(255, 255, 255, 0.7) !important;
+    color: var(--color-gray-400) !important;
     margin-top: 40px;
     padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-top: 1px solid var(--color-gray-200);
   }
 }
 

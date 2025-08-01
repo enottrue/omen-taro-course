@@ -224,9 +224,9 @@ export default function CourseLessonHeader({
                   </h1>
                   <span className="lesson-subtitle-divider"></span>
                   <div className="lesson-subtitle">
-                    <span className="lesson-subtitle-counter">
+                    {/* <span className="lesson-subtitle-counter">
                       {lesson?.lessonNumber + '.' + currentStageId}
-                    </span>
+                    </span> */}
                     <span className="lesson-subtitle-text">
                       {currentStageId &&
                         lesson?.lessonStages?.find((s: any) => s.stageNumber === Number(currentStageId))?.stageName}
@@ -372,20 +372,16 @@ export default function CourseLessonHeader({
                 })()}
               </div>
             </div>
-          <div className="lesson-frame-div">
-            <div className="lesson-frame-parent1">
-              <div className="lesson-frame-parent2">
-                <a
-                  className="button_primary"
-                  href="https://astro-irena.com/videos/Money_compass.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <span className="button-text">Open the workbook</span>
-                </a>
-              </div>
+            <div className="pdf-download-section">
+              <a
+                className="pdf-download-btn"
+                target="_blank"
+                rel="noopener noreferrer"
+                href="/videos/Money_compass.pdf"
+              >
+                <span>Open the workbook</span>
+              </a>
             </div>
-          </div>
           </div>
 
         </div>
