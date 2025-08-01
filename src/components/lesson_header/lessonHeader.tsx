@@ -133,7 +133,7 @@ export default function CourseLessonHeader({
       if (nextStageExists) {
         router.push(`/lesson/${currentLessonId}/${Number(currentStageId) + 1}`);
       } else {
-        router.push(`/courses`);
+        router.push(`/congratulations`);
       }
     }
   };
@@ -301,7 +301,7 @@ export default function CourseLessonHeader({
                       onClick={nextButtonClickHandler}
                     >
                       <span className="lesson-navigation-item-text">
-                        {nextStageExists ? 'Next' : 'To Courses'}
+                        {nextStageExists ? 'Next' : 'Finish'}
                       </span>
                       <span className="lesson-navigation-item-icon">
                         <svg
