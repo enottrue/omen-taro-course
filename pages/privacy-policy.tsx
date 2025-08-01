@@ -60,12 +60,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     // Data loaded successfully
     
-    const { data: stageData } = await apolloClient.query({
+    const stageDataResult = await apolloClient.query({
       query: GET_STAGE_STATUS,
       variables: {
         userId: Number(userId),
       },
     });
+    
+    const stageData = stageDataResult?.data?.getStageStatus || [];
 
     return {
       props: {
@@ -90,7 +92,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 };
 
-export default function CourseBook({
+export default function PrivacyPolicy({
   userId,
   token,
   userData,

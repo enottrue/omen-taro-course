@@ -17,18 +17,25 @@
 }
 
 // Privacy Policy
-.footer__policy, .footer__policy a {
-  font-family: 'Inter', sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  color: #797979;
-  text-align: center;
-  cursor: pointer;
-  margin-bottom: 8px;
-  text-decoration: none;
-  &:hover {
-    color: #585858;
-  } 
+.footer__policy {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  flex-direction: column;
+  
+  a {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #797979;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    &:hover {
+      color: #585858;
+    }
+  }
 }
 
 // Social icons

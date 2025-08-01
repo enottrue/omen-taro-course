@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { useContext } from 'react';
-import { MainContext } from '@/contexts/MainContext';
+import { MainContext, MainContextProvider } from '@/contexts/MainContext';
 import cookie from 'cookie';
 import jwt from 'jsonwebtoken';
 import { GetServerSideProps } from 'next';
@@ -59,12 +59,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     // Data loaded successfully
     
-    const { data: stageData } = await apolloClient.query({
+    const stageDataResult = await apolloClient.query({
       query: GET_STAGE_STATUS,
       variables: {
         userId: Number(userId),
       },
     });
+    
+    const stageData = stageDataResult?.data?.getStageStatus || [];
 
     return {
       props: {
@@ -139,7 +141,7 @@ export default function Congratulations({
   }, [user]);
 
   return (
-    <>
+    <MainContextProvider>
       <Head>
         <title>Congratulations - Cosmo.Irena</title>
         <meta name="description" content="Congratulations on completing the Cosmo.Irena course" />
@@ -151,6 +153,6 @@ export default function Congratulations({
         <Modal />
         <Footer />
       </main>
-    </>
+    </MainContextProvider>
   );
 } 
