@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client';
 import Stripe from 'stripe';
+import { emailService } from '@/utils/emailService';
 
 const prisma = new PrismaClient();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -52,12 +53,34 @@ export default async function handler(
 
       console.log('✅ User payment status updated successfully:', updatedUser.email);
 
+      // Send payment success email only if not already sent
+      if (!updatedUser.stripeSessionId || updatedUser.stripeSessionId !== sessionId) {
+        try {
+          const userName = updatedUser.name || updatedUser.email?.split('@')[0] || 'User';
+          const emailResult = await emailService.sendPaymentSuccessEmail(
+            updatedUser.email, 
+            userName, 
+            'https://astro-irena.com/courses'
+          );
+          
+          if (emailResult.success) {
+            console.log('📧 Payment success email sent successfully');
+          } else {
+            console.error('❌ Failed to send payment success email:', emailResult.error);
+          }
+        } catch (emailError) {
+          console.error('❌ Error sending payment success email:', emailError);
+        }
+      } else {
+        console.log('📧 Payment success email already sent for this session');
+      }
+
       res.status(200).json({ 
-      success: true,
+        success: true,
         message: 'Payment status updated successfully',
-      user: {
-        email: updatedUser.email,
-        isPaid: updatedUser.isPaid,
+        user: {
+          email: updatedUser.email,
+          isPaid: updatedUser.isPaid,
           paymentDate: updatedUser.paymentDate
         }
       });

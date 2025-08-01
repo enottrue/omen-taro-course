@@ -217,7 +217,7 @@ const PaymentSuccessPage: React.FC = () => {
                       </p>
                       <p className="p">&nbsp;</p>
                       <p className="p">
-                        You will receive an email confirmation shortly with your login credentials. 
+                        You will receive an email confirmation shortly with access to your course. 
                         Access to the course will be available immediately.
                       </p>
                       <p className="p">&nbsp;</p>
