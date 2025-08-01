@@ -36,6 +36,22 @@ const BurgerMenu: NextPage<BurgerMenuType> = ({ isOpen, onClose }) => {
     return router.asPath === path ? 'active' : '';
   };
 
+  const handleHomeClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    // Закрываем модальное окно если оно открыто
+    if (cc?.currentForm) {
+      cc.setCurrentForm(null);
+    }
+    
+    onClose();
+    // Небольшая задержка для корректного закрытия меню перед навигацией
+    setTimeout(() => {
+      router.push('/');
+    }, 150);
+  };
+
   if (isAuthenticated) {
     // Меню для авторизованных пользователей
     return (
@@ -43,9 +59,12 @@ const BurgerMenu: NextPage<BurgerMenuType> = ({ isOpen, onClose }) => {
         <div className={styles.burgerDropdownContent}>
           {!isOnCoursesPage && (
             <div className={styles.burgerMenuItem}>
-              <Link href="/" legacyBehavior>
-                <a className={getActiveClass('/')} onClick={onClose}>Home</a>
-              </Link>
+              <button 
+                className={`${getActiveClass('/')} ${styles.burgerMenuItemButton}`}
+                onClick={handleHomeClick}
+              >
+                Home
+              </button>
             </div>
           )}
           {/* <div className={styles.burgerMenuItem}>
@@ -71,9 +90,12 @@ const BurgerMenu: NextPage<BurgerMenuType> = ({ isOpen, onClose }) => {
     <div className={styles.burgerDropdown}>
       <div className={styles.burgerDropdownContent}>
         <div className={styles.burgerMenuItem}>
-          <Link href="/" legacyBehavior>
-            <a className={getActiveClass('/')} onClick={onClose}>Home</a>
-          </Link>
+          <button 
+            className={`${getActiveClass('/')} ${styles.burgerMenuItemButton}`}
+            onClick={handleHomeClick}
+          >
+            Home
+          </button>
         </div>
         <div 
           className={styles.burgerMenuItem} 
