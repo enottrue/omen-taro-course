@@ -376,14 +376,14 @@ export default function CourseLessonHeader({
 
         </div>
       </section>
-      <div className="frame-wrapper2">
+      {/* <div className="frame-wrapper2">
           <div className="frame-wrapper3">
             <div className="cosmo-group">
               <h3 className="cosmo">Cosmo.</h3>
               <b className="irena1">Irena</b>
             </div>
           </div>
-        </div>
+        </div> */}
     </div>
   );
 }
