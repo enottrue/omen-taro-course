@@ -5,7 +5,7 @@ import { GetServerSideProps } from 'next';
 import cookie from 'cookie';
 import jwt from 'jsonwebtoken';
 
-import Header from '@/components/header/Header';
+import Component1 from '@/components/component1/component1';
 import Footer from '@/components/footer/Footer';
 import { MainContext } from '@/contexts/MainContext';
 import { YandexMetricaProvider } from 'next-yandex-metrica';
@@ -88,7 +88,7 @@ export default function PrivacyPolicy({
           <link rel="icon" href="/favicon/favicon.ico" />
         </Head>
 
-        <Header token={token} userId={userId} />
+        <Component1 />
         
         <main className="privacy-policy">
           <div className="privacy-policy__container">
@@ -198,9 +198,8 @@ export default function PrivacyPolicy({
               </div>
             </div>
           </div>
+          <Footer />
         </main>
-
-        <Footer />
       </div>
     </YandexMetricaProvider>
   );

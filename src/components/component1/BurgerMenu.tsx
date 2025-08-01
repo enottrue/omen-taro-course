@@ -15,6 +15,7 @@ const BurgerMenu: NextPage<BurgerMenuType> = ({ isOpen, onClose }) => {
   const cc = useContext(MainContext);
   const router = useRouter();
   const isAuthenticated = !!(cc?.token && cc?.user);
+  const isOnCoursesPage = router.pathname === '/courses';
 
   if (!isOpen) return null;
 
@@ -40,11 +41,13 @@ const BurgerMenu: NextPage<BurgerMenuType> = ({ isOpen, onClose }) => {
     return (
       <div className={styles.burgerDropdown}>
         <div className={styles.burgerDropdownContent}>
-          <div className={styles.burgerMenuItem}>
-            <Link href="/" legacyBehavior>
-              <a className={getActiveClass('/')} onClick={onClose}>Home</a>
-            </Link>
-          </div>
+          {!isOnCoursesPage && (
+            <div className={styles.burgerMenuItem}>
+              <Link href="/" legacyBehavior>
+                <a className={getActiveClass('/')} onClick={onClose}>Home</a>
+              </Link>
+            </div>
+          )}
           <div className={styles.burgerMenuItem}>
             <Link href="/course_book" legacyBehavior>
               <a className={getActiveClass('/course_book')} onClick={onClose}>Course Book</a>
