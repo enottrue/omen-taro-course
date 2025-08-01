@@ -53,31 +53,22 @@ export default async function handler(
 
       console.log('✅ User payment status updated successfully:', updatedUser.email);
 
-      // Send payment success email only if this is a new session
-      const previousSessionId = updatedUser.stripeSessionId;
-      console.log('📧 Email check - Previous session ID:', previousSessionId);
-      console.log('📧 Email check - Current session ID:', sessionId);
-      console.log('📧 Email check - Should send email:', !previousSessionId || previousSessionId !== sessionId);
-      
-      if (!previousSessionId || previousSessionId !== sessionId) {
-        try {
-          const userName = updatedUser.name || updatedUser.email?.split('@')[0] || 'User';
-          const emailResult = await emailService.sendPaymentSuccessEmail(
-            updatedUser.email, 
-            userName, 
-            'https://astro-irena.com/courses'
-          );
-          
-          if (emailResult.success) {
-            console.log('📧 Payment success email sent successfully');
-          } else {
-            console.error('❌ Failed to send payment success email:', emailResult.error);
-          }
-        } catch (emailError) {
-          console.error('❌ Error sending payment success email:', emailError);
+      // Send payment success email every time the page is opened
+      try {
+        const userName = updatedUser.name || updatedUser.email?.split('@')[0] || 'User';
+        const emailResult = await emailService.sendPaymentSuccessEmail(
+          updatedUser.email, 
+          userName, 
+          'https://astro-irena.com/courses'
+        );
+        
+        if (emailResult.success) {
+          console.log('📧 Payment success email sent successfully');
+        } else {
+          console.error('❌ Failed to send payment success email:', emailResult.error);
         }
-      } else {
-        console.log('📧 Payment success email already sent for this session');
+      } catch (emailError) {
+        console.error('❌ Error sending payment success email:', emailError);
       }
 
       res.status(200).json({ 
