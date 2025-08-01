@@ -126,14 +126,20 @@ export default function CourseLessonHeader({
   const nextStageExists = lesson?.lessonStages?.some((stage: any) => {
     return Number(stage.stageNumber) === Number(currentStageId) + 1;
   });
+  
+  // Check if this is the final lesson (36/8)
+  const isFinalLesson = currentLessonId === '36' && currentStageId === '8';
+  
   const router = useRouter();
   const nextButtonClickHandler = (e: React.MouseEvent) => {
     e.preventDefault();
     if (currentStageId) {
       if (nextStageExists) {
         router.push(`/lesson/${currentLessonId}/${Number(currentStageId) + 1}`);
-      } else {
+      } else if (isFinalLesson) {
         router.push(`/congratulations`);
+      } else {
+        router.push(`/courses`);
       }
     }
   };
@@ -301,7 +307,7 @@ export default function CourseLessonHeader({
                       onClick={nextButtonClickHandler}
                     >
                       <span className="lesson-navigation-item-text">
-                        {nextStageExists ? 'Next' : 'Finish'}
+                        {nextStageExists ? 'Next' : isFinalLesson ? 'Finish' : 'To Courses'}
                       </span>
                       <span className="lesson-navigation-item-icon">
                         <svg
