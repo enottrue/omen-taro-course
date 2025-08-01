@@ -27,12 +27,22 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
     setIsVideoModalOpen(false);
   };
 
-  // Determine heading text based on typePage
+  // Determine heading text and image based on typePage
   let headingH1 = 'Welcome Video from';
   let headingH2 = 'Cosmo.Irena';
+  let useNextImage = true;
+  let nextImageSource = intro_lesson; // Default image for main page
+  let publicImageSource = '/preview/main_page.png'; // Default public image
+  
   if (typePage === 'mainPage') {
     headingH1 = 'Watch the';
     headingH2 = 'Intro Video';
+    nextImageSource = intro_lesson; // wath-the-wideo.png for main page
+    useNextImage = true;
+  } else if (typePage === 'courses') {
+    headingH1 = 'Welcome Video from';
+    headingH2 = 'Cosmo.Irena';
+    useNextImage = false;
   }
 
   return (
@@ -55,17 +65,30 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
             </span>
           </div>}
         </div>
-        <Image
-          className={styles.frameChild}
-          loading="lazy"
-          width={260}
-          height={146}
-          sizes="100vw"
-          alt=""
-          src={intro_lesson}
-          onClick={handleVideoClick}
-          style={{ cursor: 'pointer' }}
-        />
+        {useNextImage ? (
+          <Image
+            className={styles.frameChild}
+            loading="lazy"
+            width={260}
+            height={146}
+            sizes="100vw"
+            alt=""
+            src={nextImageSource}
+            onClick={handleVideoClick}
+            style={{ cursor: 'pointer' }}
+          />
+        ) : (
+          <img
+            className={styles.frameChild}
+            loading="lazy"
+            width={260}
+            height={146}
+            alt=""
+            src={publicImageSource}
+            onClick={handleVideoClick}
+            style={{ cursor: 'pointer' }}
+          />
+        )}
         {textShown && (
         <Button 
           variant="video" 

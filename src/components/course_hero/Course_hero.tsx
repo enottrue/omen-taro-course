@@ -128,19 +128,17 @@ const CourseHero = ({ lessons, token, userId }: CourseHeroProps) => {
                   <div className={styles.div}>Sign In</div>
                 </div>
               ) : (
-                !isOnCoursesPage && (
-                  <div 
-                    ref={burgerRef}
-                    className={styles.burgerMenu}
-                    onClick={handleBurgerClick}
-                    style={{ cursor: 'pointer', marginLeft: '10px', position: 'relative', minWidth: 'fit-content' }}
-                  >
-                    <div className={styles.burgerLine}></div>
-                    <div className={styles.burgerLine}></div>
-                    <div className={styles.burgerLine}></div>
-                    <BurgerMenu isOpen={isBurgerOpen} onClose={handleBurgerClick} />
-                  </div>
-                )
+                <div 
+                  ref={burgerRef}
+                  className={styles.burgerMenu}
+                  onClick={handleBurgerClick}
+                  style={{ cursor: 'pointer', marginLeft: '10px', position: 'relative', minWidth: 'fit-content' }}
+                >
+                  <div className={styles.burgerLine}></div>
+                  <div className={styles.burgerLine}></div>
+                  <div className={styles.burgerLine}></div>
+                  <BurgerMenu isOpen={isBurgerOpen} onClose={handleBurgerClick} />
+                </div>
               )}
             </div>
           </header>

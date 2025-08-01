@@ -111,7 +111,7 @@ export default function Home({
         </Head>
         <main>
           <Component1 />
-          <Component2 videoSource="/videos/main_page.mp4" />
+          <Component2 videoSource="/videos/main_page.mp4" typePage="mainPage" />
           <Discover />
           <Component3 />
           <Component4 />
