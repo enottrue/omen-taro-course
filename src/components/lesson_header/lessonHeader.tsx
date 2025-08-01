@@ -372,6 +372,20 @@ export default function CourseLessonHeader({
                 })()}
               </div>
             </div>
+          <div className="lesson-frame-div">
+            <div className="lesson-frame-parent1">
+              <div className="lesson-frame-parent2">
+                <a
+                  className="button_primary"
+                  href="https://astro-irena.com/videos/Money_compass.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span className="button-text">Open the workbook</span>
+                </a>
+              </div>
+            </div>
+          </div>
           </div>
 
         </div>

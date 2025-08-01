@@ -48,11 +48,11 @@ const BurgerMenu: NextPage<BurgerMenuType> = ({ isOpen, onClose }) => {
               </Link>
             </div>
           )}
-          <div className={styles.burgerMenuItem}>
+          {/* <div className={styles.burgerMenuItem}>
             <Link href="/course_book" legacyBehavior>
               <a className={getActiveClass('/course_book')} onClick={onClose}>Course Book</a>
             </Link>
-          </div>
+          </div> */}
           {/* <div className={styles.burgerMenuItem}>
             <Link href="/courses" legacyBehavior>
               <a className={getActiveClass('/courses')} onClick={onClose}>Learning Course</a>
