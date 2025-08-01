@@ -60,7 +60,7 @@ const BurgerMenu: NextPage<BurgerMenuType> = ({ isOpen, onClose }) => {
           {!isOnCoursesPage && (
             <div className={styles.burgerMenuItem}>
               <button 
-                className={`${getActiveClass('/')} ${styles.burgerMenuItemButton}`}
+                className={`${styles.burgerMenuItemButton} ${getActiveClass('/') === 'active' ? styles.burgerMenuItemButtonActive : ''}`}
                 onClick={handleHomeClick}
               >
                 Home
@@ -91,7 +91,7 @@ const BurgerMenu: NextPage<BurgerMenuType> = ({ isOpen, onClose }) => {
       <div className={styles.burgerDropdownContent}>
         <div className={styles.burgerMenuItem}>
           <button 
-            className={`${getActiveClass('/')} ${styles.burgerMenuItemButton}`}
+            className={`${styles.burgerMenuItemButton} ${getActiveClass('/') === 'active' ? styles.burgerMenuItemButtonActive : ''}`}
             onClick={handleHomeClick}
           >
             Home
