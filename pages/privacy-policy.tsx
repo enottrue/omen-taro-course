@@ -1,17 +1,21 @@
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import Head from 'next/head';
-import { useContext, useEffect } from 'react';
-import { Inter } from 'next/font/google';
-import { GetServerSideProps } from 'next';
+import { useContext } from 'react';
+import { MainContext } from '@/contexts/MainContext';
 import cookie from 'cookie';
 import jwt from 'jsonwebtoken';
+import { GetServerSideProps } from 'next';
+import OnboardingStages from '@/components/onboarding/OnboardingStages';
+import PaymentRequired from '@/components/PaymentRequired';
 
-import Header from '@/components/component1/Header';
+import { useGetLazyUserData } from '@/hooks/useGetUserData';
 import Footer from '@/components/footer/Footer';
-import { MainContext } from '@/contexts/MainContext';
-import { YandexMetricaProvider } from 'next-yandex-metrica';
-import { useRouter } from 'next/router';
+import CourseBookHero from '@/components/course_book/courseBook';
 
-const inter = Inter({ subsets: ['latin'] });
+import { apolloClient } from '@/lib/apollo/apollo';
+import { GET_COURSES, GET_COURSE, GET_STAGE_STATUS } from '@/graphql/queries';
+import { getDefaultCourseIdString } from '@/utils/courseUtils';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const APP_SECRET = process.env.APP_SECRET;
@@ -29,6 +33,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     userId = cookies?.userId ? cookies.userId : null;
     token = cookies?.Bearer ? cookies.Bearer : null;
 
+    // Получаем данные пользователя для проверки статуса оплаты
     if (userId) {
       try {
         const response = await fetch(`${context.req.headers.host ? `http://${context.req.headers.host}` : 'http://localhost:3000'}/api/users/${userId}`);
@@ -44,169 +49,140 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     token = null;
   }
 
-  return {
-    props: {
-      userId,
-      token,
-      userData: userData?.user || null,
-    },
-  };
+  try {
+    const { data } = await apolloClient.query({
+      query: GET_COURSE,
+      variables: {
+        id: getDefaultCourseIdString(), // Use environment variable for course ID
+        userId: userId ? Number(userId) : 1, // Use number 1 for unauthenticated users
+      },
+    });
+
+    // Data loaded successfully
+    
+    const { data: stageData } = await apolloClient.query({
+      query: GET_STAGE_STATUS,
+      variables: {
+        userId: Number(userId),
+      },
+    });
+
+    return {
+      props: {
+        userId,
+        token,
+        userData: userData?.user || null,
+        courses: data?.getCourse || null, // Handle undefined data
+        stageData: stageData?.getStageStatus || [],
+      },
+    };
+  } catch (error) {
+    console.log('error', error);
+    return {
+      props: {
+        userId,
+        token,
+        userData: userData?.user || null,
+        courses: null,
+        stageData: [],
+      },
+    };
+  }
 };
 
-export default function PrivacyPolicy({
+export default function CourseBook({
   userId,
   token,
   userData,
+  courses,
+  stageData,
 }: {
   userId: string | null;
   token: string | null;
   userData: any;
+  courses:
+    | {
+        [k: string]: any;
+      }
+    | undefined;
+  stageData: { [k: string]: any };
 }) {
-  const cc = useContext(MainContext);
   const router = useRouter();
+  const [showPaymentRequired, setShowPaymentRequired] = useState(false);
+
+  const {
+    fetchUser,
+    loading: loadingLazy,
+    error: errorLazy,
+    user,
+  } = useGetLazyUserData();
+
+  const cc = useContext(MainContext);
+  
+  useEffect(() => {
+    stageData && cc?.setStageData(stageData);
+  }, [stageData]);
 
   useEffect(() => {
+    // GOOD: This state update is now in a useEffect and won't cause a warning
     cc?.setUserId(userId);
     cc?.setToken(token);
-  }, [userId, token, userData]);
+    
+    if (userId) {
+      fetchUser(Number(userId));
+    }
+
+    if (!userId || !token) {
+      router.push('/');
+    }
+  }, [userId, token]);
+
+  useEffect(() => {
+    if (user) {
+      // Handle the case when the user data is not found
+      cc?.setUser(user);
+    }
+  }, [user]);
+
+  // Проверяем статус оплаты
+  useEffect(() => {
+    if (userData && !userData.isPaid) {
+      setShowPaymentRequired(true);
+    } else {
+      setShowPaymentRequired(false);
+    }
+  }, [userData]);
+
+  // Если пользователь не оплатил, показываем компонент PaymentRequired
+  if (showPaymentRequired) {
+    return (
+      <>
+        <Head>
+          <title>Access Restricted - Course Book</title>
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <link rel="shortcut icon" href="/favicon/favicon.ico" />
+        </Head>
+        <main>
+          <PaymentRequired />
+        </main>
+        <Footer />
+      </>
+    );
+  }
 
   return (
-    <YandexMetricaProvider
-      router={router as any}
-      tagID={100786060}
-      initParameters={{
-        clickmap: true,
-        trackLinks: true,
-        accurateTrackBounce: true,
-      }}
-    >
-      <div className={inter.className}>
-        <Head>
-          <title>Политика конфиденциальности - Cosmo.Irena</title>
-          <meta name="description" content="Политика конфиденциальности курсов Cosmo.Irena" />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <link rel="icon" href="/favicon/favicon.ico" />
-        </Head>
-
-        <div className="lesson-root">
-          <div className="lesson-root-inner">
-            <div className="lesson-frame-parent">
-              <div className="lesson-frame-div">
-                <div className="lesson-content">
-                  <Header />
-                  
-                  <div className="lesson-main-content">
-                    <h1 className="lesson-title">Политика конфиденциальности</h1>
-                    
-                    <div className="lesson-section">
-                      <h2>1. Общие положения</h2>
-                      <p>
-                        Настоящая Политика конфиденциальности (далее — «Политика») определяет порядок обработки персональных данных пользователей сайта и курсов Cosmo.Irena (далее — «Сайт», «Мы», «Нас»).
-                      </p>
-                      <p>
-                        Используя наш Сайт и услуги, вы соглашаетесь с настоящей Политикой конфиденциальности.
-                      </p>
-                    </div>
-
-                    <div className="lesson-section">
-                      <h2>2. Сбор информации</h2>
-                      <p>Мы собираем следующую информацию:</p>
-                      <ul>
-                        <li>Персональные данные (имя, email, телефон)</li>
-                        <li>Данные об использовании сайта и курсов</li>
-                        <li>Техническая информация (IP-адрес, тип браузера)</li>
-                        <li>Данные о платежах (через защищенные платежные системы)</li>
-                      </ul>
-                    </div>
-
-                    <div className="lesson-section">
-                      <h2>3. Использование информации</h2>
-                      <p>Собранная информация используется для:</p>
-                      <ul>
-                        <li>Предоставления доступа к курсам и материалам</li>
-                        <li>Улучшения качества услуг</li>
-                        <li>Обработки платежей</li>
-                        <li>Связи с пользователями</li>
-                        <li>Аналитики и статистики</li>
-                      </ul>
-                    </div>
-
-                    <div className="lesson-section">
-                      <h2>4. Защита данных</h2>
-                      <p>
-                        Мы принимаем необходимые меры для защиты ваших персональных данных от несанкционированного доступа, изменения, раскрытия или уничтожения.
-                      </p>
-                      <p>
-                        Все платежные операции защищены современными технологиями шифрования.
-                      </p>
-                    </div>
-
-                    <div className="lesson-section">
-                      <h2>5. Передача данных третьим лицам</h2>
-                      <p>
-                        Мы не продаем, не обмениваем и не передаем ваши персональные данные третьим лицам, за исключением случаев:
-                      </p>
-                      <ul>
-                        <li>Когда это необходимо для предоставления услуг</li>
-                        <li>По требованию закона</li>
-                        <li>С вашего явного согласия</li>
-                      </ul>
-                    </div>
-
-                    <div className="lesson-section">
-                      <h2>6. Cookies и аналитика</h2>
-                      <p>
-                        Мы используем cookies и аналитические инструменты для улучшения работы сайта и понимания поведения пользователей.
-                      </p>
-                      <p>
-                        Вы можете отключить cookies в настройках вашего браузера.
-                      </p>
-                    </div>
-
-                    <div className="lesson-section">
-                      <h2>7. Ваши права</h2>
-                      <p>Вы имеете право:</p>
-                      <ul>
-                        <li>Получить доступ к своим персональным данным</li>
-                        <li>Исправить неточные данные</li>
-                        <li>Удалить свои данные</li>
-                        <li>Ограничить обработку данных</li>
-                        <li>Отозвать согласие на обработку</li>
-                      </ul>
-                    </div>
-
-                    <div className="lesson-section">
-                      <h2>8. Изменения в Политике</h2>
-                      <p>
-                        Мы оставляем за собой право вносить изменения в настоящую Политику конфиденциальности. 
-                        О существенных изменениях мы будем уведомлять пользователей.
-                      </p>
-                    </div>
-
-                    <div className="lesson-section">
-                      <h2>9. Контактная информация</h2>
-                      <p>
-                        По всем вопросам, связанным с обработкой персональных данных, обращайтесь:
-                      </p>
-                      <p>
-                        Email: privacy@cosmo-irena.com<br />
-                        Instagram: <a href="https://www.instagram.com/cosmo.irena" target="_blank" rel="noopener noreferrer">@cosmo.irena</a>
-                      </p>
-                    </div>
-
-                    <div className="lesson-section">
-                      <p className="lesson-date">
-                        <strong>Дата последнего обновления:</strong> 15 января 2025 года
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+    <>
+      <Head>
+        <title>Course Book - Tarot Learning Course</title>
+        <meta name="Course Book - Omen | Tarot Course" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="shortcut icon" href="/favicon/favicon.ico" />
+      </Head>
+      <main>
+        <CourseBookHero />
         <Footer />
-      </div>
-    </YandexMetricaProvider>
+      </main>
+     
+    </>
   );
-} 
+}

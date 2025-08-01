@@ -370,8 +370,6 @@ export default function CourseLessonHeader({
                     <LessonTimeline stage={currentStage} />
                   ) : null;
                 })()}
-              </div>
-            </div>
             <div className="pdf-download-section">
               <a
                 className="pdf-download-btn"
@@ -382,6 +380,9 @@ export default function CourseLessonHeader({
                 <span>Open the workbook</span>
               </a>
             </div>
+              </div>
+            </div>
+            
           </div>
 
         </div>
