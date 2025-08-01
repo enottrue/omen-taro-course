@@ -53,8 +53,13 @@ export default async function handler(
 
       console.log('✅ User payment status updated successfully:', updatedUser.email);
 
-      // Send payment success email only if not already sent
-      if (!updatedUser.stripeSessionId || updatedUser.stripeSessionId !== sessionId) {
+      // Send payment success email only if this is a new session
+      const previousSessionId = updatedUser.stripeSessionId;
+      console.log('📧 Email check - Previous session ID:', previousSessionId);
+      console.log('📧 Email check - Current session ID:', sessionId);
+      console.log('📧 Email check - Should send email:', !previousSessionId || previousSessionId !== sessionId);
+      
+      if (!previousSessionId || previousSessionId !== sessionId) {
         try {
           const userName = updatedUser.name || updatedUser.email?.split('@')[0] || 'User';
           const emailResult = await emailService.sendPaymentSuccessEmail(
