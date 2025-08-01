@@ -2,6 +2,7 @@ import course_hero from '@/images/cource-hero.png';
 import Image from 'next/image';
 import { useContext, useState, useRef, useEffect } from 'react';
 import { MainContext } from '@/contexts/MainContext';
+import { useRouter } from 'next/router';
 import unsplashImage from '../../images/unsplashutbx9x3y8ly-2@2x.png';
 import image3 from '../../images/image-3@2x.png';
 import group2 from '../../images/group-2@2x.png';
@@ -21,10 +22,14 @@ interface CourseHeroProps {
 
 const CourseHero = ({ lessons, token, userId }: CourseHeroProps) => {
   const cc = useContext(MainContext);
+  const router = useRouter();
   const [activeAccordion, setActiveAccordion] = useState<number | null>(null);
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
   const burgerRef = useRef<HTMLDivElement>(null);
   const { handlePayment } = useStripePayment();
+  
+  // Проверяем, находимся ли мы на странице courses
+  const isOnCoursesPage = router.pathname === '/courses';
   
   // console.log('CourseHero lessons:', lessons);
 
@@ -123,17 +128,19 @@ const CourseHero = ({ lessons, token, userId }: CourseHeroProps) => {
                   <div className={styles.div}>Sign In</div>
                 </div>
               ) : (
-                <div 
-                  ref={burgerRef}
-                  className={styles.burgerMenu}
-                  onClick={handleBurgerClick}
-                  style={{ cursor: 'pointer', marginLeft: '10px', position: 'relative', minWidth: 'fit-content' }}
-                >
-                  <div className={styles.burgerLine}></div>
-                  <div className={styles.burgerLine}></div>
-                  <div className={styles.burgerLine}></div>
-                  <BurgerMenu isOpen={isBurgerOpen} onClose={handleBurgerClick} />
-                </div>
+                !isOnCoursesPage && (
+                  <div 
+                    ref={burgerRef}
+                    className={styles.burgerMenu}
+                    onClick={handleBurgerClick}
+                    style={{ cursor: 'pointer', marginLeft: '10px', position: 'relative', minWidth: 'fit-content' }}
+                  >
+                    <div className={styles.burgerLine}></div>
+                    <div className={styles.burgerLine}></div>
+                    <div className={styles.burgerLine}></div>
+                    <BurgerMenu isOpen={isBurgerOpen} onClose={handleBurgerClick} />
+                  </div>
+                )
               )}
             </div>
           </header>
