@@ -180,8 +180,9 @@ export default function CourseBook({
       </Head>
       <main>
         <CourseBookHero />
+        <Footer />
       </main>
-      <Footer />
+     
     </>
   );
 }

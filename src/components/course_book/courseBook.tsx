@@ -167,7 +167,7 @@ const CourseBookHero = ({ token, userId }: CourseBookHeroProps) => {
       </section>
       
       {/* Секция с изображением книги */}
-      <section className="cource-lessons bg-white">
+      <section className="cource-lessons">
         
       <div className="cource-book__button">
         <Button

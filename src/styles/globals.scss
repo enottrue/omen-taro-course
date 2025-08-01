@@ -9,6 +9,125 @@
 @import '../components/button/button.scss';
 @import '../components/course_lessons/course_lessons.scss';
 
+// Privacy Policy Page Styles
+.privacy-policy {
+  background: linear-gradient(135deg, #1c0076 0%, #001a4d 100%);
+  min-height: 100vh;
+  padding: 120px 20px 60px;
+  
+  &__container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+  }
+  
+  &__content {
+    padding: 40px;
+    color: #fff;
+    
+    @media (max-width: 768px) {
+      padding: 30px 20px;
+    }
+  }
+  
+  &__title {
+    font-family: var(--font-unbounded);
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 40px;
+    background: linear-gradient(45deg, #fff, #e0e0e0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    
+    @media (max-width: 768px) {
+      font-size: 2rem;
+      margin-bottom: 30px;
+    }
+  }
+  
+  &__section {
+    margin-bottom: 30px;
+    
+    h2 {
+      font-family: var(--font-unbounded);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 15px;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+      padding-bottom: 10px;
+      
+      @media (max-width: 768px) {
+        font-size: 1.3rem;
+      }
+    }
+    
+    p {
+      font-family: var(--font-roboto);
+      font-size: 1rem;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 15px;
+      
+      @media (max-width: 768px) {
+        font-size: 0.95rem;
+      }
+    }
+    
+    ul {
+      margin: 15px 0;
+      padding-left: 20px;
+      
+      li {
+        font-family: var(--font-roboto);
+        font-size: 1rem;
+        line-height: 1.6;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 8px;
+        position: relative;
+        
+        &::before {
+          content: "•";
+          color: #0044cc;
+          font-weight: bold;
+          position: absolute;
+          left: -15px;
+        }
+        
+        @media (max-width: 768px) {
+          font-size: 0.95rem;
+        }
+      }
+    }
+    
+    a {
+      color: #0044cc;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      
+      &:hover {
+        color: #0066ff;
+        text-decoration: underline;
+      }
+    }
+  }
+  
+  &__date {
+    text-align: center;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.7) !important;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+  }
+}
+
 body {
   margin: 0;
   line-height: normal;
