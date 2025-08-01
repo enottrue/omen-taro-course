@@ -88,7 +88,7 @@ export default function PrivacyPolicy({
           <link rel="icon" href="/favicon/favicon.ico" />
         </Head>
 
-        <Header />
+        <Header token={token} userId={userId} />
         
         <main className="privacy-policy">
           <div className="privacy-policy__container">
