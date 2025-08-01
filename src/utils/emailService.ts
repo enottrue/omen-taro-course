@@ -140,6 +140,58 @@ const emailTemplates = {
       Best regards,
       Cosmo.Irena.
     `
+  }),
+
+  paymentSuccess: (userName: string, courseUrl: string = 'https://astro-irena.com/courses') => ({
+    subject: "You're In! Welcome to Money Compass",
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 10px; text-align: center;">
+          <h1 style="color: white; margin: 0; font-size: 24px;">Cosmo.Irena</h1>
+          <p style="color: white; margin: 10px 0 0 0; font-size: 16px;">Payment Successful</p>
+        </div>
+        
+        <div style="background: white; padding: 30px; border-radius: 0 0 10px 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+          <h2 style="color: #2c3e50; margin-bottom: 20px;">Hi ${userName},</h2>
+          
+          <p style="color: #666; line-height: 1.6; margin-bottom: 20px;">
+            Congratulations — your payment was successful, and you now have full access to the Money Compass course!
+          </p>
+          
+          <p style="color: #666; line-height: 1.6; margin-bottom: 20px;">
+            Click the button below to start learning right away:
+          </p>
+          
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="${courseUrl}" 
+               style="background: #3498db; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">
+              Start Learning
+            </a>
+          </div>
+          
+          <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
+          
+          <p style="color: #999; font-size: 12px; text-align: center;">
+            Best regards,<br>
+            Cosmo.Irena.
+          </p>
+        </div>
+      </div>
+    `,
+    text: `
+      You're In! Welcome to Money Compass
+      
+      Hi ${userName},
+      
+      Congratulations — your payment was successful, and you now have full access to the Money Compass course!
+      
+      Click the button below to start learning right away:
+      
+      Start Learning: ${courseUrl}
+      
+      Best regards,
+      Cosmo.Irena.
+    `
   })
 };
 
@@ -208,6 +260,72 @@ export const emailService = {
       
     } catch (error: any) {
       console.error('Error sending welcome email:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  // Send payment success email
+  async sendPaymentSuccessEmail(email: string, userName: string, courseUrl?: string) {
+    try {
+      // Check if SMTP credentials are configured
+      const hasSmtpConfig = emailConfig.auth.user !== 'your-email@gmail.com' && 
+                           emailConfig.auth.pass !== 'your-app-password' &&
+                           emailConfig.auth.user !== 'support@astro-irena.com' &&
+                           emailConfig.auth.pass !== 'your-password-here';
+
+      // In development, check if we should send real emails
+      if (process.env.NODE_ENV === 'development') {
+        if (hasSmtpConfig) {
+          console.log('=== SENDING PAYMENT SUCCESS EMAIL (DEVELOPMENT MODE) ===');
+          console.log('SMTP credentials found, sending real payment success email...');
+          
+          // Send real email in development
+          const template = emailTemplates.paymentSuccess(userName, courseUrl);
+          
+          const mailOptions = {
+            from: `"Cosmo Irena" <${emailConfig.auth.user}>`,
+            to: email,
+            subject: template.subject,
+            html: template.html,
+            text: template.text,
+          };
+
+          const info = await transporter.sendMail(mailOptions);
+          
+          console.log('Payment success email sent successfully:', info.messageId);
+          console.log('=== END PAYMENT SUCCESS EMAIL ===');
+          return { success: true, messageId: info.messageId };
+        } else {
+          // Log email to console if no SMTP config
+          console.log('=== PAYMENT SUCCESS EMAIL SEND (DEVELOPMENT MODE - CONSOLE ONLY) ===');
+          console.log('To:', email);
+          console.log('Subject: You\'re In! Welcome to Money Compass');
+          console.log('User Name:', userName);
+          console.log('Course URL:', courseUrl);
+          console.log('Note: To send real emails in development, configure SMTP credentials');
+          console.log('=== END PAYMENT SUCCESS EMAIL ===');
+          return { success: true, message: 'Payment success email logged to console (development mode)' };
+        }
+      }
+
+      // In production, always send real emails
+      const template = emailTemplates.paymentSuccess(userName, courseUrl);
+      
+      const mailOptions = {
+        from: `"Cosmo Irena" <${emailConfig.auth.user}>`,
+        to: email,
+        subject: template.subject,
+        html: template.html,
+        text: template.text,
+      };
+
+      const info = await transporter.sendMail(mailOptions);
+      
+      console.log('Payment success email sent successfully:', info.messageId);
+      return { success: true, messageId: info.messageId };
+      
+    } catch (error: any) {
+      console.error('Error sending payment success email:', error);
       return { success: false, error: error.message };
     }
   },

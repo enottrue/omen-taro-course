@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client';
 import Stripe from 'stripe';
 import { buffer } from 'micro';
+import { emailService } from '@/utils/emailService';
 
 const prisma = new PrismaClient();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -93,24 +94,42 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
     try {
       const updatedUser = await prisma.user.update({
         where: { email: userEmail },
-            data: {
-              isPaid: true,
-              paymentDate: new Date(),
-              stripeSessionId: session.id,
-            },
-          });
+        data: {
+          isPaid: true,
+          paymentDate: new Date(),
+          stripeSessionId: session.id,
+        },
+      });
           
       console.log('✅ User payment status updated via webhook:', updatedUser.email);
       
       // Send Yandex Metrica event for successful payment
       await sendYandexMetricaEvent('payment_successful', updatedUser.id.toString());
       
-      } catch (error) {
-        console.error('❌ Error updating user payment status:', error);
+      // Send payment success email
+      try {
+        const userName = updatedUser.name || updatedUser.email?.split('@')[0] || 'User';
+        const emailResult = await emailService.sendPaymentSuccessEmail(
+          userEmail, 
+          userName, 
+          'https://astro-irena.com/courses'
+        );
+        
+        if (emailResult.success) {
+          console.log('📧 Payment success email sent successfully');
+        } else {
+          console.error('❌ Failed to send payment success email:', emailResult.error);
+        }
+      } catch (emailError) {
+        console.error('❌ Error sending payment success email:', emailError);
       }
+      
+    } catch (error) {
+      console.error('❌ Error updating user payment status:', error);
+    }
   } else {
     console.log('⚠️ Session not paid. Status:', session.payment_status);
-        }
+  }
 }
 
 async function handlePaymentIntentSucceeded(paymentIntent: Stripe.PaymentIntent) {
