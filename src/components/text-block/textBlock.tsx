@@ -10,31 +10,7 @@ import unsplashImage from '../../images/unsplashutbx9x3y8ly-2@2x.png';
 import image3 from '../../images/image-3@2x.png';
 import BurgerMenu from '../component1/BurgerMenu';
 
-interface TextBlockProps {
-  token?: string | null;
-  userId?: string | null;
-  title?: string;
-  subtitle?: string;
-  description?: string;
-  buttonText?: string;
-  buttonHref?: string;
-  showBackButton?: boolean;
-  backButtonText?: string;
-  backButtonHref?: string;
-}
-
-const TextBlock = ({ 
-  token, 
-  userId, 
-  title = "Электронное методическое пособие",
-  subtitle = "по Таро А.Э.Уэйта",
-  description = "В этом электронном методическом пособии вы найдете значения арканов, историю возникновения колоды Таро А. Уэйта и расклады.",
-  buttonText = "Скачать методичку",
-  buttonHref = "/Omen_taro_book_new.pdf",
-  showBackButton = true,
-  backButtonText = "Назад к курсам",
-  backButtonHref = "/courses"
-}: TextBlockProps) => {
+const TextBlock = () => {
   const router = useRouter();
   const cc = useContext(MainContext);
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
@@ -101,71 +77,55 @@ const TextBlock = ({
               >
                 <div className={styles.div1}>Ask a Question</div>
               </a>
-              {!token ? (
-                <div 
-                  className={styles.wrapper}
-                  onClick={() => {
-                    cc?.setModalOpen(true);
-                    cc?.setCurrentForm('auth');
-                  }}
-                  style={{ cursor: 'pointer' }}
-                >
-                  <div className={styles.div}>Sign In</div>
-                </div>
-              ) : (
-                <div 
-                  ref={burgerRef}
-                  className={styles.burgerMenu}
-                  onClick={handleBurgerClick}
-                  style={{ cursor: 'pointer', marginLeft: '10px', position: 'relative', minWidth: 'fit-content' }}
-                >
-                  <div className={styles.burgerLine}></div>
-                  <div className={styles.burgerLine}></div>
-                  <div className={styles.burgerLine}></div>
-                  <BurgerMenu isOpen={isBurgerOpen} onClose={handleBurgerClick} />
-                </div>
-              )}
+              <div 
+                ref={burgerRef}
+                className={styles.burgerMenu}
+                onClick={handleBurgerClick}
+                style={{ cursor: 'pointer', marginLeft: '10px', position: 'relative', minWidth: 'fit-content' }}
+              >
+                <div className={styles.burgerLine}></div>
+                <div className={styles.burgerLine}></div>
+                <div className={styles.burgerLine}></div>
+                <BurgerMenu isOpen={isBurgerOpen} onClose={handleBurgerClick} />
+              </div>
             </div>
           </header>
+      
           
           <div className="frame-div">
             <div className="frame-parent1">
               <div className="frame-parent2">
                 <div className="parent">
                   <h3 className="cosmo">
-                    <p className="p">{title}</p>
+                    <p className="p">Политика конфиденциальности</p>
+               
                   </h3>
-                  <h3 className="h31">
-                    <p className="p">{subtitle}</p>
-                  </h3>
+             
                 </div>
                 
                 <div className="div1">
-                  <p className="p">{description}</p>
+                  <p className="p">
+                    В этом электронном методическом пособии вы найдете значения арканов, 
+                    историю возникновения колоды Таро А. Уэйта и расклады.
+                  </p>
+                  <p className="p">&nbsp;</p>
+                  <p className="p">
+                    Если в процессе работы с картами вам понадобится определенная информация, 
+                    вы можете не пересматривать заново курс, а воспользоваться электронным
+                    пособием, максимально приближенным к курсу. Это позволит вам
+                    быстрее ориентироваться в раскладах.
+                  </p>
                 </div>
               </div>
 
-              
+      
             </div>
           </div>
         </div>
       </section>
       
       {/* Секция с кнопкой назад */}
-      {showBackButton && (
-        <section className="cource-lessons">
-          <div className="cource-book__button">
-            <Button
-              title={backButtonText}
-              isLink
-              href={backButtonHref}
-              className="enroll-now-only-50-wrapper"
-              onClick={() => router.back()}
-            >
-            </Button>
-          </div>
-        </section>
-      )}
+     
       
       <div className="frame-wrapper2">
         <div className="frame-wrapper3">

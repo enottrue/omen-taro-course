@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { useContext } from 'react';
@@ -6,12 +6,15 @@ import { MainContext } from '@/contexts/MainContext';
 import cookie from 'cookie';
 import jwt from 'jsonwebtoken';
 import { GetServerSideProps } from 'next';
-import { Inter } from 'next/font/google';
-import { YandexMetricaProvider } from 'next-yandex-metrica';
 
+
+import { useGetLazyUserData } from '@/hooks/useGetUserData';
+import Footer from '@/components/footer/Footer';
 import TextBlock from '@/components/text-block/textBlock';
 
-const inter = Inter({ subsets: ['latin'] });
+import { apolloClient } from '@/lib/apollo/apollo';
+import { GET_COURSES, GET_COURSE, GET_STAGE_STATUS } from '@/graphql/queries';
+import { getDefaultCourseIdString } from '@/utils/courseUtils';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const APP_SECRET = process.env.APP_SECRET;
@@ -45,61 +48,111 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     token = null;
   }
 
-  return {
-    props: {
-      userId,
-      token,
-      userData: userData?.user || null,
-    },
-  };
+  try {
+    const { data } = await apolloClient.query({
+      query: GET_COURSE,
+      variables: {
+        id: getDefaultCourseIdString(), // Use environment variable for course ID
+        userId: userId ? Number(userId) : 1, // Use number 1 for unauthenticated users
+      },
+    });
+
+    // Data loaded successfully
+    
+    const { data: stageData } = await apolloClient.query({
+      query: GET_STAGE_STATUS,
+      variables: {
+        userId: Number(userId),
+      },
+    });
+
+    return {
+      props: {
+        userId,
+        token,
+        userData: userData?.user || null,
+        courses: data?.getCourse || null, // Handle undefined data
+        stageData: stageData?.getStageStatus || [],
+      },
+    };
+  } catch (error) {
+    console.log('error', error);
+    return {
+      props: {
+        userId,
+        token,
+        userData: userData?.user || null,
+        courses: null,
+        stageData: [],
+      },
+    };
+  }
 };
 
-export default function PrivacyPolicy({
+export default function CourseBook({
   userId,
   token,
   userData,
+  courses,
+  stageData,
 }: {
   userId: string | null;
   token: string | null;
   userData: any;
+  courses:
+    | {
+        [k: string]: any;
+      }
+    | undefined;
+  stageData: { [k: string]: any };
 }) {
-  const cc = useContext(MainContext);
   const router = useRouter();
 
+  const {
+    fetchUser,
+    loading: loadingLazy,
+    error: errorLazy,
+    user,
+  } = useGetLazyUserData();
+
+  const cc = useContext(MainContext);
+  
   useEffect(() => {
+    stageData && cc?.setStageData(stageData);
+  }, [stageData]);
+
+  useEffect(() => {
+    // GOOD: This state update is now in a useEffect and won't cause a warning
     cc?.setUserId(userId);
     cc?.setToken(token);
-  }, [userId, token, userData]);
+    
+    if (userId) {
+      fetchUser(Number(userId));
+    }
+  }, [userId, token]);
+
+  useEffect(() => {
+    if (user) {
+      // Handle the case when the user data is not found
+      cc?.setUser(user);
+    }
+  }, [user]);
+
+
 
   return (
-    <YandexMetricaProvider
-      router={router as any}
-      tagID={100786060}
-      initParameters={{
-        clickmap: true,
-        trackLinks: true,
-        accurateTrackBounce: true,
-      }}
-    >
-      <div className={inter.className}>
-        <Head>
-          <title>Политика конфиденциальности - Cosmo.Irena</title>
-          <meta name="description" content="Политика конфиденциальности курсов Cosmo.Irena" />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <link rel="icon" href="/favicon/favicon.ico" />
-        </Head>
-
-        <TextBlock 
-          token={token} 
-          userId={userId}
-          title="Политика конфиденциальности"
-          subtitle="Cosmo.Irena"
-          description="Настоящая Политика конфиденциальности определяет порядок обработки персональных данных пользователей сайта и курсов Cosmo.Irena. Используя наш Сайт и услуги, вы соглашаетесь с настоящей Политикой конфиденциальности."
-          buttonText="Скачать политику"
-          buttonHref="/privacy-policy.pdf"
-          showBackButton={false}
-        />
-      </div>
-    </YandexMetricaProvider>
+    <>
+      <Head>
+        <title>Политика конфиденциальности - Cosmo.Irena</title>
+        <meta name="description" content="Политика конфиденциальности курсов Cosmo.Irena" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="shortcut icon" href="/favicon/favicon.ico" />
+      </Head>
+      <main>
+        <TextBlock />
+        <Footer />
+      </main>
+     
+    </>
   );
 }
