@@ -270,7 +270,7 @@ export default function CourseLessonHeader({
                 />
                 
                 <div className="lesson-navigation">
-                  <div className="lesson-navigation-buttons">
+                  <div className="lesson-navigation-buttons lnb">
                     {currentStageId !== '1' && (
                       <Button
                         className={
@@ -303,7 +303,7 @@ export default function CourseLessonHeader({
                   {(nextStageExists || isFinalLesson) && (
                   <Button
                     className={
-                      'lesson-navigation-item lesson-navigation-item_next button_primary '
+                      'lesson-navigation-item lesson-navigation-item_next button_primary lnb'
                     }
                     isLink
                     isLesson

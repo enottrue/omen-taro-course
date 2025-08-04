@@ -259,8 +259,8 @@ header {
 }
 
 /* Если внутри два элемента — задаём им по 50% */
-.lesson-navigation .button:first-child:nth-last-child(2),
-.lesson-navigation .button:first-child:nth-last-child(2) ~ .button {
+.lesson-navigation .lnb:first-child:nth-last-child(2),
+.lesson-navigation .lnb:first-child:nth-last-child(2) ~ .button {
   flex: 1 0 calc(50% - 5px); /* делим пополам, с учётом gap */
 }
 
