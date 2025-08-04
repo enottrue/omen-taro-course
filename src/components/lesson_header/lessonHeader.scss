@@ -255,7 +255,13 @@ header {
   align-items: center;
   flex-direction: row;
   flex-wrap: wrap;
-  width: calc(50% - 5px);
+  flex: 1 0 100%; /* по умолчанию 100% */
+}
+
+/* Если внутри два элемента — задаём им по 50% */
+.lesson-navigation .button:first-child:nth-last-child(2),
+.lesson-navigation .button:first-child:nth-last-child(2) ~ .button {
+  flex: 1 0 calc(50% - 5px); /* делим пополам, с учётом gap */
 }
 
 .lesson-navigation-item {
