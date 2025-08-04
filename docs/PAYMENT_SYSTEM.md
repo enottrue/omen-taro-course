@@ -86,7 +86,7 @@ const session = await stripe.checkout.sessions.create({
         name: 'Cosmo Course',
         description: 'Personalized financial astrology course',
       },
-      unit_amount: 5000, // $50.00
+      unit_amount: 100, // $1.00
     },
     quantity: 1,
   }],

@@ -45,7 +45,7 @@ export default async function handler(
               name: 'Cosmo Course',
               description: 'Personalized financial astrology course',
             },
-            unit_amount: 5000, // $50.00 in cents
+            unit_amount: 100, // $1.00 in cents
           },
           quantity: 1,
         },

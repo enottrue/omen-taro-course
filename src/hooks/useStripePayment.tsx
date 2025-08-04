@@ -12,9 +12,9 @@ export const useStripePayment = () => {
 
     // Проверяем авторизацию пользователя
     if (!context.token || !context.user) {
-      // Если не авторизован - открываем модалку авторизации
+      // Если не авторизован - открываем модалку регистрации
       context.setModalOpen(true);
-      context.setCurrentForm('auth');
+      context.setCurrentForm('register');
       return;
     }
 
