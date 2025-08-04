@@ -31,6 +31,8 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
       // Start playing video
       setIsVideoPlaying(true);
       if (videoRef.current) {
+        // Enable sound and play video
+        videoRef.current.muted = false;
         videoRef.current.play().catch(error => {
           console.log('Auto-play was prevented:', error);
         });
@@ -113,7 +115,6 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
               height={146}
               controls
               autoPlay
-              muted
               preload="auto"
               style={{ cursor: 'pointer' }}
               onClick={handleVideoClick}
