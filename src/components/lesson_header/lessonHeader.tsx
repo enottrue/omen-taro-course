@@ -139,7 +139,8 @@ export default function CourseLessonHeader({
       } else if (isFinalLesson) {
         router.push(`/congratulations`);
       } else {
-        router.push(`/courses`);
+        // Кнопка "To Courses" закомментирована - ничего не делаем
+        return;
       }
     }
   };
@@ -297,35 +298,37 @@ export default function CourseLessonHeader({
                         <span className="lesson-navigation-item-text">Back</span>
                       </Button>
                     )}
-                    
-                    {/* <Button
-                      className={
-                        'lesson-navigation-item lesson-navigation-item_next button_primary '
-                      }
-                      isLink
-                      isLesson
-                      onClick={nextButtonClickHandler}
-                    >
-                      <span className="lesson-navigation-item-text">
-                        {nextStageExists ? 'Next' : isFinalLesson ? 'Finish' : 'To Courses'}
-                      </span>
-                      <span className="lesson-navigation-item-icon">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 18 16"
-                          fill="none"
-                        >
-                          <path
-                            d="M1 8H17M17 8L10 1M17 8L10 15"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </span>
-                    </Button> */}
                   </div>
+                  
+                  {(nextStageExists || isFinalLesson) && (
+                  <Button
+                    className={
+                      'lesson-navigation-item lesson-navigation-item_next button_primary '
+                    }
+                    isLink
+                    isLesson
+                    onClick={nextButtonClickHandler}
+                  >
+                    <span className="lesson-navigation-item-text">
+                      {nextStageExists ? 'Next' : isFinalLesson ? 'Finish' : ''}
+                    </span>
+                    <span className="lesson-navigation-item-icon">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 18 16"
+                        fill="none"
+                      >
+                        <path
+                          d="M1 8H17M17 8L10 1M17 8L10 15"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </span>
+                  </Button>
+                  )}
                   
                   <Button
                     className={
