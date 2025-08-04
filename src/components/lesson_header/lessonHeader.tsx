@@ -298,7 +298,7 @@ export default function CourseLessonHeader({
                       </Button>
                     )}
                     
-                    <Button
+                    {/* <Button
                       className={
                         'lesson-navigation-item lesson-navigation-item_next button_primary '
                       }
@@ -324,7 +324,7 @@ export default function CourseLessonHeader({
                           />
                         </svg>
                       </span>
-                    </Button>
+                    </Button> */}
                   </div>
                   
                   <Button
