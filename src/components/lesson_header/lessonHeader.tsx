@@ -270,11 +270,10 @@ export default function CourseLessonHeader({
                 />
                 
                 <div className="lesson-navigation">
-                  <div className="lesson-navigation-buttons lnb">
                     {currentStageId !== '1' && (
                       <Button
                         className={
-                          'lesson-navigation-item lesson-navigation-item_back button_ternary '
+                          'lesson-navigation-item lesson-navigation-item_back button_ternary lnb '
                         }
                         isLink
                         isLesson
@@ -298,7 +297,7 @@ export default function CourseLessonHeader({
                         <span className="lesson-navigation-item-text">Back</span>
                       </Button>
                     )}
-                  </div>
+                  
                   
                   {(nextStageExists || isFinalLesson) && (
                   <Button
