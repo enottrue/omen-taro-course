@@ -200,7 +200,7 @@ export async function createDeal(dealData: {
     CATEGORY_ID: BITRIX24_CATEGORY_ID,
     CONTACT_ID: dealData.contactId,
     STAGE_ID: 'NEW',
-    SOURCE_ID: 'REPEAT_SALE',
+    SOURCE_ID: 'UC_HZ10CI',
     UTM_TERM: dealData.term || 'без тарифа',
     CURRENCY_ID: 'USD', // Устанавливаем валюту в доллары
   };
