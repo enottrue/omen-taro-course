@@ -329,8 +329,8 @@ export default function CourseLessonHeader({
                     </span>
                   </Button>
                   )}
-                  
-                  <Button
+                </div>
+                <Button
                     className={
                       'lesson-navigation-item lesson-navigation-item_to-list button_primary '
                     }
@@ -342,7 +342,6 @@ export default function CourseLessonHeader({
                       Return to Lesson List
                     </span>
                   </Button>
-                </div>
               </div>
             </div>
           </div>

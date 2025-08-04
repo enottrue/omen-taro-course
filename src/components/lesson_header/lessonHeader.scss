@@ -251,6 +251,8 @@ header {
   width: 100%;
   justify-content: center;
   align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .lesson-navigation-item {
