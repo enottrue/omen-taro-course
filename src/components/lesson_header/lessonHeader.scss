@@ -243,6 +243,8 @@ header {
   margin-top: 1rem;
   width: 100%;
   align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
 } 
 
 .lesson-navigation-buttons {
@@ -253,6 +255,7 @@ header {
   align-items: center;
   flex-direction: row;
   flex-wrap: wrap;
+  width: calc(50% - 5px);
 }
 
 .lesson-navigation-item {
