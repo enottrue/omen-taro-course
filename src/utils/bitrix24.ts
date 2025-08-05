@@ -414,6 +414,11 @@ export async function createInvoice(dealId: number, amount: number, currency: st
   console.log('📋 Данные счета:', { dealId, amount, currency });
 
   try {
+    console.log('🔧 Конфигурация Битрикс24:', {
+      webhookUrl: BITRIX24_WEBHOOK_URL,
+      assignedById: BITRIX24_ASSIGNED_BY_ID
+    });
+    
     // Данные для создания счета как смарт-процесса
     const invoiceData = {
       'entityTypeId': '31', // ID типа смарт-процесса для счетов
@@ -426,6 +431,8 @@ export async function createInvoice(dealId: number, amount: number, currency: st
       'fields[COMMENTS]': 'Счет создан автоматически при формировании ссылки на оплату',
       'fields[AMOUNT]': amount,
     };
+    
+    console.log('📋 Данные для создания счета:', invoiceData);
 
     const response = await makeBitrix24Request('crm.item.add', invoiceData);
 

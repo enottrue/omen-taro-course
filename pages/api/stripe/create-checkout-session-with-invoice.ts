@@ -76,9 +76,16 @@ export default async function handler(
     }
 
     console.log('💰 Creating invoice in Bitrix24...');
+    console.log('📋 Параметры для создания счета:', {
+      dealId,
+      amount: amount / 100,
+      currency: currency.toUpperCase()
+    });
     
     // Создаем счет в Битрикс24
     const invoiceResult = await createInvoice(dealId, amount / 100, currency.toUpperCase());
+    
+    console.log('📊 Результат создания счета:', invoiceResult);
     
     if (!invoiceResult.success) {
       console.error('❌ Failed to create invoice:', invoiceResult.error);
