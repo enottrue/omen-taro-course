@@ -35,6 +35,14 @@ export const useStripePayment = () => {
       dealId: context.user?.bitrix24DealId,
       userId: context.user?.id
     });
+    
+    // Сохраняем полные данные пользователя для отладки
+    const userDebugLog = {
+      timestamp: new Date().toISOString(),
+      action: 'user_data_debug',
+      fullUserData: context.user
+    };
+    localStorage.setItem('stripe_user_debug', JSON.stringify(userDebugLog));
 
     // Проверяем авторизацию пользователя
     if (!context.token || !context.user) {

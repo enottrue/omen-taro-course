@@ -9,12 +9,14 @@ export default function DebugStripe() {
       const stripeInvoiceDebug = localStorage.getItem('stripe_invoice_debug');
       const stripeSuccessDebug = localStorage.getItem('stripe_success_debug');
       const stripeErrorDebug = localStorage.getItem('stripe_error_debug');
+      const stripeUserDebug = localStorage.getItem('stripe_user_debug');
 
       setLogs({
         debugLog: stripeDebugLog ? JSON.parse(stripeDebugLog) : null,
         invoiceDebug: stripeInvoiceDebug ? JSON.parse(stripeInvoiceDebug) : null,
         successDebug: stripeSuccessDebug ? JSON.parse(stripeSuccessDebug) : null,
         errorDebug: stripeErrorDebug ? JSON.parse(stripeErrorDebug) : null,
+        userDebug: stripeUserDebug ? JSON.parse(stripeUserDebug) : null,
       });
     };
 
@@ -63,6 +65,13 @@ export default function DebugStripe() {
         <h3>Error Debug:</h3>
         <pre style={{ background: '#f5f5f5', padding: '10px' }}>
           {logs.errorDebug ? JSON.stringify(logs.errorDebug, null, 2) : 'No error debug'}
+        </pre>
+      </div>
+
+      <div style={{ marginBottom: '20px' }}>
+        <h3>User Debug:</h3>
+        <pre style={{ background: '#f5f5f5', padding: '10px' }}>
+          {logs.userDebug ? JSON.stringify(logs.userDebug, null, 2) : 'No user debug'}
         </pre>
       </div>
     </div>
