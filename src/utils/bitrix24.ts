@@ -46,7 +46,7 @@ interface UtmData {
   UTM_TERM?: string;
 }
 
-const BITRIX24_WEBHOOK_URL = process.env.BITRIX24_WEBHOOK_URL || 'https://crm.taroirena.com/rest/49468/d9cuna1b89mnipbq/';
+const BITRIX24_WEBHOOK_URL = process.env.BITRIX24_WEBHOOK_URL || 'https://crm.taroirena.com/rest/1/62s3v3dkougs3qsm/';
 const BITRIX24_ASSIGNED_BY_ID = parseInt(process.env.BITRIX24_ASSIGNED_BY_ID || '30902');
 const BITRIX24_CATEGORY_ID = parseInt(process.env.BITRIX24_CATEGORY_ID || '16');
 
