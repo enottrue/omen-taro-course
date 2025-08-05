@@ -9,6 +9,7 @@ import jwt from 'jsonwebtoken';
 import { GetServerSideProps } from 'next';
 import OnboardingStages from '@/components/onboarding/OnboardingStages';
 import PaymentRequired from '@/components/PaymentRequired';
+import { useMetrica } from 'next-yandex-metrica';
 
 import { useGetLazyUserData } from '@/hooks/useGetUserData';
 import CourseHero from '@/components/course_hero/Course_hero';
@@ -106,6 +107,7 @@ const Lesson = ({
 }) => {
   const router = useRouter();
   const [showPaymentRequired, setShowPaymentRequired] = useState(false);
+  const { reachGoal } = useMetrica();
 
   const {
     fetchUser,
@@ -116,6 +118,10 @@ const Lesson = ({
 
   const cc = useContext(MainContext);
  
+  useEffect(() => {
+    // Send Yandex Metrica event for lesson page view
+    reachGoal('lesson_page_viewed');
+  }, [reachGoal]);
 
   useEffect(() => {
     cc?.setUserId(userId);

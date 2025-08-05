@@ -6,7 +6,7 @@ import { MainContext } from '@/contexts/MainContext';
 import cookie from 'cookie';
 import jwt from 'jsonwebtoken';
 import { GetServerSideProps } from 'next';
-
+import { useMetrica } from 'next-yandex-metrica';
 
 import { useGetLazyUserData } from '@/hooks/useGetUserData';
 import Footer from '@/components/footer/Footer';
@@ -110,6 +110,7 @@ export default function PrivacyPolicy({
   stageData: { [k: string]: any };
 }) {
   const router = useRouter();
+  const { reachGoal } = useMetrica();
 
   const {
     fetchUser,
@@ -123,6 +124,11 @@ export default function PrivacyPolicy({
   useEffect(() => {
     stageData && cc?.setStageData(stageData);
   }, [stageData]);
+
+  useEffect(() => {
+    // Send Yandex Metrica event for privacy policy page view
+    reachGoal('privacy_policy_page_viewed');
+  }, [reachGoal]);
 
   useEffect(() => {
     // GOOD: This state update is now in a useEffect and won't cause a warning
@@ -140,6 +146,7 @@ export default function PrivacyPolicy({
       cc?.setUser(user);
     }
   }, [user]);
+
 
 
 

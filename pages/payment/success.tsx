@@ -10,6 +10,7 @@ import image3 from '@/images/image-3@2x.png';
 import BurgerMenu from '@/components/component1/BurgerMenu';
 import Footer from '@/components/footer/Footer';
 import FooterInside from '@/components/footerInside/Footer';
+import { useMetrica } from 'next-yandex-metrica';
 
 const PaymentSuccessPage: React.FC = () => {
   const router = useRouter();
@@ -19,6 +20,7 @@ const PaymentSuccessPage: React.FC = () => {
   const [paymentMessage, setPaymentMessage] = useState<string>('Processing your payment...');
   const burgerRef = useRef<HTMLDivElement>(null);
   const cc = useContext(MainContext);
+  const { track } = useMetrica();
 
   useEffect(() => {
     if (router.query.session_id) {
@@ -56,6 +58,7 @@ const PaymentSuccessPage: React.FC = () => {
             isPaid: true
           });
         }
+        track('payment_successful');
       } else {
         console.error('❌ Payment verification failed:', data.error);
         setPaymentStatus('error');

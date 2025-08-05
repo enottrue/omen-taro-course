@@ -5,6 +5,7 @@ import { gql } from 'graphql-request';
 import { request } from 'graphql-request';
 import { MainContext } from '@/contexts/MainContext';
 import Cookies from 'js-cookie';
+import { useMetrica } from 'next-yandex-metrica';
 
 // Add server-side logging
 if (typeof window !== 'undefined') {
@@ -35,9 +36,15 @@ const ResetPassword = () => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const cc = useContext(MainContext);
+  const { reachGoal } = useMetrica();
   
   // Extract token from URL manually since router.query might not work properly
   const [token, setToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Send Yandex Metrica event for reset password page view
+    reachGoal('reset_password_page_viewed');
+  }, [reachGoal]);
 
   useEffect(() => {
     console.log('Reset password page loaded');

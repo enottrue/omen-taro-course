@@ -6,6 +6,19 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
+        {/* Google Analytics */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-351910382"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-351910382');
+            `,
+          }}
+        />
+        {/* End Google Analytics */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />{' '}
         <link href="https://fonts.gstatic.com" crossOrigin="anonymous" />{' '}
         <link rel="shortcut icon" href="/favicon/favicon.ico" />

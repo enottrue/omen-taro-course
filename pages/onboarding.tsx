@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { isOnboardingEnabled, setOnboardingStatus } from '@/utils/onboardingUtils';
 import Head from 'next/head';
@@ -7,7 +7,10 @@ import { MainContext } from '@/contexts/MainContext';
 import cookie from 'cookie';
 import jwt from 'jsonwebtoken';
 import { GetServerSideProps } from 'next';
+import { useMetrica } from 'next-yandex-metrica';
+
 import OnboardingStages from '@/components/onboarding/OnboardingStages';
+import Footer from '@/components/footer/Footer';
 import { useGetLazyUserData } from '@/hooks/useGetUserData';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -43,6 +46,7 @@ const Onboarding = ({
   token: string | null;
 }) => {
   const router = useRouter();
+  const { reachGoal } = useMetrica();
 
   const {
     fetchUser,
@@ -53,6 +57,10 @@ const Onboarding = ({
 
   const cc = useContext(MainContext);
  
+  useEffect(() => {
+    // Send Yandex Metrica event for onboarding page view
+    reachGoal('onboarding_page_viewed');
+  }, [reachGoal]);
 
   useEffect(() => {
     cc?.setUserId(userId);

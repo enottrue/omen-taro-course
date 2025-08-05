@@ -8,6 +8,7 @@ import jwt from 'jsonwebtoken';
 import { GetServerSideProps } from 'next';
 import OnboardingStages from '@/components/onboarding/OnboardingStages';
 import PaymentRequired from '@/components/PaymentRequired';
+import { useMetrica } from 'next-yandex-metrica';
 
 import { useGetLazyUserData } from '@/hooks/useGetUserData';
 import Footer from '@/components/footer/Footer';
@@ -109,6 +110,7 @@ export default function CourseBook({
 }) {
   const router = useRouter();
   const [showPaymentRequired, setShowPaymentRequired] = useState(false);
+  const { reachGoal } = useMetrica();
 
   const {
     fetchUser,
@@ -122,6 +124,11 @@ export default function CourseBook({
   useEffect(() => {
     stageData && cc?.setStageData(stageData);
   }, [stageData]);
+
+  useEffect(() => {
+    // Send Yandex Metrica event for course book page view
+    reachGoal('course_book_page_viewed');
+  }, [reachGoal]);
 
   useEffect(() => {
     // GOOD: This state update is now in a useEffect and won't cause a warning

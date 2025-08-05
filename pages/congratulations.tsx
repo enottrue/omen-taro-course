@@ -6,6 +6,7 @@ import { MainContext, MainContextProvider } from '@/contexts/MainContext';
 import cookie from 'cookie';
 import jwt from 'jsonwebtoken';
 import { GetServerSideProps } from 'next';
+import { useMetrica } from 'next-yandex-metrica';
 
 import { useGetLazyUserData } from '@/hooks/useGetUserData';
 import Footer from '@/components/footer/Footer';
@@ -109,6 +110,7 @@ export default function Congratulations({
   stageData: { [k: string]: any };
 }) {
   const router = useRouter();
+  const { reachGoal } = useMetrica();
 
   const {
     fetchUser,
@@ -122,6 +124,11 @@ export default function Congratulations({
   useEffect(() => {
     stageData && cc?.setStageData(stageData);
   }, [stageData]);
+
+  useEffect(() => {
+    // Send Yandex Metrica event for congratulations page view
+    reachGoal('congratulations_page_viewed');
+  }, [reachGoal]);
 
   useEffect(() => {
     // GOOD: This state update is now in a useEffect and won't cause a warning
