@@ -25,14 +25,37 @@ export const useStripePayment = () => {
       throw new Error('User email not found');
     }
 
+    // Проверяем наличие dealId
+    const dealId = context.user.bitrix24DealId;
+    if (!dealId) {
+      console.error('No dealId found for user, using old payment method');
+      try {
+        // Fallback к старому методу если нет dealId
+        const sessionId = await createCheckoutSession(userEmail);
+        await redirectToCheckout(sessionId);
+      } catch (error) {
+        console.error('Payment error:', error);
+        throw error;
+      }
+      return;
+    }
+
     try {
-      // Создаем сессию оплаты
-      const sessionId = await createCheckoutSession(userEmail);
+      // Создаем сессию оплаты с invoice
+      const result = await createCheckoutSessionWithInvoice({
+        email: userEmail,
+        dealId,
+        productName: 'Cosmo Course',
+        amount: 5000, // $50.00 in cents
+        currency: 'usd'
+      });
+      
+      console.log('✅ Checkout session with invoice created:', result);
       
       // Перенаправляем на Stripe Checkout
-      await redirectToCheckout(sessionId);
+      await redirectToCheckout(result.sessionId);
     } catch (error) {
-      console.error('Payment error:', error);
+      console.error('Payment with invoice error:', error);
       throw error;
     }
   };
