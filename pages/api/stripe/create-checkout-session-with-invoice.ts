@@ -43,138 +43,45 @@ function getStripeSecretKeyForRequest(req: NextApiRequest): string {
   return productionKey;
 }
 
-// Функция для создания счета с правильными полями смарт-процесса
-async function createInvoiceWithCorrectFields(dealId: number, amount: number, currency: string = 'USD', email: string, productName: string = 'Cosmo Course'): Promise<{
+// Функция для создания счета через наш новый API endpoint
+async function createInvoiceWithCorrectFields(dealId: number, amount: number, currency: string = 'USD', email: string, productName: string = 'Cosmo Course', origin: string): Promise<{
   success: boolean;
   invoiceId?: number;
   error?: string;
 }> {
-  console.log('💰 Создание счета в Битрикс24 (смарт-процесс)...');
+  console.log('💰 Создание счета через API endpoint...');
   console.log('📋 Данные счета:', { dealId, amount, currency, productName });
 
   try {
-    console.log('🔧 Конфигурация Битрикс24:', {
-      webhookUrl: CORRECT_WEBHOOK_URL
-    });
-    
-    // Сначала проверяем существование сделки
-    try {
-      const dealResponse = await fetch(`${CORRECT_WEBHOOK_URL}crm.deal.get`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({ id: dealId.toString() })
-      });
-      
-      if (dealResponse.ok) {
-        const dealInfo = await dealResponse.json();
-        if (dealInfo.result) {
-          console.log('✅ Сделка найдена:', dealInfo.result.TITLE);
-        } else {
-          console.error('❌ Сделка не найдена');
-          return {
-            success: false,
-            error: `Deal with ID ${dealId} not found`,
-          };
-        }
-      } else {
-        console.error('❌ Ошибка получения информации о сделке');
-        return {
-          success: false,
-          error: `Deal with ID ${dealId} not accessible`,
-        };
-      }
-    } catch (dealError) {
-      console.error('❌ Ошибка получения информации о сделке:', dealError);
-      return {
-        success: false,
-        error: `Deal with ID ${dealId} not accessible`,
-      };
-    }
-    
-    // Правильные поля для создания счета как смарт-процесса
-    const invoiceData = {
-      'entityTypeId': '31', // ID типа смарт-процесса для счетов
-      'fields[title]': `Invoice for ${productName} - ${email}`,
-      'fields[stageId]': 'NEW',
-      'fields[assignedById]': '1',
-      'fields[contactId]': '1',
-      'fields[opportunity]': amount.toString(),
-      'fields[currencyId]': currency,
-      'fields[parentId2]': dealId.toString(), // Привязка к сделке
-      'fields[mycompanyId]': '51',
-      'fields[sourceId]': 'UC_HZ10CI',
-      'fields[COMMENTS]': `${productName} Service\nClient: ${email}\nEmail: ${email}\nPrice: ${amount} ${currency}`
-    };
-    
-    console.log('📋 Данные для создания счета:', invoiceData);
-
-    const response = await fetch(`${CORRECT_WEBHOOK_URL}crm.item.add`, {
+    // Вызываем наш новый API endpoint для создания счета
+    const response = await fetch(`${origin}/api/bitrix24/create-invoice`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/json',
       },
-      body: new URLSearchParams(invoiceData)
+      body: JSON.stringify({
+        email,
+        dealId,
+        productName,
+        amount,
+        currency
+      })
     });
 
     const result = await response.json();
 
-    if (result.result) {
-      console.log('✅ Счет создан успешно:', result.result);
+    if (result.success && result.invoiceId) {
+      console.log('✅ Счет создан успешно через API:', result.invoiceId);
       return {
         success: true,
-        invoiceId: result.result,
+        invoiceId: result.invoiceId,
       };
     } else {
-      console.error('❌ Ошибка создания счета:', result.error_description);
-      
-      // Попробуем альтернативный подход - создание через обычный API счетов
-      console.log('🔄 Пробуем альтернативный метод создания счета...');
-      
-      try {
-        const alternativeInvoiceData = {
-          'fields[title]': `Invoice for ${productName} - ${email}`,
-          'fields[stageId]': 'NEW',
-          'fields[assignedById]': '1',
-          'fields[contactId]': '1',
-          'fields[opportunity]': amount.toString(),
-          'fields[currencyId]': currency,
-          'fields[parentId2]': dealId.toString(),
-          'fields[mycompanyId]': '51',
-          'fields[COMMENTS]': `${productName} Service\nClient: ${email}\nEmail: ${email}\nPrice: ${amount} ${currency}`
-        };
-        
-        const altResponse = await fetch(`${CORRECT_WEBHOOK_URL}crm.invoice.add`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: new URLSearchParams(alternativeInvoiceData)
-        });
-        
-        const altResult = await altResponse.json();
-        
-        if (altResult.result) {
-          console.log('✅ Счет создан через альтернативный метод:', altResult.result);
-          return {
-            success: true,
-            invoiceId: altResult.result,
-          };
-        } else {
-          console.error('❌ Ошибка альтернативного создания счета:', altResult.error_description);
-          return {
-            success: false,
-            error: `Failed to create invoice: ${result.error_description || 'Unknown error'}`,
-          };
-        }
-      } catch (altError) {
-        console.error('❌ Ошибка альтернативного метода:', altError);
-        return {
-          success: false,
-          error: `Failed to create invoice: ${result.error_description || 'Unknown error'}`,
-        };
-      }
+      console.error('❌ Ошибка создания счета через API:', result.error);
+      return {
+        success: false,
+        error: result.error || 'Failed to create invoice through API',
+      };
     }
   } catch (error) {
     console.error('❌ Ошибка создания счета:', error);
@@ -185,80 +92,7 @@ async function createInvoiceWithCorrectFields(dealId: number, amount: number, cu
   }
 }
 
-// Функция для добавления товара к счету с правильными полями
-async function addProductToInvoice(invoiceId: number, productName: string, price: number): Promise<boolean> {
-  console.log('📦 Добавление товара к счету...');
-  console.log('📋 Данные товара:', { invoiceId, productName, price });
 
-  try {
-    // Используем правильный метод для добавления товаров к смарт-процессу
-    const addProductData = {
-      'entityTypeId': '31', // ID типа смарт-процесса для счетов
-      'id': invoiceId.toString(),
-      'fields[productRows][0][productId]': '1777', // ID товара Compass
-      'fields[productRows][0][price]': price.toString(),
-      'fields[productRows][0][quantity]': '1',
-      'fields[productRows][0][sort]': '10'
-    };
-    
-    console.log('📋 Данные для добавления товара:', addProductData);
-    
-    const addProductResponse = await fetch(`${CORRECT_WEBHOOK_URL}crm.item.update`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: new URLSearchParams(addProductData)
-    });
-    
-    const addProductResult = await addProductResponse.json();
-    console.log('📊 Результат добавления товара:', addProductResult);
-    
-    if (addProductResult.result) {
-      console.log('✅ Товар Compass успешно добавлен к счету!');
-      return true;
-    } else {
-      console.log('❌ Ошибка добавления товара:', addProductResult.error_description);
-      
-      // Попробуем альтернативный метод через обычный API счетов
-      console.log('🔄 Пробуем альтернативный метод добавления товара...');
-      
-      try {
-        const altProductData = {
-          'id': invoiceId.toString(),
-          'fields[productRows][0][productId]': '1777',
-          'fields[productRows][0][price]': price.toString(),
-          'fields[productRows][0][quantity]': '1',
-          'fields[productRows][0][sort]': '10'
-        };
-        
-        const altResponse = await fetch(`${CORRECT_WEBHOOK_URL}crm.invoice.update`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: new URLSearchParams(altProductData)
-        });
-        
-        const altResult = await altResponse.json();
-        
-        if (altResult.result) {
-          console.log('✅ Товар добавлен через альтернативный метод');
-          return true;
-        } else {
-          console.log('❌ Ошибка альтернативного добавления товара:', altResult.error_description);
-          return false;
-        }
-      } catch (altError) {
-        console.error('❌ Ошибка альтернативного метода добавления товара:', altError);
-        return false;
-      }
-    }
-  } catch (error) {
-    console.error('❌ Ошибка добавления товара:', error);
-    return false;
-  }
-}
 
 export default async function handler(
   req: NextApiRequest,
@@ -305,7 +139,9 @@ export default async function handler(
     });
     
     // Создаем счет в Битрикс24 с правильными полями
-    const invoiceResult = await createInvoiceWithCorrectFields(dealId, amount / 100, currency.toUpperCase(), email, productName);
+    const apiOrigin = (typeof req.headers.origin === 'string' && req.headers.origin) ||
+      (req.headers.host ? `http://${req.headers.host}` : 'http://localhost:3000');
+    const invoiceResult = await createInvoiceWithCorrectFields(dealId, amount / 100, currency.toUpperCase(), email, productName, apiOrigin);
     
     console.log('📊 Результат создания счета:', invoiceResult);
     
@@ -328,13 +164,8 @@ export default async function handler(
     
     console.log('✅ Invoice created successfully:', invoiceId);
 
-    // Добавляем товар Compass к счету
-    console.log('📦 Adding Compass product to invoice...');
-    const productAdded = await addProductToInvoice(invoiceId, 'Compass', amount / 100);
-    
-    if (!productAdded) {
-      console.warn('⚠️ Failed to add product to invoice, but continuing...');
-    }
+    // Товар добавляется автоматически в нашем новом API endpoint
+    console.log('📦 Product will be added automatically by the invoice API');
 
     console.log('🔄 Creating Stripe checkout session...');
     
