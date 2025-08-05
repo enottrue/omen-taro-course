@@ -43,45 +43,154 @@ function getStripeSecretKeyForRequest(req: NextApiRequest): string {
   return productionKey;
 }
 
-// Функция для создания счета через наш новый API endpoint
-async function createInvoiceWithCorrectFields(dealId: number, amount: number, currency: string = 'USD', email: string, productName: string = 'Cosmo Course', origin: string): Promise<{
+// Функция для создания счета в Bitrix24
+async function createInvoiceWithCorrectFields(dealId: number, amount: number, currency: string = 'USD', email: string, productName: string = 'Cosmo Course'): Promise<{
   success: boolean;
   invoiceId?: number;
   error?: string;
 }> {
-  console.log('💰 Создание счета через API endpoint...');
+  console.log('💰 Создание счета в Bitrix24...');
   console.log('📋 Данные счета:', { dealId, amount, currency, productName });
 
+  // Конфигурация
+  const WEBHOOK_URL = 'https://crm.taroirena.com/rest/1/62s3v3dkougs3qsm/';
+
   try {
-    // Вызываем наш новый API endpoint для создания счета
-    const response = await fetch(`${origin}/api/bitrix24/create-invoice`, {
+    // Сначала проверяем существование сделки
+    try {
+      const dealResponse = await fetch(`${WEBHOOK_URL}crm.deal.get`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({ id: dealId.toString() })
+      });
+      
+      if (dealResponse.ok) {
+        const dealInfo = await dealResponse.json();
+        if (dealInfo.result) {
+          console.log('✅ Сделка найдена:', dealInfo.result.TITLE);
+        } else {
+          console.error('❌ Сделка не найдена');
+          return {
+            success: false,
+            error: `Deal with ID ${dealId} not found`,
+          };
+        }
+      } else {
+        console.error('❌ Ошибка получения информации о сделке');
+        return {
+          success: false,
+          error: `Deal with ID ${dealId} not accessible`,
+        };
+      }
+    } catch (dealError) {
+      console.error('❌ Ошибка получения информации о сделке:', dealError);
+      return {
+        success: false,
+        error: `Deal with ID ${dealId} not accessible`,
+      };
+    }
+    
+    // Создаем счет через смарт-процесс
+    const invoiceData = {
+      'entityTypeId': '31', // ID типа смарт-процесса для счетов
+      'fields[title]': `Invoice for ${productName} - ${email}`,
+      'fields[stageId]': 'NEW',
+      'fields[assignedById]': '1',
+      'fields[contactId]': '1',
+      'fields[opportunity]': amount.toString(),
+      'fields[currencyId]': currency,
+      'fields[parentId2]': dealId.toString(), // Привязка к сделке
+      'fields[mycompanyId]': '51',
+      'fields[sourceId]': 'UC_HZ10CI',
+      'fields[COMMENTS]': `${productName} Service\nClient: ${email}\nEmail: ${email}\nPrice: ${amount} ${currency}`
+    };
+    
+    console.log('📋 Данные для создания счета:', invoiceData);
+
+    const response = await fetch(`${WEBHOOK_URL}crm.item.add`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: JSON.stringify({
-        email,
-        dealId,
-        productName,
-        amount,
-        currency
-      })
+      body: new URLSearchParams(invoiceData)
     });
 
     const result = await response.json();
 
-    if (result.success && result.invoiceId) {
-      console.log('✅ Счет создан успешно через API:', result.invoiceId);
+    if (result.result) {
+      console.log('✅ Счет создан успешно:', result.result);
+      
+      // Извлекаем ID из правильной структуры ответа
+      let invoiceId;
+      if (result.result.item && result.result.item.id) {
+        // Структура для смарт-процессов
+        invoiceId = result.result.item.id;
+      } else if (typeof result.result === 'number') {
+        // Структура для обычных счетов
+        invoiceId = result.result;
+      } else {
+        console.error('❌ Неожиданная структура ответа:', result.result);
+        return {
+          success: false,
+          error: 'Unexpected response structure from Bitrix24',
+        };
+      }
+      
       return {
         success: true,
-        invoiceId: result.invoiceId,
+        invoiceId: invoiceId,
       };
     } else {
-      console.error('❌ Ошибка создания счета через API:', result.error);
-      return {
-        success: false,
-        error: result.error || 'Failed to create invoice through API',
-      };
+      console.error('❌ Ошибка создания счета:', result.error_description);
+      
+      // Попробуем альтернативный подход - создание через обычный API счетов
+      console.log('🔄 Пробуем альтернативный метод создания счета...');
+      
+      try {
+        const alternativeInvoiceData = {
+          'fields[title]': `Invoice for ${productName} - ${email}`,
+          'fields[stageId]': 'NEW',
+          'fields[assignedById]': '1',
+          'fields[contactId]': '1',
+          'fields[opportunity]': amount.toString(),
+          'fields[currencyId]': currency,
+          'fields[parentId2]': dealId.toString(),
+          'fields[mycompanyId]': '51',
+          'fields[COMMENTS]': `${productName} Service\nClient: ${email}\nEmail: ${email}\nPrice: ${amount} ${currency}`
+        };
+        
+        const altResponse = await fetch(`${WEBHOOK_URL}crm.invoice.add`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: new URLSearchParams(alternativeInvoiceData)
+        });
+        
+        const altResult = await altResponse.json();
+        
+        if (altResult.result) {
+          console.log('✅ Счет создан через альтернативный метод:', altResult.result);
+          return {
+            success: true,
+            invoiceId: altResult.result,
+          };
+        } else {
+          console.error('❌ Ошибка альтернативного создания счета:', altResult.error_description);
+          return {
+            success: false,
+            error: `Failed to create invoice: ${result.error_description || 'Unknown error'}`,
+          };
+        }
+      } catch (altError) {
+        console.error('❌ Ошибка альтернативного метода:', altError);
+        return {
+          success: false,
+          error: `Failed to create invoice: ${result.error_description || 'Unknown error'}`,
+        };
+      }
     }
   } catch (error) {
     console.error('❌ Ошибка создания счета:', error);
@@ -139,9 +248,7 @@ export default async function handler(
     });
     
     // Создаем счет в Битрикс24 с правильными полями
-    const apiOrigin = (typeof req.headers.origin === 'string' && req.headers.origin) ||
-      (req.headers.host ? `http://${req.headers.host}` : 'http://localhost:3000');
-    const invoiceResult = await createInvoiceWithCorrectFields(dealId, amount / 100, currency.toUpperCase(), email, productName, apiOrigin);
+    const invoiceResult = await createInvoiceWithCorrectFields(dealId, amount / 100, currency.toUpperCase(), email, productName);
     
     console.log('📊 Результат создания счета:', invoiceResult);
     
