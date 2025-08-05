@@ -21,6 +21,7 @@ import About from '@/components/about/About';
 import Way from '@/components/way/Way';
 import Footer from '@/components/footer/Footer';
 import Modal from '@/components/modal/Modal';
+import { EnvironmentInfo } from '@/components/EnvironmentInfo';
 
 import { MainContext } from '@/contexts/MainContext';
 import { YandexMetricaProvider } from 'next-yandex-metrica';
@@ -101,6 +102,7 @@ export default function Home({
         <link rel="shortcut icon" href="/favicon/favicon.ico" />
       </Head>
       <main>
+        <EnvironmentInfo />
         <Component1 />
         <Component2 videoSource="/videos/main_page.mp4" typePage="mainPage" />
         <Discover />

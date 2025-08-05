@@ -402,4 +402,80 @@ export function getUtmDataFromCookies(): UtmData {
     UTM_CONTENT: cookies['utm_content'],
     UTM_TERM: cookies['utm_term'],
   };
+}
+
+// Функция для создания счета в Битрикс24 (смарт-процесс)
+export async function createInvoice(dealId: number, amount: number, currency: string = 'RUB'): Promise<{
+  success: boolean;
+  invoiceId?: number;
+  error?: string;
+}> {
+  console.log('💰 Создание счета в Битрикс24 (смарт-процесс)...');
+  console.log('📋 Данные счета:', { dealId, amount, currency });
+
+  try {
+    // Данные для создания счета как смарт-процесса
+    const invoiceData = {
+      'entityTypeId': '31', // ID типа смарт-процесса для счетов
+      'fields[TITLE]': `Счет по сделке #${dealId}`,
+      'fields[DEAL_ID]': dealId,
+      'fields[CURRENCY]': currency,
+      'fields[STATUS_ID]': 'NEW', // Новый статус
+      'fields[ASSIGNED_BY_ID]': BITRIX24_ASSIGNED_BY_ID,
+      'fields[ACCOUNT_NUMBER]': `INV-${Date.now()}`, // Уникальный номер счета
+      'fields[COMMENTS]': 'Счет создан автоматически при формировании ссылки на оплату',
+      'fields[AMOUNT]': amount,
+    };
+
+    const response = await makeBitrix24Request('crm.item.add', invoiceData);
+
+    if (response.result) {
+      console.log('✅ Счет создан успешно:', response.result);
+      return {
+        success: true,
+        invoiceId: response.result,
+      };
+    } else {
+      console.error('❌ Ошибка создания счета:', response.error_description);
+      return {
+        success: false,
+        error: response.error_description || 'Unknown error',
+      };
+    }
+  } catch (error) {
+    console.error('❌ Ошибка создания счета:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    };
+  }
+}
+
+// Функция для добавления товара к счету (смарт-процесс)
+export async function addProductToInvoice(invoiceId: number, productName: string, price: number, quantity: number = 1): Promise<boolean> {
+  console.log('📦 Добавление товара к счету (смарт-процесс)...');
+  console.log('📋 Данные товара:', { invoiceId, productName, price, quantity });
+
+  try {
+    const productData = {
+      'entityTypeId': '31', // ID типа смарт-процесса для счетов
+      'id': invoiceId,
+      'fields[PRODUCT_NAME]': productName,
+      'fields[PRICE]': price,
+      'fields[QUANTITY]': quantity,
+    };
+
+    const response = await makeBitrix24Request('crm.item.update', productData);
+
+    if (response.result) {
+      console.log('✅ Товар добавлен к счету успешно');
+      return true;
+    } else {
+      console.error('❌ Ошибка добавления товара к счету:', response.error_description);
+      return false;
+    }
+  } catch (error) {
+    console.error('❌ Ошибка добавления товара к счету:', error);
+    return false;
+  }
 } 

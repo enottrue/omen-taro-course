@@ -3,9 +3,14 @@ import { PrismaClient } from '@prisma/client';
 import Stripe from 'stripe';
 import { buffer } from 'micro';
 import { emailService } from '@/utils/emailService';
+import { getStripeSecretKey, getStripeWebhookSecret, logEnvironmentInfo } from '../../../src/utils/environment';
 
 const prisma = new PrismaClient();
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+
+// Логируем информацию об окружении
+logEnvironmentInfo();
+
+const stripe = new Stripe(getStripeSecretKey(), {
   apiVersion: '2025-06-30.basil',
 });
 
@@ -23,7 +28,7 @@ const sendYandexMetricaEvent = async (eventName: string, userId?: string) => {
   }
 };
 
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
+const webhookSecret = getStripeWebhookSecret();
 
 export const config = {
   api: {
@@ -83,6 +88,11 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
   
   if (session.payment_status === 'paid') {
     const userEmail = session.customer_email || session.metadata?.email;
+    const invoiceId = session.metadata?.invoice_id;
+    const dealId = session.metadata?.deal_id;
+    const gaClientId = session.metadata?.ga_client_id;
+    const itemId = session.metadata?.item_id;
+    const itemName = session.metadata?.item_name;
     
     if (!userEmail) {
       console.error('❌ No email found in session:', session.id);
@@ -90,6 +100,13 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
     }
 
     console.log('👤 Updating payment status for user:', userEmail);
+    console.log('📋 Session metadata:', {
+      invoiceId,
+      dealId,
+      gaClientId,
+      itemId,
+      itemName
+    });
 
     try {
       const updatedUser = await prisma.user.update({
@@ -105,6 +122,19 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
       
       // Send Yandex Metrica event for successful payment
       await sendYandexMetricaEvent('payment_successful', updatedUser.id.toString());
+      
+      // Log additional metadata for analytics
+      if (gaClientId) {
+        console.log('📊 GA Client ID for payment:', gaClientId);
+      }
+      
+      if (invoiceId) {
+        console.log('📄 Invoice ID for payment:', invoiceId);
+      }
+      
+      if (dealId) {
+        console.log('🤝 Deal ID for payment:', dealId);
+      }
       
       // Send payment success email
       try {

@@ -1,11 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
+import { getStripeSecretKey, logEnvironmentInfo } from '../../../src/utils/environment';
 
-// Debug logging
-console.log('🔑 Stripe Secret Key (first 10 chars):', process.env.STRIPE_SECRET_KEY?.substring(0, 10) + '...');
-console.log('🔑 Stripe Secret Key length:', process.env.STRIPE_SECRET_KEY?.length);
+// Логируем информацию об окружении
+logEnvironmentInfo();
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+const stripe = new Stripe(getStripeSecretKey(), {
   apiVersion: '2025-06-30.basil',
 });
 
