@@ -180,8 +180,8 @@ export default function CourseBook({
   return (
     <>
       <Head>
-        <title>Course Book - Tarot Learning Course</title>
-        <meta name="Course Book - Omen | Tarot Course" />
+        <title>Course Book - Money Compass Learning Course</title>
+        <meta name="Course Book | Money Compass" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="shortcut icon" href="/favicon/favicon.ico" />
       </Head>

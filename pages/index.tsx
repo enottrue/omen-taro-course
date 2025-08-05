@@ -95,8 +95,8 @@ export default function Home({
   return (
     <>
       <Head>
-        <title>Cosmo Irena Deck with Tarot Learning Course</title>
-        <meta name="Cosmo Irena Deck with Tarot Learning Course" />
+        <title>Cosmo Irena Deck with Money Compass Learning Course</title>
+        <meta name="Cosmo Irena Deck with Money Compass Learning Course" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="shortcut icon" href="/favicon/favicon.ico" />
       </Head>

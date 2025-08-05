@@ -173,8 +173,8 @@ const Lesson = ({
   return (
     <>
       <Head>
-        <title>Tarot Learning Course</title>
-        <meta name="Tarot Learning Course - Omen | Tarot Course" />
+        <title>Money Compass Learning Course</title>
+        <meta name="Money Compass Learning Course | Money Compass" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="shortcut icon" href="/favicon/favicon.ico" />
  

@@ -108,8 +108,8 @@ const Onboarding = ({
   return (
     <>
       <Head>
-        <title>Cosmo Irena Deck with Tarot Learning Course</title>
-        <meta name="Tarot Learning Course - Omen | Introduction" />
+        <title>Cosmo Irena Deck with Money Compass Learning Course</title>
+        <meta name="Money Compass Learning Course - Omen | Introduction" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
          <link rel="shortcut icon" href="/favicon/favicon.ico" />
  

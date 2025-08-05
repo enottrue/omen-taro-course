@@ -203,7 +203,7 @@ const Cources = ({
     return (
       <>
         <Head>
-          <title>Access Restricted - Tarot Learning Course</title>
+          <title>Access Restricted - Money Compass Learning Course</title>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="shortcut icon" href="/favicon/favicon.ico" />
         </Head>
@@ -219,8 +219,8 @@ const Cources = ({
   return (
     <>
       <Head>
-        <title>Tarot training course</title>
-        <meta name="Tarot training course - Omen | Tarot Course" />
+        <title>Money Compass training course</title>
+        <meta name="Money Compass training course | Money Compass" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="shortcut icon" href="/favicon/favicon.ico" />
       </Head>
