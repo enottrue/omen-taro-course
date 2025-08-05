@@ -44,13 +44,13 @@ function getStripeSecretKeyForRequest(req: NextApiRequest): string {
 }
 
 // Функция для создания счета с правильным URL
-async function createInvoiceWithCorrectUrl(dealId: number, amount: number, currency: string = 'RUB', email: string): Promise<{
+async function createInvoiceWithCorrectUrl(dealId: number, amount: number, currency: string = 'RUB', email: string, productName: string = 'Astrology Reading'): Promise<{
   success: boolean;
   invoiceId?: number;
   error?: string;
 }> {
   console.log('💰 Создание счета в Битрикс24 (смарт-процесс)...');
-  console.log('📋 Данные счета:', { dealId, amount, currency });
+  console.log('📋 Данные счета:', { dealId, amount, currency, productName });
 
   try {
     console.log('🔧 Конфигурация Битрикс24:', {
@@ -186,53 +186,34 @@ async function addProductToInvoice(invoiceId: number, productName: string, price
   console.log('📋 Данные товара:', { invoiceId, productName, price });
 
   try {
-    // Сначала найдем товар
-    console.log('🔍 Ищем товар...');
-    const productResponse = await fetch(`${CORRECT_WEBHOOK_URL}crm.product.list`, {
+    // Используем правильный метод для добавления товаров к счету
+    const addProductData = {
+      'ownerType': 'SI', // Тип владельца (SI - Smart Invoice)
+      'ownerId': invoiceId.toString(), // ID счета
+      'productRows[0][productId]': '1777', // ID товара Compass
+      'productRows[0][price]': price.toString(),
+      'productRows[0][quantity]': '1',
+      'productRows[0][sort]': '10'
+    };
+    
+    console.log('📋 Данные для добавления товара:', addProductData);
+    
+    const addProductResponse = await fetch(`${CORRECT_WEBHOOK_URL}crm.item.productrow.set`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: new URLSearchParams({
-        'filter[NAME]': productName
-      })
+      body: new URLSearchParams(addProductData)
     });
     
-    const productResult = await productResponse.json();
+    const addProductResult = await addProductResponse.json();
+    console.log('📊 Результат добавления товара:', addProductResult);
     
-    if (productResult.result && productResult.result.length > 0) {
-      const product = productResult.result[0];
-      console.log('✅ Товар найден:', product.ID);
-      
-      // Добавляем товар к счету
-      const addProductData = {
-        'entityTypeId': '31',
-        'id': invoiceId.toString(),
-        'fields[PRODUCT_NAME]': productName,
-        'fields[PRICE]': price.toString(),
-        'fields[QUANTITY]': '1',
-        'fields[PRODUCT_ID]': product.ID.toString(),
-      };
-      
-      const addProductResponse = await fetch(`${CORRECT_WEBHOOK_URL}crm.item.update`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams(addProductData)
-      });
-      
-      const addProductResult = await addProductResponse.json();
-      
-      if (addProductResult.result) {
-        console.log('✅ Товар успешно добавлен к счету!');
-        return true;
-      } else {
-        console.log('❌ Ошибка добавления товара:', addProductResult.error_description);
-        return false;
-      }
+    if (addProductResult.result) {
+      console.log('✅ Товар Compass успешно добавлен к счету!');
+      return true;
     } else {
-      console.log('❌ Товар не найден');
+      console.log('❌ Ошибка добавления товара:', addProductResult.error_description);
       return false;
     }
   } catch (error) {
@@ -286,7 +267,7 @@ export default async function handler(
     });
     
     // Создаем счет в Битрикс24 с правильным URL
-    const invoiceResult = await createInvoiceWithCorrectUrl(dealId, amount / 100, currency.toUpperCase(), email);
+    const invoiceResult = await createInvoiceWithCorrectUrl(dealId, amount / 100, currency.toUpperCase(), email, productName);
     
     console.log('📊 Результат создания счета:', invoiceResult);
     
