@@ -44,7 +44,7 @@ function getStripeSecretKeyForRequest(req: NextApiRequest): string {
 }
 
 // Функция для создания счета с правильным URL
-async function createInvoiceWithCorrectUrl(dealId: number, amount: number, currency: string = 'RUB'): Promise<{
+async function createInvoiceWithCorrectUrl(dealId: number, amount: number, currency: string = 'RUB', email: string): Promise<{
   success: boolean;
   invoiceId?: number;
   error?: string;
@@ -88,19 +88,18 @@ async function createInvoiceWithCorrectUrl(dealId: number, amount: number, curre
     
     // Данные для создания счета как смарт-процесса
     const invoiceData = {
-      'entityTypeId': '31', // ID типа смарт-процесса для счетов
-      'fields[TITLE]': `Счет по сделке #${dealId}`,
-      'fields[DEAL_ID]': dealId.toString(),
-      'fields[CURRENCY]': currency,
-      'fields[STATUS_ID]': 'NEW', // Новый статус
-      'fields[ASSIGNED_BY_ID]': '30902',
-      'fields[ACCOUNT_NUMBER]': `INV-${Date.now()}`, // Уникальный номер счета
-      'fields[COMMENTS]': 'Счет создан автоматически при формировании ссылки на оплату',
-      'fields[AMOUNT]': amount.toString(),
-      // Правильные значения полей для смарт-процесса
-      'fields[CATEGORY_ID]': '16', // ID воронки
-      'fields[STAGE_ID]': 'C16:NEW', // Стадия в воронке 16
-      'fields[TYPE_ID]': 'GOODS', // Тип сделки
+      'entityTypeId': '31',
+      'fields[title]': `Invoice for Astrology Reading - ${email}`,
+      'fields[stageId]': 'NEW',
+      'fields[assignedById]': '1',
+      'fields[contactId]': '1',
+      'fields[opportunity]': amount.toString(),
+      'fields[currencyId]': 'USD',
+      'fields[parentId2]': dealId.toString(),
+      'fields[ufCrm_SMART_INVOICE_1706948587230]': '1013',
+      'fields[ufCrm_67AE0664BC8E9]': '939',
+      'fields[mycompanyId]': '51',
+      'fields[COMMENTS]': `Astrology Reading Service\nClient: ${email}\nEmail: ${email}\nPrice: ${amount} USD`
     };
     
     console.log('📋 Данные для создания счета:', invoiceData);
@@ -129,18 +128,15 @@ async function createInvoiceWithCorrectUrl(dealId: number, amount: number, curre
       
       try {
         const alternativeInvoiceData = {
-          'fields[TITLE]': `Счет по сделке #${dealId}`,
-          'fields[DEAL_ID]': dealId.toString(),
-          'fields[CURRENCY]': currency,
-          'fields[STATUS_ID]': 'NEW',
-          'fields[ASSIGNED_BY_ID]': '30902',
-          'fields[ACCOUNT_NUMBER]': `INV-${Date.now()}`,
-          'fields[COMMENTS]': 'Счет создан автоматически при формировании ссылки на оплату',
-          'fields[AMOUNT]': amount.toString(),
-          // Правильные значения полей для обычного счета
-          'fields[CATEGORY_ID]': '16', // ID воронки
-          'fields[STAGE_ID]': 'C16:NEW', // Стадия в воронке 16
-          'fields[TYPE_ID]': 'GOODS', // Тип сделки
+          'fields[title]': `Invoice for Astrology Reading - ${email}`,
+          'fields[stageId]': 'NEW',
+          'fields[assignedById]': '1',
+          'fields[contactId]': '1',
+          'fields[opportunity]': amount.toString(),
+          'fields[currencyId]': 'USD',
+          'fields[parentId2]': dealId.toString(),
+          'fields[mycompanyId]': '51',
+          'fields[COMMENTS]': `Astrology Reading Service\nClient: ${email}\nEmail: ${email}\nPrice: ${amount} USD`
         };
         
         const altResponse = await fetch(`${CORRECT_WEBHOOK_URL}crm.invoice.add`, {
@@ -180,6 +176,67 @@ async function createInvoiceWithCorrectUrl(dealId: number, amount: number, curre
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',
     };
+  }
+}
+
+// Функция для добавления товара к счету
+async function addProductToInvoice(invoiceId: number, productName: string, price: number): Promise<boolean> {
+  console.log('📦 Добавление товара к счету...');
+  console.log('📋 Данные товара:', { invoiceId, productName, price });
+
+  try {
+    // Сначала найдем товар
+    console.log('🔍 Ищем товар...');
+    const productResponse = await fetch(`${CORRECT_WEBHOOK_URL}crm.product.list`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({
+        'filter[NAME]': productName
+      })
+    });
+    
+    const productResult = await productResponse.json();
+    
+    if (productResult.result && productResult.result.length > 0) {
+      const product = productResult.result[0];
+      console.log('✅ Товар найден:', product.ID);
+      
+      // Добавляем товар к счету
+      const addProductData = {
+        'entityTypeId': '31',
+        'id': invoiceId.toString(),
+        'fields[PRODUCT_NAME]': productName,
+        'fields[PRICE]': price.toString(),
+        'fields[QUANTITY]': '1',
+        'fields[PRODUCT_ID]': product.ID.toString(),
+      };
+      
+      const addProductResponse = await fetch(`${CORRECT_WEBHOOK_URL}crm.item.update`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams(addProductData)
+      });
+      
+      const addProductResult = await addProductResponse.json();
+      
+      if (addProductResult.result) {
+        console.log('✅ Товар успешно добавлен к счету!');
+        return true;
+      } else {
+        console.log('❌ Ошибка добавления товара:', addProductResult.error_description);
+        return false;
+      }
+    } else {
+      console.log('❌ Товар не найден');
+      return false;
+    }
+  } catch (error) {
+    console.error('❌ Ошибка добавления товара:', error);
+    return false;
   }
 }
 
@@ -228,7 +285,7 @@ export default async function handler(
     });
     
     // Создаем счет в Битрикс24 с правильным URL
-    const invoiceResult = await createInvoiceWithCorrectUrl(dealId, amount / 100, currency.toUpperCase());
+    const invoiceResult = await createInvoiceWithCorrectUrl(dealId, amount / 100, currency.toUpperCase(), email);
     
     console.log('📊 Результат создания счета:', invoiceResult);
     
@@ -250,6 +307,14 @@ export default async function handler(
     }
     
     console.log('✅ Invoice created successfully:', invoiceId);
+
+    // Добавляем товар Compass к счету
+    console.log('📦 Adding Compass product to invoice...');
+    const productAdded = await addProductToInvoice(invoiceId, 'Compass', amount / 100);
+    
+    if (!productAdded) {
+      console.warn('⚠️ Failed to add product to invoice, but continuing...');
+    }
 
     console.log('🔄 Creating Stripe checkout session...');
     
