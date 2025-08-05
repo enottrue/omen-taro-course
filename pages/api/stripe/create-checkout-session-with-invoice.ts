@@ -47,8 +47,11 @@ export default async function handler(
 ) {
   console.log('🚀 API endpoint вызван:', req.url);
   console.log('📅 Время:', new Date().toISOString());
+  console.log('📋 Request method:', req.method);
+  console.log('📋 Request headers:', req.headers);
   
   if (req.method !== 'POST') {
+    console.log('❌ Method not allowed:', req.method);
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
