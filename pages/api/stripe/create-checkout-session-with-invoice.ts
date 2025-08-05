@@ -163,7 +163,7 @@ async function createInvoiceWithCorrectFields(dealId: number, amount: number, cu
         const productRowData = {
           'ownerType': 'SI', // Тип владельца (SI - смарт-процесс счет)
           'ownerId': invoiceId.toString(),
-          'productRows[0][productId]': 1777, // ID товара в Bitrix24
+          'productRows[0][productId]': '1777', // ID товара в Bitrix24
           'productRows[0][price]': amount.toString(),
           'productRows[0][quantity]': '1',
           'productRows[0][sort]': '10'
