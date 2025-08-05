@@ -139,13 +139,7 @@ const ModalFormRegister: NextPage<ModalFormRegisterType> = ({
       try {
         console.log('🔄 Creating Stripe checkout session with invoice for email:', email);
         
-        // Получаем данные пользователя для dealId
-        const userData = await client.query({
-          query: GET_USER,
-          variables: { email },
-          fetchPolicy: 'no-cache'
-        });
-        
+        // Используем данные пользователя, которые уже получены выше
         const dealId = userData?.data?.getUser?.bitrix24DealId;
         if (!dealId) {
           console.error('❌ No dealId found for user');
