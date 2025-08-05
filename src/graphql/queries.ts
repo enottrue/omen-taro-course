@@ -24,6 +24,8 @@ export const GET_USER = gql`
       city
       phone
       onboarded
+      bitrix24ContactId
+      bitrix24DealId
       createdAt
       updatedAt
     }
@@ -114,6 +116,8 @@ export const LOGIN_USER = gql`
         city
         phone
         onboarded
+        bitrix24ContactId
+        bitrix24DealId
       }
       message
       error
