@@ -181,10 +181,49 @@ async function createInvoiceWithCorrectFields(dealId: number, amount: number, cu
         
         const productResult = await productResponse.json();
         
+        console.log('📋 Полный ответ от API добавления товара:', productResult);
+        
         if (productResult.result) {
           console.log('✅ Товар добавлен к счету:', productResult.result);
         } else {
           console.error('❌ Ошибка добавления товара:', productResult.error_description);
+          console.error('❌ Код ошибки:', productResult.error);
+          console.error('❌ Полная ошибка:', productResult);
+          
+          // Попробуем альтернативный метод добавления товара
+          console.log('🔄 Пробуем альтернативный метод добавления товара...');
+          try {
+            const altProductRowData = {
+              'ownerType': 'SI',
+              'ownerId': invoiceId.toString(),
+              'productRows[0][productId]': productId,
+              'productRows[0][price]': amount.toString(),
+              'productRows[0][quantity]': '1',
+              'productRows[0][sort]': '10'
+            };
+            
+            console.log('📋 Альтернативные данные для добавления товара:', altProductRowData);
+            
+            const altProductResponse = await fetch(`${WEBHOOK_URL}crm.item.productrow.add`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+              },
+              body: new URLSearchParams(altProductRowData)
+            });
+            
+            const altProductResult = await altProductResponse.json();
+            console.log('📋 Ответ от альтернативного API добавления товара:', altProductResult);
+            
+            if (altProductResult.result) {
+              console.log('✅ Товар добавлен через альтернативный метод:', altProductResult.result);
+            } else {
+              console.error('❌ Ошибка альтернативного добавления товара:', altProductResult.error_description);
+            }
+          } catch (altProductError) {
+            console.error('❌ Ошибка альтернативного метода добавления товара:', altProductError);
+          }
+          
           // Не возвращаем ошибку, так как счет уже создан
         }
       } catch (productError) {
@@ -271,10 +310,14 @@ async function createInvoiceWithCorrectFields(dealId: number, amount: number, cu
             
             const productResult = await productResponse.json();
             
+            console.log('📋 Полный ответ от API добавления товара (альтернативный метод):', productResult);
+            
             if (productResult.result) {
               console.log('✅ Товар добавлен к счету (альтернативный метод):', productResult.result);
             } else {
               console.error('❌ Ошибка добавления товара (альтернативный метод):', productResult.error_description);
+              console.error('❌ Код ошибки (альтернативный метод):', productResult.error);
+              console.error('❌ Полная ошибка (альтернативный метод):', productResult);
               // Не возвращаем ошибку, так как счет уже создан
             }
           } catch (productError) {
