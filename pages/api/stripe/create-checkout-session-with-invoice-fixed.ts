@@ -137,6 +137,10 @@ async function createInvoiceWithCorrectUrl(dealId: number, amount: number, curre
           'fields[ACCOUNT_NUMBER]': `INV-${Date.now()}`,
           'fields[COMMENTS]': 'Счет создан автоматически при формировании ссылки на оплату',
           'fields[AMOUNT]': amount.toString(),
+          // Правильные значения полей для обычного счета
+          'fields[CATEGORY_ID]': '16', // ID воронки
+          'fields[STAGE_ID]': 'C16:NEW', // Стадия в воронке 16
+          'fields[TYPE_ID]': 'GOODS', // Тип сделки
         };
         
         const altResponse = await fetch(`${CORRECT_WEBHOOK_URL}crm.invoice.add`, {
