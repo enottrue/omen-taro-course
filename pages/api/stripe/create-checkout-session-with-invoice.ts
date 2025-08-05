@@ -92,7 +92,20 @@ export default async function handler(
     
     if (!invoiceResult.success) {
       console.error('❌ Failed to create invoice:', invoiceResult.error);
-      return res.status(500).json({ error: 'Failed to create invoice in Bitrix24' });
+      
+      // Проверяем подключение к Битрикс24 для диагностики
+      const { testBitrix24Connection } = await import('../../../src/utils/bitrix24');
+      const connectionTest = await testBitrix24Connection();
+      
+      console.log('🔍 Bitrix24 connection test:', connectionTest);
+      
+      return res.status(500).json({ 
+        error: 'Failed to create invoice in Bitrix24',
+        details: {
+          invoiceError: invoiceResult.error,
+          connectionTest: connectionTest
+        }
+      });
     }
 
     const invoiceId = invoiceResult.invoiceId;

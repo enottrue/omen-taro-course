@@ -419,7 +419,20 @@ export async function createInvoice(dealId: number, amount: number, currency: st
       assignedById: BITRIX24_ASSIGNED_BY_ID
     });
     
+    // Сначала попробуем получить информацию о сделке для проверки
+    try {
+      const dealInfo = await makeBitrix24Request('crm.deal.get', { id: dealId });
+      console.log('✅ Сделка найдена:', dealInfo.result?.TITLE);
+    } catch (dealError) {
+      console.error('❌ Ошибка получения информации о сделке:', dealError);
+      return {
+        success: false,
+        error: `Deal with ID ${dealId} not found or inaccessible`,
+      };
+    }
+    
     // Данные для создания счета как смарт-процесса
+    // Используем более стандартные поля для смарт-процессов
     const invoiceData = {
       'entityTypeId': '31', // ID типа смарт-процесса для счетов
       'fields[TITLE]': `Счет по сделке #${dealId}`,
@@ -430,6 +443,9 @@ export async function createInvoice(dealId: number, amount: number, currency: st
       'fields[ACCOUNT_NUMBER]': `INV-${Date.now()}`, // Уникальный номер счета
       'fields[COMMENTS]': 'Счет создан автоматически при формировании ссылки на оплату',
       'fields[AMOUNT]': amount,
+      // Добавляем дополнительные поля, которые могут быть обязательными
+      'fields[STAGE_ID]': 'NEW', // Стадия счета
+      'fields[CATEGORY_ID]': '0', // Категория (0 для основной категории)
     };
     
     console.log('📋 Данные для создания счета:', invoiceData);
@@ -444,10 +460,44 @@ export async function createInvoice(dealId: number, amount: number, currency: st
       };
     } else {
       console.error('❌ Ошибка создания счета:', response.error_description);
-      return {
-        success: false,
-        error: response.error_description || 'Unknown error',
-      };
+      
+      // Попробуем альтернативный подход - создание через обычный API счетов
+      console.log('🔄 Пробуем альтернативный метод создания счета...');
+      
+      try {
+        const alternativeInvoiceData = {
+          'fields[TITLE]': `Счет по сделке #${dealId}`,
+          'fields[DEAL_ID]': dealId,
+          'fields[CURRENCY]': currency,
+          'fields[STATUS_ID]': 'NEW',
+          'fields[ASSIGNED_BY_ID]': BITRIX24_ASSIGNED_BY_ID,
+          'fields[ACCOUNT_NUMBER]': `INV-${Date.now()}`,
+          'fields[COMMENTS]': 'Счет создан автоматически при формировании ссылки на оплату',
+          'fields[AMOUNT]': amount,
+        };
+        
+        const altResponse = await makeBitrix24Request('crm.invoice.add', alternativeInvoiceData);
+        
+        if (altResponse.result) {
+          console.log('✅ Счет создан через альтернативный метод:', altResponse.result);
+          return {
+            success: true,
+            invoiceId: altResponse.result,
+          };
+        } else {
+          console.error('❌ Ошибка альтернативного создания счета:', altResponse.error_description);
+          return {
+            success: false,
+            error: `Failed to create invoice: ${response.error_description || 'Unknown error'}`,
+          };
+        }
+      } catch (altError) {
+        console.error('❌ Ошибка альтернативного метода:', altError);
+        return {
+          success: false,
+          error: `Failed to create invoice: ${response.error_description || 'Unknown error'}`,
+        };
+      }
     }
   } catch (error) {
     console.error('❌ Ошибка создания счета:', error);
@@ -464,7 +514,7 @@ export async function addProductToInvoice(invoiceId: number, productName: string
   console.log('📋 Данные товара:', { invoiceId, productName, price, quantity });
 
   try {
-    // Для смарт-процессов в Битрикс24 товары добавляются через отдельный API
+    // Сначала попробуем обновить счет с товаром через смарт-процесс
     const productData = {
       'entityTypeId': '31', // ID типа смарт-процесса для счетов
       'id': invoiceId,
@@ -481,10 +531,79 @@ export async function addProductToInvoice(invoiceId: number, productName: string
       return true;
     } else {
       console.error('❌ Ошибка добавления товара к счету:', response.error_description);
-      return false;
+      
+      // Попробуем альтернативный метод - добавление через обычный API счетов
+      console.log('🔄 Пробуем альтернативный метод добавления товара...');
+      
+      try {
+        const altProductData = {
+          'id': invoiceId,
+          'fields[PRODUCT_NAME]': productName,
+          'fields[PRICE]': price,
+          'fields[QUANTITY]': quantity,
+        };
+        
+        const altResponse = await makeBitrix24Request('crm.invoice.update', altProductData);
+        
+        if (altResponse.result) {
+          console.log('✅ Товар добавлен через альтернативный метод');
+          return true;
+        } else {
+          console.error('❌ Ошибка альтернативного добавления товара:', altResponse.error_description);
+          return false;
+        }
+      } catch (altError) {
+        console.error('❌ Ошибка альтернативного метода добавления товара:', altError);
+        return false;
+      }
     }
   } catch (error) {
     console.error('❌ Ошибка добавления товара к счету:', error);
     return false;
+  }
+} 
+
+// Функция для тестирования подключения к Битрикс24
+export async function testBitrix24Connection(): Promise<{
+  success: boolean;
+  error?: string;
+  webhookUrl?: string;
+  assignedById?: number;
+}> {
+  console.log('🔍 Тестирование подключения к Битрикс24...');
+  
+  try {
+    console.log('📋 Конфигурация:', {
+      webhookUrl: BITRIX24_WEBHOOK_URL,
+      assignedById: BITRIX24_ASSIGNED_BY_ID
+    });
+    
+    // Тестируем простой запрос - получение информации о текущем пользователе
+    const response = await makeBitrix24Request('user.current', {});
+    
+    if (response.result) {
+      console.log('✅ Подключение к Битрикс24 успешно');
+      return {
+        success: true,
+        webhookUrl: BITRIX24_WEBHOOK_URL,
+        assignedById: BITRIX24_ASSIGNED_BY_ID
+      };
+    } else {
+      console.error('❌ Ошибка подключения к Битрикс24:', response.error_description);
+      return {
+        success: false,
+        error: response.error_description || 'Unknown error',
+        webhookUrl: BITRIX24_WEBHOOK_URL,
+        assignedById: BITRIX24_ASSIGNED_BY_ID
+      };
+    }
+  } catch (error) {
+    console.error('❌ Ошибка тестирования подключения:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+      webhookUrl: BITRIX24_WEBHOOK_URL,
+      assignedById: BITRIX24_ASSIGNED_BY_ID
+    };
   }
 } 
