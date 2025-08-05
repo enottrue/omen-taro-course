@@ -7,7 +7,8 @@ export function getEnvironment(): 'development' | 'production' {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get('ENV') === 'Development' ? 'development' : 'production';
   } else {
-    // Серверная сторона
+    // Серверная сторона - проверяем URL параметр из запроса
+    // Если нет доступа к URL параметрам, используем NODE_ENV как fallback
     return process.env.NODE_ENV === 'development' ? 'development' : 'production';
   }
 }

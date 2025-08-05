@@ -6,9 +6,40 @@ import { getStripeSecretKey, logEnvironmentInfo } from '../../../src/utils/envir
 // Логируем информацию об окружении
 logEnvironmentInfo();
 
-const stripe = new Stripe(getStripeSecretKey(), {
-  apiVersion: '2025-06-30.basil',
-});
+// Функция для определения окружения на сервере
+function getServerEnvironment(req: NextApiRequest): 'development' | 'production' {
+  // Проверяем referer или origin для определения URL параметров
+  const referer = req.headers.referer;
+  if (referer) {
+    const url = new URL(referer);
+    return url.searchParams.get('ENV') === 'Development' ? 'development' : 'production';
+  }
+  
+  // Fallback к NODE_ENV
+  return process.env.NODE_ENV === 'development' ? 'development' : 'production';
+}
+
+// Функция для получения правильного секретного ключа на основе окружения
+function getStripeSecretKeyForRequest(req: NextApiRequest): string {
+  const env = getServerEnvironment(req);
+  
+  if (env === 'development') {
+    console.log('🔧 Using test Stripe keys for Development environment');
+    const testKey = process.env.STRIPE_TEST_SECRET_KEY;
+    if (!testKey) {
+      throw new Error('STRIPE_TEST_SECRET_KEY not found in environment variables');
+    }
+    return testKey;
+  }
+  
+  // В продакшене используем ключи из .env
+  const productionKey = process.env.STRIPE_SECRET_KEY;
+  if (!productionKey) {
+    throw new Error('STRIPE_SECRET_KEY not found in environment variables');
+  }
+  
+  return productionKey;
+}
 
 export default async function handler(
   req: NextApiRequest,
@@ -67,6 +98,12 @@ export default async function handler(
 
     console.log('🔄 Creating Stripe checkout session...');
     
+    // Используем правильный секретный ключ на основе окружения
+    const stripeSecretKey = getStripeSecretKeyForRequest(req);
+    const stripe = new Stripe(stripeSecretKey, {
+      apiVersion: '2025-06-30.basil',
+    });
+    
     // Build a valid absolute URL for Stripe
     const origin =
       (typeof req.headers.origin === 'string' && req.headers.origin) ||
@@ -98,28 +135,27 @@ export default async function handler(
         email: email,
         product: 'cosmo_course',
         invoice_id: invoiceId.toString(),
-        ga_client_id: ga_client_id || null,
         deal_id: dealId.toString(),
-        item_id: product_id || null,
-        item_name: page_identifier || null,
+        ga_client_id: ga_client_id || '',
+        item_id: product_id || '',
+        item_name: productName,
+        page_identifier: page_identifier || '',
       },
     });
 
     console.log('✅ Stripe session created successfully:', session.id);
-    console.log('📋 Session metadata:', session.metadata);
-    
     res.status(200).json({ 
       sessionId: session.id,
       invoiceId: invoiceId,
       dealId: dealId
     });
   } catch (error) {
-    console.error('❌ Error creating checkout session:', error);
+    console.error('❌ Error creating checkout session with invoice:', error);
     console.error('❌ Error details:', {
       message: (error as any).message,
       type: (error as any).type,
       statusCode: (error as any).statusCode
     });
-    res.status(500).json({ error: 'Error creating checkout session' });
+    res.status(500).json({ error: 'Error creating checkout session with invoice' });
   }
 } 

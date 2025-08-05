@@ -10,7 +10,51 @@ const prisma = new PrismaClient();
 // Логируем информацию об окружении
 logEnvironmentInfo();
 
-const stripe = new Stripe(getStripeSecretKey(), {
+// Функция для получения правильного секретного ключа для webhook
+function getStripeSecretKeyForWebhook(): string {
+  // Для webhook используем NODE_ENV как основной индикатор
+  // Webhook должен работать в том же режиме, что и основное приложение
+  const isDevelopment = process.env.NODE_ENV === 'development';
+  
+  if (isDevelopment) {
+    console.log('🔧 Using test Stripe keys for Development environment (webhook)');
+    const testKey = process.env.STRIPE_TEST_SECRET_KEY;
+    if (!testKey) {
+      throw new Error('STRIPE_TEST_SECRET_KEY not found in environment variables');
+    }
+    return testKey;
+  }
+  
+  // В продакшене используем ключи из .env
+  const productionKey = process.env.STRIPE_SECRET_KEY;
+  if (!productionKey) {
+    throw new Error('STRIPE_SECRET_KEY not found in environment variables');
+  }
+  
+  return productionKey;
+}
+
+// Функция для получения правильного webhook секрета
+function getStripeWebhookSecretForEnvironment(): string {
+  const isDevelopment = process.env.NODE_ENV === 'development';
+  
+  if (isDevelopment) {
+    const testSecret = process.env.STRIPE_TEST_WEBHOOK_SECRET;
+    if (!testSecret) {
+      throw new Error('STRIPE_TEST_WEBHOOK_SECRET not found in environment variables');
+    }
+    return testSecret;
+  }
+  
+  const productionSecret = process.env.STRIPE_WEBHOOK_SECRET;
+  if (!productionSecret) {
+    throw new Error('STRIPE_WEBHOOK_SECRET not found in environment variables');
+  }
+  
+  return productionSecret;
+}
+
+const stripe = new Stripe(getStripeSecretKeyForWebhook(), {
   apiVersion: '2025-06-30.basil',
 });
 
@@ -28,7 +72,7 @@ const sendYandexMetricaEvent = async (eventName: string, userId?: string) => {
   }
 };
 
-const webhookSecret = getStripeWebhookSecret();
+const webhookSecret = getStripeWebhookSecretForEnvironment();
 
 export const config = {
   api: {
