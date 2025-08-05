@@ -44,7 +44,7 @@ function getStripeSecretKeyForRequest(req: NextApiRequest): string {
 }
 
 // Функция для создания счета в Bitrix24
-async function createInvoiceWithCorrectFields(dealId: number, amount: number, currency: string = 'USD', email: string, productName: string = 'Cosmo Course'): Promise<{
+async function createInvoiceWithCorrectFields(dealId: number, amount: number, currency: string = 'USD', email: string, productName: string = 'Cosmo Course', productId: string = '1'): Promise<{
   success: boolean;
   invoiceId?: number;
   error?: string;
@@ -138,6 +138,41 @@ async function createInvoiceWithCorrectFields(dealId: number, amount: number, cu
         };
       }
       
+      // Добавляем товар к счету
+      console.log('📦 Добавляем товар к счету...');
+      try {
+        const productRowData = {
+          'ownerType': 'SI', // Тип владельца (SI - смарт-процесс счет)
+          'ownerId': invoiceId.toString(),
+          'productRows[0][productId]': productId, // ID товара в Bitrix24
+          'productRows[0][price]': amount.toString(),
+          'productRows[0][quantity]': '1',
+          'productRows[0][sort]': '10'
+        };
+        
+        console.log('📋 Данные для добавления товара:', productRowData);
+        
+        const productResponse = await fetch(`${WEBHOOK_URL}crm.item.productrow.set`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: new URLSearchParams(productRowData)
+        });
+        
+        const productResult = await productResponse.json();
+        
+        if (productResult.result) {
+          console.log('✅ Товар добавлен к счету:', productResult.result);
+        } else {
+          console.error('❌ Ошибка добавления товара:', productResult.error_description);
+          // Не возвращаем ошибку, так как счет уже создан
+        }
+      } catch (productError) {
+        console.error('❌ Ошибка добавления товара:', productError);
+        // Не возвращаем ошибку, так как счет уже создан
+      }
+      
       return {
         success: true,
         invoiceId: invoiceId,
@@ -173,6 +208,42 @@ async function createInvoiceWithCorrectFields(dealId: number, amount: number, cu
         
         if (altResult.result) {
           console.log('✅ Счет создан через альтернативный метод:', altResult.result);
+          
+          // Добавляем товар к счету (альтернативный метод)
+          console.log('📦 Добавляем товар к счету (альтернативный метод)...');
+          try {
+            const productRowData = {
+              'ownerType': 'I', // Тип владельца (I - обычный счет)
+              'ownerId': altResult.result.toString(),
+              'productRows[0][productId]': productId, // ID товара в Bitrix24
+              'productRows[0][price]': amount.toString(),
+              'productRows[0][quantity]': '1',
+              'productRows[0][sort]': '10'
+            };
+            
+            console.log('📋 Данные для добавления товара (альтернативный метод):', productRowData);
+            
+            const productResponse = await fetch(`${WEBHOOK_URL}crm.invoice.productrows.set`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+              },
+              body: new URLSearchParams(productRowData)
+            });
+            
+            const productResult = await productResponse.json();
+            
+            if (productResult.result) {
+              console.log('✅ Товар добавлен к счету (альтернативный метод):', productResult.result);
+            } else {
+              console.error('❌ Ошибка добавления товара (альтернативный метод):', productResult.error_description);
+              // Не возвращаем ошибку, так как счет уже создан
+            }
+          } catch (productError) {
+            console.error('❌ Ошибка добавления товара (альтернативный метод):', productError);
+            // Не возвращаем ошибку, так как счет уже создан
+          }
+          
           return {
             success: true,
             invoiceId: altResult.result,
@@ -229,8 +300,13 @@ export default async function handler(
       page_identifier 
     } = req.body;
     
-    console.log('📧 Received data:', { email, dealId, productName, amount, currency });
+    console.log('📧 Received data:', { email, dealId, productName, amount, currency, product_id });
     console.log('🔍 Проверяем dealId:', dealId, 'тип:', typeof dealId);
+    console.log('🔍 Проверяем product_id:', product_id, 'тип:', typeof product_id);
+    
+    // Проверяем product_id и устанавливаем значение по умолчанию если пустой
+    const finalProductId = product_id && product_id !== '' ? product_id : '1';
+    console.log('🔍 Используем product_id:', finalProductId);
 
     if (!email) {
       return res.status(400).json({ error: 'Email is required' });
@@ -248,7 +324,7 @@ export default async function handler(
     });
     
     // Создаем счет в Битрикс24 с правильными полями
-    const invoiceResult = await createInvoiceWithCorrectFields(dealId, amount / 100, currency.toUpperCase(), email, productName);
+    const invoiceResult = await createInvoiceWithCorrectFields(dealId, amount / 100, currency.toUpperCase(), email, productName, finalProductId);
     
     console.log('📊 Результат создания счета:', invoiceResult);
     
@@ -315,7 +391,7 @@ export default async function handler(
         invoice_id: invoiceId.toString(),
         deal_id: dealId.toString(),
         ga_client_id: ga_client_id || '',
-        item_id: product_id || '',
+        item_id: finalProductId || '',
         item_name: productName,
         page_identifier: page_identifier || '',
       },
