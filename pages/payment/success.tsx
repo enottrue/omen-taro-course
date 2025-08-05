@@ -20,7 +20,7 @@ const PaymentSuccessPage: React.FC = () => {
   const [paymentMessage, setPaymentMessage] = useState<string>('Processing your payment...');
   const burgerRef = useRef<HTMLDivElement>(null);
   const cc = useContext(MainContext);
-  const { track } = useMetrica();
+  const { reachGoal } = useMetrica();
 
   useEffect(() => {
     if (router.query.session_id) {
@@ -58,7 +58,7 @@ const PaymentSuccessPage: React.FC = () => {
             isPaid: true
           });
         }
-        track('payment_successful');
+        reachGoal('payment_successful');
       } else {
         console.error('❌ Payment verification failed:', data.error);
         setPaymentStatus('error');
