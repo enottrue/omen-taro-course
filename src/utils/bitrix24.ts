@@ -457,12 +457,14 @@ export async function addProductToInvoice(invoiceId: number, productName: string
   console.log('📋 Данные товара:', { invoiceId, productName, price, quantity });
 
   try {
+    // Для смарт-процессов в Битрикс24 товары добавляются через отдельный API
     const productData = {
       'entityTypeId': '31', // ID типа смарт-процесса для счетов
       'id': invoiceId,
       'fields[PRODUCT_NAME]': productName,
       'fields[PRICE]': price,
       'fields[QUANTITY]': quantity,
+      'fields[PRODUCT_ID]': '0', // ID товара (0 для пользовательского товара)
     };
 
     const response = await makeBitrix24Request('crm.item.update', productData);

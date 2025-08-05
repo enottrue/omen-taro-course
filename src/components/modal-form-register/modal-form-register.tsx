@@ -9,7 +9,7 @@ import Cookies from 'js-cookie';
 import { useLazyQuery } from '@apollo/client';
 import { GET_USER } from '@/graphql/queries';
 import { useMetrica } from 'next-yandex-metrica';
-import { createCheckoutSession, redirectToCheckout } from '@/utils/stripeCheckout';
+import { createCheckoutSessionWithInvoice, redirectToCheckout } from '@/utils/stripeCheckout';
 import { getOnboardingRedirectPath } from '@/utils/onboardingUtils';
 
 export type ModalFormRegisterType = {
@@ -135,13 +135,35 @@ const ModalFormRegister: NextPage<ModalFormRegisterType> = ({
       
       console.log('✅ User registered successfully, redirecting to Stripe checkout...');
       
-      // Redirect to Stripe checkout for payment
+      // Redirect to Stripe checkout for payment with invoice
       try {
-        console.log('🔄 Creating Stripe checkout session for email:', email);
-        const sessionId = await createCheckoutSession(email);
-        console.log('✅ Stripe session created:', sessionId);
+        console.log('🔄 Creating Stripe checkout session with invoice for email:', email);
+        
+        // Получаем данные пользователя для dealId
+        const userData = await client.query({
+          query: GET_USER,
+          variables: { email },
+          fetchPolicy: 'no-cache'
+        });
+        
+        const dealId = userData?.data?.getUser?.bitrix24DealId;
+        if (!dealId) {
+          console.error('❌ No dealId found for user');
+          throw new Error('Failed to create payment session - no deal found');
+        }
+        
+        const result = await createCheckoutSessionWithInvoice({
+          email,
+          dealId,
+          productName: 'Cosmo Course',
+          amount: 5000, // $50.00 in cents
+          currency: 'usd'
+        });
+        
+        console.log('✅ Stripe session with invoice created:', result.sessionId);
+        console.log('✅ Invoice created in Bitrix24:', result.invoiceId);
         console.log('🔄 Redirecting to Stripe checkout...');
-        await redirectToCheckout(sessionId);
+        await redirectToCheckout(result.sessionId);
       } catch (stripeError) {
         console.error('❌ Stripe checkout error:', stripeError);
         // If Stripe fails, fallback to appropriate page based on onboarding status

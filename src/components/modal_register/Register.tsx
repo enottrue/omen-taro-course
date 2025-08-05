@@ -140,18 +140,34 @@ const ModalRegister = () => {
       user: registerUser?.user
     });
 
-    // Stripe redirect logic
+    // Stripe redirect logic with invoice creation
     try {
-      console.log('[Register] Requesting Stripe checkout session for', registerUser?.user?.email);
-      const stripeRes = await fetch('/api/stripe/create-checkout-session', {
+      console.log('[Register] Requesting Stripe checkout session with invoice for', registerUser?.user?.email);
+      
+      // Проверяем, что у пользователя есть dealId
+      if (!registerUser?.user?.bitrix24DealId) {
+        console.error('[Register] No dealId found for user');
+        setError('Failed to create payment session. Please try again.');
+        return;
+      }
+
+      const stripeRes = await fetch('/api/stripe/create-checkout-session-with-invoice', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: registerUser?.user?.email }),
-    });
+        body: JSON.stringify({ 
+          email: registerUser?.user?.email,
+          dealId: registerUser?.user?.bitrix24DealId,
+          productName: 'Cosmo Course',
+          amount: 5000, // $50.00 in cents
+          currency: 'usd'
+        }),
+      });
+      
       const stripeData = await stripeRes.json();
-      console.log('[Register] Stripe response:', stripeData);
+      console.log('[Register] Stripe response with invoice:', stripeData);
+      
       if (stripeRes.ok && stripeData.sessionId) {
-        console.log('[Register] Redirecting to Stripe payment page...');
+        console.log('[Register] Redirecting to Stripe payment page with invoice...');
         window.location.href = `/payment/success?session_id=${stripeData.sessionId}`;
         return; // ВАЖНО: остановить выполнение дальше!
       } else {
