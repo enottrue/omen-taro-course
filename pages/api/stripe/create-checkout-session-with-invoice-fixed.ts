@@ -97,9 +97,10 @@ async function createInvoiceWithCorrectUrl(dealId: number, amount: number, curre
       'fields[ACCOUNT_NUMBER]': `INV-${Date.now()}`, // Уникальный номер счета
       'fields[COMMENTS]': 'Счет создан автоматически при формировании ссылки на оплату',
       'fields[AMOUNT]': amount.toString(),
-      // Добавляем дополнительные поля, которые могут быть обязательными
-      'fields[STAGE_ID]': 'NEW', // Стадия счета
-      'fields[CATEGORY_ID]': '0', // Категория (0 для основной категории)
+      // Правильные значения полей для смарт-процесса
+      'fields[CATEGORY_ID]': '16', // ID воронки
+      'fields[STAGE_ID]': 'C16:NEW', // Стадия в воронке 16
+      'fields[TYPE_ID]': 'GOODS', // Тип сделки
     };
     
     console.log('📋 Данные для создания счета:', invoiceData);
