@@ -141,6 +141,25 @@ async function createInvoiceWithCorrectFields(dealId: number, amount: number, cu
       // Добавляем товар к счету
       console.log('📦 Добавляем товар к счету...');
       try {
+        // Сначала проверяем существование товара
+        console.log('🔍 Проверяем существование товара с ID:', productId);
+        const productCheckResponse = await fetch(`${WEBHOOK_URL}crm.product.get`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: new URLSearchParams({ id: productId })
+        });
+        
+        const productCheckResult = await productCheckResponse.json();
+        
+        if (!productCheckResult.result) {
+          console.error('❌ Товар с ID', productId, 'не найден в Bitrix24');
+          console.log('📋 Ответ от Bitrix24:', productCheckResult);
+        } else {
+          console.log('✅ Товар найден:', productCheckResult.result.NAME);
+        }
+        
         const productRowData = {
           'ownerType': 'SI', // Тип владельца (SI - смарт-процесс счет)
           'ownerId': invoiceId.toString(),
@@ -212,6 +231,25 @@ async function createInvoiceWithCorrectFields(dealId: number, amount: number, cu
           // Добавляем товар к счету (альтернативный метод)
           console.log('📦 Добавляем товар к счету (альтернативный метод)...');
           try {
+            // Сначала проверяем существование товара
+            console.log('🔍 Проверяем существование товара с ID (альтернативный метод):', productId);
+            const productCheckResponse = await fetch(`${WEBHOOK_URL}crm.product.get`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+              },
+              body: new URLSearchParams({ id: productId })
+            });
+            
+            const productCheckResult = await productCheckResponse.json();
+            
+            if (!productCheckResult.result) {
+              console.error('❌ Товар с ID', productId, 'не найден в Bitrix24 (альтернативный метод)');
+              console.log('📋 Ответ от Bitrix24 (альтернативный метод):', productCheckResult);
+            } else {
+              console.log('✅ Товар найден (альтернативный метод):', productCheckResult.result.NAME);
+            }
+            
             const productRowData = {
               'ownerType': 'I', // Тип владельца (I - обычный счет)
               'ownerId': altResult.result.toString(),
