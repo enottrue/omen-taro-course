@@ -89,17 +89,18 @@ async function createInvoiceWithCorrectUrl(dealId: number, amount: number, curre
     // Данные для создания счета как смарт-процесса
     const invoiceData = {
       'entityTypeId': '31',
-      'fields[title]': `Invoice for Astrology Reading - ${email}`,
+      'fields[title]': `Invoice for ${productName} - ${email}`,
       'fields[stageId]': 'NEW',
       'fields[assignedById]': '1',
       'fields[contactId]': '1',
-      'fields[opportunity]': amount.toString(),
+      'fields[opportunity]': (amount / 100).toString(),
       'fields[currencyId]': 'USD',
       'fields[parentId2]': dealId.toString(),
       'fields[ufCrm_SMART_INVOICE_1706948587230]': '1013',
       'fields[ufCrm_67AE0664BC8E9]': '939',
       'fields[mycompanyId]': '51',
-      'fields[COMMENTS]': `Astrology Reading Service\nClient: ${email}\nEmail: ${email}\nPrice: ${amount} USD`
+      'fields[sourceId]': 'UC_HZ10CI',
+      'fields[COMMENTS]': `Astrology Reading Service\nClient: ${email}\nEmail: ${email}\nPrice: ${amount / 100} USD`
     };
     
     console.log('📋 Данные для создания счета:', invoiceData);
