@@ -405,13 +405,13 @@ export function getUtmDataFromCookies(): UtmData {
 }
 
 // Функция для создания счета в Битрикс24 (смарт-процесс)
-export async function createInvoice(dealId: number, amount: number, currency: string = 'RUB'): Promise<{
+export async function createInvoice(dealId: number, amount: number, currency: string = 'USD', email?: string, productName?: string): Promise<{
   success: boolean;
   invoiceId?: number;
   error?: string;
 }> {
   console.log('💰 Создание счета в Битрикс24 (смарт-процесс)...');
-  console.log('📋 Данные счета:', { dealId, amount, currency });
+  console.log('📋 Данные счета:', { dealId, amount, currency, email, productName });
 
   try {
     console.log('🔧 Конфигурация Битрикс24:', {
@@ -419,33 +419,41 @@ export async function createInvoice(dealId: number, amount: number, currency: st
       assignedById: BITRIX24_ASSIGNED_BY_ID
     });
     
-    // Сначала попробуем получить информацию о сделке для проверки
+    // Сначала проверяем существование сделки
     try {
       const dealInfo = await makeBitrix24Request('crm.deal.get', { id: dealId });
-      console.log('✅ Сделка найдена:', dealInfo.result?.TITLE);
+      if (dealInfo.result) {
+        console.log('✅ Сделка найдена:', dealInfo.result.TITLE);
+      } else {
+        console.error('❌ Сделка не найдена');
+        return {
+          success: false,
+          error: `Deal with ID ${dealId} not found`,
+        };
+      }
     } catch (dealError) {
       console.error('❌ Ошибка получения информации о сделке:', dealError);
       return {
         success: false,
-        error: `Deal with ID ${dealId} not found or inaccessible`,
+        error: `Deal with ID ${dealId} not accessible`,
       };
     }
     
-    // Данные для создания счета как смарт-процесса
-    // Используем более стандартные поля для смарт-процессов
+    // Правильные поля для создания счета как смарт-процесса
     const invoiceData = {
       'entityTypeId': '31', // ID типа смарт-процесса для счетов
-      'fields[TITLE]': `Счет по сделке #${dealId}`,
-      'fields[DEAL_ID]': dealId,
-      'fields[CURRENCY]': currency,
-      'fields[STATUS_ID]': 'NEW', // Новый статус
-      'fields[ASSIGNED_BY_ID]': BITRIX24_ASSIGNED_BY_ID,
-      'fields[ACCOUNT_NUMBER]': `INV-${Date.now()}`, // Уникальный номер счета
-      'fields[COMMENTS]': 'Счет создан автоматически при формировании ссылки на оплату',
-      'fields[AMOUNT]': amount,
-      // Добавляем дополнительные поля, которые могут быть обязательными
-      'fields[STAGE_ID]': 'NEW', // Стадия счета
-      'fields[CATEGORY_ID]': '0', // Категория (0 для основной категории)
+      'fields[title]': email && productName ? `Invoice for ${productName} - ${email}` : `Invoice for Deal #${dealId}`,
+      'fields[stageId]': 'NEW',
+      'fields[assignedById]': BITRIX24_ASSIGNED_BY_ID.toString(),
+      'fields[contactId]': '1',
+      'fields[opportunity]': amount.toString(),
+      'fields[currencyId]': currency,
+      'fields[parentId2]': dealId.toString(), // Привязка к сделке
+      'fields[mycompanyId]': '51',
+      'fields[sourceId]': 'UC_HZ10CI',
+      'fields[COMMENTS]': email && productName 
+        ? `${productName} Service\nClient: ${email}\nEmail: ${email}\nPrice: ${amount} ${currency}`
+        : `Invoice for Deal #${dealId}\nPrice: ${amount} ${currency}`
     };
     
     console.log('📋 Данные для создания счета:', invoiceData);
@@ -466,14 +474,17 @@ export async function createInvoice(dealId: number, amount: number, currency: st
       
       try {
         const alternativeInvoiceData = {
-          'fields[TITLE]': `Счет по сделке #${dealId}`,
-          'fields[DEAL_ID]': dealId,
-          'fields[CURRENCY]': currency,
-          'fields[STATUS_ID]': 'NEW',
-          'fields[ASSIGNED_BY_ID]': BITRIX24_ASSIGNED_BY_ID,
-          'fields[ACCOUNT_NUMBER]': `INV-${Date.now()}`,
-          'fields[COMMENTS]': 'Счет создан автоматически при формировании ссылки на оплату',
-          'fields[AMOUNT]': amount,
+          'fields[title]': email && productName ? `Invoice for ${productName} - ${email}` : `Invoice for Deal #${dealId}`,
+          'fields[stageId]': 'NEW',
+          'fields[assignedById]': BITRIX24_ASSIGNED_BY_ID.toString(),
+          'fields[contactId]': '1',
+          'fields[opportunity]': amount.toString(),
+          'fields[currencyId]': currency,
+          'fields[parentId2]': dealId.toString(),
+          'fields[mycompanyId]': '51',
+          'fields[COMMENTS]': email && productName 
+            ? `${productName} Service\nClient: ${email}\nEmail: ${email}\nPrice: ${amount} ${currency}`
+            : `Invoice for Deal #${dealId}\nPrice: ${amount} ${currency}`
         };
         
         const altResponse = await makeBitrix24Request('crm.invoice.add', alternativeInvoiceData);
@@ -514,14 +525,14 @@ export async function addProductToInvoice(invoiceId: number, productName: string
   console.log('📋 Данные товара:', { invoiceId, productName, price, quantity });
 
   try {
-    // Сначала попробуем обновить счет с товаром через смарт-процесс
+    // Используем правильный метод для добавления товаров к смарт-процессу
     const productData = {
       'entityTypeId': '31', // ID типа смарт-процесса для счетов
-      'id': invoiceId,
-      'fields[PRODUCT_NAME]': productName,
-      'fields[PRICE]': price,
-      'fields[QUANTITY]': quantity,
-      'fields[PRODUCT_ID]': '0', // ID товара (0 для пользовательского товара)
+      'id': invoiceId.toString(),
+      'fields[productRows][0][productId]': '1777', // ID товара Compass
+      'fields[productRows][0][price]': price.toString(),
+      'fields[productRows][0][quantity]': quantity.toString(),
+      'fields[productRows][0][sort]': '10'
     };
 
     const response = await makeBitrix24Request('crm.item.update', productData);
@@ -537,10 +548,11 @@ export async function addProductToInvoice(invoiceId: number, productName: string
       
       try {
         const altProductData = {
-          'id': invoiceId,
-          'fields[PRODUCT_NAME]': productName,
-          'fields[PRICE]': price,
-          'fields[QUANTITY]': quantity,
+          'id': invoiceId.toString(),
+          'fields[productRows][0][productId]': '1777',
+          'fields[productRows][0][price]': price.toString(),
+          'fields[productRows][0][quantity]': quantity.toString(),
+          'fields[productRows][0][sort]': '10'
         };
         
         const altResponse = await makeBitrix24Request('crm.invoice.update', altProductData);

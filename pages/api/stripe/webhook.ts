@@ -58,6 +58,70 @@ const stripe = new Stripe(getStripeSecretKeyForWebhook(), {
   apiVersion: '2025-06-30.basil',
 });
 
+// Функция для обновления статуса invoice в Bitrix24
+async function updateInvoiceStatus(invoiceId: string, status: 'PAID' | 'CANCELLED'): Promise<boolean> {
+  try {
+    const webhookUrl = 'https://crm.taroirena.com/rest/1/62s3v3dkougs3qsm/';
+    
+    const updateData = {
+      'entityTypeId': '31', // ID типа смарт-процесса для счетов
+      'id': invoiceId,
+      'fields[stageId]': status === 'PAID' ? 'PAID' : 'CANCELLED'
+    };
+    
+    console.log('📄 Обновление статуса invoice в Bitrix24:', { invoiceId, status });
+    
+    const response = await fetch(`${webhookUrl}crm.item.update`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams(updateData)
+    });
+    
+    const result = await response.json();
+    
+    if (result.result) {
+      console.log('✅ Статус invoice обновлен успешно');
+      return true;
+    } else {
+      console.error('❌ Ошибка обновления статуса invoice:', result.error_description);
+      
+      // Попробуем альтернативный метод через обычный API счетов
+      try {
+        const altUpdateData = {
+          'id': invoiceId,
+          'fields[stageId]': status === 'PAID' ? 'PAID' : 'CANCELLED'
+        };
+        
+        const altResponse = await fetch(`${webhookUrl}crm.invoice.update`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: new URLSearchParams(altUpdateData)
+        });
+        
+        const altResult = await altResponse.json();
+        
+        if (altResult.result) {
+          console.log('✅ Статус invoice обновлен через альтернативный метод');
+          return true;
+        } else {
+          console.error('❌ Ошибка альтернативного обновления статуса invoice:', altResult.error_description);
+          return false;
+        }
+      } catch (altError) {
+        console.error('❌ Ошибка альтернативного метода обновления статуса:', altError);
+        return false;
+      }
+    }
+  } catch (error) {
+    console.error('❌ Ошибка обновления статуса invoice:', error);
+    return false;
+  }
+}
+
 // Function to send Yandex Metrica event
 const sendYandexMetricaEvent = async (eventName: string, userId?: string) => {
   try {
@@ -164,6 +228,17 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
           
       console.log('✅ User payment status updated via webhook:', updatedUser.email);
       
+      // Обновляем статус invoice в Bitrix24
+      if (invoiceId) {
+        console.log('📄 Updating invoice status in Bitrix24...');
+        const invoiceUpdated = await updateInvoiceStatus(invoiceId, 'PAID');
+        if (invoiceUpdated) {
+          console.log('✅ Invoice status updated to PAID');
+        } else {
+          console.warn('⚠️ Failed to update invoice status, but continuing...');
+        }
+      }
+      
       // Send Yandex Metrica event for successful payment
       await sendYandexMetricaEvent('payment_successful', updatedUser.id.toString());
       
@@ -203,6 +278,18 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
     }
   } else {
     console.log('⚠️ Session not paid. Status:', session.payment_status);
+    
+    // Обновляем статус invoice в Bitrix24 на CANCELLED
+    const invoiceId = session.metadata?.invoice_id;
+    if (invoiceId) {
+      console.log('📄 Updating invoice status to CANCELLED in Bitrix24...');
+      const invoiceUpdated = await updateInvoiceStatus(invoiceId, 'CANCELLED');
+      if (invoiceUpdated) {
+        console.log('✅ Invoice status updated to CANCELLED');
+      } else {
+        console.warn('⚠️ Failed to update invoice status to CANCELLED');
+      }
+    }
   }
 }
 
