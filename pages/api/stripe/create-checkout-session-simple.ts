@@ -58,7 +58,7 @@ export default async function handler(
       email, 
       dealId, 
       productName = 'Cosmo Course',
-      amount = 100, // $50.00 in cents
+      amount = 5000, // $50.00 in cents
       currency = 'usd',
       ga_client_id,
       product_id,

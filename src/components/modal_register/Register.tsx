@@ -158,7 +158,7 @@ const ModalRegister = () => {
           email: registerUser?.user?.email,
           dealId: registerUser?.user?.bitrix24DealId,
           productName: 'Cosmo Course',
-          amount: 100, // $50.00 in cents
+          amount: 5000, // $50.00 in cents
           currency: 'usd'
         }),
       });

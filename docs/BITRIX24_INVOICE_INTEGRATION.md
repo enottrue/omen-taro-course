@@ -110,7 +110,7 @@ const MyComponent = () => {
     try {
       await handlePaymentWithInvoice(dealId, {
         productName: 'Cosmo Course',
-        amount: 100,
+        amount: 5000,
         currency: 'usd',
         ga_client_id: 'GA_CLIENT_ID',
         product_id: 'cosmo_course',
@@ -232,6 +232,6 @@ if (dealId) {
        "email": "test@example.com",
        "dealId": 123,
        "productName": "Test Course",
-       "amount": 100
+       "amount": 5000
      }'
    ``` 
