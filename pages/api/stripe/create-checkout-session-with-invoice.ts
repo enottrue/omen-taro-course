@@ -104,6 +104,7 @@ async function createInvoiceWithCorrectFields(dealId: number, amount: number, cu
       'fields[parentId2]': dealId.toString(), // Привязка к сделке
       'fields[mycompanyId]': '51',
       'fields[sourceId]': 'UC_HZ10CI',
+      'fields[UF_CRM_1628621924030]': '1014',
       'fields[COMMENTS]': `${productName} Service\nClient: ${email}\nEmail: ${email}\nPrice: ${amount} ${currency}`
     };
     
