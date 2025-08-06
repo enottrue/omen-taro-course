@@ -451,7 +451,7 @@ export async function createInvoice(dealId: number, amount: number, currency: st
       'fields[parentId2]': dealId.toString(), // Привязка к сделке
       'fields[mycompanyId]': '51',
       'fields[sourceId]': 'UC_HZ10CI',
-      'fields[UF_CRM_1628621924030]': '1014',
+      'fields[ufCrm_SMART_INVOICE_1706948587230]': '1013',
       'fields[COMMENTS]': email && productName 
         ? `${productName} Service\nClient: ${email}\nEmail: ${email}\nPrice: ${amount} ${currency}`
         : `Invoice for Deal #${dealId}\nPrice: ${amount} ${currency}`

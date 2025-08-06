@@ -48,6 +48,40 @@ const InvoiceTest: React.FC<InvoiceTestProps> = ({ dealId = 12345, email = 'test
     }
   };
 
+  const debugFields = async () => {
+    setLoading(true);
+    setError(null);
+    setResult(null);
+
+    try {
+      const response = await fetch('/api/bitrix24/debug-invoice-fields', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          dealId
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setResult(data);
+        console.log('🔍 Debug fields result:', data);
+      } else {
+        setError(data.error || 'Failed to debug fields');
+        console.error('❌ Error debugging fields:', data);
+      }
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+      setError(errorMessage);
+      console.error('❌ Error debugging fields:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div style={{ 
       padding: '20px', 
@@ -63,23 +97,42 @@ const InvoiceTest: React.FC<InvoiceTestProps> = ({ dealId = 12345, email = 'test
         <p><strong>Email:</strong> {email}</p>
         <p><strong>Amount:</strong> $50.00 USD</p>
         <p><strong>Product:</strong> Cosmo Course</p>
+        <p><strong>UF Field:</strong> ufCrm_SMART_INVOICE_1706948587230 = 1013 (исправлено!)</p>
       </div>
 
-      <button
-        onClick={createInvoice}
-        disabled={loading}
-        style={{
-          padding: '10px 20px',
-          backgroundColor: loading ? '#ccc' : '#007bff',
-          color: 'white',
-          border: 'none',
-          borderRadius: '4px',
-          cursor: loading ? 'not-allowed' : 'pointer',
-          fontSize: '14px'
-        }}
-      >
-        {loading ? '🔄 Создание счета...' : '💰 Создать счет'}
-      </button>
+      <div style={{ display: 'flex', gap: '10px', marginBottom: '15px' }}>
+        <button
+          onClick={createInvoice}
+          disabled={loading}
+          style={{
+            padding: '10px 20px',
+            backgroundColor: loading ? '#ccc' : '#28a745',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: loading ? 'not-allowed' : 'pointer',
+            fontSize: '14px'
+          }}
+        >
+          {loading ? '🔄 Создание счета...' : '💰 Создать счет (с правильным UF полем)'}
+        </button>
+
+        <button
+          onClick={debugFields}
+          disabled={loading}
+          style={{
+            padding: '10px 20px',
+            backgroundColor: loading ? '#ccc' : '#ffc107',
+            color: '#000',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: loading ? 'not-allowed' : 'pointer',
+            fontSize: '14px'
+          }}
+        >
+          {loading ? '🔄 Отладка...' : '🔍 Отладить поля счета'}
+        </button>
+      </div>
 
       {error && (
         <div style={{ 
@@ -103,8 +156,8 @@ const InvoiceTest: React.FC<InvoiceTestProps> = ({ dealId = 12345, email = 'test
           borderRadius: '4px',
           color: '#155724'
         }}>
-          <strong>✅ Успешно!</strong>
-          <pre style={{ marginTop: '10px', fontSize: '12px' }}>
+          <strong>✅ Результат:</strong>
+          <pre style={{ marginTop: '10px', fontSize: '12px', maxHeight: '400px', overflow: 'auto' }}>
             {JSON.stringify(result, null, 2)}
           </pre>
         </div>

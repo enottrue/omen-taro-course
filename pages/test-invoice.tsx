@@ -12,14 +12,15 @@ const TestInvoicePage: React.FC = () => {
       <h1>🧪 Тестирование создания счетов в Bitrix24</h1>
       
       <div style={{ 
-        backgroundColor: '#e7f3ff', 
+        backgroundColor: '#d4edda', 
         padding: '15px', 
         borderRadius: '8px', 
         marginBottom: '20px',
-        border: '1px solid #b3d9ff'
+        border: '1px solid #c3e6cb',
+        color: '#155724'
       }}>
-        <h3>ℹ️ Информация</h3>
-        <p>Эта страница предназначена для тестирования создания счетов в Bitrix24 через смарт-процесс.</p>
+        <h3>✅ Проблема решена!</h3>
+        <p>Поле <strong>UF_CRM_1628621924030</strong> теперь заполняется правильным значением <strong>1013</strong>.</p>
         <p><strong>Webhook URL:</strong> https://crm.taroirena.com/rest/1/62s3v3dkougs3qsm/</p>
         <p><strong>Entity Type ID:</strong> 31 (смарт-процесс для счетов)</p>
         <p><strong>Product ID:</strong> 1777 (Compass)</p>

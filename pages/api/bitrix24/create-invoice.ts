@@ -61,7 +61,7 @@ async function createInvoiceInBitrix24(dealId: number, amount: number, currency:
       'fields[parentId2]': dealId.toString(), // Привязка к сделке
       'fields[mycompanyId]': '51',
       'fields[sourceId]': 'UC_HZ10CI',
-      'fields[UF_CRM_1628621924030]': '1014',
+      'fields[ufCrm_SMART_INVOICE_1706948587230]': '1013',
       'fields[COMMENTS]': `${productName} Service\nClient: ${email}\nEmail: ${email}\nPrice: ${amount} ${currency}`
     };
     
