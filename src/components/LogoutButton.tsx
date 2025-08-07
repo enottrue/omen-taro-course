@@ -55,7 +55,7 @@ const LogoutButton: React.FC = () => {
         fontWeight: 'bold'
       }}
     >
-      🚪 Выйти
+      Logout
     </button>
   );
 };

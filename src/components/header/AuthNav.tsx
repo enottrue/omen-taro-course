@@ -65,7 +65,7 @@ const AuthNav: React.FC = () => {
         </li> */}
       </ul>
       <Button
-        title="Выйти"
+        title="Logout"
         className="button_little button_secondary logout"
         onClick={() => {
           Cookies.remove('Bearer');
