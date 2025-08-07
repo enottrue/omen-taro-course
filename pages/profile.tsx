@@ -12,6 +12,7 @@ import BurgerMenu from '@/components/component1/BurgerMenu';
 import styles from '@/components/component1/component1.module.scss';
 import LogoutIcon from '@/images/logout.svg';
 import Modal from '@/components/modal/Modal';
+import { useStripePayment } from '@/hooks/useStripePayment';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const APP_SECRET = process.env.APP_SECRET;
@@ -104,9 +105,15 @@ const Profile = ({
     router.push('/');
   };
 
-  const handleEnroll = () => {
-    // Здесь будет логика для оплаты
-    router.push('/payment');
+  const { handlePayment } = useStripePayment();
+
+  const handleEnroll = async () => {
+    try {
+      await handlePayment();
+    } catch (error) {
+      console.error('Payment error:', error);
+      // Если произошла ошибка, можно показать уведомление пользователю
+    }
   };
 
   return (
