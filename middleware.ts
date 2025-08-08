@@ -98,12 +98,22 @@ export async function middleware(req: NextRequest) {
                 currentPath: req.nextUrl.pathname
               });
               
-              // Если пользователь оплатил и находится на главной странице, перенаправляем на onboarding
+              // Если пользователь оплатил и находится на главной странице, перенаправляем на соответствующую страницу
               if (userData.user.isPaid && req.nextUrl.pathname === '/') {
-                console.log('🔄 Redirecting paid user from / to /onboarding');
-                const url = req.nextUrl.clone();
-                url.pathname = '/onboarding';
-                return NextResponse.redirect(url, { status: 302 });
+                // Проверяем, включен ли onboarding
+                const onboardingEnabled = process.env.NEXT_PUBLIC_ONBOARDING?.toLowerCase() === 'true';
+                
+                if (onboardingEnabled) {
+                  console.log('🔄 Redirecting paid user from / to /onboarding');
+                  const url = req.nextUrl.clone();
+                  url.pathname = '/onboarding';
+                  return NextResponse.redirect(url, { status: 302 });
+                } else {
+                  console.log('🔄 Redirecting paid user from / to /courses (onboarding disabled)');
+                  const url = req.nextUrl.clone();
+                  url.pathname = '/courses';
+                  return NextResponse.redirect(url, { status: 302 });
+                }
               }
               
               // Если пользователь не оплатил и пытается получить доступ к защищенной странице
