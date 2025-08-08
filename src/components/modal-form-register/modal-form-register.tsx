@@ -133,38 +133,10 @@ const ModalFormRegister: NextPage<ModalFormRegisterType> = ({
       handleClose();
       cc?.setCurrentForm && cc.setCurrentForm(null);
       
-      console.log('✅ User registered successfully, redirecting to Stripe checkout...');
+      console.log('✅ User registered successfully, redirecting to profile page...');
       
-      // Redirect to Stripe checkout for payment with invoice
-      try {
-        console.log('🔄 Creating Stripe checkout session with invoice for email:', email);
-        
-        // Используем данные пользователя, которые уже получены выше
-        const dealId = userData?.data?.getUser?.bitrix24DealId;
-        if (!dealId) {
-          console.error('❌ No dealId found for user');
-          throw new Error('Failed to create payment session - no deal found');
-        }
-        
-        const result = await createCheckoutSessionWithInvoice({
-          email,
-          dealId,
-          productName: 'Cosmo Course',
-          amount: 5000, // $50.00 in cents
-          currency: 'usd'
-        });
-        
-        console.log('✅ Stripe session with invoice created:', result.sessionId);
-        console.log('✅ Invoice created in Bitrix24:', result.invoiceId);
-        console.log('🔄 Redirecting to Stripe checkout...');
-        await redirectToCheckout(result.sessionId);
-      } catch (stripeError) {
-        console.error('❌ Stripe checkout error:', stripeError);
-        // If Stripe fails, fallback to appropriate page based on onboarding status
-        const fallbackPath = getOnboardingRedirectPath(false);
-        console.log('⚠️ Stripe checkout failed, redirecting to:', fallbackPath);
-        router.push(fallbackPath);
-      }
+      // Redirect to profile page instead of Stripe checkout
+      router.push('/profile');
       
     } catch (err) {
       setError((err as Error).message);
