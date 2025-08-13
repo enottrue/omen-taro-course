@@ -1,0 +1,82 @@
+/* 
+ * Development Mode Styles - 480px Design Extension
+ * Этот файл подключается только в режиме development (?ENV=Development)
+ * Содержит стили для расширения дизайна с 320px до 480px
+ */
+
+/* Основные стили для расширения дизайна до 480px */
+@media (min-width: 480px) {
+  body {
+    transform: scale(1.25);
+    transform-origin: top left;
+    width: calc(100% / 1.25);
+  }
+
+  /* Переопределяем максимальную ширину для основных контейнеров */
+  .lesson-main-content,
+  .course-hero-content,
+  .course-manual-content,
+  .course-book-content,
+  .course-lessons-content,
+  .hero-content,
+  .about-content,
+  .footer-content,
+  .header-content,
+  .modal-content,
+  .onboarding-content,
+  .testimonials-content,
+  .smart-investment-content,
+  .family-benefits-content,
+  .discover-content,
+  .way-content,
+  .to-learn-content,
+  .comparison-details-content,
+  .contact-us-content,
+  .congratulations-content,
+  .terms-content,
+  .privacy-content {
+    max-width: 480px !important;
+    margin: 0 auto;
+  }
+
+  /* Адаптируем отступы для большего экрана */
+  .lesson-content,
+  .course-content,
+  .main-content,
+  .page-content {
+    padding: 30px;
+  }
+
+  .lesson-content {
+    padding: 40px;
+  }
+}
+
+/* Дополнительные стили для очень больших экранов */
+@media (min-width: 768px) {
+  .lesson-main-content,
+  .course-hero-content,
+  .course-manual-content,
+  .course-book-content,
+  .course-lessons-content,
+  .hero-content,
+  .about-content,
+  .footer-content,
+  .header-content,
+  .modal-content,
+  .onboarding-content,
+  .testimonials-content,
+  .smart-investment-content,
+  .family-benefits-content,
+  .discover-content,
+  .way-content,
+  .to-learn-content,
+  .comparison-details-content,
+  .contact-us-content,
+  .congratulations-content,
+  .terms-content,
+  .privacy-content {
+    max-width: 480px !important;
+    margin: 0 auto;
+  }
+}

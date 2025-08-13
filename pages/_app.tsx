@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 import UtmInitializer from '@/components/UtmInitializer';
 import AuthStatusTooltip from '@/components/AuthStatusTooltip';
 import LogoutButton from '@/components/LogoutButton';
+import DevelopmentStyles from '@/components/DevelopmentStyles';
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -29,6 +30,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <MainContextProvider>
           <>
             <UtmInitializer />
+            <DevelopmentStyles />
             {/* <AuthStatusTooltip /> */}
             {/* <LogoutButton /> */}
             <Component {...pageProps} />
