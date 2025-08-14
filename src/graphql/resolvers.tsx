@@ -380,6 +380,7 @@ export const resolvers = {
       info: {},
     ) => {
       console.log('🔄 registerUser вызван с аргументами:', args);
+      console.log('🔧 Контекст:', { userId: context.userId, hasPrisma: !!context.prisma });
       const { userId } = context;
 
       const password = await bcrypt.hash(args.password, 10);
@@ -401,6 +402,8 @@ export const resolvers = {
         const user = await context.prisma.user.create({
           data: { ...userData, password },
         });
+
+        console.log('✅ Пользователь создан в БД:', { id: user.id, name: user.name, email: user.email });
 
         // Get all existing stages to create StageStatus records only for them
         const existingStages = await context.prisma.stage.findMany({
@@ -428,27 +431,51 @@ export const resolvers = {
             console.log(`✅ Created ${existingStages.length} StageStatus records for user ${user.id}`);
           }
         } else {
-          console.log(`ℹ️ User ${user.id} already has ${existingStageStatuses.length} StageStatus records`);
+          console.log(`ℹ️ User ${user.id} already has ${existingStages.length} StageStatus records`);
         }
+
+        console.log('🔑 Создаем JWT токен для пользователя:', user.id);
 
         //@ts-expect-error
         const token = jwt.sign({ userId: user.id }, APP_SECRET);
+
+        console.log('🔑 JWT токен создан для пользователя:', user.id);
 
         // Создание сделки в Битрикс24 будет происходить асинхронно
         // через API endpoint /api/bitrix24/create-deal-async
         console.log('🔄 Сделка будет создана асинхронно для пользователя:', user.id);
         
-        // Запускаем асинхронное создание сделки
-        fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/bitrix24/create-deal-async`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ userId: user.id }),
-        }).catch(error => {
-          console.error('Ошибка запуска асинхронного создания сделки:', error);
-          // Не прерываем регистрацию пользователя
-        });
+        // Запускаем асинхронное создание сделки через setTimeout
+        // чтобы не блокировать ответ регистрации
+        console.log('⏰ Запускаем setTimeout для асинхронного создания сделки');
+        setTimeout(async () => {
+          console.log('🔄 setTimeout выполнен, начинаем создание сделки для пользователя:', user.id);
+          try {
+            const apiUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/bitrix24/create-deal-async`;
+            console.log('🌐 Вызываем API:', apiUrl);
+            
+            const response = await fetch(apiUrl, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ userId: user.id }),
+            });
+            
+            console.log('📡 Ответ API получен, статус:', response.status);
+            
+            if (response.ok) {
+              const result = await response.json();
+              console.log('✅ Сделка создана асинхронно:', result);
+            } else {
+              console.error('❌ Ошибка создания сделки:', response.status);
+              const errorText = await response.text();
+              console.error('❌ Текст ошибки:', errorText);
+            }
+          } catch (error) {
+            console.error('❌ Ошибка запуска асинхронного создания сделки:', error);
+          }
+        }, 100); // Небольшая задержка для асинхронности
 
         // Send welcome email after successful registration
         console.log('🔄 Sending welcome email to:', user.email);
@@ -471,6 +498,7 @@ export const resolvers = {
           // Don't fail registration if email fails
         }
 
+        console.log('✅ Регистрация пользователя завершена успешно, возвращаем результат');
         return {
           token,
           user,
@@ -478,6 +506,7 @@ export const resolvers = {
           error: false,
         };
       } catch (error: unknown) {
+        console.error('❌ Ошибка в registerUser:', error);
         if (error instanceof ApolloError) {
           console.error('ApolloError в registerUser:', error);
           return {

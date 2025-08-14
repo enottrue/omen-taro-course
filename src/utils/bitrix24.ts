@@ -303,8 +303,7 @@ export async function createDealOnRegistration(userData: {
   productPrice?: number;
   error?: string;
 }> {
-  console.log('🚀 Начинаем создание сделки в Битрикс24...');
-  console.log('📋 Данные пользователя:', userData);
+  console.log('🚀 createDealOnRegistration вызван с данными:', userData);
   console.log('🔧 Конфигурация Битрикс24:', {
     webhookUrl: BITRIX24_WEBHOOK_URL,
     assignedById: BITRIX24_ASSIGNED_BY_ID,
@@ -365,6 +364,7 @@ export async function createDealOnRegistration(userData: {
       await addProductsToDeal(dealId, userData.productId, productPrice);
     }
 
+    console.log('✅ createDealOnRegistration завершен успешно:', { dealId, contactId, productName, productPrice });
     return {
       success: true,
       dealId,
@@ -373,7 +373,7 @@ export async function createDealOnRegistration(userData: {
       productPrice,
     };
   } catch (error) {
-    console.error('Error creating deal on registration:', error);
+    console.error('❌ Ошибка в createDealOnRegistration:', error);
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',
