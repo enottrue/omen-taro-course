@@ -39,8 +39,8 @@ const Bitrix24DealStatus: React.FC<Bitrix24DealStatusProps> = ({
     return (
       <div className="deal-status-success">
         <div className="success-icon">✅</div>
-        <p>Сделка создана успешно</p>
-        <small>ID сделки: {dealId}</small>
+        <p>Deal created successfully</p>
+        <small>Deal ID: {dealId}</small>
       </div>
     );
   }
@@ -50,23 +50,23 @@ const Bitrix24DealStatus: React.FC<Bitrix24DealStatusProps> = ({
       {isLoading ? (
         <div className="deal-loading">
           <div className="spinner"></div>
-          <p>Создание сделки в системе...</p>
+          <p>creating registration in system...</p>
         </div>
       ) : error ? (
         <div className="deal-error">
-          <p>Ошибка создания сделки: {error}</p>
+          <p>error creating registration: {error}</p>
           {showCreateButton && (
             <button onClick={triggerDealCreation} className="retry-button">
-              Попробовать снова
+              Try again
             </button>
           )}
         </div>
       ) : (
         <div className="deal-pending">
-          <p>Ожидание создания сделки...</p>
+          <p>wait processing registration...</p>
           {showCreateButton && (
             <button onClick={triggerDealCreation} className="create-deal-button">
-              Создать сделку
+              finish registration
             </button>
           )}
         </div>

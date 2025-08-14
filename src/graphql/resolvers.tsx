@@ -380,6 +380,7 @@ export const resolvers = {
       info: {},
     ) => {
       console.log('🔄 registerUser вызван с аргументами:', args);
+      console.log('⏰ Время начала регистрации:', new Date().toISOString());
       console.log('🔧 Контекст:', { userId: context.userId, hasPrisma: !!context.prisma });
       const { userId } = context;
 
@@ -441,28 +442,31 @@ export const resolvers = {
 
         console.log('🔑 JWT токен создан для пользователя:', user.id);
 
-        // Send welcome email after successful registration
-        console.log('🔄 Sending welcome email to:', user.email);
-        try {
-          const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://astro-irena.com';
-          const welcomeEmailResult = await emailService.sendWelcomeEmail(
-            user.email,
-            user.name,
-            args.password, // Use the original password before hashing
-            siteUrl
-          );
-          
-          if (welcomeEmailResult.success) {
-            console.log('✅ Welcome email sent successfully');
-          } else {
-            console.log('⚠️ Welcome email failed to send:', welcomeEmailResult.error);
+        // Send welcome email asynchronously (don't wait for it)
+        console.log('🔄 Sending welcome email asynchronously to:', user.email);
+        setImmediate(async () => {
+          try {
+            const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://astro-irena.com';
+            const welcomeEmailResult = await emailService.sendWelcomeEmail(
+              user.email,
+              user.name,
+              args.password, // Use the original password before hashing
+              siteUrl
+            );
+            
+            if (welcomeEmailResult.success) {
+              console.log('✅ Welcome email sent successfully');
+            } else {
+              console.log('⚠️ Welcome email failed to send:', welcomeEmailResult.error);
+            }
+          } catch (emailError) {
+            console.log('⚠️ Error sending welcome email:', emailError);
+            // Don't fail registration if email fails
           }
-        } catch (emailError) {
-          console.log('⚠️ Error sending welcome email:', emailError);
-          // Don't fail registration if email fails
-        }
+        });
 
         console.log('✅ Регистрация пользователя завершена успешно, возвращаем результат');
+        console.log('⏰ Время завершения регистрации:', new Date().toISOString());
         
         // Возвращаем результат регистрации НЕМЕДЛЕННО
         const result = {
