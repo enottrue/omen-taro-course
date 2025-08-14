@@ -13,6 +13,7 @@ import styles from '@/components/component1/component1.module.scss';
 import LogoutIcon from '@/images/logout.svg';
 import Modal from '@/components/modal/Modal';
 import { useStripePayment } from '@/hooks/useStripePayment';
+import Bitrix24DealStatus from '@/components/Bitrix24DealStatus';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const APP_SECRET = process.env.APP_SECRET;
@@ -106,6 +107,12 @@ const Profile = ({
   };
 
   const { handlePayment } = useStripePayment();
+  
+  // Функция для обработки успешного создания сделки
+  const handleDealCreated = () => {
+    // Перезагружаем страницу или обновляем данные
+    window.location.reload();
+  };
 
   const handleEnroll = async () => {
     try {
@@ -250,11 +257,19 @@ const Profile = ({
                 </div>
               </div>
               
-              <Button
-                title="Enroll Now - only $50"
-                className="button_enroll"
-                onClick={handleEnroll}
-              />
+              {!userData?.bitrix24DealId ? (
+                <Bitrix24DealStatus
+                  userId={userId}
+                  initialDealId={userData?.bitrix24DealId}
+                  onDealCreated={handleDealCreated}
+                />
+              ) : (
+                <Button
+                  title="Enroll Now - only $50"
+                  className="button_enroll"
+                  onClick={handleEnroll}
+                />
+              )}
             </div>
           </div>
         </div>

@@ -66,16 +66,8 @@ export const useStripePayment = () => {
     console.log('💰 DealId пользователя:', dealId);
     
     if (!dealId) {
-      console.error('❌ No dealId found for user, using old payment method');
-      try {
-        // Fallback к старому методу если нет dealId
-        const sessionId = await createCheckoutSession(userEmail);
-        await redirectToCheckout(sessionId);
-      } catch (error) {
-        console.error('Payment error:', error);
-        throw error;
-      }
-      return;
+      console.error('❌ No dealId found for user. Deal must be created in Bitrix24 first.');
+      throw new Error('Сделка в системе не создана. Пожалуйста, дождитесь создания сделки или обратитесь к администратору.');
     }
 
     try {

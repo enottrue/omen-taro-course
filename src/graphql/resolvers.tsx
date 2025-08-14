@@ -434,46 +434,21 @@ export const resolvers = {
         //@ts-expect-error
         const token = jwt.sign({ userId: user.id }, APP_SECRET);
 
-        // Создаем сделку в Битрикс24
-        console.log('🔄 Вызываем createDealOnRegistration для пользователя:', user.id);
-        console.log('📋 Данные для создания сделки:', {
-          name: user.name,
-          email: user.email,
-          phone: user.phone || '',
-          city: user.city || undefined,
-          productId: '1777',
-          comments: `Регистрация пользователя ${user.name} из города ${user.city || 'не указан'}`,
-          utmData: utmData,
+        // Создание сделки в Битрикс24 будет происходить асинхронно
+        // через API endpoint /api/bitrix24/create-deal-async
+        console.log('🔄 Сделка будет создана асинхронно для пользователя:', user.id);
+        
+        // Запускаем асинхронное создание сделки
+        fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/bitrix24/create-deal-async`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userId: user.id }),
+        }).catch(error => {
+          console.error('Ошибка запуска асинхронного создания сделки:', error);
+          // Не прерываем регистрацию пользователя
         });
-        try {
-          const bitrixResult = await createDealOnRegistration({
-            name: user.name,
-            email: user.email,
-            phone: user.phone || '',
-            city: user.city || undefined,
-            productId: '1777', // Добавляем товар 1777
-            comments: `Регистрация пользователя ${user.name} из города ${user.city || 'не указан'}`,
-            utmData: utmData || undefined,
-          });
-
-          if (bitrixResult.success) {
-         //   console.log('Сделка успешно создана в Битрикс24:', bitrixResult.dealId);
-            
-            // Обновляем пользователя с ID из Битрикс24
-            await context.prisma.user.update({
-              where: { id: user.id },
-              data: {
-                bitrix24ContactId: bitrixResult.contactId,
-                bitrix24DealId: bitrixResult.dealId,
-              },
-            });
-          } else {
-           // console.error('Ошибка создания сделки в Битрикс24:', bitrixResult.error);
-          }
-        } catch (bitrixError) {
-         // console.error('Ошибка интеграции с Битрикс24:', bitrixError);
-          // Не прерываем регистрацию пользователя, если Битрикс24 недоступен
-        }
 
         // Send welcome email after successful registration
         console.log('🔄 Sending welcome email to:', user.email);

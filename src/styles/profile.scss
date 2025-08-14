@@ -110,6 +110,88 @@
   }
 }
 
+// Deal Status Styles
+.deal-status-info {
+  text-align: center;
+  padding: 20px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  background-color: #f8f9fa;
+  
+  .deal-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    
+    .spinner {
+      width: 32px;
+      height: 32px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #007bff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    p {
+      margin: 0;
+      color: #6c757d;
+      font-size: 14px;
+    }
+  }
+  
+  .deal-error {
+    color: #dc3545;
+    
+    p {
+      margin: 0 0 16px 0;
+      font-size: 14px;
+    }
+    
+    .retry-button {
+      padding: 8px 16px;
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      
+      &:hover {
+        background-color: #c82333;
+      }
+    }
+  }
+  
+  .deal-pending {
+    color: #6c757d;
+    
+    p {
+      margin: 0 0 16px 0;
+      font-size: 14px;
+    }
+    
+    .create-deal-button {
+      padding: 8px 16px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      
+      &:hover {
+        background-color: #0056b3;
+      }
+    }
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 .profile-email__label {
   font-family: var(--font-roboto);
   font-size: var(--font-size-14);
