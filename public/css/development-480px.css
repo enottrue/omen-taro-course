@@ -7,9 +7,9 @@
 /* Основные стили для расширения дизайна до 480px */
 @media (min-width: 480px) {
   body {
-    transform: scale(1.25);
+    transform: scale(1.5);
     transform-origin: top left;
-    width: calc(100% / 1.25);
+    width: calc(100% / 1.5);
   }
 
   /* Переопределяем максимальную ширину для основных контейнеров */
