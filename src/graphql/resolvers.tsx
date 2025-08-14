@@ -441,17 +441,45 @@ export const resolvers = {
 
         console.log('🔑 JWT токен создан для пользователя:', user.id);
 
+        // Send welcome email after successful registration
+        console.log('🔄 Sending welcome email to:', user.email);
+        try {
+          const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://astro-irena.com';
+          const welcomeEmailResult = await emailService.sendWelcomeEmail(
+            user.email,
+            user.name,
+            args.password, // Use the original password before hashing
+            siteUrl
+          );
+          
+          if (welcomeEmailResult.success) {
+            console.log('✅ Welcome email sent successfully');
+          } else {
+            console.log('⚠️ Welcome email failed to send:', welcomeEmailResult.error);
+          }
+        } catch (emailError) {
+          console.log('⚠️ Error sending welcome email:', emailError);
+          // Don't fail registration if email fails
+        }
+
+        console.log('✅ Регистрация пользователя завершена успешно, возвращаем результат');
+        
+        // Возвращаем результат регистрации НЕМЕДЛЕННО
+        const result = {
+          token,
+          user,
+          message: null,
+          error: false,
+        };
+        
         // Создание сделки в Битрикс24 будет происходить асинхронно
-        // через API endpoint /api/bitrix24/create-deal-async
+        // ПОСЛЕ возврата результата регистрации
         console.log('🔄 Сделка будет создана асинхронно для пользователя:', user.id);
         console.log('⏰ Время начала асинхронного создания сделки:', new Date().toISOString());
         
-        // Запускаем асинхронное создание сделки без ожидания результата
+        // Запускаем асинхронное создание сделки БЕЗ ожидания результата
         // чтобы не блокировать ответ регистрации
-        console.log('⏰ Запускаем асинхронное создание сделки для пользователя:', user.id);
-        
-        // Используем Promise.resolve().then() для асинхронного выполнения
-        Promise.resolve().then(async () => {
+        setImmediate(async () => {
           try {
             const apiUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/bitrix24/create-deal-async`;
             console.log('🌐 Вызываем API:', apiUrl);
@@ -477,40 +505,11 @@ export const resolvers = {
           } catch (error) {
             console.error('❌ Ошибка запуска асинхронного создания сделки:', error);
           }
-        }).catch(error => {
-          console.error('❌ Ошибка в Promise.then():', error);
         });
-
+        
         console.log('✅ Асинхронное создание сделки запущено для пользователя:', user.id);
-
-        // Send welcome email after successful registration
-        console.log('🔄 Sending welcome email to:', user.email);
-        try {
-          const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://astro-irena.com';
-          const welcomeEmailResult = await emailService.sendWelcomeEmail(
-            user.email,
-            user.name,
-            args.password, // Use the original password before hashing
-            siteUrl
-          );
-          
-          if (welcomeEmailResult.success) {
-            console.log('✅ Welcome email sent successfully');
-          } else {
-            console.log('⚠️ Welcome email failed to send:', welcomeEmailResult.error);
-          }
-        } catch (emailError) {
-          console.log('⚠️ Error sending welcome email:', emailError);
-          // Don't fail registration if email fails
-        }
-
-        console.log('✅ Регистрация пользователя завершена успешно, возвращаем результат');
-        return {
-          token,
-          user,
-          message: null,
-          error: false,
-        };
+        
+        return result;
       } catch (error: unknown) {
         console.error('❌ Ошибка в registerUser:', error);
         if (error instanceof ApolloError) {
