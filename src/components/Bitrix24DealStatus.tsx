@@ -64,11 +64,11 @@ const Bitrix24DealStatus: React.FC<Bitrix24DealStatusProps> = ({
       ) : (
         <div className="deal-pending">
           <p>wait processing registration...</p>
-          {showCreateButton && (
+          {/* {showCreateButton && (
             <button onClick={triggerDealCreation} className="create-deal-button">
               finish registration
             </button>
-          )}
+          )} */}
         </div>
       )}
     </div>
