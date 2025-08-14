@@ -6,6 +6,9 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
+        {/* Viewport для мобильных устройств */}
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+        
         {/* Google Analytics */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-351910382"></script>
         <script
