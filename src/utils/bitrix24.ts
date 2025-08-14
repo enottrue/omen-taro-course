@@ -102,6 +102,8 @@ async function makeBitrix24Request(endpoint: string, data: any): Promise<any> {
 
 // Функция для проверки существования контакта
 export async function checkContactExists(phone: string, email: string): Promise<number | null> {
+  console.log('🔍 checkContactExists вызван для:', { phone, email });
+  
   const contactData = {
     'filter[PHONE]': phone,
     'filter[EMAIL]': email,
@@ -110,9 +112,11 @@ export async function checkContactExists(phone: string, email: string): Promise<
 
   try {
     const response = await makeBitrix24Request('crm.contact.list', contactData);
-    return response.result?.[0]?.ID || null;
+    const contactId = response.result?.[0]?.ID || null;
+    console.log('🔍 Результат проверки контакта:', contactId ? `Найден ID: ${contactId}` : 'Не найден');
+    return contactId;
   } catch (error) {
-    console.error('Error checking contact existence:', error);
+    console.error('❌ Ошибка в checkContactExists:', error);
     return null;
   }
 }
@@ -124,6 +128,8 @@ export async function createContact(contactData: {
   phone: string;
   email: string;
 }): Promise<number> {
+  console.log('👤 createContact вызван с данными:', contactData);
+  
   const bitrixContact: Bitrix24Contact = {
     NAME: contactData.name,
     LAST_NAME: contactData.lastName,
@@ -145,12 +151,14 @@ export async function createContact(contactData: {
     });
 
     if (response.result) {
+      console.log('✅ Контакт успешно создан в Bitrix24, ID:', response.result);
       return response.result;
     } else {
+      console.error('❌ Ошибка создания контакта в Bitrix24:', response.error_description);
       throw new Error(`Error creating contact: ${response.error_description || 'Unknown error'}`);
     }
   } catch (error) {
-    console.error('Error creating contact:', error);
+    console.error('❌ Ошибка в createContact:', error);
     throw error;
   }
 }
@@ -189,6 +197,9 @@ export async function createDeal(dealData: {
   telegram?: string;
   term?: string;
 }): Promise<number> {
+  console.log('🔄 createDeal вызван с данными:', dealData);
+  console.log('📊 UTM данные в createDeal:', dealData.utmData);
+  
   const bitrixDeal: Bitrix24Deal = {
     TITLE: dealData.title,
     NAME: dealData.name,
@@ -253,12 +264,14 @@ export async function createDeal(dealData: {
     const response = await makeBitrix24Request('crm.deal.add', dealData);
 
     if (response.result) {
+      console.log('✅ Сделка успешно создана в Bitrix24, ID:', response.result);
       return response.result;
     } else {
+      console.error('❌ Ошибка создания сделки в Bitrix24:', response.error_description);
       throw new Error(`Error creating deal: ${response.error_description || 'Unknown error'}`);
     }
   } catch (error) {
-    console.error('Error creating deal:', error);
+    console.error('❌ Ошибка в createDeal:', error);
     throw error;
   }
 }
@@ -304,6 +317,7 @@ export async function createDealOnRegistration(userData: {
   error?: string;
 }> {
   console.log('🚀 createDealOnRegistration вызван с данными:', userData);
+  console.log('📊 UTM данные:', userData.utmData);
   console.log('🔧 Конфигурация Битрикс24:', {
     webhookUrl: BITRIX24_WEBHOOK_URL,
     assignedById: BITRIX24_ASSIGNED_BY_ID,

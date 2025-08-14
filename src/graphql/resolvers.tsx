@@ -444,12 +444,14 @@ export const resolvers = {
         // Создание сделки в Битрикс24 будет происходить асинхронно
         // через API endpoint /api/bitrix24/create-deal-async
         console.log('🔄 Сделка будет создана асинхронно для пользователя:', user.id);
+        console.log('⏰ Время начала асинхронного создания сделки:', new Date().toISOString());
         
-        // Запускаем асинхронное создание сделки через setTimeout
+        // Запускаем асинхронное создание сделки без ожидания результата
         // чтобы не блокировать ответ регистрации
-        console.log('⏰ Запускаем setTimeout для асинхронного создания сделки');
-        setTimeout(async () => {
-          console.log('🔄 setTimeout выполнен, начинаем создание сделки для пользователя:', user.id);
+        console.log('⏰ Запускаем асинхронное создание сделки для пользователя:', user.id);
+        
+        // Используем Promise.resolve().then() для асинхронного выполнения
+        Promise.resolve().then(async () => {
           try {
             const apiUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/bitrix24/create-deal-async`;
             console.log('🌐 Вызываем API:', apiUrl);
@@ -475,7 +477,11 @@ export const resolvers = {
           } catch (error) {
             console.error('❌ Ошибка запуска асинхронного создания сделки:', error);
           }
-        }, 100); // Небольшая задержка для асинхронности
+        }).catch(error => {
+          console.error('❌ Ошибка в Promise.then():', error);
+        });
+
+        console.log('✅ Асинхронное создание сделки запущено для пользователя:', user.id);
 
         // Send welcome email after successful registration
         console.log('🔄 Sending welcome email to:', user.email);
