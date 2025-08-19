@@ -12,6 +12,7 @@
   z-index: 200;
   transition: opacity 0.3s ease-in-out;
   animation: fadeIn 0.3s ease-in-out;
+  height: 100%;
   @media (min-width: 375px) {
     width: 81vw;
   }
