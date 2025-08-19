@@ -14,6 +14,14 @@ const Modal = () => {
 
   useEffect(() => {
     if (cc?.currentForm) {
+      // Прокручиваем страницу к верху при открытии модального окна
+      if (typeof window !== 'undefined') {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      }
+      
       document.body.classList.add('body-modal-open');
       cc?.setModalOpen(true);
     } else {

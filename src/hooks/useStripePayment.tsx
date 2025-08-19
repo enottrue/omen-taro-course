@@ -47,6 +47,15 @@ export const useStripePayment = () => {
     // Проверяем авторизацию пользователя
     if (!context.token || !context.user) {
       console.log('⚠️ Пользователь не авторизован, открываем модалку регистрации');
+      
+      // Прокручиваем страницу к верху перед открытием модального окна
+      if (typeof window !== 'undefined') {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      }
+      
       // Если не авторизован - открываем модалку регистрации
       context.setModalOpen(true);
       context.setCurrentForm('register');
@@ -136,6 +145,14 @@ export const useStripePayment = () => {
 
     // Проверяем авторизацию пользователя
     if (!context.token || !context.user) {
+      // Прокручиваем страницу к верху перед открытием модального окна
+      if (typeof window !== 'undefined') {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      }
+      
       // Если не авторизован - открываем модалку регистрации
       context.setModalOpen(true);
       context.setCurrentForm('register');
