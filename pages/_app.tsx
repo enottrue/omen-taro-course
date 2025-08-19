@@ -23,6 +23,7 @@ export default function App({ Component, pageProps }: AppProps) {
       initParameters={{
         clickmap: true,
         trackLinks: true,
+        webvisor: true,
         accurateTrackBounce: true,
       }}
     >
