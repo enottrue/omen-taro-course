@@ -362,9 +362,8 @@ main {
 
   /* Специальные стили для страницы профиля */
   .profile-page {
-    max-width: 370px !important;
+    max-width: 290px !important;
     margin: 0 auto;
-    padding: 0 15px 20px 15px !important; /* Убираем большие отступы */
   }
 
   .profile-container {
@@ -431,10 +430,6 @@ main {
     .terms-content,
     .privacy-content {
       padding: 0 20px !important;
-    }
-
-    .profile-page {
-      padding: 0 20px 20px 20px !important;
     }
 
     .profile-block {
@@ -508,10 +503,6 @@ main {
     .terms-content,
     .privacy-content {
       padding: 0 30px !important;
-    }
-
-    .profile-page {
-      padding: 0 30px 20px 30px !important;
     }
 
     .profile-block {
