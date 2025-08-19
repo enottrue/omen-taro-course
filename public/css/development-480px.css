@@ -44,13 +44,13 @@
 
 /* Специальные стили для страницы профиля */
 .profile-page {
-  max-width: 480px !important;
+  max-width: 370px !important;
   margin: 0 auto;
   padding: 0 15px 20px 15px !important; /* Убираем большие отступы */
 }
 
 .profile-container {
-  max-width: 480px !important;
+  max-width: 370px !important;
   margin: 0 auto;
 }
 
@@ -203,6 +203,7 @@
 
 /* Специальные стили для iPhone и мобильных устройств */
 @media (max-width: 480px) and (min-width: 375px) {
+
   /* Для iPhone 15 и подобных устройств */
   .profile-page {
     max-width: 100% !important;

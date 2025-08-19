@@ -12,6 +12,12 @@
   z-index: 200;
   transition: opacity 0.3s ease-in-out;
   animation: fadeIn 0.3s ease-in-out;
+  @media (min-width: 375px) {
+    width: 81vw;
+  }
+  @media (min-width: 430px) {
+    width: 75vw;
+  }
 }
 
 @keyframes fadeIn {
