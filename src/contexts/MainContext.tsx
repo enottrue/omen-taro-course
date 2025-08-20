@@ -69,6 +69,19 @@ export const MainContextProvider = ({
     }
   }, [userData]);
 
+  // Логируем изменения в stageData
+  useEffect(() => {
+    if (stageData) {
+      console.log('MainContext: stageData updated', {
+        count: stageData.length,
+        data: stageData.map((s: any) => ({ 
+          stageId: s.stageId, 
+          status: s.status 
+        }))
+      });
+    }
+  }, [stageData]);
+
   return (
     <MainContext.Provider
       value={{

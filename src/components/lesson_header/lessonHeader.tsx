@@ -91,37 +91,11 @@ export default function CourseLessonHeader({
 
   useEffect(() => {
     if (finishedStage && lesson?.lessonStages) {
-      const currentStage = lesson.lessonStages.find(
-        (stage: any) => stage.stageNumber == currentStageId,
-      );
-
-      if (!currentStage?.id) {
-        setFinishedStage(false);
-        return;
-      }
-
-      changeStageStatus({
-        variables: {
-          stageId: Number(currentStage.id),
-          userId: Number(cc?.userId),
-          status: STAGE_STATUSES.FINISHED,
-        },
-      }).then(() => {
-        setFinishedStage(false);
-        
-        // Update stage data in context to reflect the change
-        if (cc?.stageData) {
-          const updatedStageData = cc.stageData.map((stageStatus: any) => {
-            if (stageStatus.stageId === Number(currentStage.id)) {
-              return { ...stageStatus, status: STAGE_STATUSES.FINISHED };
-            }
-            return stageStatus;
-          });
-          cc.setStageData(updatedStageData);
-        }
-      });
+      // VideoPlayer теперь сам обновляет статус на finished
+      // Просто сбрасываем флаг
+      setFinishedStage(false);
     }
-  }, [finishedStage, cc, changeStageStatus, currentStageId, lesson]);
+  }, [finishedStage, lesson]);
 
   const nextStageExists = lesson?.lessonStages?.some((stage: any) => {
     return Number(stage.stageNumber) === Number(currentStageId) + 1;

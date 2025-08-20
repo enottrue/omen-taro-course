@@ -40,14 +40,26 @@ export default function VideoPlayer({
       stageName: stageId?.stageName 
     });
     
+    console.log('VideoPlayer: Video started', { 
+      stageId: stageId?.id, 
+      stageName: stageId?.stageName,
+      currentStatus: stageId?.stageStatuses?.[0]?.status 
+    });
+    
     // Check if we have valid stage data
     if (!stageId?.id || !cc?.userId) {
+      console.log('VideoPlayer: Missing stageId or userId', { stageId: stageId?.id, userId: cc?.userId });
       return;
     }
     
     // Check if stage is not already finished
     const currentStatus = stageId?.stageStatuses?.[0]?.status;
     if (currentStatus !== STAGE_STATUSES.FINISHED) {
+      console.log('VideoPlayer: Updating stage status to IN_PROGRESS', { 
+        stageId: stageId.id, 
+        currentStatus 
+      });
+      
       changeStageStatus({
         variables: {
           stageId: Number(stageId.id),
@@ -55,6 +67,7 @@ export default function VideoPlayer({
           status: STAGE_STATUSES.IN_PROGRESS,
         },
       }).then(() => {
+        console.log('VideoPlayer: Successfully updated stage status to IN_PROGRESS');
         // Update stage data in context to reflect the change
         if (cc?.stageData) {
           const updatedStageData = cc.stageData.map((stageStatus: any) => {
@@ -64,10 +77,14 @@ export default function VideoPlayer({
             return stageStatus;
           });
           cc.setStageData(updatedStageData);
+          console.log('VideoPlayer: Updated stageData in context', updatedStageData);
         }
       }).catch((error) => {
         // Silent error handling for production
+        console.error('VideoPlayer: Error updating stage status to IN_PROGRESS:', error);
       });
+    } else {
+      console.log('VideoPlayer: Stage already finished, skipping status update');
     }
   };
 
@@ -77,6 +94,47 @@ export default function VideoPlayer({
       stageId: stageId?.id, 
       stageName: stageId?.stageName 
     });
+    
+    console.log('VideoPlayer: Video ended', { 
+      stageId: stageId?.id, 
+      stageName: stageId?.stageName 
+    });
+    
+    // Update stage status to finished when video completes
+    if (stageId?.id && cc?.userId) {
+      console.log('VideoPlayer: Updating stage status to FINISHED', { 
+        stageId: stageId.id 
+      });
+      
+      changeStageStatus({
+        variables: {
+          stageId: Number(stageId.id),
+          userId: Number(cc.userId),
+          status: STAGE_STATUSES.FINISHED,
+        },
+      }).then(() => {
+        console.log('VideoPlayer: Successfully updated stage status to FINISHED');
+        // Update stage data in context to reflect the change
+        if (cc?.stageData) {
+          const updatedStageData = cc.stageData.map((stageStatus: any) => {
+            if (stageStatus.stageId === Number(stageId.id)) {
+              return { ...stageStatus, status: STAGE_STATUSES.FINISHED };
+            }
+            return stageStatus;
+          });
+          cc.setStageData(updatedStageData);
+          console.log('VideoPlayer: Updated stageData in context to FINISHED', updatedStageData);
+        }
+      }).catch((error) => {
+        // Silent error handling for production
+        console.error('VideoPlayer: Error updating stage status to FINISHED:', error);
+      });
+    } else {
+      console.log('VideoPlayer: Missing stageId or userId for FINISHED update', { 
+        stageId: stageId?.id, 
+        userId: cc?.userId 
+      });
+    }
     
     setFinished && setFinished(true);
   };
