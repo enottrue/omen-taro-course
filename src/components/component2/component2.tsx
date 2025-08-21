@@ -20,7 +20,21 @@ export type Component2Type = {
 const Component2: NextPage<Component2Type> = ({ className = "", textShown = true, videoSource = "/src/videos/video.mp4", typePage }) => {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const { trackVideoImpression, trackEvent, trackVideoStart, trackVideoProgress } = useGoogleAnalytics();
+  const { 
+    trackVideoImpression, 
+    trackEvent, 
+    trackVideoStart, 
+    trackVideoProgress,
+    trackVideoPause,
+    trackVideoSeek,
+    trackVideoMute,
+    trackVideoComplete,
+    trackVideoError
+  } = useGoogleAnalytics();
+  
+  // Состояние для отслеживания паузы
+  const [pauseStartTime, setPauseStartTime] = useState<number | null>(null);
+  const [lastSeekTime, setLastSeekTime] = useState<number>(0);
   
   // Отслеживание видимости видео блока (50% и более)
   const { elementRef: videoBlockRef, hasTriggered } = useIntersectionObserver({
@@ -62,6 +76,102 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
           }
         }
       });
+
+      // Проверяем завершение видео (≥95%)
+      if (percent >= 95 && !video.dataset.completed) {
+        video.dataset.completed = 'true';
+        trackVideoComplete(duration);
+      }
+    }
+  };
+
+  // Отслеживание паузы
+  const handlePause = () => {
+    if (videoRef.current && typePage === 'mainPage') {
+      const video = videoRef.current;
+      const currentTime = video.currentTime;
+      const duration = video.duration;
+      const percent = duration > 0 ? (currentTime / duration) * 100 : 0;
+      
+      setPauseStartTime(Date.now());
+      trackVideoPause(currentTime, percent);
+    }
+  };
+
+  // Отслеживание возобновления воспроизведения
+  const handlePlay = () => {
+    if (videoRef.current && typePage === 'mainPage') {
+      const video = videoRef.current;
+      const videoTitle = "Money Compass Intro";
+      const videoDuration = video.duration || 0;
+      const autoplay = false; // Видео запускается по клику, не автоплей
+      
+      // Проверяем длительность паузы
+      if (pauseStartTime) {
+        const pauseDuration = Date.now() - pauseStartTime;
+        // Если пауза была больше 2 секунд, это уже отслежено в handlePause
+        setPauseStartTime(null);
+      }
+      
+      trackVideoStart(videoTitle, videoDuration, autoplay);
+    }
+  };
+
+  // Отслеживание перемотки
+  const handleSeeked = () => {
+    if (videoRef.current && typePage === 'mainPage') {
+      const video = videoRef.current;
+      const currentTime = video.currentTime;
+      
+      // Отправляем событие только если перемотка была значительной (>1 секунды)
+      if (Math.abs(currentTime - lastSeekTime) > 1) {
+        trackVideoSeek(lastSeekTime, currentTime);
+        setLastSeekTime(currentTime);
+      }
+    }
+  };
+
+  // Отслеживание изменения звука
+  const handleVolumeChange = () => {
+    if (videoRef.current && typePage === 'mainPage') {
+      const video = videoRef.current;
+      const isMuted = video.muted;
+      trackVideoMute(isMuted);
+    }
+  };
+
+  // Отслеживание ошибок видео
+  const handleError = () => {
+    if (videoRef.current && typePage === 'mainPage') {
+      const video = videoRef.current;
+      let errorCode = 'unknown';
+      let errorMessage = 'Unknown video error';
+      
+      if (video.error) {
+        switch (video.error.code) {
+          case 1:
+            errorCode = 'MEDIA_ERR_ABORTED';
+            errorMessage = 'Video playback was aborted';
+            break;
+          case 2:
+            errorCode = 'MEDIA_ERR_NETWORK';
+            errorMessage = 'Network error occurred while loading video';
+            break;
+          case 3:
+            errorCode = 'MEDIA_ERR_DECODE';
+            errorMessage = 'Video decoding failed';
+            break;
+          case 4:
+            errorCode = 'MEDIA_ERR_SRC_NOT_SUPPORTED';
+            errorMessage = 'Video format not supported';
+            break;
+          default:
+            errorCode = `MEDIA_ERR_${video.error.code}`;
+            errorMessage = `Video error code: ${video.error.code}`;
+        }
+      }
+      
+      trackVideoError(errorCode, errorMessage);
     }
   };
 
@@ -89,6 +199,10 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
         videoRef.current.muted = false;
         videoRef.current.play().catch(error => {
           console.log('Auto-play was prevented:', error);
+          // Отслеживаем ошибку автозапуска
+          if (typePage === 'mainPage') {
+            trackVideoError('AUTOPLAY_BLOCKED', 'Video autoplay was prevented by browser');
+          }
         });
       }
     }
@@ -103,18 +217,6 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
       });
     }
     handleVideoClick();
-  };
-
-  // Отслеживание запуска видео
-  const handleVideoPlay = () => {
-    if (videoRef.current && typePage === 'mainPage') {
-      const video = videoRef.current;
-      const videoTitle = "Money Compass Intro";
-      const videoDuration = video.duration || 0;
-      const autoplay = false; // Видео запускается по клику, не автоплей
-      
-      trackVideoStart(videoTitle, videoDuration, autoplay);
-    }
   };
 
   // Determine heading text and image based on typePage
@@ -201,7 +303,11 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
               onClick={handleVideoClick}
               onEnded={() => setIsVideoPlaying(false)}
               onTimeUpdate={handleTimeUpdate}
-              onPlay={handleVideoPlay}
+              onPlay={handlePlay}
+              onPause={handlePause}
+              onSeeked={handleSeeked}
+              onVolumeChange={handleVolumeChange}
+              onError={handleError}
             >
               <source src={videoSource} type="video/mp4" />
               Your browser does not support the video tag.

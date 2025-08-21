@@ -40,10 +40,47 @@ export const useGoogleAnalytics = () => {
     });
   }, [trackEvent]);
 
+  const trackVideoPause = useCallback((videoCurrentTime: number, videoPercent: number) => {
+    trackEvent('video_pause', {
+      video_current_time: videoCurrentTime,
+      video_percent: videoPercent
+    });
+  }, [trackEvent]);
+
+  const trackVideoSeek = useCallback((fromTime: number, toTime: number) => {
+    trackEvent('video_seek', {
+      from_time: fromTime,
+      to_time: toTime
+    });
+  }, [trackEvent]);
+
+  const trackVideoMute = useCallback((isMuted: boolean) => {
+    const action = isMuted ? 'video_mute' : 'video_unmute';
+    trackEvent(action, {});
+  }, [trackEvent]);
+
+  const trackVideoComplete = useCallback((videoDuration: number) => {
+    trackEvent('video_complete', {
+      video_duration: videoDuration
+    });
+  }, [trackEvent]);
+
+  const trackVideoError = useCallback((errorCode: string, errorMessage: string) => {
+    trackEvent('video_error', {
+      error_code: errorCode,
+      error_message: errorMessage
+    });
+  }, [trackEvent]);
+
   return {
     trackEvent,
     trackVideoImpression,
     trackVideoStart,
-    trackVideoProgress
+    trackVideoProgress,
+    trackVideoPause,
+    trackVideoSeek,
+    trackVideoMute,
+    trackVideoComplete,
+    trackVideoError
   };
 };
