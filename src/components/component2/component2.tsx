@@ -5,7 +5,9 @@ import group4 from "../../images/group-4@2x.png";
 import intro_lesson from "../../images/wath-the-wideo.png";
 
 import { Button } from "../ui";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useGoogleAnalytics } from "../../hooks/useGoogleAnalytics";
+import { useIntersectionObserver } from "../../hooks/useIntersectionObserver";
 
 export type Component2Type = {
   className?: string;
@@ -18,8 +20,33 @@ export type Component2Type = {
 const Component2: NextPage<Component2Type> = ({ className = "", textShown = true, videoSource = "/src/videos/video.mp4", typePage }) => {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const { trackVideoImpression, trackEvent } = useGoogleAnalytics();
+  
+  // Отслеживание видимости видео блока (50% и более)
+  const { elementRef: videoBlockRef, hasTriggered } = useIntersectionObserver({
+    threshold: 0.5
+  });
+
+  // Отправляем событие в Google Analytics когда видео блок становится видимым
+  useEffect(() => {
+    if (hasTriggered && typePage === 'mainPage') {
+      const videoTitle = "Money Compass Intro";
+      const videoProvider = "HTML5 Video";
+      const videoUrl = videoSource || "/videos/main_page.mp4";
+      
+      trackVideoImpression(videoTitle, videoProvider, videoUrl);
+    }
+  }, [hasTriggered, typePage, trackVideoImpression, videoSource]);
 
   const handleVideoClick = () => {
+    // Отслеживаем клик по кнопке Watch the Video или по изображению видео
+    if (typePage === 'mainPage') {
+      trackEvent('video_cta_click', {
+        button_text: 'Watch the Video',
+        button_position: 'video_section'
+      });
+    }
+
     if (isVideoPlaying) {
       // If video is already playing, stop it and show image
       if (videoRef.current) {
@@ -38,6 +65,17 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
         });
       }
     }
+  };
+
+  // Отдельная функция для отслеживания клика по изображению
+  const handleImageClick = () => {
+    if (typePage === 'mainPage') {
+      trackEvent('video_cta_click', {
+        button_text: 'Video Preview Image',
+        button_position: 'video_section'
+      });
+    }
+    handleVideoClick();
   };
 
   // Determine heading text and image based on typePage
@@ -79,7 +117,11 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
           </div>}
         </div>
         
-        <div className={styles.videoContainer} style={{ position: 'relative', width: 260, height: 146 }}>
+        <div 
+          ref={videoBlockRef}
+          className={styles.videoContainer} 
+          style={{ position: 'relative', width: 260, height: 146 }}
+        >
           {!isVideoPlaying ? (
             // Show image when video is not playing
             useNextImage ? (
@@ -91,7 +133,7 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
                 sizes="100vw"
                 alt=""
                 src={nextImageSource}
-                onClick={handleVideoClick}
+                onClick={handleImageClick}
                 style={{ cursor: 'pointer' }}
               />
             ) : (
@@ -102,7 +144,7 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
                 height={146}
                 alt=""
                 src={publicImageSource}
-                onClick={handleVideoClick}
+                onClick={handleImageClick}
                 style={{ cursor: 'pointer' }}
               />
             )
