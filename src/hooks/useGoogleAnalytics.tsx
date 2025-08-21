@@ -3,17 +3,38 @@ import { useCallback } from 'react';
 declare global {
   interface Window {
     gtag: (...args: any[]) => void;
+    dataLayer: any[];
   }
 }
 
 export const useGoogleAnalytics = () => {
   const trackEvent = useCallback((action: string, parameters: Record<string, any> = {}) => {
     if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('event', action, parameters);
-      // Вывод в консоль для тестирования
-      console.log('Google Analytics Event:', action, parameters);
+      // Добавляем debug_mode для всех событий
+      const eventParams = {
+        ...parameters,
+        debug_mode: true,
+        event_timeout: 2000
+      };
+      
+      window.gtag('event', action, eventParams);
+      
+      // Детальное логирование для отладки
+      console.log('🔍 GA4 Event Sent:', {
+        event_name: action,
+        parameters: eventParams,
+        timestamp: new Date().toISOString(),
+        url: window.location.href,
+        title: document.title
+      });
+      
+      // Проверяем dataLayer
+      setTimeout(() => {
+        console.log('📊 DataLayer after event:', window.dataLayer);
+      }, 100);
+      
     } else {
-      console.warn('Google Analytics not available');
+      console.warn('⚠️ Google Analytics not available');
     }
   }, []);
 
@@ -72,6 +93,16 @@ export const useGoogleAnalytics = () => {
     });
   }, [trackEvent]);
 
+  // Функция для тестирования целей
+  const testGoal = useCallback((goalName: string, goalValue: number = 1) => {
+    trackEvent('goal_completion', {
+      goal_name: goalName,
+      goal_value: goalValue,
+      goal_category: 'engagement',
+      goal_type: 'custom'
+    });
+  }, [trackEvent]);
+
   return {
     trackEvent,
     trackVideoImpression,
@@ -81,6 +112,7 @@ export const useGoogleAnalytics = () => {
     trackVideoSeek,
     trackVideoMute,
     trackVideoComplete,
-    trackVideoError
+    trackVideoError,
+    testGoal
   };
 };

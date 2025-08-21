@@ -29,7 +29,8 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
     trackVideoSeek,
     trackVideoMute,
     trackVideoComplete,
-    trackVideoError
+    trackVideoError,
+    testGoal
   } = useGoogleAnalytics();
   
   // Состояние для отслеживания паузы
@@ -330,6 +331,40 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
         >
           {isVideoPlaying ? 'Stop Video' : 'Watch the Video'}
         </Button>
+        )}
+        
+        {/* Кнопка для тестирования целей (только в режиме разработки) */}
+        {process.env.NODE_ENV === 'development' && (
+          <div style={{ marginTop: '20px', textAlign: 'center' }}>
+            <button 
+              onClick={() => testGoal('test_goal_1', 1)}
+              style={{ 
+                padding: '10px 20px', 
+                margin: '5px',
+                backgroundColor: '#007bff', 
+                color: 'white', 
+                border: 'none', 
+                borderRadius: '5px',
+                cursor: 'pointer'
+              }}
+            >
+              Test Goal 1
+            </button>
+            <button 
+              onClick={() => testGoal('test_goal_2', 2)}
+              style={{ 
+                padding: '10px 20px', 
+                margin: '5px',
+                backgroundColor: '#28a745', 
+                color: 'white', 
+                border: 'none', 
+                borderRadius: '5px',
+                cursor: 'pointer'
+              }}
+            >
+              Test Goal 2
+            </button>
+          </div>
         )}
       </div>
     </section>
