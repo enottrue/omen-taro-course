@@ -25,8 +25,25 @@ export const useGoogleAnalytics = () => {
     });
   }, [trackEvent]);
 
+  const trackVideoStart = useCallback((videoTitle: string, videoDuration: number, autoplay: boolean) => {
+    trackEvent('video_start', {
+      video_title: videoTitle,
+      video_duration: videoDuration,
+      autoplay: autoplay
+    });
+  }, [trackEvent]);
+
+  const trackVideoProgress = useCallback((videoPercent: number, videoCurrentTime: number) => {
+    trackEvent('video_progress', {
+      video_percent: videoPercent,
+      video_current_time: videoCurrentTime
+    });
+  }, [trackEvent]);
+
   return {
     trackEvent,
-    trackVideoImpression
+    trackVideoImpression,
+    trackVideoStart,
+    trackVideoProgress
   };
 };

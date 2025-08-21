@@ -20,7 +20,7 @@ export type Component2Type = {
 const Component2: NextPage<Component2Type> = ({ className = "", textShown = true, videoSource = "/src/videos/video.mp4", typePage }) => {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const { trackVideoImpression, trackEvent } = useGoogleAnalytics();
+  const { trackVideoImpression, trackEvent, trackVideoStart, trackVideoProgress } = useGoogleAnalytics();
   
   // Отслеживание видимости видео блока (50% и более)
   const { elementRef: videoBlockRef, hasTriggered } = useIntersectionObserver({
@@ -37,6 +37,33 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
       trackVideoImpression(videoTitle, videoProvider, videoUrl);
     }
   }, [hasTriggered, typePage, trackVideoImpression, videoSource]);
+
+  // Отслеживание прогресса видео
+  const handleTimeUpdate = () => {
+    if (!videoRef.current) return;
+    
+    const video = videoRef.current;
+    const currentTime = video.currentTime;
+    const duration = video.duration;
+    
+    if (duration > 0) {
+      const percent = (currentTime / duration) * 100;
+      
+      // Контрольные точки: 10%, 25%, 50%, 75%, 90%
+      const checkpoints = [10, 25, 50, 75, 90];
+      
+      checkpoints.forEach(checkpoint => {
+        if (percent >= checkpoint && percent < checkpoint + 1) {
+          // Отправляем событие только один раз для каждой контрольной точки
+          const key = `checkpoint_${checkpoint}`;
+          if (!video.dataset[key]) {
+            video.dataset[key] = 'true';
+            trackVideoProgress(checkpoint, currentTime);
+          }
+        }
+      });
+    }
+  };
 
   const handleVideoClick = () => {
     // Отслеживаем клик по кнопке Watch the Video или по изображению видео
@@ -76,6 +103,18 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
       });
     }
     handleVideoClick();
+  };
+
+  // Отслеживание запуска видео
+  const handleVideoPlay = () => {
+    if (videoRef.current && typePage === 'mainPage') {
+      const video = videoRef.current;
+      const videoTitle = "Money Compass Intro";
+      const videoDuration = video.duration || 0;
+      const autoplay = false; // Видео запускается по клику, не автоплей
+      
+      trackVideoStart(videoTitle, videoDuration, autoplay);
+    }
   };
 
   // Determine heading text and image based on typePage
@@ -161,6 +200,8 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
               style={{ cursor: 'pointer' }}
               onClick={handleVideoClick}
               onEnded={() => setIsVideoPlaying(false)}
+              onTimeUpdate={handleTimeUpdate}
+              onPlay={handleVideoPlay}
             >
               <source src={videoSource} type="video/mp4" />
               Your browser does not support the video tag.
