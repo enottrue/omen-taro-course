@@ -9,6 +9,7 @@ import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { getOnboardingRedirectPath, getOnboardingStatus } from '@/utils/onboardingUtils';
 import { useMetrica } from 'next-yandex-metrica';
+import { useGoogleAnalytics } from '@/hooks/useGoogleAnalytics';
 
 export type ModalFormAuthType = {
   className?: string;
@@ -28,6 +29,7 @@ const ModalFormAuth: NextPage<ModalFormAuthType> = ({
   const cc = useContext(MainContext);
   const router = useRouter();
   const { reachGoal } = useMetrica();
+  const { trackEvent } = useGoogleAnalytics();
 
   useEffect(() => {
     const handleEscKey = (event: KeyboardEvent) => {
@@ -39,6 +41,14 @@ const ModalFormAuth: NextPage<ModalFormAuthType> = ({
     if (isOpen) {
       document.addEventListener('keydown', handleEscKey);
       document.body.style.overflow = 'hidden'; // Prevent background scrolling
+      
+      // Отслеживаем открытие модали авторизации
+      console.log('✅ [ModalFormAuth] Modal opened, tracking auth start');
+      trackEvent('auth_start', {
+        form_id: 'signin_modal',
+        page_url: typeof window !== 'undefined' ? window.location.href : '',
+        page_title: typeof document !== 'undefined' ? document.title : ''
+      });
     }
 
     return () => {
@@ -74,14 +84,36 @@ const ModalFormAuth: NextPage<ModalFormAuthType> = ({
     setError('');
     cc?.setSubmitting && cc.setSubmitting(true);
     
+    // Отслеживаем отправку формы авторизации
+    console.log('📝 [ModalFormAuth] Tracking auth form submission');
+    trackEvent('auth_submit', {
+      form_id: 'signin_modal',
+      email_valid: validateEmail(email),
+      password_length: password.length,
+      page_url: typeof window !== 'undefined' ? window.location.href : '',
+      page_title: typeof document !== 'undefined' ? document.title : ''
+    });
+    
     if (!email || !validateEmail(email)) {
       setError('Please enter a valid email');
+      trackEvent('auth_error', {
+        error_type: 'email_invalid',
+        form_id: 'signin_modal',
+        page_url: typeof window !== 'undefined' ? window.location.href : '',
+        page_title: typeof document !== 'undefined' ? document.title : ''
+      });
       cc?.setSubmitting && cc.setSubmitting(false);
       return;
     }
     
     if (!password || password.length < 4) {
       setError('Password must be at least 4 characters');
+      trackEvent('auth_error', {
+        error_type: 'password_weak',
+        form_id: 'signin_modal',
+        page_url: typeof window !== 'undefined' ? window.location.href : '',
+        page_title: typeof document !== 'undefined' ? document.title : ''
+      });
       cc?.setSubmitting && cc.setSubmitting(false);
       return;
     }
@@ -90,6 +122,13 @@ const ModalFormAuth: NextPage<ModalFormAuthType> = ({
       const userData = await login(email, password);
       if (userData.error) {
         setError(userData.message);
+        trackEvent('auth_error', {
+          error_type: 'login_failed',
+          error_message: userData.message,
+          form_id: 'signin_modal',
+          page_url: typeof window !== 'undefined' ? window.location.href : '',
+          page_title: typeof document !== 'undefined' ? document.title : ''
+        });
         cc?.setSubmitting && cc.setSubmitting(false);
         return;
       }
@@ -102,6 +141,15 @@ const ModalFormAuth: NextPage<ModalFormAuthType> = ({
       // Send Yandex Metrica event for successful login
       reachGoal('user_login');
       
+      // Отслеживаем успешную авторизацию
+      console.log('🎉 [ModalFormAuth] Auth successful, tracking success');
+      trackEvent('auth_success', {
+        form_id: 'signin_modal',
+        user_id: userData.user.id,
+        page_url: typeof window !== 'undefined' ? window.location.href : '',
+        page_title: typeof document !== 'undefined' ? document.title : ''
+      });
+      
       cc?.setSubmitting && cc.setSubmitting(false);
       handleClose();
       cc?.setCurrentForm && cc.setCurrentForm(null);
@@ -109,7 +157,15 @@ const ModalFormAuth: NextPage<ModalFormAuthType> = ({
       const shouldRedirect = getOnboardingRedirectPath(onboardingStatus === 'true');
       router.push(shouldRedirect);
     } catch (err) {
-      setError((err as Error).message);
+      const errorMessage = (err as Error).message;
+      setError(errorMessage);
+      trackEvent('auth_error', {
+        error_type: 'auth_exception',
+        error_message: errorMessage,
+        form_id: 'signin_modal',
+        page_url: typeof window !== 'undefined' ? window.location.href : '',
+        page_title: typeof document !== 'undefined' ? document.title : ''
+      });
       cc?.setSubmitting && cc.setSubmitting(false);
     }
   };

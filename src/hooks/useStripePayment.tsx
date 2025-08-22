@@ -59,8 +59,18 @@ export const useStripePayment = () => {
       }
       
       // Если не авторизован - открываем модалку регистрации
+      console.log('🔍 [Stripe] Opening registration modal');
       context.setModalOpen(true);
       context.setCurrentForm('register');
+      
+      // Небольшая задержка для отслеживания
+      setTimeout(() => {
+        console.log('🔍 [Stripe] Modal state after opening:', {
+          modalOpen: context.modalOpen,
+          currentForm: context.currentForm
+        });
+      }, 100);
+      
       return;
     }
 

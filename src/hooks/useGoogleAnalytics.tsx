@@ -9,6 +9,8 @@ declare global {
 
 export const useGoogleAnalytics = () => {
   const trackEvent = useCallback((action: string, parameters: Record<string, any> = {}) => {
+    console.log('🚀 [GA4] trackEvent called:', { action, parameters });
+    
     if (typeof window !== 'undefined' && window.gtag) {
       // Добавляем debug_mode для всех событий
       const eventParams = {
@@ -17,10 +19,12 @@ export const useGoogleAnalytics = () => {
         event_timeout: 2000
       };
       
+      console.log('📤 [GA4] Sending event to gtag:', { action, eventParams });
+      
       window.gtag('event', action, eventParams);
       
       // Детальное логирование для отладки
-      console.log('🔍 GA4 Event Sent:', {
+      console.log('🔍 [GA4] Event Sent Successfully:', {
         event_name: action,
         parameters: eventParams,
         timestamp: new Date().toISOString(),
@@ -30,11 +34,11 @@ export const useGoogleAnalytics = () => {
       
       // Проверяем dataLayer
       setTimeout(() => {
-        console.log('📊 DataLayer after event:', window.dataLayer);
+      //  console.log('📊 [GA4] DataLayer after event:', window.dataLayer);
       }, 100);
       
     } else {
-      console.warn('⚠️ Google Analytics not available');
+      console.warn('⚠️ [GA4] Google Analytics not available');
     }
   }, []);
 
@@ -187,11 +191,17 @@ export const useGoogleAnalytics = () => {
 
   // Функции для отслеживания регистрации
   const trackRegistrationStart = useCallback(() => {
-    trackEvent('registration_start', {
+    console.log('🎯 [GA4] trackRegistrationStart called');
+    
+    const eventData = {
       form_id: 'signup_modal',
       page_url: typeof window !== 'undefined' ? window.location.href : '',
       page_title: typeof document !== 'undefined' ? document.title : ''
-    });
+    };
+    
+    console.log('📊 [GA4] Registration start event data:', eventData);
+    
+    trackEvent('registration_start', eventData);
   }, [trackEvent]);
 
   const trackRegistrationSubmit = useCallback((formData: { email: string; name: string }) => {

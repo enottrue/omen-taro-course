@@ -328,7 +328,7 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
         </Button>
         )}
         
-        {/* Кнопка для тестирования целей (только в режиме разработки) */}
+        {/* Кнопки для тестирования (только в режиме разработки) */}
         {process.env.NODE_ENV === 'development' && (
           <div style={{ marginTop: '20px', textAlign: 'center' }}>
             <button 
@@ -358,6 +358,23 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
               }}
             >
               Test Goal 2
+            </button>
+            <button 
+              onClick={() => {
+                console.log('🔍 [Test] Testing registration start tracking');
+                trackEvent('test_registration_start', { test: true });
+              }}
+              style={{ 
+                padding: '10px 20px', 
+                margin: '5px',
+                backgroundColor: '#dc3545', 
+                color: 'white', 
+                border: 'none', 
+                borderRadius: '5px',
+                cursor: 'pointer'
+              }}
+            >
+              Test Registration Start
             </button>
           </div>
         )}

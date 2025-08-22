@@ -82,6 +82,15 @@ export const MainContextProvider = ({
     }
   }, [stageData]);
 
+  // Логируем изменения в модали
+  useEffect(() => {
+    console.log('🔍 [MainContext] Modal state changed:', {
+      modalOpen,
+      currentForm,
+      timestamp: new Date().toISOString()
+    });
+  }, [modalOpen, currentForm]);
+
   return (
     <MainContext.Provider
       value={{

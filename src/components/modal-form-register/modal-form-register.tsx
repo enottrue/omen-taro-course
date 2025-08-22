@@ -11,6 +11,7 @@ import { GET_USER } from '@/graphql/queries';
 import { useMetrica } from 'next-yandex-metrica';
 import { createCheckoutSessionWithInvoice, redirectToCheckout } from '@/utils/stripeCheckout';
 import { getOnboardingRedirectPath } from '@/utils/onboardingUtils';
+import { useGoogleAnalytics } from '@/hooks/useGoogleAnalytics';
 
 export type ModalFormRegisterType = {
   className?: string;
@@ -32,6 +33,7 @@ const ModalFormRegister: NextPage<ModalFormRegisterType> = ({
   const router = useRouter();
   const { reachGoal } = useMetrica();
   const [getUser, { loading: loadingLazy, data, error: errorLazy }] = useLazyQuery(GET_USER);
+  const { trackRegistrationStart, trackRegistrationSubmit, trackRegistrationError, trackRegistrationSuccess } = useGoogleAnalytics();
 
   useEffect(() => {
     const handleEscKey = (event: KeyboardEvent) => {
@@ -43,13 +45,17 @@ const ModalFormRegister: NextPage<ModalFormRegisterType> = ({
     if (isOpen) {
       document.addEventListener('keydown', handleEscKey);
       document.body.style.overflow = 'hidden';
+      
+      // Отслеживаем открытие модали регистрации
+      console.log('✅ [ModalFormRegister] Modal opened, tracking registration start');
+      trackRegistrationStart();
     }
 
     return () => {
       document.removeEventListener('keydown', handleEscKey);
       document.body.style.overflow = 'unset';
     };
-  }, [isOpen]);
+  }, [isOpen, trackRegistrationStart]);
 
   const handleClose = () => {
     onClose?.();
@@ -83,20 +89,27 @@ const ModalFormRegister: NextPage<ModalFormRegisterType> = ({
     setError('');
     cc?.setSubmitting && cc.setSubmitting(true);
     
+    // Отслеживаем отправку формы регистрации
+    console.log('📝 [ModalFormRegister] Tracking form submission');
+    trackRegistrationSubmit({ email, name: fullName });
+    
     if (!fullName || fullName.length < 2) {
       setError('Name is required and must be at least 2 characters long');
+      trackRegistrationError('name_invalid', { name_length: fullName.length });
       cc?.setSubmitting && cc.setSubmitting(false);
       return;
     }
     
     if (!email || !validateEmail(email)) {
       setError('Please enter a valid email address');
+      trackRegistrationError('email_invalid', { email });
       cc?.setSubmitting && cc.setSubmitting(false);
       return;
     }
     
     if (!password || password.length < 4) {
       setError('Password must be at least 4 characters long');
+      trackRegistrationError('password_weak', { password_length: password.length });
       cc?.setSubmitting && cc.setSubmitting(false);
       return;
     }
@@ -110,6 +123,7 @@ const ModalFormRegister: NextPage<ModalFormRegisterType> = ({
 
       if (registerUser?.error === 'true') {
         setError(registerUser?.message);
+        trackRegistrationError('registration_failed', { error_message: registerUser?.message });
         cc?.setSubmitting && cc.setSubmitting(false);
         return;
       }
@@ -122,6 +136,10 @@ const ModalFormRegister: NextPage<ModalFormRegisterType> = ({
       Cookies.set('userId', registerUser?.user?.id, { expires: 180 });
       cc?.setToken && cc.setToken(registerUser?.token);
       cc?.setUserId && cc.setUserId(registerUser?.user?.id);
+      
+      // Отслеживаем успешную регистрацию
+      console.log('🎉 [ModalFormRegister] Registration successful, tracking success');
+      trackRegistrationSuccess(registerUser?.user?.id, email);
       
       // Get user data and update context
       const userData = await getUser({
@@ -139,7 +157,9 @@ const ModalFormRegister: NextPage<ModalFormRegisterType> = ({
       router.push('/profile');
       
     } catch (err) {
-      setError((err as Error).message);
+      const errorMessage = (err as Error).message;
+      setError(errorMessage);
+      trackRegistrationError('registration_exception', { error_message: errorMessage });
       cc?.setSubmitting && cc.setSubmitting(false);
     }
   };

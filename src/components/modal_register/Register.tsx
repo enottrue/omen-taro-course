@@ -33,10 +33,28 @@ const ModalRegister = () => {
 
   // Отслеживаем открытие модали регистрации
   useEffect(() => {
+    console.log('🔍 [Register] useEffect triggered:', {
+      modalOpen: cc?.modalOpen,
+      currentForm: cc?.currentForm,
+      shouldTrack: cc?.modalOpen && cc?.currentForm === 'register'
+    });
+    
     if (cc?.modalOpen && cc?.currentForm === 'register') {
+      console.log('✅ [Register] Tracking registration start');
       trackRegistrationStart();
     }
   }, [cc?.modalOpen, cc?.currentForm, trackRegistrationStart]);
+
+  // Альтернативный способ отслеживания - при монтировании компонента
+  useEffect(() => {
+    console.log('🔄 [Register] Component mounted');
+    
+    // Если модаль уже открыта при монтировании
+    if (cc?.modalOpen && cc?.currentForm === 'register') {
+      console.log('✅ [Register] Modal already open, tracking start');
+      trackRegistrationStart();
+    }
+  }, []); // Пустой массив зависимостей - только при монтировании
 
   const handlePhoneInputChange = (
     event: React.ChangeEvent<HTMLInputElement>,
