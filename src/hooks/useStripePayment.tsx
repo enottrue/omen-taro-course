@@ -1,9 +1,11 @@
 import { useContext } from 'react';
 import { MainContext } from '@/contexts/MainContext';
 import { createCheckoutSession, redirectToCheckout, createCheckoutSessionWithInvoice } from '@/utils/stripeCheckout';
+import { useGoogleAnalytics } from './useGoogleAnalytics';
 
 export const useStripePayment = () => {
   const context = useContext(MainContext);
+  const { trackCheckoutStart, trackCheckoutSubmit, trackPaymentFailed, trackPurchase } = useGoogleAnalytics();
 
   const handlePayment = async () => {
     console.log('🔍 handlePayment вызван');
@@ -81,6 +83,9 @@ export const useStripePayment = () => {
 
     try {
       console.log('🔄 Создаем сессию оплаты с invoice для dealId:', dealId);
+      
+      // Отслеживаем начало оплаты
+      trackCheckoutStart(`deal_${dealId}`);
       
       // Сохраняем информацию о начале создания счета
       const invoiceDebugLog = {

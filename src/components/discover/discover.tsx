@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import styles from "./discover.module.css";
 import { useStripePayment } from "@/hooks/useStripePayment";
+import { useGoogleAnalytics } from "@/hooks/useGoogleAnalytics";
 
 export type DiscoverType = {
   className?: string;
@@ -9,6 +10,7 @@ export type DiscoverType = {
 
 const Discover: NextPage<DiscoverType> = ({ className = "", onOpenRegisterModal }) => {
   const { handlePayment } = useStripePayment();
+  const { trackDiscoverCTA } = useGoogleAnalytics();
   return (
     <section className={[styles.section, className].join(" ")}>
       <div className={styles.frameParent}>
@@ -77,7 +79,10 @@ const Discover: NextPage<DiscoverType> = ({ className = "", onOpenRegisterModal 
       </div>
       <button 
         className={styles.enrollNowOnly50Wrapper}
-        onClick={handlePayment}
+        onClick={() => {
+          trackDiscoverCTA('Enroll Now - only $50');
+          handlePayment();
+        }}
         style={{ cursor: 'pointer' }}
       >
         <b className={styles.enrollNow}>Enroll Now - only $50</b>

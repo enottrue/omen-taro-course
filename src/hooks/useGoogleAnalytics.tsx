@@ -103,6 +103,198 @@ export const useGoogleAnalytics = () => {
     });
   }, [trackEvent]);
 
+  // Функции для конкретных кнопок на главной странице
+  const trackHeroCTA = useCallback((buttonText: string) => {
+    trackEvent('hero_cta_click', {
+      button_text: buttonText,
+      button_position: 'hero_section',
+      button_type: 'primary_cta',
+      page_section: 'hero'
+    });
+  }, [trackEvent]);
+
+  const trackVideoCTA = useCallback((buttonText: string) => {
+    trackEvent('video_cta_click', {
+      button_text: buttonText,
+      button_position: 'video_section',
+      button_type: 'video_cta',
+      page_section: 'video'
+    });
+  }, [trackEvent]);
+
+  const trackDiscoverCTA = useCallback((buttonText: string) => {
+    trackEvent('discover_cta_click', {
+      button_text: buttonText,
+      button_position: 'discover_section',
+      button_type: 'discover_cta',
+      page_section: 'discover'
+    });
+  }, [trackEvent]);
+
+  const trackComponent4CTA = useCallback((buttonText: string) => {
+    trackEvent('component4_cta_click', {
+      button_text: buttonText,
+      button_position: 'component4_section',
+      button_type: 'component4_cta',
+      page_section: 'component4'
+    });
+  }, [trackEvent]);
+
+  const trackComponent5CTA = useCallback((buttonText: string) => {
+    trackEvent('component5_cta_click', {
+      button_text: buttonText,
+      button_position: 'component5_section',
+      button_type: 'component5_cta',
+      page_section: 'component5'
+    });
+  }, [trackEvent]);
+
+  const trackComponent9CTA = useCallback((buttonText: string) => {
+    trackEvent('component9_cta_click', {
+      button_text: buttonText,
+      button_position: 'component9_section',
+      button_type: 'component9_cta',
+      page_section: 'component9'
+    });
+  }, [trackEvent]);
+
+  const trackFooterCTA = useCallback((buttonText: string) => {
+    trackEvent('footer_cta_click', {
+      button_text: buttonText,
+      button_position: 'footer_section',
+      button_type: 'footer_cta',
+      page_section: 'footer'
+    });
+  }, [trackEvent]);
+
+  const trackFamilyCTA = useCallback((buttonText: string) => {
+    trackEvent('family_cta_click', {
+      button_text: buttonText,
+      button_position: 'family_section',
+      button_type: 'family_cta',
+      page_section: 'family'
+    });
+  }, [trackEvent]);
+
+  // Функции для отслеживания скролла
+  const trackScrollDepth = useCallback((scrollPercent: number) => {
+    trackEvent('scroll_depth', {
+      scroll_percent: scrollPercent,
+      page_url: typeof window !== 'undefined' ? window.location.href : '',
+      page_title: typeof document !== 'undefined' ? document.title : ''
+    });
+  }, [trackEvent]);
+
+  // Функции для отслеживания регистрации
+  const trackRegistrationStart = useCallback(() => {
+    trackEvent('registration_start', {
+      form_id: 'signup_modal',
+      page_url: typeof window !== 'undefined' ? window.location.href : '',
+      page_title: typeof document !== 'undefined' ? document.title : ''
+    });
+  }, [trackEvent]);
+
+  const trackRegistrationSubmit = useCallback((formData: { email: string; name: string }) => {
+    const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email);
+    const nameFilled = formData.name.trim().length > 0;
+    
+    trackEvent('registration_submit', {
+      form_id: 'signup_modal',
+      email_valid: emailValid,
+      name_filled: nameFilled,
+      page_url: typeof window !== 'undefined' ? window.location.href : '',
+      page_title: typeof document !== 'undefined' ? document.title : ''
+    });
+  }, [trackEvent]);
+
+  const trackRegistrationError = useCallback((errorType: string, errorDetails?: any) => {
+    trackEvent('registration_error', {
+      error_type: errorType,
+      error_details: errorDetails,
+      form_id: 'signup_modal',
+      page_url: typeof window !== 'undefined' ? window.location.href : '',
+      page_title: typeof document !== 'undefined' ? document.title : ''
+    });
+  }, [trackEvent]);
+
+  const trackRegistrationSuccess = useCallback((userId?: string, email?: string) => {
+    const emailHash = email ? btoa(email).slice(0, 8) : undefined;
+    
+    trackEvent('registration_success', {
+      user_id: userId,
+      email_hash: emailHash,
+      form_id: 'signup_modal',
+      page_url: typeof window !== 'undefined' ? window.location.href : '',
+      page_title: typeof document !== 'undefined' ? document.title : ''
+    });
+  }, [trackEvent]);
+
+  // Функции для отслеживания оплаты
+  const trackCheckoutStart = useCallback((checkoutId?: string) => {
+    trackEvent('checkout_start', {
+      checkout_id: checkoutId,
+      course_id: 'money_compass',
+      value: 50,
+      currency: 'USD',
+      page_url: typeof window !== 'undefined' ? window.location.href : '',
+      page_title: typeof document !== 'undefined' ? document.title : ''
+    });
+  }, [trackEvent]);
+
+  const trackCheckoutSubmit = useCallback((paymentData: { 
+    payment_method: string; 
+    billing_country?: string; 
+    value?: number; 
+    currency?: string 
+  }) => {
+    trackEvent('checkout_submit', {
+      payment_method: paymentData.payment_method,
+      billing_country: paymentData.billing_country,
+      value: paymentData.value || 50,
+      currency: paymentData.currency || 'USD',
+      page_url: typeof window !== 'undefined' ? window.location.href : '',
+      page_title: typeof document !== 'undefined' ? document.title : ''
+    });
+  }, [trackEvent]);
+
+  const trackPaymentFailed = useCallback((failureData: {
+    failure_type: string;
+    payment_method: string;
+    error_code?: string;
+    value?: number;
+    currency?: string;
+  }) => {
+    trackEvent('payment_failed', {
+      failure_type: failureData.failure_type,
+      payment_method: failureData.payment_method,
+      error_code: failureData.error_code,
+      value: failureData.value || 50,
+      currency: failureData.currency || 'USD',
+      page_url: typeof window !== 'undefined' ? window.location.href : '',
+      page_title: typeof document !== 'undefined' ? document.title : ''
+    });
+  }, [trackEvent]);
+
+  const trackPurchase = useCallback((purchaseData: {
+    transaction_id: string;
+    value?: number;
+    currency?: string;
+    payment_method: string;
+    utm_source?: string;
+    coupon?: string;
+  }) => {
+    trackEvent('purchase', {
+      transaction_id: purchaseData.transaction_id,
+      value: purchaseData.value || 50,
+      currency: purchaseData.currency || 'USD',
+      payment_method: purchaseData.payment_method,
+      utm_source: purchaseData.utm_source,
+      coupon: purchaseData.coupon,
+      page_url: typeof window !== 'undefined' ? window.location.href : '',
+      page_title: typeof document !== 'undefined' ? document.title : ''
+    });
+  }, [trackEvent]);
+
   return {
     trackEvent,
     trackVideoImpression,
@@ -113,6 +305,27 @@ export const useGoogleAnalytics = () => {
     trackVideoMute,
     trackVideoComplete,
     trackVideoError,
-    testGoal
+    testGoal,
+    // Функции для кнопок
+    trackHeroCTA,
+    trackVideoCTA,
+    trackDiscoverCTA,
+    trackComponent4CTA,
+    trackComponent5CTA,
+    trackComponent9CTA,
+    trackFooterCTA,
+    trackFamilyCTA,
+    // Функции для скролла
+    trackScrollDepth,
+    // Функции для регистрации
+    trackRegistrationStart,
+    trackRegistrationSubmit,
+    trackRegistrationError,
+    trackRegistrationSuccess,
+    // Функции для оплаты
+    trackCheckoutStart,
+    trackCheckoutSubmit,
+    trackPaymentFailed,
+    trackPurchase
   };
 };

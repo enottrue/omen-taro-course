@@ -28,6 +28,7 @@ import { YandexMetricaProvider } from 'next-yandex-metrica';
 import { useRouter } from 'next/router';
 import cookie from 'cookie';
 import jwt from 'jsonwebtoken';
+import { useScrollTracking } from '@/hooks/useScrollTracking';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -86,6 +87,9 @@ export default function Home({
 }) {
   const cc = useContext(MainContext);
   const router = useRouter();
+  
+  // Отслеживание скролла
+  useScrollTracking();
 
   useEffect(() => {
     // GOOD: This state update is now in a useEffect and won't cause a warning

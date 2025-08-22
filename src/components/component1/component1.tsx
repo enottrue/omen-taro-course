@@ -10,6 +10,7 @@ import Title from "./Title";
 import { useContext } from "react";
 import { MainContext } from "@/contexts/MainContext";
 import { useStripePayment } from "@/hooks/useStripePayment";
+import { useGoogleAnalytics } from "@/hooks/useGoogleAnalytics";
 
 export type Component1Type = {
   className?: string;
@@ -25,6 +26,7 @@ export type Component1Type = {
 const Component1: NextPage<Component1Type> = ({ className = "", onOpenModal, onOpenRegisterModal, hideLoginButton = false, onBurgerClick, isBurgerOpen = false, burgerRef, showScreenImage = false }) => {
   const cc = useContext(MainContext);
   const { handlePayment } = useStripePayment();
+  const { trackHeroCTA } = useGoogleAnalytics();
 
   const handleOpenModal = () => {
     cc?.setModalOpen(true);
@@ -86,7 +88,10 @@ const Component1: NextPage<Component1Type> = ({ className = "", onOpenModal, onO
         tailored guidance based on your unique astrological blueprint.
       </div> */}
       <div className={styles.frameDiv}>
-        <Button variant="enroll" onClick={handlePayment}>
+        <Button variant="enroll" onClick={() => {
+          trackHeroCTA('Enroll Now - only $50');
+          handlePayment();
+        }}>
           Enroll Now - only $50
         </Button>
       </div>

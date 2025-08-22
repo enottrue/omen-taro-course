@@ -30,7 +30,8 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
     trackVideoMute,
     trackVideoComplete,
     trackVideoError,
-    testGoal
+    testGoal,
+    trackVideoCTA
   } = useGoogleAnalytics();
   
   // Состояние для отслеживания паузы
@@ -179,10 +180,7 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
   const handleVideoClick = () => {
     // Отслеживаем клик по кнопке Watch the Video или по изображению видео
     if (typePage === 'mainPage') {
-      trackEvent('video_cta_click', {
-        button_text: 'Watch the Video',
-        button_position: 'video_section'
-      });
+      trackVideoCTA('Watch the Video');
     }
 
     if (isVideoPlaying) {
@@ -212,10 +210,7 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
   // Отдельная функция для отслеживания клика по изображению
   const handleImageClick = () => {
     if (typePage === 'mainPage') {
-      trackEvent('video_cta_click', {
-        button_text: 'Video Preview Image',
-        button_position: 'video_section'
-      });
+      trackVideoCTA('Video Preview Image');
     }
     handleVideoClick();
   };

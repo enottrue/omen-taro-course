@@ -12,10 +12,12 @@ import { useGetUserData } from '@/hooks/useGetUserData';
 import { useLazyQuery } from '@apollo/client';
 import { GET_USER } from '@/graphql/queries';
 import { useMetrica } from 'next-yandex-metrica';
+import { useGoogleAnalytics } from '@/hooks/useGoogleAnalytics';
 
 const ModalRegister = () => {
   const router = useRouter();
   const { reachGoal } = useMetrica();
+  const { trackRegistrationStart, trackRegistrationSubmit, trackRegistrationError, trackRegistrationSuccess } = useGoogleAnalytics();
 
   const [getUser, { loading: loadingLazy, data, error: errorLazy }] =
     useLazyQuery(GET_USER);
@@ -28,6 +30,13 @@ const ModalRegister = () => {
   const [password, setPassword] = useState('');
   const [city, setCity] = useState('');
   const { handleSubmit, loading, errorSubmit } = useSubmit({});
+
+  // Отслеживаем открытие модали регистрации
+  useEffect(() => {
+    if (cc?.modalOpen && cc?.currentForm === 'register') {
+      trackRegistrationStart();
+    }
+  }, [cc?.modalOpen, cc?.currentForm, trackRegistrationStart]);
 
   const handlePhoneInputChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -81,15 +90,21 @@ const ModalRegister = () => {
   const handleButtonClick = async () => {
     cc?.setSubmitting(true);
     console.log('[Register] Start registration');
+    
+    // Отслеживаем отправку формы регистрации
+    trackRegistrationSubmit({ email, name });
+    
     if (!email || !validateEmail()) {
       console.error('[Register] Invalid email');
       setError('Please enter a valid email address');
+      trackRegistrationError('email_invalid', { email });
       cc?.setSubmitting(false);
       return;
     }
     if (!password || password.length < 4) {
       console.error('[Register] Password too short');
       setError('Password must be at least 4 characters long');
+      trackRegistrationError('password_weak', { password_length: password.length });
       cc?.setSubmitting(false);
       return;
     }
@@ -97,6 +112,7 @@ const ModalRegister = () => {
     if (!phoneNumber || phoneNumber.length < 5) {
       console.error('[Register] Phone number too short');
       setError('Phone number is required and must be at least 5 characters long');
+      trackRegistrationError('phone_invalid', { phone_length: phoneNumber.length });
       cc?.setSubmitting(false);
       return;
     }
@@ -104,6 +120,7 @@ const ModalRegister = () => {
     if (!name || name.length < 2) {
       console.error('[Register] Name too short');
       setError('Name is required and must be at least 2 characters long');
+      trackRegistrationError('name_invalid', { name_length: name.length });
       cc?.setSubmitting(false);
       return;
     }
@@ -123,6 +140,7 @@ const ModalRegister = () => {
       setError(registerUser?.message);
       cc?.setSubmitting(false);
       console.error('[Register] Registration error:', registerUser?.message);
+      trackRegistrationError('registration_failed', { error_message: registerUser?.message });
       return;
     }
     reachGoal('user_registered');
@@ -134,6 +152,10 @@ const ModalRegister = () => {
     cc?.setToken(registerUser?.token);
     cc?.setUserId(registerUser?.user?.id);
     cc?.setUser(registerUser?.user);
+    
+    // Отслеживаем успешную регистрацию
+    trackRegistrationSuccess(registerUser?.user?.id, email);
+    
     console.log('[Register] Auth cookies and context set', {
       token: registerUser?.token,
       userId: registerUser?.user?.id,

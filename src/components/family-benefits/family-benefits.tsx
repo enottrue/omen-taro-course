@@ -3,6 +3,7 @@ import Image from "next/image";
 import styles from "./family-benefits.module.css";
 import group8 from "../../images/group-8@2x.png";
 import { useStripePayment } from "@/hooks/useStripePayment";
+import { useGoogleAnalytics } from "@/hooks/useGoogleAnalytics";
 
 export type FamilyBenefitsType = {
   className?: string;
@@ -11,6 +12,7 @@ export type FamilyBenefitsType = {
 
 const FamilyBenefits: NextPage<FamilyBenefitsType> = ({ className = "", onOpenRegisterModal }) => {
   const { handlePayment } = useStripePayment();
+  const { trackFamilyCTA } = useGoogleAnalytics();
   return (
     <div className={[styles.familyBenefits, className].join(" ")}>
       <div className={styles.analysisAccess}>
@@ -57,7 +59,10 @@ const FamilyBenefits: NextPage<FamilyBenefitsType> = ({ className = "", onOpenRe
           </div>
           <button 
             className={styles.enrollPromotion}
-            onClick={handlePayment}
+            onClick={() => {
+              trackFamilyCTA('Enroll Now - only $50');
+              handlePayment();
+            }}
             style={{ cursor: 'pointer' }}
           >
             <b className={styles.enrollNow}>Enroll Now - only $50</b>

@@ -6,6 +6,7 @@ import image7 from "../../images/image-7@2x.png";
 import frame2087325318 from "../../images/frame-2087325318@2x.png";
 import { Button } from "../ui";
 import { useStripePayment } from "@/hooks/useStripePayment";
+import { useGoogleAnalytics } from "@/hooks/useGoogleAnalytics";
 
 export type GraphicIndicatorsType = {
   className?: string;
@@ -17,6 +18,7 @@ const GraphicIndicators: NextPage<GraphicIndicatorsType> = ({
   onOpenAuthModal,
 }) => {
   const { handlePayment } = useStripePayment();
+  const { trackComponent9CTA } = useGoogleAnalytics();
   return (
     <section className={[styles.graphicIndicators, className].join(" ")}>
       <Image
@@ -75,7 +77,10 @@ const GraphicIndicators: NextPage<GraphicIndicatorsType> = ({
               <h2 className={styles.ready}>Ready</h2>
               <h2 className={styles.toLearn}>to Learn?</h2>
             </div>
-            <Button variant="primary" onClick={handlePayment}>
+            <Button variant="primary" onClick={() => {
+              trackComponent9CTA('Enroll Now — Start Today');
+              handlePayment();
+            }}>
               Enroll Now — Start Today
             </Button>
           </div>
@@ -98,7 +103,10 @@ const GraphicIndicators: NextPage<GraphicIndicatorsType> = ({
                 It's time for you to see it too.
               </div>
             </div>
-            <Button variant="secondary" onClick={handlePayment}>
+            <Button variant="secondary" onClick={() => {
+              trackComponent9CTA('Start Today');
+              handlePayment();
+            }}>
               Start Today
             </Button>
           </div>

@@ -4,6 +4,7 @@ import styles from "./component4.module.css";
 import { Button } from "../ui";
 import unsplashImage from "../../images/back@2x.png";
 import { useStripePayment } from "@/hooks/useStripePayment";
+import { useGoogleAnalytics } from "@/hooks/useGoogleAnalytics";
 
 export type Component4Type = {
   className?: string;
@@ -12,6 +13,7 @@ export type Component4Type = {
 
 const Component4: NextPage<Component4Type> = ({ className = "", onOpenAuthModal }) => {
   const { handlePayment } = useStripePayment();
+  const { trackComponent4CTA } = useGoogleAnalytics();
   return (
     <section className={[styles.section, className].join(" ")}>
       <div className={styles.wrapperUnsplashutbx9x3y8ly}>
@@ -78,7 +80,10 @@ const Component4: NextPage<Component4Type> = ({ className = "", onOpenAuthModal 
             </div>
           </div>
         </div>
-        <Button variant="enroll" onClick={handlePayment}>
+        <Button variant="enroll" onClick={() => {
+          trackComponent4CTA('Enroll Now - only $50');
+          handlePayment();
+        }}>
           Enroll Now - only $50
         </Button>
       </div>
