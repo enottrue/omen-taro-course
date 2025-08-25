@@ -23,9 +23,17 @@ export default async function handler(
       });
     }
 
+    // Убеждаемся, что userId - это число
+    const userIdNumber = Number(userId);
+    if (isNaN(userIdNumber)) {
+      return res.status(400).json({
+        error: 'Invalid userId: must be a valid number',
+      });
+    }
+
     // Получаем данные пользователя из базы
     const user = await prisma.user.findUnique({
-      where: { id: Number(userId) },
+      where: { id: userIdNumber },
     });
 
     console.log('👤 Найден пользователь:', { id: user?.id, name: user?.name, email: user?.email });
@@ -71,16 +79,38 @@ export default async function handler(
     });
 
     console.log('📊 Результат createDealOnRegistration:', result);
+    console.log('📊 Типы данных из результата:', {
+      contactId: typeof result.contactId,
+      dealId: typeof result.dealId,
+      contactIdValue: result.contactId,
+      dealIdValue: result.dealId
+    });
 
     if (result.success) {
       console.log('✅ Сделка успешно создана в Bitrix24:', result);
       
+      // Убеждаемся, что ID из Битрикс24 - это числа
+      const contactId = Number(result.contactId);
+      const dealId = Number(result.dealId);
+      
+      console.log('🔢 Преобразованные ID:', { contactId, dealId, originalContactId: result.contactId, originalDealId: result.dealId });
+      
+      if (isNaN(contactId) || isNaN(dealId)) {
+        console.error('❌ Некорректные ID из Битрикс24:', { contactId: result.contactId, dealId: result.dealId });
+        return res.status(500).json({
+          success: false,
+          error: 'Invalid IDs received from Bitrix24',
+        });
+      }
+
+      console.log('💾 Обновляем пользователя в БД с ID:', { userId: user.id, contactId, dealId });
+
       // Обновляем пользователя с ID из Битрикс24
       await prisma.user.update({
         where: { id: user.id },
         data: {
-          bitrix24ContactId: result.contactId,
-          bitrix24DealId: result.dealId,
+          bitrix24ContactId: contactId,
+          bitrix24DealId: dealId,
         },
       });
 

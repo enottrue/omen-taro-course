@@ -93,6 +93,12 @@ async function makeBitrix24Request(endpoint: string, data: any): Promise<any> {
 
     const result = await response.json();
     console.log('Bitrix24 success response:', result);
+    console.log('Bitrix24 response types:', {
+      result: typeof result.result,
+      resultValue: result.result,
+      hasError: !!result.error,
+      errorDescription: result.error_description
+    });
     return result;
   } catch (error) {
     console.error('Bitrix24 request error:', error);
@@ -113,8 +119,14 @@ export async function checkContactExists(phone: string, email: string): Promise<
   try {
     const response = await makeBitrix24Request('crm.contact.list', contactData);
     const contactId = response.result?.[0]?.ID || null;
-    console.log('🔍 Результат проверки контакта:', contactId ? `Найден ID: ${contactId}` : 'Не найден');
-    return contactId;
+    if (contactId) {
+      const numericContactId = Number(contactId);
+      console.log('🔍 Результат проверки контакта:', `Найден ID: ${numericContactId}`);
+      return numericContactId;
+    } else {
+      console.log('🔍 Результат проверки контакта: Не найден');
+      return null;
+    }
   } catch (error) {
     console.error('❌ Ошибка в checkContactExists:', error);
     return null;
@@ -151,8 +163,9 @@ export async function createContact(contactData: {
     });
 
     if (response.result) {
-      console.log('✅ Контакт успешно создан в Bitrix24, ID:', response.result);
-      return response.result;
+      const contactId = Number(response.result);
+      console.log('✅ Контакт успешно создан в Bitrix24, ID:', contactId);
+      return contactId;
     } else {
       console.error('❌ Ошибка создания контакта в Bitrix24:', response.error_description);
       throw new Error(`Error creating contact: ${response.error_description || 'Unknown error'}`);
@@ -264,8 +277,9 @@ export async function createDeal(dealData: {
     const response = await makeBitrix24Request('crm.deal.add', dealData);
 
     if (response.result) {
-      console.log('✅ Сделка успешно создана в Bitrix24, ID:', response.result);
-      return response.result;
+      const dealId = Number(response.result);
+      console.log('✅ Сделка успешно создана в Bitrix24, ID:', dealId);
+      return dealId;
     } else {
       console.error('❌ Ошибка создания сделки в Bitrix24:', response.error_description);
       throw new Error(`Error creating deal: ${response.error_description || 'Unknown error'}`);
