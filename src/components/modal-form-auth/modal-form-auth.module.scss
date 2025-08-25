@@ -13,6 +13,8 @@
   transition: opacity 0.3s ease-in-out;
   animation: fadeIn 0.3s ease-in-out;
   height: 100%;
+  left: 50%;
+  transform: translateX(-50%); /* центрирование */
   @media (min-width: 375px) {
     width: 81vw;
   }
@@ -39,8 +41,8 @@
   background: var(--color-white);
   border-radius: 30px;
   box-shadow: 0 8px 32px rgba(0, 26, 54, 0.18);
-  width: 320px;
-  max-width: 95vw;
+  width: 100%;
+  max-width: 255px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
