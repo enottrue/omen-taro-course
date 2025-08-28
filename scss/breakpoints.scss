@@ -8,9 +8,24 @@
 }
 
 .body-modal-open {
-  overflow: hidden;
-  display: block;
-  padding-left: 0px;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: hidden !important;
+  position: fixed !important;
+  width: 100% !important;
+  height: 100% !important;
+  touch-action: none !important;
+  -webkit-overflow-scrolling: auto !important;
+  
+  // Дополнительные стили для iOS Safari
+  -webkit-transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  
+  // Предотвращаем скролл на touch-устройствах
+  overscroll-behavior: none !important;
+  -webkit-overscroll-behavior: none !important;
+  
+  // Предотвращаем скролл на мобильных устройствах
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
