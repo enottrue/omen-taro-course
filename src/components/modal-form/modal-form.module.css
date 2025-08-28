@@ -14,7 +14,7 @@
   animation: fadeIn 0.3s ease-in-out;
   height: 100%;
   @media (min-width: 375px) {
-    width: 81vw;
+    width: 100%;
   }
   @media (min-width: 430px) {
     width: 100%;
@@ -54,6 +54,10 @@
   animation: slideIn 0.3s ease-out;
   position: absolute;
   top: 2rem;
+  @media (max-width: 385px) {
+    width: 80%;
+  }
+ 
 
 }
 

@@ -15,7 +15,7 @@
   height: 100%;
   overflow: auto;
   @media (min-width: 375px) {
-    width: 81vw;
+    width: 100%;
   }
   @media (min-width: 430px) {
     width: 100%;
@@ -53,6 +53,9 @@
   position: absolute;
   top: 2rem;
   overflow-y: auto;
+  @media (max-width: 385px) {
+    width: 80%;
+  }
 }
 
 @keyframes slideIn {
