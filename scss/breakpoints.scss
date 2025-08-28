@@ -9,4 +9,8 @@
 
 .body-modal-open {
   overflow: hidden;
+  display: block;
+  padding-left: 0px;
+  overflow-x: hidden;
+  overflow-y: auto;
 }

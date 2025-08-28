@@ -327,57 +327,6 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
           {isVideoPlaying ? 'Stop Video' : 'Watch the Video'}
         </Button>
         )}
-        
-        {/* Кнопки для тестирования (только в режиме разработки) */}
-        {process.env.NODE_ENV === 'development' && (
-          <div style={{ marginTop: '20px', textAlign: 'center' }}>
-            <button 
-              onClick={() => testGoal('test_goal_1', 1)}
-              style={{ 
-                padding: '10px 20px', 
-                margin: '5px',
-                backgroundColor: '#007bff', 
-                color: 'white', 
-                border: 'none', 
-                borderRadius: '5px',
-                cursor: 'pointer'
-              }}
-            >
-              Test Goal 1
-            </button>
-            <button 
-              onClick={() => testGoal('test_goal_2', 2)}
-              style={{ 
-                padding: '10px 20px', 
-                margin: '5px',
-                backgroundColor: '#28a745', 
-                color: 'white', 
-                border: 'none', 
-                borderRadius: '5px',
-                cursor: 'pointer'
-              }}
-            >
-              Test Goal 2
-            </button>
-            <button 
-              onClick={() => {
-                console.log('🔍 [Test] Testing registration start tracking');
-                trackEvent('test_registration_start', { test: true });
-              }}
-              style={{ 
-                padding: '10px 20px', 
-                margin: '5px',
-                backgroundColor: '#dc3545', 
-                color: 'white', 
-                border: 'none', 
-                borderRadius: '5px',
-                cursor: 'pointer'
-              }}
-            >
-              Test Registration Start
-            </button>
-          </div>
-        )}
       </div>
     </section>
     </div>

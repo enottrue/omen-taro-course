@@ -30,7 +30,7 @@ const Component1: NextPage<Component1Type> = ({ className = "", onOpenModal, onO
 
   const handleOpenModal = () => {
     cc?.setModalOpen(true);
-    cc?.setCurrentForm('auth');
+    cc?.setCurrentForm('register');
   };
 
   const handleOpenRegisterModal = () => {

@@ -153,11 +153,11 @@ const Profile = ({
                 className={styles.wrapper}
                 onClick={() => {
                   cc?.setModalOpen(true);
-                  cc?.setCurrentForm('auth');
+                  cc?.setCurrentForm('register');
                 }}
                 style={{ cursor: 'pointer' }}
               >
-                <div className={styles.div}>Sign In</div>
+                <div className={styles.div}>Sign Up</div>
               </div>
             ) : (
               <div 

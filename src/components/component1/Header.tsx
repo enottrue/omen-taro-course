@@ -48,7 +48,7 @@ const Header: NextPage<HeaderType> = ({ className = "", onOpenModal, hideLoginBu
             style={{ cursor: 'pointer' }}
           >
             <div className={styles.div}>
-              {isAuthenticated ? 'Sign Out' : 'Sign In'}
+              {isAuthenticated ? 'Sign Out' : 'Sign Up'}
             </div>
           </div>
         )}

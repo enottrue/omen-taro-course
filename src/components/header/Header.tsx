@@ -69,12 +69,12 @@ const Header = ({
 
         {!token && !cc?.token ? (
           <Button
-            title="Войти"
+            title="Sign Up"
             className="button_little js-modal-open"
             data-modal="register"
             onClick={() => {
               cc?.setModalOpen(true);
-              cc?.setCurrentForm('auth');
+              cc?.setCurrentForm('register');
             }}
           >
             <span className="header__icon">
