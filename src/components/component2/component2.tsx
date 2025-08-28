@@ -19,6 +19,8 @@ export type Component2Type = {
 
 const Component2: NextPage<Component2Type> = ({ className = "", textShown = true, videoSource = "/src/videos/video.mp4", typePage }) => {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [isVideoPaused, setIsVideoPaused] = useState(false);
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const { 
     trackVideoImpression, 
@@ -89,12 +91,15 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
 
   // Отслеживание паузы
   const handlePause = () => {
+    console.log('handlePause called');
     if (videoRef.current && typePage === 'mainPage') {
       const video = videoRef.current;
       const currentTime = video.currentTime;
       const duration = video.duration;
       const percent = duration > 0 ? (currentTime / duration) * 100 : 0;
       
+      // НЕ меняем isVideoPlaying - видео остается видимым
+      setIsVideoPaused(true);
       setPauseStartTime(Date.now());
       trackVideoPause(currentTime, percent);
     }
@@ -102,11 +107,15 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
 
   // Отслеживание возобновления воспроизведения
   const handlePlay = () => {
+    console.log('handlePlay called');
     if (videoRef.current && typePage === 'mainPage') {
       const video = videoRef.current;
       const videoTitle = "Money Compass Intro";
       const videoDuration = video.duration || 0;
       const autoplay = false; // Видео запускается по клику, не автоплей
+      
+      // НЕ меняем isVideoPlaying - видео уже запущено
+      setIsVideoPaused(false);
       
       // Проверяем длительность паузы
       if (pauseStartTime) {
@@ -178,41 +187,91 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
   };
 
   const handleVideoClick = () => {
-    // Отслеживаем клик по кнопке Watch the Video или по изображению видео
+    console.log('handleVideoClick called, isVideoPlaying:', isVideoPlaying);
+    
+    // Отслеживаем клик
     if (typePage === 'mainPage') {
       trackVideoCTA('Watch the Video');
     }
 
-    if (isVideoPlaying) {
-      // If video is already playing, stop it and show image
-      if (videoRef.current) {
-        videoRef.current.pause();
-        videoRef.current.currentTime = 0;
-      }
-      setIsVideoPlaying(false);
+    if (!videoRef.current) {
+      console.log('Video ref is null');
+      return;
+    }
+
+    const video = videoRef.current;
+
+    if (!video.paused) {
+      // Видео воспроизводится - ставим на паузу
+      console.log('Video is playing, pausing...');
+      video.pause();
+      setIsVideoPlaying(false); // Показываем изображение при паузе
     } else {
-      // Start playing video
+      // Видео на паузе или остановлено - запускаем
+      console.log('Video is paused/stopped, starting...');
       setIsVideoPlaying(true);
-      if (videoRef.current) {
-        // Enable sound and play video
-        videoRef.current.muted = false;
-        videoRef.current.play().catch(error => {
-          console.log('Auto-play was prevented:', error);
-          // Отслеживаем ошибку автозапуска
-          if (typePage === 'mainPage') {
-            trackVideoError('AUTOPLAY_BLOCKED', 'Video autoplay was prevented by browser');
-          }
-        });
+      
+      // Простая логика для Safari
+      try {
+        video.muted = false;
+        const playPromise = video.play();
+        
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              console.log('Video started successfully');
+            })
+            .catch((error) => {
+              console.log('Video play error:', error);
+              setIsVideoPlaying(false);
+            });
+        }
+      } catch (error) {
+        console.log('Video play error:', error);
+        setIsVideoPlaying(false);
       }
     }
   };
 
   // Отдельная функция для отслеживания клика по изображению
   const handleImageClick = () => {
+    console.log('handleImageClick called, current isVideoPlaying:', isVideoPlaying);
+    
     if (typePage === 'mainPage') {
       trackVideoCTA('Video Preview Image');
     }
-    handleVideoClick();
+    
+    // При клике на изображение всегда запускаем видео
+    if (videoRef.current) {
+      const video = videoRef.current;
+      console.log('Starting video from image click, video.paused:', video.paused);
+      
+      // Устанавливаем состояние воспроизведения с небольшой задержкой
+      setTimeout(() => {
+        setIsVideoPlaying(true);
+        console.log('Set isVideoPlaying to true (delayed)');
+      }, 100);
+      
+      // Запускаем видео
+      try {
+        video.muted = false;
+        const playPromise = video.play();
+        
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              console.log('Video started successfully from image click');
+            })
+            .catch((error) => {
+              console.log('Video play error from image click:', error);
+              setIsVideoPlaying(false);
+            });
+        }
+      } catch (error) {
+        console.log('Video play error from image click:', error);
+        setIsVideoPlaying(false);
+      }
+    }
   };
 
   // Determine heading text and image based on typePage
@@ -259,45 +318,22 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
           className={styles.videoContainer} 
           style={{ position: 'relative', width: 260, height: 146 }}
         >
-          {!isVideoPlaying ? (
-            // Show image when video is not playing
-            useNextImage ? (
-              <Image
-                className={styles.frameChild}
-                loading="lazy"
-                width={260}
-                height={146}
-                sizes="100vw"
-                alt=""
-                src={nextImageSource}
-                onClick={handleImageClick}
-                style={{ cursor: 'pointer' }}
-              />
-            ) : (
-              <img
-                className={styles.frameChild}
-                loading="lazy"
-                width={260}
-                height={146}
-                alt=""
-                src={publicImageSource}
-                onClick={handleImageClick}
-                style={{ cursor: 'pointer' }}
-              />
-            )
-          ) : (
-            // Show video when playing
-            <video
+          {/* Видео всегда рендерится, но может быть на паузе */}
+                      <video
               ref={videoRef}
               className={styles.frameChild}
               width={260}
               height={146}
               controls
-              autoPlay
               preload="auto"
               style={{ cursor: 'pointer' }}
               onClick={handleVideoClick}
-              onEnded={() => setIsVideoPlaying(false)}
+              onLoadedMetadata={() => setIsVideoLoaded(true)}
+              onEnded={() => {
+                console.log('Video ended');
+                setIsVideoPlaying(false);
+                setIsVideoPaused(false);
+              }}
               onTimeUpdate={handleTimeUpdate}
               onPlay={handlePlay}
               onPause={handlePause}
@@ -305,9 +341,49 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
               onVolumeChange={handleVolumeChange}
               onError={handleError}
             >
-              <source src={videoSource} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
+            <source src={videoSource} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+
+          {/* Изображение поверх видео только когда видео не воспроизводится */}
+          {(() => {
+            const shouldShowImage = !isVideoPlaying;
+            console.log('Image display logic:', { isVideoLoaded, isVideoPlaying, shouldShowImage });
+            return shouldShowImage;
+          })() && (
+            <div style={{ 
+              position: 'absolute', 
+              top: 0, 
+              left: 0, 
+              zIndex: 3,
+              width: '100%',
+              height: '100%'
+            }}>
+              {useNextImage ? (
+                <Image
+                  className={styles.frameChild}
+                  loading="lazy"
+                  width={260}
+                  height={146}
+                  sizes="100vw"
+                  alt=""
+                  src={nextImageSource}
+                  onClick={handleImageClick}
+                  style={{ cursor: 'pointer' }}
+                />
+              ) : (
+                <img
+                  className={styles.frameChild}
+                  loading="lazy"
+                  width={260}
+                  height={146}
+                  alt=""
+                  src={publicImageSource}
+                  onClick={handleImageClick}
+                  style={{ cursor: 'pointer' }}
+                />
+              )}
+            </div>
           )}
         </div>
 
