@@ -91,7 +91,6 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
 
   // Отслеживание паузы
   const handlePause = () => {
-    console.log('handlePause called');
     if (videoRef.current && typePage === 'mainPage') {
       const video = videoRef.current;
       const currentTime = video.currentTime;
@@ -107,7 +106,6 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
 
   // Отслеживание возобновления воспроизведения
   const handlePlay = () => {
-    console.log('handlePlay called');
     if (videoRef.current && typePage === 'mainPage') {
       const video = videoRef.current;
       const videoTitle = "Money Compass Intro";
@@ -186,16 +184,19 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
     }
   };
 
-  const handleVideoClick = () => {
-    console.log('handleVideoClick called, isVideoPlaying:', isVideoPlaying);
-    
+  const handleVideoClick = (event: React.MouseEvent<HTMLVideoElement>) => {
+    // Проверяем, что клик не по элементам управления
+    const target = event.target as HTMLElement;
+    if (target.tagName === 'BUTTON' || target.closest('button')) {
+      return; // Игнорируем клики по кнопкам
+    }
+
     // Отслеживаем клик
     if (typePage === 'mainPage') {
       trackVideoCTA('Watch the Video');
     }
 
     if (!videoRef.current) {
-      console.log('Video ref is null');
       return;
     }
 
@@ -203,12 +204,10 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
 
     if (!video.paused) {
       // Видео воспроизводится - ставим на паузу
-      console.log('Video is playing, pausing...');
       video.pause();
       setIsVideoPlaying(false); // Показываем изображение при паузе
     } else {
       // Видео на паузе или остановлено - запускаем
-      console.log('Video is paused/stopped, starting...');
       setIsVideoPlaying(true);
       
       // Простая логика для Safari
@@ -219,15 +218,13 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
         if (playPromise !== undefined) {
           playPromise
             .then(() => {
-              console.log('Video started successfully');
+              // Видео успешно запущено
             })
             .catch((error) => {
-              console.log('Video play error:', error);
               setIsVideoPlaying(false);
             });
         }
       } catch (error) {
-        console.log('Video play error:', error);
         setIsVideoPlaying(false);
       }
     }
@@ -235,8 +232,6 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
 
   // Отдельная функция для отслеживания клика по изображению
   const handleImageClick = () => {
-    console.log('handleImageClick called, current isVideoPlaying:', isVideoPlaying);
-    
     if (typePage === 'mainPage') {
       trackVideoCTA('Video Preview Image');
     }
@@ -244,12 +239,10 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
     // При клике на изображение всегда запускаем видео
     if (videoRef.current) {
       const video = videoRef.current;
-      console.log('Starting video from image click, video.paused:', video.paused);
       
       // Устанавливаем состояние воспроизведения с небольшой задержкой
       setTimeout(() => {
         setIsVideoPlaying(true);
-        console.log('Set isVideoPlaying to true (delayed)');
       }, 100);
       
       // Запускаем видео
@@ -260,15 +253,13 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
         if (playPromise !== undefined) {
           playPromise
             .then(() => {
-              console.log('Video started successfully from image click');
+              // Видео успешно запущено
             })
             .catch((error) => {
-              console.log('Video play error from image click:', error);
               setIsVideoPlaying(false);
             });
         }
       } catch (error) {
-        console.log('Video play error from image click:', error);
         setIsVideoPlaying(false);
       }
     }
@@ -326,11 +317,10 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
               height={146}
               controls
               preload="auto"
-              style={{ cursor: 'pointer' }}
-              onClick={handleVideoClick}
+              style={{ cursor: 'pointer', position: 'relative', zIndex: 2 }}
+              onClick={(event) => handleVideoClick(event)}
               onLoadedMetadata={() => setIsVideoLoaded(true)}
               onEnded={() => {
-                console.log('Video ended');
                 setIsVideoPlaying(false);
                 setIsVideoPaused(false);
               }}
@@ -346,16 +336,12 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
           </video>
 
           {/* Изображение поверх видео только когда видео не воспроизводится */}
-          {(() => {
-            const shouldShowImage = !isVideoPlaying;
-            console.log('Image display logic:', { isVideoLoaded, isVideoPlaying, shouldShowImage });
-            return shouldShowImage;
-          })() && (
+          {!isVideoPlaying && (
             <div style={{ 
               position: 'absolute', 
               top: 0, 
               left: 0, 
-              zIndex: 3,
+              zIndex: 10,
               width: '100%',
               height: '100%'
             }}>
@@ -398,7 +384,19 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
               src="/images/group-3.svg"
             />
           }
-          onClick={handleVideoClick}
+          onClick={() => {
+            // Для кнопки используем упрощенную логику
+            if (videoRef.current) {
+              const video = videoRef.current;
+              if (!video.paused) {
+                video.pause();
+                setIsVideoPlaying(false);
+              } else {
+                video.play();
+                setIsVideoPlaying(true);
+              }
+            }
+          }}
         >
           {isVideoPlaying ? 'Stop Video' : 'Watch the Video'}
         </Button>
