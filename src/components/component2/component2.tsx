@@ -21,6 +21,7 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [isVideoPaused, setIsVideoPaused] = useState(false);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const [hasVideoStarted, setHasVideoStarted] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const { 
     trackVideoImpression, 
@@ -97,8 +98,9 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
       const duration = video.duration;
       const percent = duration > 0 ? (currentTime / duration) * 100 : 0;
       
-      // НЕ меняем isVideoPlaying - видео остается видимым
+      // Обновляем состояние воспроизведения
       setIsVideoPaused(true);
+      setIsVideoPlaying(false);
       setPauseStartTime(Date.now());
       trackVideoPause(currentTime, percent);
     }
@@ -112,8 +114,10 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
       const videoDuration = video.duration || 0;
       const autoplay = false; // Видео запускается по клику, не автоплей
       
-      // НЕ меняем isVideoPlaying - видео уже запущено
+      // Обновляем состояние воспроизведения
       setIsVideoPaused(false);
+      setIsVideoPlaying(true);
+      setHasVideoStarted(true);
       
       // Проверяем длительность паузы
       if (pauseStartTime) {
@@ -187,11 +191,11 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
   const handleVideoClick = (event: React.MouseEvent<HTMLVideoElement>) => {
     // Проверяем, что клик не по элементам управления
     const target = event.target as HTMLElement;
-    if (target.tagName === 'BUTTON' || target.closest('button')) {
-      return; // Игнорируем клики по кнопкам
+    if (target.tagName === 'BUTTON' || target.closest('button') || target.closest('.video-controls')) {
+      return; // Игнорируем клики по кнопкам управления
     }
 
-    // Отслеживаем клик
+    // Отслеживаем двойной клик
     if (typePage === 'mainPage') {
       trackVideoCTA('Watch the Video');
     }
@@ -205,10 +209,12 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
     if (!video.paused) {
       // Видео воспроизводится - ставим на паузу
       video.pause();
-      setIsVideoPlaying(false); // Показываем изображение при паузе
+      setIsVideoPlaying(false);
+      // НЕ показываем превью при паузе - видео остается видимым
     } else {
       // Видео на паузе или остановлено - запускаем
       setIsVideoPlaying(true);
+      setHasVideoStarted(true);
       
       // Простая логика для Safari
       try {
@@ -243,6 +249,7 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
       // Устанавливаем состояние воспроизведения с небольшой задержкой
       setTimeout(() => {
         setIsVideoPlaying(true);
+        setHasVideoStarted(true);
       }, 100);
       
       // Запускаем видео
@@ -254,6 +261,7 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
           playPromise
             .then(() => {
               // Видео успешно запущено
+              setIsVideoPlaying(true);
             })
             .catch((error) => {
               setIsVideoPlaying(false);
@@ -318,7 +326,7 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
               controls
               preload="auto"
               style={{ cursor: 'pointer', position: 'relative', zIndex: 2 }}
-              onClick={(event) => handleVideoClick(event)}
+              onDoubleClick={(event) => handleVideoClick(event)}
               onLoadedMetadata={() => setIsVideoLoaded(true)}
               onEnded={() => {
                 setIsVideoPlaying(false);
@@ -335,8 +343,8 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
             Your browser does not support the video tag.
           </video>
 
-          {/* Изображение поверх видео только когда видео не воспроизводится */}
-          {!isVideoPlaying && (
+          {/* Изображение поверх видео только когда видео не было запущено */}
+          {!hasVideoStarted && (
             <div style={{ 
               position: 'absolute', 
               top: 0, 
@@ -394,6 +402,7 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
               } else {
                 video.play();
                 setIsVideoPlaying(true);
+                setHasVideoStarted(true);
               }
             }
           }}

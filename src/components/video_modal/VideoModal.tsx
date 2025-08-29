@@ -65,6 +65,22 @@ const VideoModal: React.FC<VideoModalProps> = ({ isOpen, onClose, videoSrc }) =>
     }
   };
 
+  // Обработчик двойного клика по видео для паузы/воспроизведения
+  const handleVideoClick = () => {
+    if (videoRef.current) {
+      const video = videoRef.current;
+      if (video.paused) {
+        // Если видео на паузе - запускаем
+        video.play().catch((error) => {
+          console.log('VideoModal: Error playing video on double click:', error);
+        });
+      } else {
+        // Если видео воспроизводится - ставим на паузу
+        video.pause();
+      }
+    }
+  };
+
   return (
     <div 
       className={styles.modalOverlay} 
@@ -100,6 +116,7 @@ const VideoModal: React.FC<VideoModalProps> = ({ isOpen, onClose, videoSrc }) =>
           controlsList="nodownload"
           onContextMenu={e => e.preventDefault()}
           onCanPlay={handleCanPlay}
+          onDoubleClick={handleVideoClick}
           style={loading ? { visibility: 'hidden' } : {}}
         >
           <source src={videoSrc} type="video/mp4" />

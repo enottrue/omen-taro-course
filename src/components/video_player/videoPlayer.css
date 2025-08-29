@@ -23,6 +23,7 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  cursor: pointer; /* Указывает на возможность двойного клика */
 }
 
 /* Disable video controls download button */

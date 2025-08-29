@@ -28,11 +28,13 @@ export default function VideoPlayer({
   const cc = useContext(MainContext);
   const [changeStageStatus] = useMutation(CHANGE_STAGE_STATUS);
   const [hasVideoStarted, setHasVideoStarted] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const { reachGoal } = useMetrica();
 
   const handleVideoStart: ReactEventHandler<HTMLVideoElement> = (e) => {
     setHasVideoStarted(true);
+    setIsPlaying(true);
     
     // Send Yandex Metrica event for video start
     reachGoal('video_started', { 
@@ -89,6 +91,8 @@ export default function VideoPlayer({
   };
 
   const handleVideoEnd: ReactEventHandler<HTMLVideoElement> = (e) => {
+    setIsPlaying(false);
+    
     // Send Yandex Metrica event for video completion
     reachGoal('video_completed', { 
       stageId: stageId?.id, 
@@ -137,6 +141,33 @@ export default function VideoPlayer({
     }
     
     setFinished && setFinished(true);
+  };
+
+  // Обработчик паузы видео - не показываем превью при паузе
+  const handleVideoPause: ReactEventHandler<HTMLVideoElement> = (e) => {
+    console.log('VideoPlayer: Video paused');
+    setIsPlaying(false);
+    // Не изменяем hasVideoStarted, чтобы превью не показывалось
+    // Видео просто остается на паузе
+  };
+
+  // Обработчик двойного клика по видео для паузы/воспроизведения
+  const handleVideoClick = () => {
+    if (videoRef.current) {
+      const video = videoRef.current;
+      if (video.paused) {
+        // Если видео на паузе - запускаем
+        setIsPlaying(true);
+        video.play().catch((error) => {
+          console.log('VideoPlayer: Error playing video on double click:', error);
+          setIsPlaying(false);
+        });
+      } else {
+        // Если видео воспроизводится - ставим на паузу
+        setIsPlaying(false);
+        video.pause();
+      }
+    }
   };
 
   // Protection against video downloading
@@ -275,6 +306,8 @@ export default function VideoPlayer({
         poster={preview ? preview : ''}
         onPlay={handleVideoStart}
         onEnded={handleVideoEnd}
+        onPause={handleVideoPause}
+        onDoubleClick={handleVideoClick}
           onContextMenu={handleContextMenu}
           onDragStart={handleDragStart}
         style={{
@@ -283,7 +316,8 @@ export default function VideoPlayer({
           maxWidth: '100%',
           display: 'block',
             borderRadius: '10px',
-            pointerEvents: 'auto'
+            pointerEvents: 'auto',
+            cursor: 'pointer'
         }}
       />
       )}
