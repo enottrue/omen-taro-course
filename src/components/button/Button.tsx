@@ -1,6 +1,7 @@
 import { type } from 'os';
 import React from 'react';
 import Link from 'next/link';
+import LoadingSpinner from '../LoadingSpinner';
 
 interface ButtonProps {
   title?: string;
@@ -15,6 +16,8 @@ interface ButtonProps {
   download?: boolean;
   target?: string;
   isLesson?: boolean;
+  loading?: boolean;
+  loadingText?: string;
   // attributes?: React.ButtonHTMLAttributes<HTMLButtonElement> &
   // React.AnchorHTMLAttributes<HTMLAnchorElement>;
 }
@@ -32,6 +35,8 @@ const Button: React.FC<ButtonProps> = ({
   className,
   attributes,
   isLesson,
+  loading = false,
+  loadingText = 'Redirecting...',
   ...rest
 }) => {
   if (isLink) {
@@ -57,11 +62,20 @@ const Button: React.FC<ButtonProps> = ({
       className={`button ` + className}
       type={type}
       onClick={onClick}
-      disabled={disabled}
+      disabled={disabled || loading}
       {...rest}
     >
-      {title && <span className="button__text">{title}</span>}
-      {children && <span className="button__icon">{children}</span>}
+      {loading ? (
+        <>
+          <LoadingSpinner size="small" />
+          <span className="button__text">{loadingText}</span>
+        </>
+      ) : (
+        <>
+          {title && <span className="button__text">{title}</span>}
+          {children && <span className="button__icon">{children}</span>}
+        </>
+      )}
     </button>
   );
 };

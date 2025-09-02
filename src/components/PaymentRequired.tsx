@@ -4,7 +4,7 @@ import { useStripePayment } from '@/hooks/useStripePayment';
 
 const PaymentRequired: React.FC = () => {
   const context = useContext(MainContext);
-  const { handlePayment, isAuthenticated } = useStripePayment();
+  const { handlePayment, isAuthenticated, isLoading } = useStripePayment();
 
   const handlePaymentClick = async () => {
     try {
@@ -59,28 +59,51 @@ const PaymentRequired: React.FC = () => {
         {isAuthenticated ? (
           <button
             onClick={handlePaymentClick}
+            disabled={isLoading}
             style={{
               padding: '15px 30px',
-              backgroundColor: '#00b894',
+              backgroundColor: isLoading ? '#bdc3c7' : '#00b894',
               color: 'white',
               border: 'none',
               borderRadius: '25px',
-              cursor: 'pointer',
+              cursor: isLoading ? 'not-allowed' : 'pointer',
               fontSize: '1.1rem',
               fontWeight: 'bold',
               transition: 'all 0.3s ease',
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'
+              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px'
             }}
             onMouseOver={(e) => {
-              e.currentTarget.style.backgroundColor = '#00a085';
-              e.currentTarget.style.transform = 'translateY(-2px)';
+              if (!isLoading) {
+                e.currentTarget.style.backgroundColor = '#00a085';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+              }
             }}
             onMouseOut={(e) => {
-              e.currentTarget.style.backgroundColor = '#00b894';
-              e.currentTarget.style.transform = 'translateY(0)';
+              if (!isLoading) {
+                e.currentTarget.style.backgroundColor = '#00b894';
+                e.currentTarget.style.transform = 'translateY(0)';
+              }
             }}
           >
-            💳 Pay for Course
+            {isLoading ? (
+              <>
+                <div style={{
+                  width: '18px',
+                  height: '18px',
+                  border: '2px solid rgba(255, 255, 255, 0.3)',
+                  borderTop: '2px solid white',
+                  borderRadius: '50%',
+                  animation: 'spin 1s linear infinite'
+                }} />
+                Redirecting...
+              </>
+            ) : (
+              '💳 Pay for Course'
+            )}
           </button>
         ) : (
           <div>

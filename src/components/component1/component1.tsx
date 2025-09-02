@@ -25,7 +25,7 @@ export type Component1Type = {
 
 const Component1: NextPage<Component1Type> = ({ className = "", onOpenModal, onOpenRegisterModal, hideLoginButton = false, onBurgerClick, isBurgerOpen = false, burgerRef, showScreenImage = false }) => {
   const cc = useContext(MainContext);
-  const { handlePayment } = useStripePayment();
+  const { handlePayment, isLoading } = useStripePayment();
   const { trackHeroCTA } = useGoogleAnalytics();
 
   const handleOpenModal = () => {
@@ -88,10 +88,15 @@ const Component1: NextPage<Component1Type> = ({ className = "", onOpenModal, onO
         tailored guidance based on your unique astrological blueprint.
       </div> */}
       <div className={styles.frameDiv}>
-        <Button variant="enroll" onClick={() => {
-          trackHeroCTA('Enroll Now - only $50');
-          handlePayment();
-        }}>
+        <Button 
+          variant="enroll" 
+          onClick={() => {
+            trackHeroCTA('Enroll Now - only $50');
+            handlePayment();
+          }}
+          loading={isLoading}
+          loadingText="Redirecting..."
+        >
           Enroll Now - only $50
         </Button>
       </div>

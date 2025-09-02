@@ -17,7 +17,7 @@ const GraphicIndicators: NextPage<GraphicIndicatorsType> = ({
   className = "",
   onOpenAuthModal,
 }) => {
-  const { handlePayment } = useStripePayment();
+  const { handlePayment, isLoading } = useStripePayment();
   const { trackComponent9CTA } = useGoogleAnalytics();
   return (
     <section className={[styles.graphicIndicators, className].join(" ")}>
@@ -77,10 +77,15 @@ const GraphicIndicators: NextPage<GraphicIndicatorsType> = ({
               <h2 className={styles.ready}>Ready</h2>
               <h2 className={styles.toLearn}>to Learn?</h2>
             </div>
-            <Button variant="primary" onClick={() => {
-              trackComponent9CTA('Enroll Now — Start Today');
-              handlePayment();
-            }}>
+            <Button 
+              variant="primary" 
+              onClick={() => {
+                trackComponent9CTA('Enroll Now — Start Today');
+                handlePayment();
+              }}
+              loading={isLoading}
+              loadingText="Redirecting..."
+            >
               Enroll Now — Start Today
             </Button>
           </div>
@@ -103,10 +108,15 @@ const GraphicIndicators: NextPage<GraphicIndicatorsType> = ({
                 It's time for you to see it too.
               </div>
             </div>
-            <Button variant="secondary" onClick={() => {
-              trackComponent9CTA('Start Today');
-              handlePayment();
-            }}>
+            <Button 
+              variant="secondary" 
+              onClick={() => {
+                trackComponent9CTA('Start Today');
+                handlePayment();
+              }}
+              loading={isLoading}
+              loadingText="Redirecting..."
+            >
               Start Today
             </Button>
           </div>

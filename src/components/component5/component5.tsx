@@ -14,7 +14,7 @@ export type Component5Type = {
 };
 
 const Component5: NextPage<Component5Type> = ({ className = "", onOpenAuthModal }) => {
-  const { handlePayment } = useStripePayment();
+  const { handlePayment, isLoading } = useStripePayment();
   const { trackComponent5CTA } = useGoogleAnalytics();
   return (
     <section className={[styles.section, className].join(" ")}>
@@ -109,10 +109,15 @@ const Component5: NextPage<Component5Type> = ({ className = "", onOpenAuthModal 
         This is a course that gives you tools — and the ability to use them on
         your own.
       </div>
-      <Button variant="enroll" onClick={() => {
-        trackComponent5CTA('Enroll Now - only $50');
-        handlePayment();
-      }}>
+      <Button 
+        variant="enroll" 
+        onClick={() => {
+          trackComponent5CTA('Enroll Now - only $50');
+          handlePayment();
+        }}
+        loading={isLoading}
+        loadingText="Redirecting..."
+      >
         Enroll Now - only $50
       </Button>
     </section>

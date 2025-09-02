@@ -12,7 +12,7 @@ export type Component4Type = {
 };
 
 const Component4: NextPage<Component4Type> = ({ className = "", onOpenAuthModal }) => {
-  const { handlePayment } = useStripePayment();
+  const { handlePayment, isLoading } = useStripePayment();
   const { trackComponent4CTA } = useGoogleAnalytics();
   return (
     <section className={[styles.section, className].join(" ")}>
@@ -80,10 +80,15 @@ const Component4: NextPage<Component4Type> = ({ className = "", onOpenAuthModal 
             </div>
           </div>
         </div>
-        <Button variant="enroll" onClick={() => {
-          trackComponent4CTA('Enroll Now - only $50');
-          handlePayment();
-        }}>
+        <Button 
+          variant="enroll" 
+          onClick={() => {
+            trackComponent4CTA('Enroll Now - only $50');
+            handlePayment();
+          }}
+          loading={isLoading}
+          loadingText="Redirecting..."
+        >
           Enroll Now - only $50
         </Button>
       </div>

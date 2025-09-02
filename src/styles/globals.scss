@@ -10,6 +10,12 @@
 @import '../components/course_lessons/course_lessons.scss';
 @import './profile.scss';
 
+// Анимация для вращающегося спиннера
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 // Глобальные стили для блокировки скролла при модальных окнах
 body.body-modal-open {
   overflow: hidden !important;

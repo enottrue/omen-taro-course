@@ -26,7 +26,7 @@ const CourseHero = ({ lessons, token, userId }: CourseHeroProps) => {
   const [activeAccordion, setActiveAccordion] = useState<number | null>(null);
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
   const burgerRef = useRef<HTMLDivElement>(null);
-  const { handlePayment } = useStripePayment();
+  const { handlePayment, isLoading } = useStripePayment();
   
   // Проверяем, находимся ли мы на странице courses
   const isOnCoursesPage = router.pathname === '/courses';

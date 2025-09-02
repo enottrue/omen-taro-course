@@ -106,7 +106,7 @@ const Profile = ({
     router.push('/');
   };
 
-  const { handlePayment } = useStripePayment();
+  const { handlePayment, isLoading } = useStripePayment();
   
   // Функция для обработки успешного создания сделки
   const handleDealCreated = () => {
@@ -268,6 +268,8 @@ const Profile = ({
                   title="Enroll Now - only $50"
                   className="button_enroll"
                   onClick={handleEnroll}
+                  loading={isLoading}
+                  loadingText="Redirecting..."
                 />
               )}
             </div>

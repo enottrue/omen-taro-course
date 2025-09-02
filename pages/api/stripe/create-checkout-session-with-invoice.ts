@@ -387,7 +387,7 @@ export default async function handler(
     console.log('🔍 Проверяем product_id:', product_id, 'тип:', typeof product_id);
     
     // Проверяем product_id и устанавливаем значение по умолчанию если пустой
-    const finalProductId = product_id && product_id !== '' ? product_id : '1';
+    const finalProductId = product_id && product_id !== '' ? product_id : '1777';
     console.log('🔍 Используем product_id:', finalProductId);
 
     if (!email) {

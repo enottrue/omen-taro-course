@@ -18,7 +18,7 @@ const PaymentStatus: React.FC<PaymentStatusProps> = ({
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState(isPaid);
   const context = useContext(MainContext);
-  const { handlePayment, isAuthenticated } = useStripePayment();
+  const { handlePayment, isAuthenticated, isLoading } = useStripePayment();
 
   const handleStatusChange = async (newStatus: boolean) => {
     if (!userId) return;
@@ -80,20 +80,38 @@ const PaymentStatus: React.FC<PaymentStatusProps> = ({
         {isAuthenticated ? (
           <button
             onClick={handlePaymentClick}
-            disabled={loading}
+            disabled={loading || isLoading}
             style={{
               padding: '12px 24px',
-              backgroundColor: loading ? '#bdc3c7' : '#00b894',
+              backgroundColor: (loading || isLoading) ? '#bdc3c7' : '#00b894',
               color: 'white',
               border: 'none',
               borderRadius: '25px',
-              cursor: loading ? 'not-allowed' : 'pointer',
+              cursor: (loading || isLoading) ? 'not-allowed' : 'pointer',
               fontSize: '16px',
               fontWeight: 'bold',
-              transition: 'all 0.3s ease'
+              transition: 'all 0.3s ease',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px'
             }}
           >
-            {loading ? 'Обработка...' : '💳 Оплатить курс'}
+            {(loading || isLoading) ? (
+              <>
+                <div style={{
+                  width: '16px',
+                  height: '16px',
+                  border: '2px solid rgba(255, 255, 255, 0.3)',
+                  borderTop: '2px solid white',
+                  borderRadius: '50%',
+                  animation: 'spin 1s linear infinite'
+                }} />
+                Redirecting...
+              </>
+            ) : (
+              '💳 Оплатить курс'
+            )}
           </button>
         ) : (
           <div>

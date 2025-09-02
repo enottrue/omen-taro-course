@@ -11,7 +11,7 @@ export type FamilyBenefitsType = {
 };
 
 const FamilyBenefits: NextPage<FamilyBenefitsType> = ({ className = "", onOpenRegisterModal }) => {
-  const { handlePayment } = useStripePayment();
+  const { handlePayment, isLoading } = useStripePayment();
   const { trackFamilyCTA } = useGoogleAnalytics();
   return (
     <div className={[styles.familyBenefits, className].join(" ")}>
@@ -63,9 +63,31 @@ const FamilyBenefits: NextPage<FamilyBenefitsType> = ({ className = "", onOpenRe
               trackFamilyCTA('Enroll Now - only $50');
               handlePayment();
             }}
-            style={{ cursor: 'pointer' }}
+            disabled={isLoading}
+            style={{ 
+              cursor: isLoading ? 'not-allowed' : 'pointer',
+              opacity: isLoading ? 0.7 : 1,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px'
+            }}
           >
-            <b className={styles.enrollNow}>Enroll Now - only $50</b>
+            {isLoading ? (
+              <>
+                <div style={{
+                  width: '16px',
+                  height: '16px',
+                  border: '2px solid rgba(255, 255, 255, 0.3)',
+                  borderTop: '2px solid white',
+                  borderRadius: '50%',
+                  animation: 'spin 1s linear infinite'
+                }} />
+                <b className={styles.enrollNow}>Redirecting...</b>
+              </>
+            ) : (
+              <b className={styles.enrollNow}>Enroll Now - only $50</b>
+            )}
           </button>
         </div>
       </div>
