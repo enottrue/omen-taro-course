@@ -1,6 +1,8 @@
 import React from 'react';
 import styles from './Button.module.css';
 
+// Updated ButtonProps interface with loading support
+
 export type ButtonVariant = 'primary' | 'secondary' | 'video' | 'enroll';
 
 export interface ButtonProps {
@@ -11,6 +13,8 @@ export interface ButtonProps {
   disabled?: boolean;
   type?: 'button' | 'submit' | 'reset';
   icon?: React.ReactNode;
+  loading?: boolean;
+  loadingText?: string;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -20,7 +24,9 @@ const Button: React.FC<ButtonProps> = ({
   className = '',
   disabled = false,
   type = 'button',
-  icon
+  icon,
+  loading = false,
+  loadingText = 'Loading...'
 }) => {
   const buttonClass = [
     styles.button,
@@ -33,10 +39,12 @@ const Button: React.FC<ButtonProps> = ({
       type={type}
       className={buttonClass}
       onClick={onClick}
-      disabled={disabled}
+      disabled={disabled || loading}
     >
-      {icon && <span className={styles.icon}>{icon}</span>}
-      <span className={styles.text}>{children}</span>
+      {icon && !loading && <span className={styles.icon}>{icon}</span>}
+      <span className={styles.text}>
+        {loading ? loadingText : children}
+      </span>
     </button>
   );
 };
