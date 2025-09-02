@@ -42,7 +42,7 @@ const PaymentCancelPage: React.FC = () => {
 
       <div style={{ marginTop: '20px' }}>
         <button
-          onClick={() => router.push('/stripe-test')}
+          onClick={() => router.push('/profile')}
           style={{
             backgroundColor: '#007bff',
             color: 'white',
