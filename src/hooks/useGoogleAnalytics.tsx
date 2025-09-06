@@ -107,6 +107,33 @@ export const useGoogleAnalytics = () => {
     });
   }, [trackEvent]);
 
+  // Функция диагностики GA4
+  const testGA4Connection = useCallback(() => {
+    console.log('🔍 [GA4] Testing GA4 connection...');
+    
+    if (typeof window !== 'undefined') {
+      console.log('✅ [GA4] Window object available');
+      console.log('🔍 [GA4] gtag function:', typeof window.gtag);
+      console.log('🔍 [GA4] dataLayer:', window.dataLayer);
+      
+      if (window.gtag) {
+        console.log('✅ [GA4] gtag function is available');
+        
+        // Отправляем тестовое событие
+        window.gtag('event', 'test_connection', {
+          test_parameter: 'connection_test',
+          timestamp: new Date().toISOString()
+        });
+        
+        console.log('📤 [GA4] Test event sent');
+      } else {
+        console.error('❌ [GA4] gtag function is not available');
+      }
+    } else {
+      console.error('❌ [GA4] Window object not available');
+    }
+  }, []);
+
   // Функции для конкретных кнопок на главной странице
   const trackHeroCTA = useCallback((buttonText: string) => {
     trackEvent('hero_cta_click', {
@@ -230,6 +257,17 @@ export const useGoogleAnalytics = () => {
   const trackRegistrationSuccess = useCallback((userId?: string, email?: string) => {
     const emailHash = email ? btoa(email).slice(0, 8) : undefined;
     
+    // Отправляем стандартное событие sign_up для GA4
+    trackEvent('sign_up', {
+      method: 'email',
+      user_id: userId,
+      email_hash: emailHash,
+      form_id: 'signup_modal',
+      page_url: typeof window !== 'undefined' ? window.location.href : '',
+      page_title: typeof document !== 'undefined' ? document.title : ''
+    });
+    
+    // Также отправляем кастомное событие для дополнительного отслеживания
     trackEvent('registration_success', {
       user_id: userId,
       email_hash: emailHash,
@@ -316,6 +354,7 @@ export const useGoogleAnalytics = () => {
     trackVideoComplete,
     trackVideoError,
     testGoal,
+    testGA4Connection,
     // Функции для кнопок
     trackHeroCTA,
     trackVideoCTA,

@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
+import { useGoogleAnalytics } from '@/hooks/useGoogleAnalytics';
 
 export default function DebugStripe() {
   const [logs, setLogs] = useState<any>({});
+  const { testGA4Connection, trackRegistrationSuccess, testGoal } = useGoogleAnalytics();
 
   useEffect(() => {
     const checkLogs = () => {
@@ -39,6 +41,28 @@ export default function DebugStripe() {
       <button onClick={clearLogs} style={{ marginBottom: '20px' }}>
         Clear Logs
       </button>
+      
+      <div style={{ marginBottom: '20px', padding: '10px', border: '1px solid #ccc' }}>
+        <h3>🔍 GA4 Testing</h3>
+        <button 
+          onClick={testGA4Connection} 
+          style={{ marginRight: '10px', padding: '5px 10px' }}
+        >
+          Test GA4 Connection
+        </button>
+        <button 
+          onClick={() => trackRegistrationSuccess('test_user_123', 'test@example.com')} 
+          style={{ marginRight: '10px', padding: '5px 10px' }}
+        >
+          Test Registration Success
+        </button>
+        <button 
+          onClick={() => testGoal('registration_success', 1)} 
+          style={{ padding: '5px 10px' }}
+        >
+          Test Goal Completion
+        </button>
+      </div>
       
       <div style={{ marginBottom: '20px' }}>
         <h3>Debug Log:</h3>
