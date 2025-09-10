@@ -5,6 +5,13 @@ import jwt from 'jsonwebtoken';
 //@ts-expect-error
 import { jws } from 'jsrsasign';
 
+// Функция для определения окружения в middleware
+function getEnvironmentFromRequest(req: NextRequest): 'development' | 'production' {
+  const url = new URL(req.url);
+  const envParam = url.searchParams.get('ENV') || url.searchParams.get('env');
+  return envParam?.toLowerCase() === 'development' ? 'development' : 'production';
+}
+
 // Список страниц, доступных только оплаченным пользователям
 const PAID_ONLY_PAGES = [
   '/courses',
@@ -117,11 +124,23 @@ export async function middleware(req: NextRequest) {
               }
               
               // Если пользователь не оплатил и пытается получить доступ к защищенной странице
+              const environment = getEnvironmentFromRequest(req);
+              const isDevMode = environment === 'development';
+              
+              console.log('🔍 Middleware: Environment detected:', environment);
+              console.log('🔍 Middleware: Is dev mode:', isDevMode);
+              
+              // В dev режиме разрешаем доступ к странице курсов даже без оплаты
               if (!userData.user.isPaid && isPaidOnlyPage) {
-                console.log('🔄 Redirecting unpaid user from protected page to /');
-                const url = req.nextUrl.clone();
-                url.pathname = '/';
-                return NextResponse.redirect(url, { status: 302 });
+                if (isDevMode && req.nextUrl.pathname.startsWith('/courses')) {
+                  console.log('🔧 Dev mode: Allowing access to /courses without payment');
+                  return NextResponse.next();
+                } else {
+                  console.log('🔄 Redirecting unpaid user from protected page to /');
+                  const url = req.nextUrl.clone();
+                  url.pathname = '/';
+                  return NextResponse.redirect(url, { status: 302 });
+                }
               }
             } else {
               console.error('❌ Middleware: Failed to fetch user data. Status:', userResponse.status);

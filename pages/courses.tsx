@@ -21,6 +21,7 @@ import styles from '@/components/component1/component1.module.scss';
 import Component2 from '@/components/component2/component2';
 import CourseLessons from '@/components/course_lessons/courseLessons';
 import { getDefaultCourseIdString } from '@/utils/courseUtils';
+import { getEnvironment } from '@/utils/environment';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const APP_SECRET = process.env.APP_SECRET;
@@ -191,7 +192,17 @@ const Cources = ({
 
   // Проверяем статус оплаты
   useEffect(() => {
-    if (userData && !userData.isPaid) {
+    const environment = getEnvironment();
+    const isDevMode = environment === 'development';
+    
+    console.log('[Courses] Environment detected:', environment);
+    console.log('[Courses] Is dev mode:', isDevMode);
+    console.log('[Courses] User data:', { isPaid: userData?.isPaid, userId: userData?.id });
+    
+    // В dev режиме пропускаем проверку оплаты
+    if (isDevMode) {
+      setShowPaymentRequired(false);
+    } else if (userData && !userData.isPaid) {
       setShowPaymentRequired(true);
     } else {
       setShowPaymentRequired(false);
