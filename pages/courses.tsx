@@ -22,6 +22,7 @@ import Component2 from '@/components/component2/component2';
 import CourseLessons from '@/components/course_lessons/courseLessons';
 import { getDefaultCourseIdString } from '@/utils/courseUtils';
 import { getEnvironment } from '@/utils/environment';
+import { EnvironmentInfo } from '@/components/EnvironmentInfo';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const APP_SECRET = process.env.APP_SECRET;
@@ -218,6 +219,7 @@ const Cources = ({
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="shortcut icon" href="/favicon/favicon.ico" />
         </Head>
+        <EnvironmentInfo />
         <main>
           <PaymentRequired />
           <FooterInside />
@@ -235,6 +237,7 @@ const Cources = ({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="shortcut icon" href="/favicon/favicon.ico" />
       </Head>
+      <EnvironmentInfo />
       <main>
         <CourseHero lessons={courses?.lessons} token={token} userId={userId} />
         <Component2 textShown={false} typePage="courses" videoSource="/videos/intro_course.mp4" />

@@ -31,15 +31,32 @@ const DownloadIcon = () => (
 );
 
 // PdfItem component as accordion item with card design inside
-const PdfItem = () => {
+const PdfItem = ({ isAccessible = true, isPaid = true }: { isAccessible?: boolean; isPaid?: boolean }) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const toggleOpen = () => {
+    if (!isAccessible) return; // Не позволяем открывать в dev режиме для неоплаченных
+    setIsOpen(!isOpen);
+  };
+
   return (
-    <div className={`frame-parent6 accordion ${isOpen ? 'active' : ''}`}>
-      <div className="accordion-header" role="button" onClick={() => setIsOpen(!isOpen)}>
+    <div className={`frame-parent6 accordion ${isOpen ? 'active' : ''} ${!isAccessible ? 'cource-lessons__item_disabled' : ''}`}>
+      <div className="accordion-header" role="button" onClick={toggleOpen}>
         <div className="empty-elements-parent">
           <div className="container">
-            <b className="b">Workbook</b>
+            <b className="b">
+              Workbook
+              {!isAccessible && (
+                <span style={{ 
+                  fontSize: '12px', 
+                  color: '#999', 
+                  marginLeft: '8px',
+                  fontStyle: 'italic'
+                }}>
+                  (Недоступно в dev mode)
+                </span>
+              )}
+            </b>
           </div>
         </div>
         <div className="group">
@@ -57,15 +74,29 @@ const PdfItem = () => {
       </div>
       <div className="accordion-content">       
         <div className="pdf-download-section">
-          <Link 
-            href="/videos/Money_compass.pdf" 
-            className="pdf-download-btn" 
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <span>Open PDF Guide</span>
-            <DownloadIcon />
-          </Link>
+          {isAccessible ? (
+            <Link 
+              href="/videos/Money_compass.pdf" 
+              className="pdf-download-btn" 
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span>Open PDF Guide</span>
+              <DownloadIcon />
+            </Link>
+          ) : (
+            <div 
+              className="pdf-download-btn" 
+              style={{ 
+                opacity: 0.5, 
+                cursor: 'not-allowed',
+                pointerEvents: 'none'
+              }}
+            >
+              <span>Open PDF Guide</span>
+              <DownloadIcon />
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -90,11 +121,18 @@ export const CoursePdfItem = ({ lessons }: CoursePdfItemProps) => {
   console.log('[CoursePdfItem] Environment detected:', environment);
   console.log('[CoursePdfItem] Is dev mode:', isDevMode);
   console.log('[CoursePdfItem] URL params:', typeof window !== 'undefined' ? window.location.search : 'server-side');
+  console.log('[CoursePdfItem] User payment status:', { isPaid: user?.isPaid, userId: user?.id });
   
   // Функция для определения доступности урока
   const isLessonAccessible = (lessonNumber: number) => {
     if (!isDevMode) return true; // В production все уроки доступны
     return lessonNumber === 1; // В dev mode только первый урок доступен
+  };
+  
+  // Функция для определения доступности PDF
+  const isPdfAccessible = () => {
+    if (!isDevMode) return true; // В production PDF доступен всем оплаченным
+    return user?.isPaid === true; // В dev mode PDF доступен только оплаченным
   };
 
   return (
@@ -105,7 +143,10 @@ export const CoursePdfItem = ({ lessons }: CoursePdfItemProps) => {
       </div>
       <div className="frame-parent5">
         {/* PDF Item as accordion with card design inside */}
-        <PdfItem />
+        <PdfItem 
+          isAccessible={isPdfAccessible()} 
+          isPaid={user?.isPaid} 
+        />
         {/* Render lessons only for authorized users */}
         {isUserAuthorized && displayLessons?.map((lesson: any, i: Key) => {
           const isAccessible = isLessonAccessible(lesson.lessonNumber);

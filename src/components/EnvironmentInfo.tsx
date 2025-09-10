@@ -25,9 +25,14 @@ export const EnvironmentInfo = () => {
       borderRadius: '4px',
       fontSize: '12px',
       zIndex: 9999,
-      fontWeight: 'bold'
+      fontWeight: 'bold',
+      boxShadow: '0 2px 10px rgba(0,0,0,0.3)',
+      border: '2px solid #fff'
     }}>
       🔧 DEV MODE
+      <div style={{ fontSize: '10px', marginTop: '2px', opacity: 0.8 }}>
+        Only Module 1 available
+      </div>
     </div>
   );
 }; 
