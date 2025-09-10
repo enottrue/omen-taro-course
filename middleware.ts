@@ -130,11 +130,25 @@ export async function middleware(req: NextRequest) {
               console.log('🔍 Middleware: Environment detected:', environment);
               console.log('🔍 Middleware: Is dev mode:', isDevMode);
               
-              // В dev режиме разрешаем доступ к странице курсов даже без оплаты
+              // В dev режиме разрешаем доступ к странице курсов и первому уроку даже без оплаты
               if (!userData.user.isPaid && isPaidOnlyPage) {
                 if (isDevMode && req.nextUrl.pathname.startsWith('/courses')) {
                   console.log('🔧 Dev mode: Allowing access to /courses without payment');
                   return NextResponse.next();
+                } else if (isDevMode && req.nextUrl.pathname.startsWith('/lesson')) {
+                  // Проверяем, является ли это первым уроком
+                  const lessonIdMatch = req.nextUrl.pathname.match(/\/lesson\/(\d+)/);
+                  const lessonId = lessonIdMatch ? parseInt(lessonIdMatch[1]) : null;
+                  
+                  if (lessonId === 1) {
+                    console.log('🔧 Dev mode: Allowing access to first lesson without payment');
+                    return NextResponse.next();
+                  } else {
+                    console.log('🔧 Dev mode: Blocking access to lesson', lessonId, '- only lesson 1 is allowed');
+                    const url = req.nextUrl.clone();
+                    url.pathname = '/courses';
+                    return NextResponse.redirect(url, { status: 302 });
+                  }
                 } else {
                   console.log('🔄 Redirecting unpaid user from protected page to /');
                   const url = req.nextUrl.clone();

@@ -18,6 +18,8 @@ import { apolloClient } from '@/lib/apollo/apollo';
 import { GET_LESSON, GET_LESSONS } from '@/graphql/queries';
 import CourseLessonHeader from '@/components/lesson_header/lessonHeader';
 import FooterInside from '@/components/footerInside/Footer';
+import { getEnvironment } from '@/utils/environment';
+import { EnvironmentInfo } from '@/components/EnvironmentInfo';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const APP_SECRET = process.env.APP_SECRET;
@@ -238,7 +240,17 @@ const Lesson = ({
 
   // Проверяем статус оплаты
   useEffect(() => {
-    if (userData && !userData.isPaid) {
+    const environment = getEnvironment();
+    const isDevMode = environment === 'development';
+    
+    console.log('[LessonStage] Environment detected:', environment);
+    console.log('[LessonStage] Is dev mode:', isDevMode);
+    console.log('[LessonStage] User data:', { isPaid: userData?.isPaid, userId: userData?.id });
+    
+    // В dev режиме пропускаем проверку оплаты
+    if (isDevMode) {
+      setShowPaymentRequired(false);
+    } else if (userData && !userData.isPaid) {
       setShowPaymentRequired(true);
     } else {
       setShowPaymentRequired(false);
@@ -254,6 +266,7 @@ const Lesson = ({
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="shortcut icon" href="/favicon/favicon.ico" />
         </Head>
+        <EnvironmentInfo />
         <main>
           <PaymentRequired />
         </main>
@@ -271,6 +284,7 @@ const Lesson = ({
          <link rel="shortcut icon" href="/favicon/favicon.ico" />
  
       </Head>
+      <EnvironmentInfo />
       <main>
       <CourseLessonHeader
         lesson={lesson}
