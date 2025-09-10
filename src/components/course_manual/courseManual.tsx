@@ -87,6 +87,10 @@ export const CoursePdfItem = ({ lessons }: CoursePdfItemProps) => {
   const environment = getEnvironment();
   const isDevMode = environment === 'development';
   
+  console.log('[CoursePdfItem] Environment detected:', environment);
+  console.log('[CoursePdfItem] Is dev mode:', isDevMode);
+  console.log('[CoursePdfItem] URL params:', typeof window !== 'undefined' ? window.location.search : 'server-side');
+  
   // Функция для определения доступности урока
   const isLessonAccessible = (lessonNumber: number) => {
     if (!isDevMode) return true; // В production все уроки доступны

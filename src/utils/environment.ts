@@ -5,7 +5,8 @@ export function getEnvironment(): 'development' | 'production' {
   if (typeof window !== 'undefined') {
     // Клиентская сторона
     const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('ENV') === 'Development' ? 'development' : 'production';
+    const envParam = urlParams.get('ENV') || urlParams.get('env');
+    return envParam?.toLowerCase() === 'development' ? 'development' : 'production';
   } else {
     // Серверная сторона - проверяем URL параметр из запроса
     // Если нет доступа к URL параметрам, используем NODE_ENV как fallback

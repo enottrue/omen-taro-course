@@ -183,6 +183,9 @@ const ModalRegister = () => {
 
     // Redirect based on environment
     const environment = getEnvironment();
+    console.log('[Register] Environment detected:', environment);
+    console.log('[Register] URL params:', window.location.search);
+    
     if (environment === 'development') {
       console.log('[Register] User registered successfully in dev mode, redirecting to courses...');
       router.push('/courses');
