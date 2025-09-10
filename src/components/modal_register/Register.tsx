@@ -13,6 +13,7 @@ import { useLazyQuery } from '@apollo/client';
 import { GET_USER } from '@/graphql/queries';
 import { useMetrica } from 'next-yandex-metrica';
 import { useGoogleAnalytics } from '@/hooks/useGoogleAnalytics';
+import { getEnvironment } from '@/utils/environment';
 
 const ModalRegister = () => {
   const router = useRouter();
@@ -180,9 +181,15 @@ const ModalRegister = () => {
       user: registerUser?.user
     });
 
-    // Redirect to profile page instead of Stripe checkout
-    console.log('[Register] User registered successfully, redirecting to profile page...');
-    router.push('/profile');
+    // Redirect based on environment
+    const environment = getEnvironment();
+    if (environment === 'development') {
+      console.log('[Register] User registered successfully in dev mode, redirecting to courses...');
+      router.push('/courses');
+    } else {
+      console.log('[Register] User registered successfully, redirecting to profile page...');
+      router.push('/profile');
+    }
   };
 
   return (

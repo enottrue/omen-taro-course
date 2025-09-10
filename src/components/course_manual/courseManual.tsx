@@ -7,6 +7,7 @@ import CourseListItem from '@/components/course_list_item/courseListItem';
 import { Key } from 'react';
 import { useContext } from 'react';
 import { MainContext } from '@/contexts/MainContext';
+import { getEnvironment } from '@/utils/environment';
 
 interface CoursePdfItemProps {
   lessons?: any[];
@@ -81,6 +82,16 @@ export const CoursePdfItem = ({ lessons }: CoursePdfItemProps) => {
   // Если lessons не передан, берем из MainContext, если пользователь авторизован
   const contextLessons = isUserAuthorized ? cc?.lessons : null;
   const displayLessons = lessons || contextLessons;
+  
+  // В dev mode только первый урок доступен
+  const environment = getEnvironment();
+  const isDevMode = environment === 'development';
+  
+  // Функция для определения доступности урока
+  const isLessonAccessible = (lessonNumber: number) => {
+    if (!isDevMode) return true; // В production все уроки доступны
+    return lessonNumber === 1; // В dev mode только первый урок доступен
+  };
 
   return (
     <>
@@ -93,12 +104,14 @@ export const CoursePdfItem = ({ lessons }: CoursePdfItemProps) => {
         <PdfItem />
         {/* Render lessons only for authorized users */}
         {isUserAuthorized && displayLessons?.map((lesson: any, i: Key) => {
+          const isAccessible = isLessonAccessible(lesson.lessonNumber);
           return (
             <CourseListItem
               contentStages={lesson.lessonStages}
               counter={lesson.lessonNumber}
               title={lesson.lessonName}
               lessonNumber={lesson.id}
+              isAccessible={isAccessible}
               key={i}
             />
           );

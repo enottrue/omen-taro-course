@@ -17,6 +17,7 @@ interface CourseListItemProps {
     stageName: string;
      stageStatuses: any[];
   }[];
+  isAccessible?: boolean;
 }
 
 const CourseListItem: React.FC<CourseListItemProps> = ({
@@ -24,6 +25,7 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
   title,
   contentStages,
   lessonNumber,
+  isAccessible = true,
 }) => {
   const [isActive, setIsActive] = useState(false);
   const [syncedStages, setSyncedStages] = useState(contentStages);
@@ -86,6 +88,7 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
   }, [syncedStages, lessonNumber]);
 
   const toggleActive = () => {
+    if (!isAccessible) return; // Не позволяем открывать недоступные уроки
     setIsActive(!isActive);
     // Send Yandex Metrica event for course view
     reachGoal('course_viewed', { lessonId: lessonNumber, lessonTitle: title });
@@ -127,7 +130,8 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
       <div
         className={`frame-parent6 accordion ${isActive ? 'active' : ''} ${
           isAllFinished ? 'cource-lessons__item_compleeted' : ''
-        }`}
+        } ${!isAccessible ? 'cource-lessons__item_disabled' : ''}`}
+        style={!isAccessible ? { opacity: 0.5, cursor: 'not-allowed' } : {}}
       >
         <div
           className="accordion-header"
@@ -137,7 +141,19 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
           <div className="empty-elements-parent">
             {/* <b className="empty-elements">{counter}.</b> */}
             <div className="container">
-              <b className="b">{title}</b>
+              <b className="b">
+                {title}
+                {!isAccessible && (
+                  <span style={{ 
+                    fontSize: '12px', 
+                    color: '#999', 
+                    marginLeft: '8px',
+                    fontStyle: 'italic'
+                  }}>
+                    (Недоступно в dev mode)
+                  </span>
+                )}
+              </b>
             </div>
           </div>
           <div className="group">
@@ -162,15 +178,31 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
               <React.Fragment key={i}>
                 <div className="content-wrapper-inner">
                   <div className="content-wrapper">
-                    <Link
-                      href={`/lesson/${lessonNumber}/${item.stageNumber}`}
-                      className={`${getStageStatusClass(item.stageStatuses)}`}
-                      style={{ textDecoration: 'none', color: 'inherit' }}
-                    >
-                      <p style={{ margin: 0 }}>
-                         {item.stageName}
-                      </p>
-                    </Link>
+                    {isAccessible ? (
+                      <Link
+                        href={`/lesson/${lessonNumber}/${item.stageNumber}`}
+                        className={`${getStageStatusClass(item.stageStatuses)}`}
+                        style={{ textDecoration: 'none', color: 'inherit' }}
+                      >
+                        <p style={{ margin: 0 }}>
+                           {item.stageName}
+                        </p>
+                      </Link>
+                    ) : (
+                      <div
+                        className={`${getStageStatusClass(item.stageStatuses)}`}
+                        style={{ 
+                          textDecoration: 'none', 
+                          color: 'inherit',
+                          opacity: 0.5,
+                          cursor: 'not-allowed'
+                        }}
+                      >
+                        <p style={{ margin: 0 }}>
+                           {item.stageName}
+                        </p>
+                      </div>
+                    )}
                   </div>
                   <div className="btn-wrapper">
                     <StatusIcon stageStatuses={item.stageStatuses} size={26} />
