@@ -29,6 +29,7 @@ import { useRouter } from 'next/router';
 import cookie from 'cookie';
 import jwt from 'jsonwebtoken';
 import { useScrollTracking } from '@/hooks/useScrollTracking';
+import { getEnvironment } from '@/utils/environment';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -96,6 +97,37 @@ export default function Home({
     cc?.setUserId(userId);
     cc?.setToken(token);
   }, [userId, token, userData]);
+
+  // Обработка редиректа с параметрами lessonId и stageId
+  useEffect(() => {
+    const { lessonId, stageId, ENV } = router.query;
+    
+    if (lessonId && stageId) {
+      const environment = getEnvironment();
+      const isDevMode = environment === 'development';
+      
+      console.log('[Home] Redirecting to lesson:', { lessonId, stageId, ENV, isDevMode });
+      
+      // Формируем URL с сохранением параметра ENV
+      const envParam = ENV ? `?ENV=${ENV}` : '';
+      const redirectUrl = `/lesson/${lessonId}/${stageId}${envParam}`;
+      
+      console.log('[Home] Redirecting to:', redirectUrl);
+      router.push(redirectUrl);
+    } else if (lessonId) {
+      const environment = getEnvironment();
+      const isDevMode = environment === 'development';
+      
+      console.log('[Home] Redirecting to lesson (no stageId):', { lessonId, ENV, isDevMode });
+      
+      // Формируем URL с сохранением параметра ENV
+      const envParam = ENV ? `?ENV=${ENV}` : '';
+      const redirectUrl = `/lesson/${lessonId}${envParam}`;
+      
+      console.log('[Home] Redirecting to:', redirectUrl);
+      router.push(redirectUrl);
+    }
+  }, [router.query]);
 
   return (
     <>
