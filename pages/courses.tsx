@@ -7,7 +7,7 @@ import cookie from 'cookie';
 import jwt from 'jsonwebtoken';
 import { GetServerSideProps } from 'next';
 import OnboardingStages from '@/components/onboarding/OnboardingStages';
-import PaymentRequired from '@/components/PaymentRequired';
+// import PaymentRequired from '@/components/PaymentRequired'; // Убираем, так как не используем
 import { useMetrica } from 'next-yandex-metrica';
 
 import { useGetLazyUserData } from '@/hooks/useGetUserData';
@@ -140,7 +140,7 @@ const Cources = ({
   stageData: { [k: string]: any };
 }) => {
   const router = useRouter();
-  const [showPaymentRequired, setShowPaymentRequired] = useState(false);
+  // const [showPaymentRequired, setShowPaymentRequired] = useState(false); // Убираем, так как не используем
   const { reachGoal } = useMetrica();
 
   // Use the courses data from server-side props instead of making a client-side query
@@ -200,26 +200,19 @@ const Cources = ({
     }
   }, [cc, userId, courses]);
 
-  // Проверяем статус оплаты - как в DEV режиме
-  useEffect(() => {
-    const environment = getEnvironment();
-    const isDevMode = environment === 'development';
-    
-    console.log('[Courses] Environment detected:', environment);
-    console.log('[Courses] Is dev mode:', isDevMode);
-    console.log('[Courses] User data:', { isPaid: userData?.isPaid, userId: userData?.id });
-    console.log('[Courses] Auth data:', { userId, hasToken: !!token });
-    
-    // В dev режиме НИКОГДА не показываем PaymentRequired
-    if (isDevMode) {
-      setShowPaymentRequired(false);
-    } else if (userData && !userData.isPaid) {
-      // В production показываем PaymentRequired только если пользователь не оплатил
-      setShowPaymentRequired(true);
-    } else {
-      setShowPaymentRequired(false);
-    }
-  }, [userData, userId, token]);
+  // Убираем проверку статуса оплаты - всегда показываем страницу курсов (как в DEV режиме)
+  // useEffect(() => {
+  //   const environment = getEnvironment();
+  //   const isDevMode = environment === 'development';
+  //   
+  //   console.log('[Courses] Environment detected:', environment);
+  //   console.log('[Courses] Is dev mode:', isDevMode);
+  //   console.log('[Courses] User data:', { isPaid: userData?.isPaid, userId: userData?.id });
+  //   console.log('[Courses] Auth data:', { userId, hasToken: !!token });
+  //   
+  //   // НИКОГДА не показываем PaymentRequired - как в DEV режиме
+  //   setShowPaymentRequired(false);
+  // }, [userData, userId, token]);
 
   // Убираем проверку авторизации - как в DEV режиме
   // if (!userId && !token) {
@@ -238,24 +231,24 @@ const Cources = ({
   //   );
   // }
 
-  // Если пользователь не оплатил, показываем компонент PaymentRequired
-  if (showPaymentRequired) {
-    return (
-      <>
-        <Head>
-          <title>Access Restricted - Money Compass Learning Course</title>
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <link rel="shortcut icon" href="/favicon/favicon.ico" />
-        </Head>
-        <EnvironmentInfo />
-        <main>
-          <PaymentRequired />
-          <FooterInside />
-        </main>
+  // Убираем показ PaymentRequired - всегда показываем страницу курсов (как в DEV режиме)
+  // if (showPaymentRequired) {
+  //   return (
+  //     <>
+  //       <Head>
+  //         <title>Access Restricted - Money Compass Learning Course</title>
+  //         <meta name="viewport" content="width=device-width, initial-scale=1" />
+  //         <link rel="shortcut icon" href="/favicon/favicon.ico" />
+  //       </Head>
+  //       <EnvironmentInfo />
+  //       <main>
+  //         <PaymentRequired />
+  //         <FooterInside />
+  //       </main>
 
-      </>
-    );
-  }
+  //     </>
+  //   );
+  // }
 
   return (
     <>
