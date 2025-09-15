@@ -165,10 +165,10 @@ const Cources = ({
       fetchUser(Number(userId));
     }
 
-    // Убираем принудительное перенаправление - пусть пользователи видят страницу
-    // if (!userId || !token) {
-    //   router.push('/');
-    // }
+    // Редирект только для неавторизованных пользователей
+    if (!userId || !token) {
+      router.push('/');
+    }
   }, [userId, token]);
 
   useEffect(() => {
@@ -191,8 +191,14 @@ const Cources = ({
     }
   }, [cc, userId, courses]);
 
-  // Проверяем статус оплаты
+  // Проверяем статус оплаты только для авторизованных пользователей
   useEffect(() => {
+    // Если пользователь не авторизован, не показываем PaymentRequired
+    if (!userId || !token) {
+      setShowPaymentRequired(false);
+      return;
+    }
+
     const environment = getEnvironment();
     const isDevMode = environment === 'development';
     
@@ -208,7 +214,24 @@ const Cources = ({
     } else {
       setShowPaymentRequired(false);
     }
-  }, [userData]);
+  }, [userData, userId, token]);
+
+  // Если пользователь не авторизован, показываем загрузку (будет редирект)
+  if (!userId || !token) {
+    return (
+      <>
+        <Head>
+          <title>Loading - Money Compass Learning Course</title>
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <link rel="shortcut icon" href="/favicon/favicon.ico" />
+        </Head>
+        <EnvironmentInfo />
+        <main style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+          <div>Redirecting...</div>
+        </main>
+      </>
+    );
+  }
 
   // Если пользователь не оплатил, показываем компонент PaymentRequired
   if (showPaymentRequired) {
