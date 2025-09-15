@@ -143,16 +143,16 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
             <div className="container">
               <b className="b">
                 {title}
-                {!isAccessible && (
-                  <span style={{ 
-                    fontSize: '12px', 
-                    color: '#999', 
+                <Image 
+                  src={isAccessible ? "/svg/lock-dollar.svg" : "/svg/lock.svg"} 
+                  alt={isAccessible ? "Доступно" : "Недоступно"} 
+                  width={16}
+                  height={16}
+                  style={{ 
                     marginLeft: '8px',
-                    fontStyle: 'italic'
-                  }}>
-                    (Недоступно в dev mode)
-                  </span>
-                )}
+                    verticalAlign: 'middle'
+                  }}
+                />
               </b>
             </div>
           </div>
