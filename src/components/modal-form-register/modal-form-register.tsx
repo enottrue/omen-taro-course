@@ -194,7 +194,10 @@ const ModalFormRegister: NextPage<ModalFormRegisterType> = ({
         </button>
         <h3 className={styles['modal-title']}>Create an account</h3>
         <h2 className={styles['modal-title-ru']}>
-        Sign up and unlock the first lesson for free. Continue the course for only $50
+        Sign up and unlock the first lesson for free.
+        </h2>
+        <h2 className={styles['modal-title-ru']}>
+        Continue the course for only $50 
         </h2>
         <form className={styles['modal-fields']} onSubmit={handleSubmitForm}>
           <input

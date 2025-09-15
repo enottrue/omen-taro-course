@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { isStageFinished, getStageStatusClass } from '@/utils/stageStatusUtils';
 import { StatusIcon } from '@/components/ui';
 import { useMetrica } from 'next-yandex-metrica';
+import { useRouter } from 'next/router';
 
 interface CourseListItemProps {
   counter: number;
@@ -35,6 +36,7 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
   const [syncedStages, setSyncedStages] = useState(contentStages);
   const cc = useContext(MainContext);
   const { reachGoal } = useMetrica();
+  const router = useRouter();
    
   //  console.log('CourseListItem rendered:', {
   //    counter,
@@ -96,6 +98,11 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
     setIsActive(!isActive);
     // Send Yandex Metrica event for course view
     reachGoal('course_viewed', { lessonId: lessonNumber, lessonTitle: title });
+  };
+
+  const handleLockedStageClick = () => {
+    // Редирект на страницу профиля при клике на заблокированный этап
+    router.push('/profile');
   };
   
   // Check if all stages in this lesson are finished
@@ -193,21 +200,13 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
                           textDecoration: 'none', 
                           color: 'inherit',
                           opacity: 0.5,
-                          cursor: 'not-allowed',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '8px'
+                          cursor: 'pointer'
                         }}
+                        onClick={handleLockedStageClick}
                       >
                         <p style={{ margin: 0 }}>
                            {item.stageName}
                         </p>
-                        <Image 
-                          src="/svg/lock.svg" 
-                          alt="Недоступно" 
-                          width={16}
-                          height={16}
-                        />
                       </div>
                     )}
                   </div>
@@ -220,6 +219,8 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
                         alt="Недоступно" 
                         width={26}
                         height={26}
+                        style={{ cursor: 'pointer' }}
+                        onClick={handleLockedStageClick}
                       />
                     )}
                   </div>
