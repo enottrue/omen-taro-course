@@ -356,7 +356,7 @@ export default function CourseLessonHeader({
                 className="pdf-download-btn"
                 target="_blank"
                 rel="noopener noreferrer"
-                href="/videos/Money_compass.pdf"
+                href={cc?.user?.isPaid ? "https://astro-irena.com/videos/Money_compass.pdf" : "/videos/lesson1.pdf"}
               >
                 <span>Open the workbook</span>
               </a>
