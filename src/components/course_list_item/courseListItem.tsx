@@ -143,27 +143,20 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
             <div className="container">
                 <b className="b">
                   {title}
-                  {counter !== 1 && (
-                    <Image 
-                      src="/svg/lock-dollar.svg" 
-                      alt="Доступно" 
-                      width={16}
-                      height={16}
-                      style={{ 
-                        marginLeft: '8px',
-                        verticalAlign: 'middle'
-                      }}
-                    />
-                  )}
                 </b>
             </div>
           </div>
           <div className="group">
-            <StatusIcon 
-              stageStatuses={getLessonStatus()} 
-              size={26} 
-              className="icon"
-            />
+            <div className="icon" style={{width: '26px', height: '26px'}}>
+              {counter !== 1 && (
+                <Image 
+                  src="/svg/lock-dollar.svg" 
+                  alt="Доступно" 
+                  width={26}
+                  height={26}
+                />
+              )}
+            </div>
             <Image
               className={`frame-icon ${isActive ? 'rotated' : ''}`}
               loading="lazy"
@@ -197,26 +190,26 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
                           textDecoration: 'none', 
                           color: 'inherit',
                           opacity: 0.5,
-                          cursor: 'not-allowed',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '8px'
+                          cursor: 'not-allowed'
                         }}
                       >
                         <p style={{ margin: 0 }}>
                            {item.stageName}
                         </p>
-                        <Image 
-                          src="/svg/lock.svg" 
-                          alt="Недоступно" 
-                          width={16}
-                          height={16}
-                        />
                       </div>
                     )}
                   </div>
                   <div className="btn-wrapper">
-                    <StatusIcon stageStatuses={item.stageStatuses} size={26} />
+                    {areStagesAccessible ? (
+                      <StatusIcon stageStatuses={item.stageStatuses} size={26} />
+                    ) : (
+                      <Image 
+                        src="/svg/lock.svg" 
+                        alt="Недоступно" 
+                        width={26}
+                        height={26}
+                      />
+                    )}
                   </div>
                 </div>
               </React.Fragment>
