@@ -8,6 +8,7 @@ import { Button } from "../ui";
 import { useState, useRef, useEffect } from "react";
 import { useGoogleAnalytics } from "../../hooks/useGoogleAnalytics";
 import { useIntersectionObserver } from "../../hooks/useIntersectionObserver";
+import { useMetrica } from 'next-yandex-metrica';
 
 export type Component2Type = {
   className?: string;
@@ -36,6 +37,8 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
     testGoal,
     trackVideoCTA
   } = useGoogleAnalytics();
+  
+  const { reachGoal } = useMetrica();
   
   // Состояние для отслеживания паузы
   const [pauseStartTime, setPauseStartTime] = useState<number | null>(null);
@@ -78,6 +81,13 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
           if (!video.dataset[key]) {
             video.dataset[key] = 'true';
             trackVideoProgress(checkpoint, currentTime);
+            
+            // Send Yandex Metrica event for intro video progress
+            reachGoal('intro_video_progress', { 
+              progress: checkpoint,
+              currentTime: currentTime,
+              videoTitle: "Money Compass Intro"
+            });
           }
         }
       });
@@ -86,6 +96,12 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
       if (percent >= 95 && !video.dataset.completed) {
         video.dataset.completed = 'true';
         trackVideoComplete(duration);
+        
+        // Send Yandex Metrica event for intro video completion
+        reachGoal('intro_video_completed', { 
+          duration: duration,
+          videoTitle: "Money Compass Intro"
+        });
       }
     }
   };
@@ -127,6 +143,13 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
       }
       
       trackVideoStart(videoTitle, videoDuration, autoplay);
+      
+      // Send Yandex Metrica event for intro video start
+      reachGoal('intro_video_started', { 
+        videoTitle: videoTitle,
+        videoDuration: videoDuration,
+        autoplay: autoplay
+      });
     }
   };
 

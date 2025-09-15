@@ -151,6 +151,40 @@ export default function VideoPlayer({
     // Видео просто остается на паузе
   };
 
+  // Обработка прогресса видео
+  const handleTimeUpdate: ReactEventHandler<HTMLVideoElement> = (e) => {
+    if (!videoRef.current) return;
+    
+    const video = videoRef.current;
+    const currentTime = video.currentTime;
+    const duration = video.duration;
+    
+    if (duration > 0) {
+      const percent = (currentTime / duration) * 100;
+      
+      // Контрольные точки: 25%, 50%, 75%, 100%
+      const checkpoints = [25, 50, 75, 100];
+      
+      checkpoints.forEach(checkpoint => {
+        if (percent >= checkpoint && percent < checkpoint + 1) {
+          // Отправляем событие только один раз для каждой контрольной точки
+          const key = `lesson_checkpoint_${checkpoint}`;
+          if (!video.dataset[key]) {
+            video.dataset[key] = 'true';
+            
+            // Send Yandex Metrica event for lesson video progress
+            reachGoal('lesson_video_progress', { 
+              progress: checkpoint,
+              currentTime: currentTime,
+              stageId: stageId?.id,
+              stageName: stageId?.stageName
+            });
+          }
+        }
+      });
+    }
+  };
+
   // Обработчик двойного клика по видео для паузы/воспроизведения
   const handleVideoClick = () => {
     if (videoRef.current) {
@@ -307,6 +341,7 @@ export default function VideoPlayer({
         onPlay={handleVideoStart}
         onEnded={handleVideoEnd}
         onPause={handleVideoPause}
+        onTimeUpdate={handleTimeUpdate}
         onDoubleClick={handleVideoClick}
           onContextMenu={handleContextMenu}
           onDragStart={handleDragStart}

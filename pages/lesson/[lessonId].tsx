@@ -122,8 +122,16 @@ const Lesson = ({
  
   useEffect(() => {
     // Send Yandex Metrica event for lesson page view
-    reachGoal('lesson_page_viewed');
-  }, [reachGoal]);
+    const lessonId = router.query.lessonId;
+    if (lessonId === '1') {
+      reachGoal('free_lesson_page_viewed', { 
+        lessonId: lessonId,
+        lessonTitle: 'Module 1 - Introduction to the Birth Chart'
+      });
+    } else {
+      reachGoal('lesson_page_viewed', { lessonId: lessonId });
+    }
+  }, [reachGoal, router.query.lessonId]);
 
   useEffect(() => {
     cc?.setUserId(userId);

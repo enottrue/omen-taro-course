@@ -100,7 +100,15 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
     reachGoal('course_viewed', { lessonId: lessonNumber, lessonTitle: title });
   };
 
-  const handleLockedStageClick = () => {
+  const handleLockedStageClick = (stageNumber?: number) => {
+    // Send Yandex Metrica event for locked stage click
+    reachGoal('locked_stage_clicked', { 
+      lessonId: lessonNumber,
+      lessonTitle: title,
+      stageNumber: stageNumber || 'locked',
+      redirectTo: 'profile'
+    });
+    
     // Редирект на страницу профиля при клике на заблокированный этап
     router.push('/profile');
   };
@@ -202,7 +210,7 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
                           opacity: 0.5,
                           cursor: 'pointer'
                         }}
-                        onClick={handleLockedStageClick}
+                        onClick={() => handleLockedStageClick(item.stageNumber)}
                       >
                         <p style={{ margin: 0 }}>
                            {item.stageName}
@@ -220,7 +228,7 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
                         width={26}
                         height={26}
                         style={{ cursor: 'pointer' }}
-                        onClick={handleLockedStageClick}
+                        onClick={() => handleLockedStageClick(item.stageNumber)}
                       />
                     )}
                   </div>

@@ -16,6 +16,7 @@ import {
 } from '@/graphql/queries';
 import { useContext } from 'react';
 import { MainContext } from '@/contexts/MainContext';
+import { useMetrica } from 'next-yandex-metrica';
 import { stageData } from '@/lib/dump-data/lessonsData';
 import styles from '@/components/component1/component1.module.scss';
 import './lessonHeader.scss';
@@ -32,8 +33,7 @@ export default function CourseLessonHeader({
   currentStageId: string | undefined;
 }) {
   const cc = useContext(MainContext);
-  
-
+  const { reachGoal } = useMetrica();
 
   const [finishedStage, setFinishedStage] = useState(false);
   const [createStageStatus] = useMutation(ADD_STAGE_STATUS);
@@ -357,6 +357,15 @@ export default function CourseLessonHeader({
                 target="_blank"
                 rel="noopener noreferrer"
                 href={cc?.user?.isPaid ? "https://astro-irena.com/videos/Money_compass.pdf" : "/videos/lesson1.pdf"}
+                onClick={() => {
+                  // Send Yandex Metrica event for workbook opening
+                  reachGoal('workbook_opened', { 
+                    userPaid: cc?.user?.isPaid,
+                    pdfType: cc?.user?.isPaid ? 'full' : 'limited',
+                    lessonId: currentLessonId,
+                    stageId: currentStageId
+                  });
+                }}
               >
                 <span>Open the workbook</span>
               </a>
