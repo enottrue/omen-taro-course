@@ -5,6 +5,7 @@ import { useContext } from 'react';
 import { MainContext } from '@/contexts/MainContext';
 import Image from 'next/image';
 import { isStageFinished, getStageStatusClass } from '@/utils/stageStatusUtils';
+import { StatusIcon } from '@/components/ui';
 import { useMetrica } from 'next-yandex-metrica';
 
 interface CourseListItemProps {
@@ -17,6 +18,7 @@ interface CourseListItemProps {
      stageStatuses: any[];
   }[];
   isAccessible?: boolean;
+  areStagesAccessible?: boolean;
 }
 
 const CourseListItem: React.FC<CourseListItemProps> = ({
@@ -25,6 +27,7 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
   contentStages,
   lessonNumber,
   isAccessible = true,
+  areStagesAccessible = true,
 }) => {
   const [isActive, setIsActive] = useState(false);
   const [syncedStages, setSyncedStages] = useState(contentStages);
@@ -87,7 +90,6 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
   }, [syncedStages, lessonNumber]);
 
   const toggleActive = () => {
-    if (!isAccessible) return; // Не позволяем открывать недоступные уроки
     setIsActive(!isActive);
     // Send Yandex Metrica event for course view
     reachGoal('course_viewed', { lessonId: lessonNumber, lessonTitle: title });
@@ -98,14 +100,38 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
     return isStageFinished(stage.stageStatuses);
   });
 
+  // Get overall lesson status based on stages
+  const getLessonStatus = () => {
+    if (syncedStages.length === 0) return [];
+    
+    const allStageStatuses = syncedStages.map(stage => stage.stageStatuses).flat();
+    if (allStageStatuses.length === 0) return [];
+    
+    // If all stages are finished, return finished status
+    if (isAllFinished) {
+      return [{ status: 'finished' }];
+    }
+    
+    // If any stage is in progress, return in_progress status
+    const hasInProgress = syncedStages.some(stage => 
+      stage.stageStatuses && stage.stageStatuses.length > 0 && 
+      stage.stageStatuses[0]?.status === 'in_progress'
+    );
+    
+    if (hasInProgress) {
+      return [{ status: 'in_progress' }];
+    }
+    
+    // Default to new status
+    return [{ status: 'new' }];
+  };
 
   return (
     <>
       <div
         className={`frame-parent6 accordion ${isActive ? 'active' : ''} ${
           isAllFinished ? 'cource-lessons__item_compleeted' : ''
-        } ${!isAccessible ? 'cource-lessons__item_disabled' : ''}`}
-        style={!isAccessible ? { opacity: 0.5, cursor: 'not-allowed' } : {}}
+        }`}
       >
         <div
           className="accordion-header"
@@ -115,17 +141,27 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
           <div className="empty-elements-parent">
             {/* <b className="empty-elements">{counter}.</b> */}
             <div className="container">
-              <b className="b">
-                {title}
-              </b>
+                <b className="b">
+                  {title}
+                  {counter !== 1 && (
+                    <Image 
+                      src="/svg/lock-dollar.svg" 
+                      alt="Доступно" 
+                      width={16}
+                      height={16}
+                      style={{ 
+                        marginLeft: '8px',
+                        verticalAlign: 'middle'
+                      }}
+                    />
+                  )}
+                </b>
             </div>
           </div>
           <div className="group">
-            <Image 
-              src={isAccessible ? "/svg/lock-dollar.svg" : "/svg/lock.svg"} 
-              alt={isAccessible ? "Доступно" : "Недоступно"} 
-              width={26}
-              height={26}
+            <StatusIcon 
+              stageStatuses={getLessonStatus()} 
+              size={26} 
               className="icon"
             />
             <Image
@@ -144,7 +180,7 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
               <React.Fragment key={i}>
                 <div className="content-wrapper-inner">
                   <div className="content-wrapper">
-                    {isAccessible ? (
+                    {areStagesAccessible ? (
                       <Link
                         href={`/lesson/${lessonNumber}/${item.stageNumber}`}
                         className={`${getStageStatusClass(item.stageStatuses)}`}
@@ -161,22 +197,26 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
                           textDecoration: 'none', 
                           color: 'inherit',
                           opacity: 0.5,
-                          cursor: 'not-allowed'
+                          cursor: 'not-allowed',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px'
                         }}
                       >
                         <p style={{ margin: 0 }}>
                            {item.stageName}
                         </p>
+                        <Image 
+                          src="/svg/lock.svg" 
+                          alt="Недоступно" 
+                          width={16}
+                          height={16}
+                        />
                       </div>
                     )}
                   </div>
                   <div className="btn-wrapper">
-                    <Image 
-                      src={isAccessible ? "/svg/lock-dollar.svg" : "/svg/lock.svg"} 
-                      alt={isAccessible ? "Доступно" : "Недоступно"} 
-                      width={26}
-                      height={26}
-                    />
+                    <StatusIcon stageStatuses={item.stageStatuses} size={26} />
                   </div>
                 </div>
               </React.Fragment>

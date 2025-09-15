@@ -50,13 +50,6 @@ const PdfItem = ({ isAccessible = true, isPaid = true }: { isAccessible?: boolea
           </div>
         </div>
         <div className="group">
-          <Image 
-            src={isAccessible ? "/svg/lock-dollar.svg" : "/svg/lock.svg"} 
-            alt={isAccessible ? "Доступно" : "Недоступно"} 
-            width={26}
-            height={26}
-            className="icon"
-          />
           <img 
             alt="arrow-down" 
             loading="lazy" 
@@ -122,14 +115,17 @@ export const CoursePdfItem = ({ lessons }: CoursePdfItemProps) => {
   
   // Функция для определения доступности урока
   const isLessonAccessible = (lessonNumber: number) => {
-    if (!isDevMode) return true; // В production все уроки доступны
-    return lessonNumber === 1; // В dev mode только первый урок доступен
+    return true; // Все уроки доступны для раскрытия
+  };
+  
+  // Функция для определения доступности этапов урока
+  const areStagesAccessible = (lessonNumber: number) => {
+    return lessonNumber === 1; // Только первый урок имеет доступные этапы
   };
   
   // Функция для определения доступности PDF
   const isPdfAccessible = () => {
-    if (!isDevMode) return true; // В production PDF доступен всем оплаченным
-    return user?.isPaid === true; // В dev mode PDF доступен только оплаченным
+    return true; // PDF всегда доступен
   };
 
   return (
@@ -147,6 +143,7 @@ export const CoursePdfItem = ({ lessons }: CoursePdfItemProps) => {
         {/* Render lessons only for authorized users */}
         {isUserAuthorized && displayLessons?.map((lesson: any, i: Key) => {
           const isAccessible = isLessonAccessible(lesson.lessonNumber);
+          const stagesAccessible = areStagesAccessible(lesson.lessonNumber);
           return (
             <CourseListItem
               contentStages={lesson.lessonStages}
@@ -154,6 +151,7 @@ export const CoursePdfItem = ({ lessons }: CoursePdfItemProps) => {
               title={lesson.lessonName}
               lessonNumber={lesson.id}
               isAccessible={isAccessible}
+              areStagesAccessible={stagesAccessible}
               key={i}
             />
           );
