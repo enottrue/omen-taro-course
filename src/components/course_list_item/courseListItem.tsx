@@ -147,13 +147,13 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
             </div>
           </div>
           <div className="group">
-            <div className="icon" style={{width: '26px', height: '26px'}}>
+            <div className="icon" style={{width: '26px', height: '52px'}}>
               {counter !== 1 && (
                 <Image 
                   src="/svg/lock-dollar.svg" 
                   alt="Доступно" 
                   width={26}
-                  height={26}
+                  height={52}
                 />
               )}
             </div>

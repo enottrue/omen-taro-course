@@ -31,7 +31,7 @@ const DownloadIcon = () => (
 );
 
 // PdfItem component as accordion item with card design inside
-const PdfItem = ({ isAccessible = true, isPaid = true }: { isAccessible?: boolean; isPaid?: boolean }) => {
+const PdfItem = ({ isAccessible = true, isPaid = true, user }: { isAccessible?: boolean; isPaid?: boolean; user?: any }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleOpen = () => {
@@ -64,29 +64,15 @@ const PdfItem = ({ isAccessible = true, isPaid = true }: { isAccessible?: boolea
       </div>
       <div className="accordion-content">       
         <div className="pdf-download-section">
-          {isAccessible ? (
-            <Link 
-              href="/videos/Money_compass.pdf" 
-              className="pdf-download-btn" 
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span>Open PDF Guide</span>
-              <DownloadIcon />
-            </Link>
-          ) : (
-            <div 
-              className="pdf-download-btn" 
-              style={{ 
-                opacity: 0.5, 
-                cursor: 'not-allowed',
-                pointerEvents: 'none'
-              }}
-            >
-              <span>Open PDF Guide</span>
-              <DownloadIcon />
-            </div>
-          )}
+          <Link 
+            href={user?.isPaid ? "https://astro-irena.com/videos/Money_compass.pdf" : "/videos/lesson1.pdf"} 
+            className="pdf-download-btn" 
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span>Open PDF Guide</span>
+            <DownloadIcon />
+          </Link>
         </div>
       </div>
     </div>
@@ -125,7 +111,7 @@ export const CoursePdfItem = ({ lessons }: CoursePdfItemProps) => {
   
   // Функция для определения доступности PDF
   const isPdfAccessible = () => {
-    return true; // PDF всегда доступен
+    return true; // PDF всегда доступен, но с разными ссылками
   };
 
   return (
@@ -138,7 +124,8 @@ export const CoursePdfItem = ({ lessons }: CoursePdfItemProps) => {
         {/* PDF Item as accordion with card design inside */}
         <PdfItem 
           isAccessible={isPdfAccessible()} 
-          isPaid={user?.isPaid} 
+          isPaid={user?.isPaid}
+          user={user}
         />
         {/* Render lessons only for authorized users */}
         {isUserAuthorized && displayLessons?.map((lesson: any, i: Key) => {
