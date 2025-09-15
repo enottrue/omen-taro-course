@@ -174,7 +174,7 @@ const Cources = ({
       fetchUser(Number(userId));
     }
 
-    // Мягкий редирект - только если нет никаких данных пользователя
+    // Убираем редирект полностью - как в DEV режиме
     // if (!userId && !token) {
     //   router.push('/');
     // }
@@ -200,7 +200,7 @@ const Cources = ({
     }
   }, [cc, userId, courses]);
 
-  // Проверяем статус оплаты - более гибкая логика
+  // Проверяем статус оплаты - как в DEV режиме
   useEffect(() => {
     const environment = getEnvironment();
     const isDevMode = environment === 'development';
@@ -210,18 +210,18 @@ const Cources = ({
     console.log('[Courses] User data:', { isPaid: userData?.isPaid, userId: userData?.id });
     console.log('[Courses] Auth data:', { userId, hasToken: !!token });
     
-    // В dev режиме пропускаем проверку оплаты
+    // В dev режиме НИКОГДА не показываем PaymentRequired
     if (isDevMode) {
       setShowPaymentRequired(false);
     } else if (userData && !userData.isPaid) {
-      // Показываем PaymentRequired только если есть данные пользователя и он не оплатил
+      // В production показываем PaymentRequired только если пользователь не оплатил
       setShowPaymentRequired(true);
     } else {
       setShowPaymentRequired(false);
     }
   }, [userData, userId, token]);
 
-  // Мягкая проверка - показываем контент даже без полной авторизации
+  // Убираем проверку авторизации - как в DEV режиме
   // if (!userId && !token) {
   //   return (
   //     <>

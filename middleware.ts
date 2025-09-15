@@ -130,21 +130,21 @@ export async function middleware(req: NextRequest) {
               console.log('🔍 Middleware: Environment detected:', environment);
               console.log('🔍 Middleware: Is dev mode:', isDevMode);
               
-              // В dev режиме разрешаем доступ к странице курсов и первому уроку даже без оплаты
+              // Разрешаем доступ к странице курсов всегда (как в DEV режиме)
               if (!userData.user.isPaid && isPaidOnlyPage) {
-                if (isDevMode && req.nextUrl.pathname.startsWith('/courses')) {
-                  console.log('🔧 Dev mode: Allowing access to /courses without payment');
+                if (req.nextUrl.pathname.startsWith('/courses')) {
+                  console.log('🔧 Allowing access to /courses without payment (like DEV mode)');
                   return NextResponse.next();
-                } else if (isDevMode && req.nextUrl.pathname.startsWith('/lesson')) {
+                } else if (req.nextUrl.pathname.startsWith('/lesson')) {
                   // Проверяем, является ли это первым уроком
                   const lessonIdMatch = req.nextUrl.pathname.match(/\/lesson\/(\d+)/);
                   const lessonId = lessonIdMatch ? parseInt(lessonIdMatch[1]) : null;
                   
                   if (lessonId === 1) {
-                    console.log('🔧 Dev mode: Allowing access to first lesson without payment');
+                    console.log('🔧 Allowing access to first lesson without payment (like DEV mode)');
                     return NextResponse.next();
                   } else {
-                    console.log('🔧 Dev mode: Blocking access to lesson', lessonId, '- only lesson 1 is allowed');
+                    console.log('🔧 Blocking access to lesson', lessonId, '- only lesson 1 is allowed');
                     const url = req.nextUrl.clone();
                     url.pathname = '/courses';
                     return NextResponse.redirect(url, { status: 302 });
@@ -189,10 +189,16 @@ export async function middleware(req: NextRequest) {
       response.cookies.delete('userId');
     }
   } else if (isPaidOnlyPage) {
-    // Если нет токена и пытаемся получить доступ к защищенной странице
-    const url = req.nextUrl.clone();
-    url.pathname = '/';
-    return NextResponse.redirect(url, { status: 302 });
+    // Если нет токена, разрешаем доступ к /courses (как в DEV режиме)
+    if (req.nextUrl.pathname.startsWith('/courses')) {
+      console.log('🔧 Allowing access to /courses without token (like DEV mode)');
+      return NextResponse.next();
+    } else {
+      // Для других защищенных страниц делаем редирект
+      const url = req.nextUrl.clone();
+      url.pathname = '/';
+      return NextResponse.redirect(url, { status: 302 });
+    }
   }
 
   return response;
