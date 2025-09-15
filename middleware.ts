@@ -189,16 +189,10 @@ export async function middleware(req: NextRequest) {
       response.cookies.delete('userId');
     }
   } else if (isPaidOnlyPage) {
-    // Если нет токена, разрешаем доступ к /courses (как в DEV режиме)
-    if (req.nextUrl.pathname.startsWith('/courses')) {
-      console.log('🔧 Allowing access to /courses without token (like DEV mode)');
-      return NextResponse.next();
-    } else {
-      // Для других защищенных страниц делаем редирект
-      const url = req.nextUrl.clone();
-      url.pathname = '/';
-      return NextResponse.redirect(url, { status: 302 });
-    }
+    // Если нет токена и пытаемся получить доступ к защищенной странице
+    const url = req.nextUrl.clone();
+    url.pathname = '/';
+    return NextResponse.redirect(url, { status: 302 });
   }
 
   return response;

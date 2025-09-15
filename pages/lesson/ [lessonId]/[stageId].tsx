@@ -246,16 +246,23 @@ const Lesson = ({
     console.log('[LessonStage] Environment detected:', environment);
     console.log('[LessonStage] Is dev mode:', isDevMode);
     console.log('[LessonStage] User data:', { isPaid: userData?.isPaid, userId: userData?.id });
+    console.log('[LessonStage] Lesson ID from router:', router.query.lessonId);
     
     // В dev режиме пропускаем проверку оплаты
     if (isDevMode) {
       setShowPaymentRequired(false);
     } else if (userData && !userData.isPaid) {
-      setShowPaymentRequired(true);
+      // Урок 1 доступен для всех зарегистрированных пользователей
+      const lessonId = router.query.lessonId;
+      if (lessonId === '1') {
+        setShowPaymentRequired(false);
+      } else {
+        setShowPaymentRequired(true);
+      }
     } else {
       setShowPaymentRequired(false);
     }
-  }, [userData]);
+  }, [userData, router.query.lessonId]);
 
   // Если пользователь не оплатил, показываем компонент PaymentRequired
   if (showPaymentRequired) {

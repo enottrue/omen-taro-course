@@ -174,10 +174,10 @@ const Cources = ({
       fetchUser(Number(userId));
     }
 
-    // Убираем редирект полностью - как в DEV режиме
-    // if (!userId && !token) {
-    //   router.push('/');
-    // }
+    // Редирект для неавторизованных пользователей
+    if (!userId || !token) {
+      router.push('/');
+    }
   }, [userId, token]);
 
   useEffect(() => {
@@ -214,22 +214,22 @@ const Cources = ({
   //   setShowPaymentRequired(false);
   // }, [userData, userId, token]);
 
-  // Убираем проверку авторизации - как в DEV режиме
-  // if (!userId && !token) {
-  //   return (
-  //     <>
-  //       <Head>
-  //         <title>Loading - Money Compass Learning Course</title>
-  //         <meta name="viewport" content="width=device-width, initial-scale=1" />
-  //         <link rel="shortcut icon" href="/favicon/favicon.ico" />
-  //       </Head>
-  //       <EnvironmentInfo />
-  //       <main style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-  //         <div>Redirecting...</div>
-  //       </main>
-  //     </>
-  //   );
-  // }
+  // Если пользователь не авторизован, показываем загрузку (будет редирект)
+  if (!userId || !token) {
+    return (
+      <>
+        <Head>
+          <title>Loading - Money Compass Learning Course</title>
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <link rel="shortcut icon" href="/favicon/favicon.ico" />
+        </Head>
+        <EnvironmentInfo />
+        <main style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+          <div>Redirecting...</div>
+        </main>
+      </>
+    );
+  }
 
   // Убираем показ PaymentRequired - всегда показываем страницу курсов (как в DEV режиме)
   // if (showPaymentRequired) {
