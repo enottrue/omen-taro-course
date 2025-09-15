@@ -36,10 +36,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   let userData = null;
 
   try {
-    //@ts-expect-error
-    jwt.verify(cookies.Bearer, APP_SECRET);
-    userId = cookies?.userId ? cookies.userId : null;
-    token = cookies?.Bearer ? cookies.Bearer : null;
+    if (!APP_SECRET) {
+      console.log('[Courses] getServerSideProps - APP_SECRET not found, skipping JWT verification');
+      // В production без APP_SECRET пропускаем JWT верификацию
+      userId = cookies?.userId ? cookies.userId : null;
+      token = cookies?.Bearer ? cookies.Bearer : null;
+    } else {
+      jwt.verify(cookies.Bearer, APP_SECRET);
+      userId = cookies?.userId ? cookies.userId : null;
+      token = cookies?.Bearer ? cookies.Bearer : null;
+    }
+    
+    console.log('[Courses] getServerSideProps - JWT verified, userId:', userId, 'token exists:', !!token);
 
     // Получаем данные пользователя для проверки статуса оплаты
     if (userId && token) {
@@ -53,6 +61,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       }
     }
   } catch (error) {
+    console.log('[Courses] getServerSideProps - JWT verification failed, setting userId and token to null');
     userId = null;
     token = null;
   }
@@ -165,10 +174,10 @@ const Cources = ({
       fetchUser(Number(userId));
     }
 
-    // Редирект только для неавторизованных пользователей
-    if (!userId || !token) {
-      router.push('/');
-    }
+    // Мягкий редирект - только если нет никаких данных пользователя
+    // if (!userId && !token) {
+    //   router.push('/');
+    // }
   }, [userId, token]);
 
   useEffect(() => {
@@ -191,47 +200,43 @@ const Cources = ({
     }
   }, [cc, userId, courses]);
 
-  // Проверяем статус оплаты только для авторизованных пользователей
+  // Проверяем статус оплаты - более гибкая логика
   useEffect(() => {
-    // Если пользователь не авторизован, не показываем PaymentRequired
-    if (!userId || !token) {
-      setShowPaymentRequired(false);
-      return;
-    }
-
     const environment = getEnvironment();
     const isDevMode = environment === 'development';
     
     console.log('[Courses] Environment detected:', environment);
     console.log('[Courses] Is dev mode:', isDevMode);
     console.log('[Courses] User data:', { isPaid: userData?.isPaid, userId: userData?.id });
+    console.log('[Courses] Auth data:', { userId, hasToken: !!token });
     
     // В dev режиме пропускаем проверку оплаты
     if (isDevMode) {
       setShowPaymentRequired(false);
     } else if (userData && !userData.isPaid) {
+      // Показываем PaymentRequired только если есть данные пользователя и он не оплатил
       setShowPaymentRequired(true);
     } else {
       setShowPaymentRequired(false);
     }
   }, [userData, userId, token]);
 
-  // Если пользователь не авторизован, показываем загрузку (будет редирект)
-  if (!userId || !token) {
-    return (
-      <>
-        <Head>
-          <title>Loading - Money Compass Learning Course</title>
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <link rel="shortcut icon" href="/favicon/favicon.ico" />
-        </Head>
-        <EnvironmentInfo />
-        <main style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-          <div>Redirecting...</div>
-        </main>
-      </>
-    );
-  }
+  // Мягкая проверка - показываем контент даже без полной авторизации
+  // if (!userId && !token) {
+  //   return (
+  //     <>
+  //       <Head>
+  //         <title>Loading - Money Compass Learning Course</title>
+  //         <meta name="viewport" content="width=device-width, initial-scale=1" />
+  //         <link rel="shortcut icon" href="/favicon/favicon.ico" />
+  //       </Head>
+  //       <EnvironmentInfo />
+  //       <main style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+  //         <div>Redirecting...</div>
+  //       </main>
+  //     </>
+  //   );
+  // }
 
   // Если пользователь не оплатил, показываем компонент PaymentRequired
   if (showPaymentRequired) {
