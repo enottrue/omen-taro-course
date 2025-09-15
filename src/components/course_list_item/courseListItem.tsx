@@ -19,6 +19,7 @@ interface CourseListItemProps {
   }[];
   isAccessible?: boolean;
   areStagesAccessible?: boolean;
+  user?: any;
 }
 
 const CourseListItem: React.FC<CourseListItemProps> = ({
@@ -28,6 +29,7 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
   lessonNumber,
   isAccessible = true,
   areStagesAccessible = true,
+  user,
 }) => {
   const [isActive, setIsActive] = useState(false);
   const [syncedStages, setSyncedStages] = useState(contentStages);
@@ -90,6 +92,10 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
   }, [syncedStages, lessonNumber]);
 
   const toggleActive = () => {
+    // В production режиме проверяем оплату для доступа к этапам
+    if (!areStagesAccessible) {
+      return; // Не позволяем открывать недоступные уроки
+    }
     setIsActive(!isActive);
     // Send Yandex Metrica event for course view
     reachGoal('course_viewed', { lessonId: lessonNumber, lessonTitle: title });
@@ -131,7 +137,8 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
       <div
         className={`frame-parent6 accordion ${isActive ? 'active' : ''} ${
           isAllFinished ? 'cource-lessons__item_compleeted' : ''
-        }`}
+        } ${!areStagesAccessible ? 'cource-lessons__item_disabled' : ''}`}
+        style={!areStagesAccessible ? { opacity: 0.5, cursor: 'not-allowed' } : {}}
       >
         <div
           className="accordion-header"
@@ -148,7 +155,7 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
           </div>
           <div className="group">
             <div className="icon" style={{width: '26px', height: '52px'}}>
-              {counter !== 1 && (
+              {counter !== 1 && !user?.isPaid && (
                 <Image 
                   src="/svg/lock-dollar.svg" 
                   alt="Доступно" 
@@ -190,12 +197,21 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
                           textDecoration: 'none', 
                           color: 'inherit',
                           opacity: 0.5,
-                          cursor: 'not-allowed'
+                          cursor: 'not-allowed',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px'
                         }}
                       >
                         <p style={{ margin: 0 }}>
                            {item.stageName}
                         </p>
+                        <Image 
+                          src="/svg/lock.svg" 
+                          alt="Недоступно" 
+                          width={16}
+                          height={16}
+                        />
                       </div>
                     )}
                   </div>
