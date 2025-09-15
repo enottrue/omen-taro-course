@@ -5,7 +5,6 @@ import { useContext } from 'react';
 import { MainContext } from '@/contexts/MainContext';
 import Image from 'next/image';
 import { isStageFinished, getStageStatusClass } from '@/utils/stageStatusUtils';
-import { StatusIcon } from '@/components/ui';
 import { useMetrica } from 'next-yandex-metrica';
 
 interface CourseListItemProps {
@@ -99,31 +98,6 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
     return isStageFinished(stage.stageStatuses);
   });
 
-  // Get overall lesson status based on stages
-  const getLessonStatus = () => {
-    if (syncedStages.length === 0) return [];
-    
-    const allStageStatuses = syncedStages.map(stage => stage.stageStatuses).flat();
-    if (allStageStatuses.length === 0) return [];
-    
-    // If all stages are finished, return finished status
-    if (isAllFinished) {
-      return [{ status: 'finished' }];
-    }
-    
-    // If any stage is in progress, return in_progress status
-    const hasInProgress = syncedStages.some(stage => 
-      stage.stageStatuses && stage.stageStatuses.length > 0 && 
-      stage.stageStatuses[0]?.status === 'in_progress'
-    );
-    
-    if (hasInProgress) {
-      return [{ status: 'in_progress' }];
-    }
-    
-    // Default to new status
-    return [{ status: 'new' }];
-  };
 
   return (
     <>
@@ -143,23 +117,15 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
             <div className="container">
               <b className="b">
                 {title}
-                <Image 
-                  src={isAccessible ? "/svg/lock-dollar.svg" : "/svg/lock.svg"} 
-                  alt={isAccessible ? "Доступно" : "Недоступно"} 
-                  width={16}
-                  height={16}
-                  style={{ 
-                    marginLeft: '8px',
-                    verticalAlign: 'middle'
-                  }}
-                />
               </b>
             </div>
           </div>
           <div className="group">
-            <StatusIcon 
-              stageStatuses={getLessonStatus()} 
-              size={26} 
+            <Image 
+              src={isAccessible ? "/svg/lock-dollar.svg" : "/svg/lock.svg"} 
+              alt={isAccessible ? "Доступно" : "Недоступно"} 
+              width={26}
+              height={26}
               className="icon"
             />
             <Image
@@ -205,7 +171,12 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
                     )}
                   </div>
                   <div className="btn-wrapper">
-                    <StatusIcon stageStatuses={item.stageStatuses} size={26} />
+                    <Image 
+                      src={isAccessible ? "/svg/lock-dollar.svg" : "/svg/lock.svg"} 
+                      alt={isAccessible ? "Доступно" : "Недоступно"} 
+                      width={26}
+                      height={26}
+                    />
                   </div>
                 </div>
               </React.Fragment>

@@ -46,20 +46,17 @@ const PdfItem = ({ isAccessible = true, isPaid = true }: { isAccessible?: boolea
           <div className="container">
             <b className="b">
               Workbook
-              <Image 
-                src={isAccessible ? "/svg/lock-dollar.svg" : "/svg/lock.svg"} 
-                alt={isAccessible ? "Доступно" : "Недоступно"} 
-                width={16}
-                height={16}
-                style={{ 
-                  marginLeft: '8px',
-                  verticalAlign: 'middle'
-                }}
-              />
             </b>
           </div>
         </div>
         <div className="group">
+          <Image 
+            src={isAccessible ? "/svg/lock-dollar.svg" : "/svg/lock.svg"} 
+            alt={isAccessible ? "Доступно" : "Недоступно"} 
+            width={26}
+            height={26}
+            className="icon"
+          />
           <img 
             alt="arrow-down" 
             loading="lazy" 
