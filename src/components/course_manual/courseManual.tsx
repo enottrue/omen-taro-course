@@ -106,7 +106,11 @@ export const CoursePdfItem = ({ lessons }: CoursePdfItemProps) => {
   
   // Функция для определения доступности этапов урока
   const areStagesAccessible = (lessonNumber: number) => {
-    // Только первый урок доступен для всех залогиненных пользователей (как в dev режиме)
+    // Если пользователь оплатил курс - все уроки доступны
+    if (user?.isPaid) {
+      return true;
+    }
+    // Если не оплатил - только первый урок доступен
     return lessonNumber === 1;
   };
   

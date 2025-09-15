@@ -48,18 +48,6 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
   // Синхронизируем данные этапов с актуальными статусами из контекста
   useEffect(() => {
     if (cc?.stageData && contentStages) {
-      console.log('CourseListItem: Syncing stages with stageData', {
-        lessonNumber,
-        contentStages: contentStages.map(s => ({ 
-          stageNumber: s.stageNumber, 
-          status: s.stageStatuses?.[0]?.status 
-        })),
-        stageData: cc.stageData.map((s: any) => ({ 
-          stageId: s.stageId, 
-          status: s.status 
-        }))
-      });
-      
       const updatedStages = contentStages.map(stage => {
         // Ищем актуальный статус этапа в stageData
         const currentStageStatus = cc.stageData.find((statusItem: any) => 
@@ -67,14 +55,12 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
         );
         
         if (currentStageStatus) {
-          console.log(`CourseListItem: Found status for stage ${stage.stageNumber}:`, currentStageStatus);
           return {
             ...stage,
             stageStatuses: [currentStageStatus]
           };
         }
         
-        console.log(`CourseListItem: No status found for stage ${stage.stageNumber}`);
         return stage;
       });
       
@@ -84,13 +70,7 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
 
   // Логируем изменения в syncedStages
   useEffect(() => {
-    console.log('CourseListItem: syncedStages updated', {
-      lessonNumber,
-      syncedStages: syncedStages.map(s => ({ 
-        stageNumber: s.stageNumber, 
-        status: s.stageStatuses?.[0]?.status 
-      }))
-    });
+    // Синхронизация завершена
   }, [syncedStages, lessonNumber]);
 
   const toggleActive = () => {
@@ -166,7 +146,7 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
           </div>
           <div className="group">
             <div className="icon" style={{width: '26px', height: '52px'}}>
-              {counter !== 1 && (
+              {counter !== 1 && !user?.isPaid && (
                 <Image 
                   src="/svg/lock-dollar.svg" 
                   alt="Доступно" 

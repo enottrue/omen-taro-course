@@ -167,7 +167,7 @@ const CourseHero = ({ lessons, token, userId }: CourseHeroProps) => {
                   <p className="p">Get ready to dive into a fascinating process of self-discovery. Let's explore how astrological wisdom can help you achieve success and harmony in life!</p>
                 </div>
                 {/* Figma-style button below description */}
-                <div style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
+                {/* <div style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
                   <a
                     href="#course-program"
                     className="enroll-now-only-50-wrapper enroll-now-"
@@ -175,7 +175,7 @@ const CourseHero = ({ lessons, token, userId }: CourseHeroProps) => {
                   >
                     Explore the Course
                   </a>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
