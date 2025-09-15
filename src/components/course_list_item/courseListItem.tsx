@@ -92,10 +92,7 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
   }, [syncedStages, lessonNumber]);
 
   const toggleActive = () => {
-    // В production режиме проверяем оплату для доступа к этапам
-    if (!areStagesAccessible) {
-      return; // Не позволяем открывать недоступные уроки
-    }
+    // Все уроки могут раскрываться (как в dev режиме)
     setIsActive(!isActive);
     // Send Yandex Metrica event for course view
     reachGoal('course_viewed', { lessonId: lessonNumber, lessonTitle: title });
@@ -137,8 +134,7 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
       <div
         className={`frame-parent6 accordion ${isActive ? 'active' : ''} ${
           isAllFinished ? 'cource-lessons__item_compleeted' : ''
-        } ${!areStagesAccessible ? 'cource-lessons__item_disabled' : ''}`}
-        style={!areStagesAccessible ? { opacity: 0.5, cursor: 'not-allowed' } : {}}
+        }`}
       >
         <div
           className="accordion-header"
@@ -155,7 +151,7 @@ const CourseListItem: React.FC<CourseListItemProps> = ({
           </div>
           <div className="group">
             <div className="icon" style={{width: '26px', height: '52px'}}>
-              {counter !== 1 && !user?.isPaid && (
+              {counter !== 1 && (
                 <Image 
                   src="/svg/lock-dollar.svg" 
                   alt="Доступно" 
