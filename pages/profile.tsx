@@ -40,7 +40,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
           userData = await response.json();
         }
       } catch (error) {
-        console.error('Error fetching user data:', error);
+        // Error fetching user data - handled silently
       }
     }
   } catch (error) {
@@ -74,7 +74,7 @@ const Profile = ({
   useEffect(() => {
     cc?.setToken(token);
     cc?.setUserId(userId);
-  }, [token, userId]);
+  }, [token, userId, cc]);
 
   const handleBurgerClick = () => {
     setIsBurgerOpen(!isBurgerOpen);
@@ -118,7 +118,7 @@ const Profile = ({
     try {
       await handlePayment();
     } catch (error) {
-      console.error('Payment error:', error);
+      // Payment error - handled silently
       // Если произошла ошибка, можно показать уведомление пользователю
     }
   };
@@ -257,7 +257,24 @@ const Profile = ({
                 </div>
               </div>
               
-              {!userData?.bitrix24DealId ? (
+              {userData?.isPaid ? (
+                <div className="payment-success-block">
+                  <div className="payment-success-icon">✅</div>
+                  <h3 className="payment-success-title">Payment Successful!</h3>
+                  <p className="payment-success-message">
+                    Thank you for your payment. You now have full access to the Money Compass course.
+                  </p>
+                  <div className="payment-success-details">
+                    <p><strong>Payment Date:</strong> {userData?.paymentDate ? new Date(userData.paymentDate).toLocaleDateString() : 'N/A'}</p>
+                    <p><strong>Status:</strong> <span className="status-paid">Paid</span></p>
+                  </div>
+                  <Button
+                    title="Access Course"
+                    className="button_access_course"
+                    onClick={() => router.push('/courses')}
+                  />
+                </div>
+              ) : !userData?.bitrix24DealId ? (
                 <Bitrix24DealStatus
                   userId={userId}
                   initialDealId={userData?.bitrix24DealId}

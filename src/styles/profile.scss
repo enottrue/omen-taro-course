@@ -211,6 +211,88 @@
 
 }
 
+// Payment Success Block
+.payment-success-block {
+  text-align: center;
+  padding: 30px 20px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border: 2px solid #28a745;
+  border-radius: 16px;
+  margin: 20px 0;
+  
+  .payment-success-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    display: block;
+  }
+  
+  .payment-success-title {
+    font-family: var(--font-roboto);
+    font-size: 24px;
+    font-weight: 700;
+    color: #28a745;
+    margin: 0 0 12px 0;
+    line-height: 1.2;
+  }
+  
+  .payment-success-message {
+    font-family: var(--font-roboto);
+    font-size: 16px;
+    color: #495057;
+    margin: 0 0 20px 0;
+    line-height: 1.4;
+  }
+  
+  .payment-success-details {
+    background-color: #ffffff;
+    padding: 16px;
+    border-radius: 12px;
+    margin: 20px 0;
+    border: 1px solid #dee2e6;
+    
+    p {
+      font-family: var(--font-roboto);
+      font-size: 14px;
+      color: #495057;
+      margin: 8px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      
+      strong {
+        color: #002f6c;
+        font-weight: 600;
+      }
+    }
+    
+    .status-paid {
+      background-color: #28a745;
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
+  
+  .button_access_course {
+    margin-top: 20px;
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    border: none;
+    color: white;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      background: linear-gradient(135deg, #218838 0%, #1ea085 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+    }
+  }
+}
+
 // Course Description
 .course-description {
   p {
