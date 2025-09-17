@@ -256,7 +256,6 @@ const Profile = ({
                   <span className="order-summary__value">$50.00</span>
                 </div>
               </div>
-              
               {userData?.isPaid ? (
                 <div className="payment-success-block">
                   <div className="payment-success-icon">✅</div>
