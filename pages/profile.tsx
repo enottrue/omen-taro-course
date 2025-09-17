@@ -265,7 +265,6 @@ const Profile = ({
                     Thank you for your payment. You now have full access to the Money Compass course.
                   </p>
                   <div className="payment-success-details">
-                    <p><strong>Payment Date:</strong> {userData?.paymentDate ? new Date(userData.paymentDate).toLocaleDateString() : 'N/A'}</p>
                     <p><strong>Status:</strong> <span className="status-paid">Paid</span></p>
                   </div>
                   <Button
