@@ -181,18 +181,9 @@ const ModalRegister = () => {
       user: registerUser?.user
     });
 
-    // Redirect based on environment
-    const environment = getEnvironment();
-    console.log('[Register] Environment detected:', environment);
-    console.log('[Register] URL params:', window.location.search);
-    
-    if (environment === 'development') {
-      console.log('[Register] User registered successfully in dev mode, redirecting to courses...');
-      router.push('/courses');
-    } else {
-      console.log('[Register] User registered successfully, redirecting to profile page...');
-      router.push('/profile');
-    }
+    // Redirect to courses page after successful registration
+    console.log('[Register] User registered successfully, redirecting to courses...');
+    router.push('/courses');
   };
 
   return (

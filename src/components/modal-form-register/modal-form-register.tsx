@@ -151,10 +151,10 @@ const ModalFormRegister: NextPage<ModalFormRegisterType> = ({
       handleClose();
       cc?.setCurrentForm && cc.setCurrentForm(null);
       
-      console.log('✅ User registered successfully, redirecting to profile page...');
+      console.log('✅ User registered successfully, redirecting to courses page...');
       
-      // Redirect to profile page instead of Stripe checkout
-      router.push('/profile');
+      // Redirect to courses page after successful registration
+      router.push('/courses');
       
     } catch (err) {
       const errorMessage = (err as Error).message;
