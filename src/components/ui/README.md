@@ -50,7 +50,7 @@ import { Button } from '../ui';
 
 // Кнопка записи
 <Button variant="enroll">
-  Enroll Now - only $50
+  Get the first lesson for free
 </Button>
 
 // Кнопка с состоянием загрузки
@@ -60,7 +60,7 @@ import { Button } from '../ui';
   loadingText="Redirecting..."
   onClick={handlePayment}
 >
-  Enroll Now - only $50
+  Get the first lesson for free
 </Button>
 ```
 

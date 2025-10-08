@@ -280,7 +280,7 @@ const Profile = ({
                 />
               ) : (
                 <Button
-                  title="Enroll Now - only $50"
+                  title="Get the first lesson for free"
                   className="button_enroll"
                   onClick={handleEnroll}
                   loading={isLoading}

@@ -80,7 +80,7 @@ const Discover: NextPage<DiscoverType> = ({ className = "", onOpenRegisterModal 
       <button 
         className={styles.enrollNowOnly50Wrapper}
         onClick={() => {
-          trackDiscoverCTA('Enroll Now - only $50');
+          trackDiscoverCTA('Get the first lesson for free');
           handlePayment();
         }}
         disabled={isLoading}
@@ -106,7 +106,7 @@ const Discover: NextPage<DiscoverType> = ({ className = "", onOpenRegisterModal 
             <b className={styles.enrollNow}>Redirecting...</b>
           </>
         ) : (
-          <b className={styles.enrollNow}>Enroll Now - only $50</b>
+          <b className={styles.enrollNow}>Get the first lesson for free</b>
         )}
       </button>
     </section>

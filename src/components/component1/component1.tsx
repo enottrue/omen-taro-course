@@ -91,13 +91,13 @@ const Component1: NextPage<Component1Type> = ({ className = "", onOpenModal, onO
         <Button 
           variant="enroll" 
           onClick={() => {
-            trackHeroCTA('Enroll Now - only $50');
+            trackHeroCTA('Get the first lesson for free');
             handlePayment();
           }}
           loading={isLoading}
           loadingText="Redirecting..."
         >
-          Enroll Now - only $50
+          Get the first lesson for free
         </Button>
       </div>
     </section>

@@ -83,13 +83,13 @@ const Component4: NextPage<Component4Type> = ({ className = "", onOpenAuthModal 
         <Button 
           variant="enroll" 
           onClick={() => {
-            trackComponent4CTA('Enroll Now - only $50');
+            trackComponent4CTA('Get the first lesson for free');
             handlePayment();
           }}
           loading={isLoading}
           loadingText="Redirecting..."
         >
-          Enroll Now - only $50
+          Get the first lesson for free
         </Button>
       </div>
     </section>
