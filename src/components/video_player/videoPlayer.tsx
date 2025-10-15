@@ -336,7 +336,7 @@ export default function VideoPlayer({
           disablePictureInPicture
           disableRemotePlayback
           playsInline
-          webkit-playsinline="true"
+          x-webkit-airplay="allow"
           muted
         src={url ? url : ''}
         poster={preview ? preview : ''}
@@ -354,8 +354,10 @@ export default function VideoPlayer({
           display: 'block',
             borderRadius: '10px',
             pointerEvents: 'auto',
-            cursor: 'pointer'
+            cursor: 'pointer',
+            objectFit: 'contain'
         }}
+        {...({'webkit-playsinline': 'true'} as any)}
       />
       )}
     </div>

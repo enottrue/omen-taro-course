@@ -115,11 +115,12 @@ const VideoModal: React.FC<VideoModalProps> = ({ isOpen, onClose, videoSrc }) =>
           ref={videoRef}
           controlsList="nodownload"
           playsInline
-          webkit-playsinline="true"
+          x-webkit-airplay="allow"
           onContextMenu={e => e.preventDefault()}
           onCanPlay={handleCanPlay}
           onDoubleClick={handleVideoClick}
-          style={loading ? { visibility: 'hidden' } : {}}
+          style={loading ? { visibility: 'hidden', objectFit: 'contain' } : { objectFit: 'contain' }}
+          {...({'webkit-playsinline': 'true'} as any)}
         >
           <source src={videoSrc} type="video/mp4" />
           {/* Placeholder for subtitles: */}
