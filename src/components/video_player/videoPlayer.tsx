@@ -335,6 +335,8 @@ export default function VideoPlayer({
           controlsList="nodownload noremoteplayback"
           disablePictureInPicture
           disableRemotePlayback
+          playsInline
+          webkit-playsinline="true"
           muted
         src={url ? url : ''}
         poster={preview ? preview : ''}

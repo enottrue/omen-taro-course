@@ -67,6 +67,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     token = null;
   }
 
+  // Если пользователь залогинен и нет специальных параметров редиректа, отправляем на страницу курсов
+  const { lessonId, stageId } = context.query;
+  if (userId && !lessonId && !stageId) {
+    return {
+      redirect: {
+        destination: '/courses',
+        permanent: false,
+      },
+    };
+  }
+
   // Pass the cookies to the page as props
   return {
     props: {

@@ -114,6 +114,8 @@ const VideoModal: React.FC<VideoModalProps> = ({ isOpen, onClose, videoSrc }) =>
           aria-label="Video player"
           ref={videoRef}
           controlsList="nodownload"
+          playsInline
+          webkit-playsinline="true"
           onContextMenu={e => e.preventDefault()}
           onCanPlay={handleCanPlay}
           onDoubleClick={handleVideoClick}
