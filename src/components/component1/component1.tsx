@@ -87,7 +87,9 @@ const Component1: NextPage<Component1Type> = ({ className = "", onOpenModal, onO
         potential and helping you overcome inner obstacles. You'll receive
         tailored guidance based on your unique astrological blueprint.
       </div> */}
-      <div className={styles.frameDiv}>
+      <div className={styles.frameDivParrent}>
+      <div className={styles.signUpAndUnlockTheFirstLessonForFree}>Sign up and unlock <br />the first lesson for free.</div>
+      <div className={styles.continueTheCourseForOnly50}>Continue the course for only $50</div>
         <Button 
           variant="enroll" 
           onClick={() => {
