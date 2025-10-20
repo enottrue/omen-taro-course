@@ -348,6 +348,8 @@ const Component2: NextPage<Component2Type> = ({ className = "", textShown = true
               height={146}
               controls
               preload="auto"
+              playsInline
+              webkit-playsinline="true"
               style={{ cursor: 'pointer', position: 'relative', zIndex: 2 }}
               onDoubleClick={(event) => handleVideoClick(event)}
               onLoadedMetadata={() => setIsVideoLoaded(true)}
