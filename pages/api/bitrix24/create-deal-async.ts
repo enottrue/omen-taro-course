@@ -15,7 +15,7 @@ export default async function handler(
   }
 
   try {
-    const { userId } = req.body;
+    const { userId, utmData } = req.body;
 
     if (!userId) {
       return res.status(400).json({
@@ -66,6 +66,7 @@ export default async function handler(
       city: user.city || undefined,
       productId: '1777',
       comments: `Регистрация пользователя ${user.name}`,
+      utmData,
     });
     
     const result = await createDealOnRegistration({
@@ -75,7 +76,7 @@ export default async function handler(
       city: user.city || undefined,
       productId: '1777',
       comments: `Регистрация пользователя ${user.name}`,
-      utmData: undefined, // UTM данные уже не доступны на этом этапе
+      utmData,
     });
 
     console.log('📊 Результат createDealOnRegistration:', result);

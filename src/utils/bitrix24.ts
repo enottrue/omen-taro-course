@@ -235,6 +235,7 @@ export async function createDeal(dealData: {
     if (dealData.utmData.UTM_SOURCE) bitrixDeal.UTM_SOURCE = dealData.utmData.UTM_SOURCE;
     if (dealData.utmData.UTM_MEDIUM) bitrixDeal.UTM_MEDIUM = dealData.utmData.UTM_MEDIUM;
     if (dealData.utmData.UTM_CONTENT) bitrixDeal.UTM_CONTENT = dealData.utmData.UTM_CONTENT;
+    if (dealData.utmData.UTM_TERM) bitrixDeal.UTM_TERM = dealData.utmData.UTM_TERM;
   }
 
   // Добавляем дополнительные поля
@@ -268,6 +269,7 @@ export async function createDeal(dealData: {
     if (bitrixDeal.UTM_SOURCE) dealData['fields[UTM_SOURCE]'] = bitrixDeal.UTM_SOURCE;
     if (bitrixDeal.UTM_MEDIUM) dealData['fields[UTM_MEDIUM]'] = bitrixDeal.UTM_MEDIUM;
     if (bitrixDeal.UTM_CONTENT) dealData['fields[UTM_CONTENT]'] = bitrixDeal.UTM_CONTENT;
+    if (bitrixDeal.UTM_TERM) dealData['fields[UTM_TERM]'] = bitrixDeal.UTM_TERM;
 
     // Добавляем дополнительные поля
     if (bitrixDeal.UF_CRM_1713255453) dealData['fields[UF_CRM_1713255453]'] = bitrixDeal.UF_CRM_1713255453;

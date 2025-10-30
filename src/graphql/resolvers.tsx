@@ -493,7 +493,7 @@ export const resolvers = {
               headers: {
                 'Content-Type': 'application/json',
               },
-              body: JSON.stringify({ userId: user.id }),
+              body: JSON.stringify({ userId: user.id, utmData: args.utmData }),
             });
             
             console.log('📡 Ответ API получен, статус:', response.status);
