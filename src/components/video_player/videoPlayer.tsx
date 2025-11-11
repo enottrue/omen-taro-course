@@ -9,6 +9,7 @@ import { useContext } from 'react';
 import { MainContext } from '@/contexts/MainContext';
 import { useMetrica } from 'next-yandex-metrica';
 import './videoPlayer.css';
+import { useGtmEvents } from '@/hooks/useGtmEvents';
 
 const ReactPlayer = dynamic(() => import('react-player'), { ssr: false });
 
@@ -18,12 +19,20 @@ export default function VideoPlayer({
   finished,
   setFinished,
   stageId,
+  lessonId,
+  lessonName,
+  courseId,
+  isFreeLesson,
 }: {
   url?: string;
   preview?: string;
   finished?: boolean;
   stageId?: any;
   setFinished?: React.Dispatch<React.SetStateAction<boolean>>;
+  lessonId?: string | number;
+  lessonName?: string;
+  courseId?: string | number;
+  isFreeLesson?: boolean;
 }) {
   const cc = useContext(MainContext);
   const [changeStageStatus] = useMutation(CHANGE_STAGE_STATUS);
@@ -31,6 +40,7 @@ export default function VideoPlayer({
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const { reachGoal } = useMetrica();
+  const { pushLessonFinished } = useGtmEvents();
 
   const handleVideoStart: ReactEventHandler<HTMLVideoElement> = (e) => {
     setHasVideoStarted(true);
@@ -141,6 +151,28 @@ export default function VideoPlayer({
     }
     
     setFinished && setFinished(true);
+
+    if (isFreeLesson && stageId?.id) {
+      const videoElement = videoRef.current;
+      const datasetKey = `fbLessonFinished_${stageId.id}`;
+
+      if (videoElement && !videoElement.dataset[datasetKey]) {
+        pushLessonFinished({
+          lessonId: lessonId ?? stageId?.lessonId ?? 'unknown_lesson',
+          stageId: stageId.id,
+          lessonName,
+          stageName: stageId?.stageName,
+          courseId: courseId ?? stageId?.lessonId,
+          isFree: true,
+          progress: 100,
+          metadata: {
+            stageNumber: stageId?.stageNumber,
+          },
+        });
+
+        videoElement.dataset[datasetKey] = 'true';
+      }
+    }
   };
 
   // Обработчик паузы видео - не показываем превью при паузе

@@ -12,6 +12,7 @@ import { useMetrica } from 'next-yandex-metrica';
 import { createCheckoutSessionWithInvoice, redirectToCheckout } from '@/utils/stripeCheckout';
 import { getOnboardingRedirectPath } from '@/utils/onboardingUtils';
 import { useGoogleAnalytics } from '@/hooks/useGoogleAnalytics';
+import { useGtmEvents } from '@/hooks/useGtmEvents';
 
 export type ModalFormRegisterType = {
   className?: string;
@@ -34,6 +35,7 @@ const ModalFormRegister: NextPage<ModalFormRegisterType> = ({
   const { reachGoal } = useMetrica();
   const [getUser, { loading: loadingLazy, data, error: errorLazy }] = useLazyQuery(GET_USER);
   const { trackRegistrationStart, trackRegistrationSubmit, trackRegistrationError, trackRegistrationSuccess } = useGoogleAnalytics();
+  const { pushStartTrial } = useGtmEvents();
 
   useEffect(() => {
     const handleEscKey = (event: KeyboardEvent) => {
@@ -140,6 +142,16 @@ const ModalFormRegister: NextPage<ModalFormRegisterType> = ({
       // Отслеживаем успешную регистрацию
       console.log('🎉 [ModalFormRegister] Registration successful, tracking success');
       trackRegistrationSuccess(registerUser?.user?.id, email);
+      pushStartTrial({
+        userId: registerUser?.user?.id,
+        email,
+        dealId: registerUser?.user?.bitrix24DealId,
+        currency: 'USD',
+        value: 0,
+        metadata: {
+          source: 'modal_register',
+        },
+      });
       
       // Get user data and update context
       const userData = await getUser({

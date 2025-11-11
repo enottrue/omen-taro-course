@@ -2,11 +2,13 @@ import { useContext, useState } from 'react';
 import { MainContext } from '@/contexts/MainContext';
 import { createCheckoutSession, redirectToCheckout, createCheckoutSessionWithInvoice } from '@/utils/stripeCheckout';
 import { useGoogleAnalytics } from './useGoogleAnalytics';
+import { useGtmEvents } from './useGtmEvents';
 
 export const useStripePayment = () => {
   const context = useContext(MainContext);
   const { trackCheckoutStart, trackCheckoutSubmit, trackPaymentFailed, trackPurchase } = useGoogleAnalytics();
   const [isLoading, setIsLoading] = useState(false);
+  const { pushInitiateCheckout } = useGtmEvents();
 
   const handlePayment = async () => {
     // Блокируем повторные нажатия
@@ -114,6 +116,11 @@ export const useStripePayment = () => {
       };
       localStorage.setItem('stripe_invoice_debug', JSON.stringify(invoiceDebugLog));
       
+      const purchaseValue = 50;
+      const checkoutMetadata = {
+        source: 'handlePayment',
+      };
+
       // Создаем сессию оплаты с invoice
       const result = await createCheckoutSessionWithInvoice({
         email: userEmail,
@@ -135,6 +142,27 @@ export const useStripePayment = () => {
       };
       localStorage.setItem('stripe_success_debug', JSON.stringify(successDebugLog));
       
+      pushInitiateCheckout({
+        value: purchaseValue,
+        currency: 'USD',
+        contents: [
+          {
+            id: 'cosmo-course',
+            item_price: purchaseValue,
+            quantity: 1,
+            item_name: 'Cosmo Course',
+            item_category: 'online_course',
+          },
+        ],
+        numItems: 1,
+        email: userEmail,
+        userId: context.user.id,
+        dealId,
+        sessionId: result.sessionId,
+        invoiceId: result.invoiceId,
+        metadata: checkoutMetadata,
+      });
+
       // Перенаправляем на Stripe Checkout
       await redirectToCheckout(result.sessionId);
     } catch (error) {
@@ -209,6 +237,8 @@ export const useStripePayment = () => {
         throw new Error('User email not found');
       }
 
+      const purchaseValue = (additionalData?.amount ?? 5000) / 100;
+      
       // Создаем сессию оплаты с invoice
       const result = await createCheckoutSessionWithInvoice({
         email: userEmail,
@@ -218,6 +248,30 @@ export const useStripePayment = () => {
       
       console.log('✅ Checkout session with invoice created:', result);
       
+      pushInitiateCheckout({
+        value: purchaseValue,
+        currency: (additionalData?.currency || 'usd').toUpperCase(),
+        contents: [
+          {
+            id: additionalData?.product_id || 'cosmo-course',
+            item_price: purchaseValue,
+            quantity: 1,
+            item_name: additionalData?.productName || 'Cosmo Course',
+            item_category: 'online_course',
+          },
+        ],
+        numItems: 1,
+        email: userEmail,
+        userId: context.user.id,
+        dealId,
+        sessionId: result.sessionId,
+        invoiceId: result.invoiceId,
+        metadata: {
+          source: 'handlePaymentWithInvoice',
+          page_identifier: additionalData?.page_identifier,
+        },
+      });
+
       // Перенаправляем на Stripe Checkout
       await redirectToCheckout(result.sessionId);
     } catch (error) {

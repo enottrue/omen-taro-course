@@ -22,6 +22,7 @@ import styles from '@/components/component1/component1.module.scss';
 import './lessonHeader.scss';
 import BurgerMenu from '../component1/BurgerMenu';
 import { STAGE_STATUSES } from '@/utils/stageStatusUtils';
+import { isFreeLesson } from '@/utils/freeLessons';
 
 export default function CourseLessonHeader({
   lesson,
@@ -241,6 +242,10 @@ export default function CourseLessonHeader({
                   finished={finishedStage}
                   setFinished={setFinishedStage}
                   stageId={lesson?.lessonStages?.find((s: any) => s.stageNumber === Number(currentStageId))}
+                  lessonId={lesson?.id ?? currentLessonId}
+                  lessonName={lesson?.lessonName}
+                  courseId={lesson?.courseId}
+                  isFreeLesson={isFreeLesson(lesson?.id ?? currentLessonId)}
                 />
                 
                 <div className="lesson-navigation">

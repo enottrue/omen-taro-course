@@ -11,6 +11,7 @@ import BurgerMenu from '@/components/component1/BurgerMenu';
 import Footer from '@/components/footer/Footer';
 import FooterInside from '@/components/footerInside/Footer';
 import { useMetrica } from 'next-yandex-metrica';
+import { useGtmEvents } from '@/hooks/useGtmEvents';
 
 const PaymentSuccessPage: React.FC = () => {
   const router = useRouter();
@@ -21,16 +22,33 @@ const PaymentSuccessPage: React.FC = () => {
   const burgerRef = useRef<HTMLDivElement>(null);
   const cc = useContext(MainContext);
   const { reachGoal } = useMetrica();
+  const { pushPurchase } = useGtmEvents();
+
+  const hasVerifiedRef = useRef(false);
 
   useEffect(() => {
-    if (router.query.session_id) {
-      const session = router.query.session_id as string;
-      setSessionId(session);
-      
-      // Process the payment verification
-      processPaymentVerification(session);
+    if (!router.isReady) {
+      return;
     }
-  }, [router.query]);
+
+    const sessionParam = router.query.session_id;
+    const session =
+      typeof sessionParam === 'string'
+        ? sessionParam
+        : Array.isArray(sessionParam)
+          ? sessionParam[0]
+          : undefined;
+
+    if (!session || hasVerifiedRef.current) {
+      return;
+    }
+
+    hasVerifiedRef.current = true;
+    setSessionId(session);
+
+    // Process the payment verification
+    processPaymentVerification(session);
+  }, [router.isReady, router.query.session_id]);
 
   const processPaymentVerification = async (sessionId: string) => {
     try {
@@ -59,6 +77,41 @@ const PaymentSuccessPage: React.FC = () => {
           });
         }
         reachGoal('payment_successful');
+
+        if (data.purchase?.amountTotal && data.purchase?.currency) {
+          const purchaseValue = Number(data.purchase.amountTotal) / 100;
+          const contents = Array.isArray(data.purchase.lineItems)
+            ? data.purchase.lineItems.map((item: any) => ({
+                id:
+                  typeof item.price?.product === 'string'
+                    ? item.price.product
+                    : item.id,
+                quantity: item.quantity ?? 1,
+                item_price: item.price?.unitAmount
+                  ? item.price.unitAmount / 100
+                  : undefined,
+                item_name: item.description,
+                item_category: 'online_course',
+              }))
+            : undefined;
+
+          pushPurchase({
+            value: purchaseValue,
+            currency: data.purchase.currency,
+            contents,
+            numItems: contents?.length,
+            email: data.user?.email,
+            userId: cc?.user?.id,
+            sessionId: data.purchase.sessionId,
+            invoiceId: data.purchase.invoiceId ?? undefined,
+            customerId: data.purchase.customerId ?? undefined,
+            metadata: {
+              paymentIntentId: data.purchase.paymentIntentId,
+            },
+          });
+        } else {
+          console.warn('⚠️ Purchase data missing amount or currency, skipping FB Purchase event');
+        }
       } else {
         console.error('❌ Payment verification failed:', data.error);
         setPaymentStatus('error');

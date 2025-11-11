@@ -26,7 +26,12 @@ export default async function handler(
     console.log('🔄 Processing payment update for session:', sessionId);
 
     // Verify the session with Stripe
-    const session = await stripe.checkout.sessions.retrieve(sessionId);
+    const session = await stripe.checkout.sessions.retrieve(sessionId, {
+      expand: ['payment_intent'],
+    });
+    const lineItems = await stripe.checkout.sessions.listLineItems(sessionId, {
+      expand: ['data.price.product'],
+    });
     
     console.log('📊 Stripe session status:', session.payment_status);
     console.log('📊 Stripe session mode:', session.mode);
@@ -39,27 +44,91 @@ export default async function handler(
         return res.status(400).json({ error: 'No email found in session' });
       }
 
+      const purchasePayload = {
+        sessionId,
+        amountTotal: session.amount_total,
+        amountSubtotal: session.amount_subtotal,
+        currency: session.currency,
+        paymentStatus: session.payment_status,
+        paymentIntentId:
+          typeof session.payment_intent === 'string'
+            ? session.payment_intent
+            : session.payment_intent?.id,
+        paymentMethodTypes: session.payment_method_types,
+        invoiceId: session.invoice,
+        customerId:
+          typeof session.customer === 'string'
+            ? session.customer
+            : session.customer?.id,
+        metadata: session.metadata,
+        lineItems: lineItems.data.map((item) => ({
+          id: item.id,
+          description: item.description,
+          quantity: item.quantity,
+          amountSubtotal: item.amount_subtotal,
+          amountTotal: item.amount_total,
+          currency: item.currency,
+          price: item.price
+            ? {
+                id: item.price.id,
+                product: item.price.product,
+                unitAmount: item.price.unit_amount,
+                currency: item.price.currency,
+              }
+            : null,
+        })),
+      };
+
       console.log('👤 Updating payment status for user:', userEmail);
 
+      const existingUser = await prisma.user.findUnique({
+        where: { email: userEmail },
+      });
+
+      if (!existingUser) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      const alreadyProcessed =
+        existingUser.stripeSessionId === sessionId && existingUser.isPaid;
+
+      if (alreadyProcessed) {
+        console.log(
+          'ℹ️ Payment session already processed for user, skipping duplicate email.',
+        );
+
+        return res.status(200).json({
+          success: true,
+          message: 'Payment already processed',
+          user: {
+            email: existingUser.email,
+            isPaid: existingUser.isPaid,
+            paymentDate: existingUser.paymentDate,
+          },
+          purchase: purchasePayload,
+          alreadyProcessed: true,
+        });
+      }
+
       // Update user payment status
-    const updatedUser = await prisma.user.update({
+      const updatedUser = await prisma.user.update({
         where: { email: userEmail },
         data: {
           isPaid: true,
           paymentDate: new Date(),
           stripeSessionId: sessionId,
         },
-    });
+      });
 
       console.log('✅ User payment status updated successfully:', updatedUser.email);
 
-      // Send payment success email every time the page is opened
+      // Send payment success email once per session
       try {
         const userName = updatedUser.name || updatedUser.email?.split('@')[0] || 'User';
         const emailResult = await emailService.sendPaymentSuccessEmail(
-          updatedUser.email, 
-          userName, 
-          'https://astro-irena.com/courses'
+          updatedUser.email,
+          userName,
+          'https://astro-irena.com/courses',
         );
         
         if (emailResult.success) {
@@ -77,8 +146,9 @@ export default async function handler(
         user: {
           email: updatedUser.email,
           isPaid: updatedUser.isPaid,
-          paymentDate: updatedUser.paymentDate
-        }
+          paymentDate: updatedUser.paymentDate,
+        },
+        purchase: purchasePayload,
       });
     } else {
       console.log('❌ Payment not completed. Status:', session.payment_status);
