@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 import { getOnboardingRedirectPath, getOnboardingStatus } from '@/utils/onboardingUtils';
 import { useMetrica } from 'next-yandex-metrica';
 import { useGoogleAnalytics } from '@/hooks/useGoogleAnalytics';
+import { useGtmEvents } from '@/hooks/useGtmEvents';
 
 export type ModalFormAuthType = {
   className?: string;
@@ -30,6 +31,7 @@ const ModalFormAuth: NextPage<ModalFormAuthType> = ({
   const router = useRouter();
   const { reachGoal } = useMetrica();
   const { trackEvent } = useGoogleAnalytics();
+  const { pushLogin } = useGtmEvents();
 
   useEffect(() => {
     const handleEscKey = (event: KeyboardEvent) => {
@@ -148,6 +150,16 @@ const ModalFormAuth: NextPage<ModalFormAuthType> = ({
         user_id: userData.user.id,
         page_url: typeof window !== 'undefined' ? window.location.href : '',
         page_title: typeof document !== 'undefined' ? document.title : ''
+      });
+      
+      // Отправляем событие Login в Facebook Pixel через GTM
+      pushLogin({
+        userId: userData.user.id,
+        email: userData.user.email,
+        dealId: userData.user.bitrix24DealId,
+        metadata: {
+          source: 'modal_auth',
+        },
       });
       
       cc?.setSubmitting && cc.setSubmitting(false);

@@ -162,9 +162,19 @@ export const useGtmEvents = () => {
     });
   }, [pushEvent]);
 
+  const pushLogin = useCallback((payload: CommonEventPayload = {}) => {
+    pushEvent('Login', {
+      email: payload.email,
+      user_id: payload.userId,
+      deal_id: payload.dealId,
+      metadata: payload.metadata,
+    });
+  }, [pushEvent]);
+
   return {
     pushEvent,
     pushStartTrial,
+    pushLogin,
     pushLessonFinished,
     pushInitiateCheckout,
     pushPurchase,
