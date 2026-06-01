@@ -87,7 +87,8 @@ const ContactUsTextBlock = () => {
                   </p>
                   <p className="p">&nbsp;</p>
                   <p className="p">
-                    <strong>Address:</strong> ESTONIA, Tallinn, Ravala pst 13-32.
+                    <strong>Address:</strong> Harju maakond, Tallinn, Kesklinna linnaosa,
+                    Rävala pst 13-32
                   </p>
                 </div>
               </div>
